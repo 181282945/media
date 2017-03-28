@@ -1,9 +1,9 @@
 package com.sunjung.core.service;
 
-import com.sunjung.core.dto.CriteriaDto;
-import com.sunjung.core.dto.PageAndSortDto;
 import com.sunjung.core.dto.Pair;
 import com.sunjung.core.entity.BaseEntity;
+import com.sunjung.core.mybatis.specification.PageAndSort;
+import com.sunjung.core.mybatis.specification.Specification;
 
 import java.util.List;
 
@@ -47,12 +47,12 @@ public interface BaseService<T extends BaseEntity> {
     /**
      * 单表模糊查询
      */
-    List<T> findByLike(CriteriaDto<T> criteriaDto);
+    List<T> findByLike(Specification<T> specification);
 
     /**
      * 根据模糊分页查询
      */
-    List<T> findByPage(CriteriaDto<T> criteriaDto);
+    List<T> findByPage(Specification<T> specification);
 
     /**
      * 根据实体模糊查询
@@ -62,17 +62,17 @@ public interface BaseService<T extends BaseEntity> {
     /**
      * 根据实体模糊分页查询
      */
-    List<T> findByPage(Pair<T, PageAndSortDto> pair);
+    List<T> findByPage(Pair<T, PageAndSort> pair);
 
     /**
      * 根据实体模糊分页查询
      */
-    List<T> findByPage(T entity, PageAndSortDto pageAndSortDto);
+    List<T> findByPage(T entity, PageAndSort pageAndSort);
 
     /**
      * 单表模糊查询总记录数
      */
-    Long findRowCount(CriteriaDto<T> criteriaDto);
+    Long findRowCount(Specification<T> specification);
 
     /**
      * 查找上一条

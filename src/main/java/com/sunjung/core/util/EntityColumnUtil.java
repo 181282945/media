@@ -1,7 +1,7 @@
 package com.sunjung.core.util;
 
 import com.sunjung.core.dto.Pair;
-import com.sunjung.core.dto.QueryLike;
+import com.sunjung.core.mybatis.specification.QueryLike;
 import com.sunjung.core.entity.BaseEntity;
 import com.sunjung.core.entity.annotation.Transient;
 
@@ -10,7 +10,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.*;
-import com.sunjung.core.dto.QueryLike.*;
+import com.sunjung.core.mybatis.specification.QueryLike.*;
 import org.apache.commons.lang3.StringUtils;
 
 /**

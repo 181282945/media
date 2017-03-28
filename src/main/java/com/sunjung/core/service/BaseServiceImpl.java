@@ -2,13 +2,13 @@ package com.sunjung.core.service;
 
 import com.sunjung.core.annotation.ServiceMapper;
 import com.sunjung.core.dao.BaseMapper;
-import com.sunjung.core.dto.CriteriaDto;
-import com.sunjung.core.dto.PageAndSortDto;
+import com.sunjung.core.mybatis.specification.PageAndSort;
 import com.sunjung.core.dto.Pair;
-import com.sunjung.core.dto.QueryLike;
+import com.sunjung.core.mybatis.specification.QueryLike;
 import com.sunjung.core.entity.BaseBusinessEntity;
 import com.sunjung.core.entity.BaseEntity;
 import com.sunjung.core.entity.annotation.BaseEntityMapper;
+import com.sunjung.core.mybatis.specification.Specification;
 import com.sunjung.core.util.ConstraintUtil;
 import com.sunjung.core.util.EntityColumnUtil;
 import com.sunjung.core.util.GenericeClassUtils;
@@ -42,21 +42,21 @@ public class BaseServiceImpl<T extends BaseEntity,M extends BaseMapper<T>> imple
 
     @Override
     public T findEntityById(String id) {
-        T entity = getMapper().findEntityById(new CriteriaDto<T>(entityClass, id));
+        T entity = getMapper().findEntityById(new Specification<T>(entityClass, id));
 //        setEntityManyToOne(entity);
         return entity;
     }
 
     @Override
     public T getEntityPreviousById(String id) {
-        T entity = getMapper().getEntityPreviousById(new CriteriaDto<T>(entityClass, id));
+        T entity = getMapper().getEntityPreviousById(new Specification<T>(entityClass, id));
 //        setEntityManyToOne(entity);
         return entity;
     }
 
     @Override
     public T getEntityNextById(String id) {
-        T entity = getMapper().getEntityNextById(new CriteriaDto<T>(entityClass, id));
+        T entity = getMapper().getEntityNextById(new Specification<T>(entityClass, id));
 //        setEntityManyToOne(entity);
         return entity;
     }
@@ -183,61 +183,61 @@ public class BaseServiceImpl<T extends BaseEntity,M extends BaseMapper<T>> imple
 
     @Override
     public void deleteById(String id) {
-        getMapper().deleteById(new CriteriaDto<T>(entityClass, id));
+        getMapper().deleteById(new Specification<T>(entityClass, id));
     }
 
     @Override
     public List<T> findAll() {
-        CriteriaDto<T> criteriaDto = new CriteriaDto<T>(entityClass);
-        criteriaDto.setPageAndSortDto(new PageAndSortDto(0, 0, getBaseEntityMapper().primaryKey()));
+        Specification<T> criteriaDto = new Specification<T>(entityClass);
+        criteriaDto.setPageAndSort(new PageAndSort(0, 0, getBaseEntityMapper().primaryKey()));
         return getMapper().findAll(criteriaDto);
     }
 
     @Override
-    public List<T> findByLike(CriteriaDto<T> criteriaDto) {
-        return getMapper().findByLike(criteriaDto);
+    public List<T> findByLike(Specification<T> specification) {
+        return getMapper().findByLike(specification);
     }
 
     @Override
-    public List<T> findByPage(CriteriaDto<T> criteriaDto) {
-        Long rowCount = this.findRowCount(criteriaDto);
-        criteriaDto.getPageAndSortDto().setRowCount(rowCount);
-        return getMapper().findByPage(criteriaDto);
+    public List<T> findByPage(Specification<T> specification) {
+        Long rowCount = this.findRowCount(specification);
+        specification.getPageAndSort().setRowCount(rowCount);
+        return getMapper().findByPage(specification);
     }
 
     @Override
     public List<T> findByLike(T entity) {
-        CriteriaDto<T> criteriaDto = makeCriteria(null);
-        List<QueryLike> queryLikes = EntityColumnUtil.setEntityQueryLike(entity, criteriaDto.getQueryLikes());
-        criteriaDto.setQueryLikes(queryLikes);
-        return this.findByLike(criteriaDto);
+        Specification<T> specification = makeSpecification(null);
+        List<QueryLike> queryLikes = EntityColumnUtil.setEntityQueryLike(entity, specification.getQueryLikes());
+        specification.setQueryLikes(queryLikes);
+        return this.findByLike(specification);
     }
 
     @Override
-    public List<T> findByPage(Pair<T, PageAndSortDto> pair) {
+    public List<T> findByPage(Pair<T, PageAndSort> pair) {
         return findByPage(pair.getLeft(), pair.getRight());
     }
 
     @Override
-    public List<T> findByPage(T entity, PageAndSortDto pageAndSortDto) {
-        CriteriaDto<T> criteriaDto = makeCriteria(pageAndSortDto);
-        List<QueryLike> queryLikes = EntityColumnUtil.setEntityQueryLike(entity, criteriaDto.getQueryLikes());
-        criteriaDto.setQueryLikes(queryLikes);
-        return this.findByPage(criteriaDto);
+    public List<T> findByPage(T entity, PageAndSort pageAndSort) {
+        Specification<T> specification = makeSpecification(pageAndSort);
+        List<QueryLike> queryLikes = EntityColumnUtil.setEntityQueryLike(entity, specification.getQueryLikes());
+        specification.setQueryLikes(queryLikes);
+        return this.findByPage(specification);
     }
 
     /**
      * 模糊搜索条件
      */
-    protected CriteriaDto<T> makeCriteria(PageAndSortDto pageAndSortDto) {
-        CriteriaDto<T> criteriaDto = new CriteriaDto<T>(entityClass);
-        criteriaDto.setPageAndSortDto(pageAndSortDto);
-        return criteriaDto;
+    protected Specification<T> makeSpecification(PageAndSort pageAndSort) {
+        Specification<T> specification = new Specification<T>(entityClass);
+        specification.setPageAndSort(pageAndSort);
+        return specification;
     }
 
     @Override
-    public Long findRowCount(CriteriaDto<T> criteriaDto) {
-        return getMapper().findRowCount(criteriaDto);
+    public Long findRowCount(Specification<T> pageAndSort) {
+        return getMapper().findRowCount(pageAndSort);
     }
 
     private ServiceMapper getServiceMapper() {

@@ -16,6 +16,7 @@ import com.sunjung.core.exception.RuntimeFunctionException;
 import com.sunjung.core.exception.RuntimeOtherException;
 import com.sunjung.core.exception.RuntimeServiceException;
 import com.sunjung.core.exception.RuntimeWebException;
+import com.sunjung.core.mybatis.specification.PageAndSort;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class ResultDataDto {
@@ -156,11 +157,11 @@ public class ResultDataDto {
 	/**
 	 * 返回分页集合
 	 */
-	public<T extends BaseEntity> ResultDataDto(List<T> list, PageAndSortDto pageAndSortDto) {
+	public<T extends BaseEntity> ResultDataDto(List<T> list, PageAndSort pageAndSort) {
 		super();
 		this.code = CODE_SUCCESS;
 		this.datas = list;
-		this.pageAndSortDto = pageAndSortDto;
+		this.pageAndSort = pageAndSort;
 	}
 	
 	/**
@@ -246,7 +247,7 @@ public class ResultDataDto {
 	/**
 	 * 分页数据
 	 */
-	private PageAndSortDto pageAndSortDto;
+	private PageAndSort pageAndSort;
 	
 	private static String getErrorMessage(Exception ex) {
 		if (ex instanceof ArithmeticException) {
@@ -310,12 +311,12 @@ public class ResultDataDto {
 		return this;
 	}
 
-	public PageAndSortDto getPageAndSortDto() {
-		return pageAndSortDto;
+	public PageAndSort getPageAndSort() {
+		return pageAndSort;
 	}
 
-	public ResultDataDto setFlexiPageDto(PageAndSortDto pageAndSortDto) {
-		this.pageAndSortDto = pageAndSortDto;
+	public ResultDataDto setFlexiPage(PageAndSort pageAndSort) {
+		this.pageAndSort = pageAndSort;
 		return this;
 	}
 

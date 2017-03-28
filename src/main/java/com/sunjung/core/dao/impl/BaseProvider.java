@@ -1,14 +1,14 @@
 package com.sunjung.core.dao.impl;
 
-import com.sunjung.core.dto.CriteriaDto;
-import com.sunjung.core.dto.PageAndSortDto;
-import com.sunjung.core.dto.QueryLike;
+import com.sunjung.core.mybatis.specification.PageAndSort;
+import com.sunjung.core.mybatis.specification.QueryLike;
 import com.sunjung.core.entity.BaseBusinessEntity;
 import com.sunjung.core.entity.BaseEntity;
 import com.sunjung.core.entity.annotation.BaseEntityMapper;
+import com.sunjung.core.mybatis.specification.Specification;
 import com.sunjung.core.util.DateUtil;
 import com.sunjung.core.util.EntityColumnUtil;
-import com.sunjung.core.dto.QueryLike.*;
+import com.sunjung.core.mybatis.specification.QueryLike.*;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Date;
@@ -24,23 +24,23 @@ public class BaseProvider<T extends BaseEntity> {
     /**
      * 根据Id查询实体
      */
-    public String findEntityById(CriteriaDto<T> criteriaDto) {
-        return "SELECT * FROM " + criteriaDto.getTableName() + " WHERE " + criteriaDto.getPrimaryKey() + " = " + criteriaDto.getEntityId();
+    public String findEntityById(Specification<T> specification) {
+        return "SELECT * FROM " + specification.getTableName() + " WHERE " + specification.getPrimaryKey() + " = " + specification.getEntityId();
     }
 
     /**
      * 根据Id查询实体
      */
-    public String findEntityByNaturalId(CriteriaDto<T> criteriaDto) {
-        return "SELECT * FROM " + criteriaDto.getTableName() + " WHERE " + criteriaDto.getPrimaryKey() + " = '" + criteriaDto.getEntityId() + "'";
+    public String findEntityByNaturalId(Specification<T> specification) {
+        return "SELECT * FROM " + specification.getTableName() + " WHERE " + specification.getPrimaryKey() + " = '" + specification.getEntityId() + "'";
     }
 
     /**
      * Athos  2016年10月14日09:39:29
      * 查找上一条
      */
-    public String getEntityPreviousById(CriteriaDto<T> criteriaDto) {
-        return "SELECT * FROM " + criteriaDto.getTableName() + " where id = ( select max(id) from " + criteriaDto.getTableName() + " where id < "+ criteriaDto.getEntityId()+")";
+    public String getEntityPreviousById(Specification<T> specification) {
+        return "SELECT * FROM " + specification.getTableName() + " where id = ( select max(id) from " + specification.getTableName() + " where id < "+ specification.getEntityId()+")";
 
     }
 
@@ -48,19 +48,19 @@ public class BaseProvider<T extends BaseEntity> {
      * Athos  2016年10月14日09:39:29
      * 查找下一条
      */
-    public String getEntityNextById(CriteriaDto<T> criteriaDto) {
-        return "SELECT * FROM " + criteriaDto.getTableName() + " where id = ( select min(id) from " + criteriaDto.getTableName() + " where id > "+ criteriaDto.getEntityId()+")";
+    public String getEntityNextById(Specification<T> specification) {
+        return "SELECT * FROM " + specification.getTableName() + " where id = ( select min(id) from " + specification.getTableName() + " where id > "+ specification.getEntityId()+")";
     }
 
     /**
      * 根据Id查询实体
      */
-    public String findAll(CriteriaDto<T> criteriaDto) {
+    public String findAll(Specification<T> specification) {
         StringBuilder sqlString = new StringBuilder();
-        sqlString.append("select * from " + criteriaDto.getTableName());
-        PageAndSortDto pageAndSortDto = criteriaDto.getPageAndSortDto();
-        if (null != pageAndSortDto && null != pageAndSortDto.getSortName() && pageAndSortDto.getSortName().length()>0) {
-            sqlString.append(" order by " + pageAndSortDto.getSortName() + " " + pageAndSortDto.getSortOrder());
+        sqlString.append("select * from " + specification.getTableName());
+        PageAndSort pageAndSort = specification.getPageAndSort();
+        if (null != pageAndSort && null != pageAndSort.getSortName() && pageAndSort.getSortName().length()>0) {
+            sqlString.append(" order by " + pageAndSort.getSortName() + " " + pageAndSort.getSortOrder());
         }
         return sqlString.toString();
     }
@@ -150,50 +150,50 @@ public class BaseProvider<T extends BaseEntity> {
     /**
      * 根据Id删除实体
      */
-    public String deleteById(CriteriaDto<T> criteriaDto) {
-        return "delete from " + criteriaDto.getTableName() + " where id = " + criteriaDto.getEntityId();
+    public String deleteById(Specification<T> specification) {
+        return "delete from " + specification.getTableName() + " where id = " + specification.getEntityId();
     }
 
     /**
      * 单表模糊查询，暂不支持链接查询
      */
-    public String findByLike(CriteriaDto<T> criteriaDto) {
+    public String findByLike(Specification<T> specification) {
 
-        if (null == criteriaDto.getTableName()) {
+        if (null == specification.getTableName()) {
             throw new RuntimeException("没有设置查询表名：tablename");
         }
 
         StringBuffer sql = new StringBuffer();
-        sql.append("select * from " + criteriaDto.getTableName());
-        sql.append(generateWhereSql(criteriaDto.getQueryLikes()));
-        sql.append(generateGroupBySql(criteriaDto));
+        sql.append("select * from " + specification.getTableName());
+        sql.append(generateWhereSql(specification.getQueryLikes()));
+        sql.append(generateGroupBySql(specification));
         return sql.toString();
     }
 
     /**
      * 单表模糊分页查询，暂不支持链接查询
      */
-    public String findByPage(CriteriaDto<T> criteriaDto) {
+    public String findByPage(Specification<T> specification) {
 
         StringBuffer sql = new StringBuffer();
-        sql.append(findByLike(criteriaDto));
-        sql.append(generateLimitOrderSql(criteriaDto.getPageAndSortDto()));
+        sql.append(findByLike(specification));
+        sql.append(generateLimitOrderSql(specification.getPageAndSort()));
         return sql.toString();
     }
 
     /**
      * 单表模糊查询，暂不支持链接查询
      */
-    public String findRowCount(CriteriaDto<T> criteriaDto) {
+    public String findRowCount(Specification<T> specification) {
 
-        if (null == criteriaDto.getTableName()) {
+        if (null == specification.getTableName()) {
             throw new RuntimeException("没有设置查询表名：tablename");
         }
 
         StringBuffer sql = new StringBuffer();
-        sql.append("select count(0) from " + criteriaDto.getTableName());
-        sql.append(generateWhereSql(criteriaDto.getQueryLikes()));
-        sql.append(generateGroupBySql(criteriaDto));
+        sql.append("select count(0) from " + specification.getTableName());
+        sql.append(generateWhereSql(specification.getQueryLikes()));
+        sql.append(generateGroupBySql(specification));
         return sql.toString();
     }
 
@@ -283,26 +283,26 @@ public class BaseProvider<T extends BaseEntity> {
         return isnull ? "" : whereSql.toString().substring(0, whereSql.toString().lastIndexOf(" ") );
     }
 
-    private String generateGroupBySql(CriteriaDto<T> criteriaDto) {
+    private String generateGroupBySql(Specification<T> specification) {
 //        return ValidateUtil.isEmpty(criteriaDto.getGroupByName()) ? "" : " group by " + criteriaDto.getGroupByName() + " ";
-        return (criteriaDto == null || StringUtils.isBlank(criteriaDto.getGroupByName())) ? "" : " group by " + criteriaDto.getGroupByName() + " ";
+        return (specification == null || StringUtils.isBlank(specification.getGroupByName())) ? "" : " group by " + specification.getGroupByName() + " ";
     }
 
     /**
      * 生成分页 、 排序Sql
      */
-    private String generateLimitOrderSql(PageAndSortDto pageAndSortDto) {
-        if (null == pageAndSortDto) {
+    private String generateLimitOrderSql(PageAndSort pageAndSort) {
+        if (null == pageAndSort) {
             return "";
         }
         StringBuffer limitOrderSql = new StringBuffer();
-        if (null != pageAndSortDto.getSortName() && !StringUtils.isBlank(pageAndSortDto.getSortName())) {
-            limitOrderSql.append(" order by " + pageAndSortDto.getSortName() + " " + pageAndSortDto.getSortOrder());
+        if (null != pageAndSort.getSortName() && !StringUtils.isBlank(pageAndSort.getSortName())) {
+            limitOrderSql.append(" order by " + pageAndSort.getSortName() + " " + pageAndSort.getSortOrder());
         }
-        if (null == pageAndSortDto.getPage() || null == pageAndSortDto.getRp() || null == pageAndSortDto.getRowCount()) {
+        if (null == pageAndSort.getPage() || null == pageAndSort.getRp() || null == pageAndSort.getRowCount()) {
             throw new RuntimeException("缺少参数：第几页、每页显示数、总记录数");
         }
-        limitOrderSql.append(" limit " + pageAndSortDto.getSeq() + ", " + pageAndSortDto.getRp());
+        limitOrderSql.append(" limit " + pageAndSort.getSeq() + ", " + pageAndSort.getRp());
         return limitOrderSql.toString();
     }
 

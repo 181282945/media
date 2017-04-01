@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.ObjectPostProcessor;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -25,10 +26,16 @@ import javax.annotation.Resource;
 
 /**
  * Created by ZhenWeiLai on 2017/3/27.
+ *
+ *  三种方法级权限控制
+ *
+ * 1.securedEnabled: Spring Security’s native annotation
+ * 2.jsr250Enabled: standards-based and allow simple role-based constraints
+ * 3.prePostEnabled: expression-based
  */
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+//@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Resource
     private UserDetailsService userDetailsService;
@@ -36,10 +43,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //    @Resource
 //    private MySecurityMetadataSource mySecurityMetadataSource;
 
+
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring().antMatchers("/js/**");
+        web.ignoring().antMatchers("/user/**");
+    }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.addFilterAfter(MyUsernamePasswordAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
-
 
         // 自定义accessDecisionManager访问控制器,并开启表达式语言
         http.exceptionHandling().accessDeniedHandler(accessDeniedHandler())
@@ -50,7 +63,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         //配置登录页面,退出后页面,不需要验证
         http.formLogin().loginPage("/login.html").permitAll().and().logout().logoutSuccessUrl("/index.html").permitAll();
-        http.securityContext().disable().antMatcher("/static/**");
+
         // 自定义登录页面
         http.csrf().disable();
 

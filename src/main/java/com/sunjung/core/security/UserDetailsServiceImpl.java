@@ -1,7 +1,6 @@
 package com.sunjung.core.security;
 
-import com.sunjung.common.usersigninfo.entity.UserSignInfo;
-import com.sunjung.common.usersigninfo.service.UserSignInfoService;
+import com.sunjung.core.security.service.UserService;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -16,7 +15,7 @@ import javax.annotation.Resource;
 @Service("userDetailsService")
 public class UserDetailsServiceImpl implements UserDetailsService {
     @Resource
-    private UserSignInfoService userSignInfoService;
+    private UserService userService;
 //    @Resource
 //    private AclRoleResourcesService aclRoleResourcesService;
 //    @Resource
@@ -28,13 +27,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 //        List<GrantedAuthority> auths = new ArrayList<GrantedAuthority>();
-        UserSignInfo userSignInfo = userSignInfoService.getUserSignInfoByName(username);
+          com.sunjung.core.security.entity.User user = userService.getUserByName(username);
 //        String resourceIds = aclRoleResourcesService.selectResourceIdsByRoleIds(aclUser.getRoleIds());
 //        List<AclResources> aclResourcesList = aclResourcesService.selectAclResourcesByResourceIds(resourceIds);
 //        for (AclResources aclResources : aclResourcesList) {
 //            auths.add(new SimpleGrantedAuthority(aclResources.getAuthority().toUpperCase()));
 //        }
 ////        auths.addAll(aclResourcesList.stream().map(resources -> new SimpleGrantedAuthority(resources.getAuthority().toUpperCase())).collect(Collectors.toList()));
-        return new User(userSignInfo.getName().toLowerCase(),userSignInfo.getPassword().toLowerCase(),true,true,true,true,null);
+        return new User(user.getUsername().toLowerCase(),user.getPassword().toLowerCase(),user.getEnabled(),user.getAccountNonExpired(),user.getCredentialsNonExpired(),user.getAccountNonLocked(),null);
     }
 }

@@ -11,17 +11,17 @@ import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.TransactionManagementConfigurer;
 
 import javax.annotation.Resource;
 import javax.sql.DataSource;
 import java.util.Map;
-import java.util.Properties;
 import java.util.HashMap;
 /**
  * Created by Athos on 2016-10-13.
  */
 @Configuration
-public class MyBatisConfig{
+public class MyBatisConfig implements TransactionManagementConfigurer {
 
     @Value("${spring.datasource.readSize}")
     private String dataSourceSize;
@@ -84,4 +84,13 @@ public class MyBatisConfig{
         return new SqlSessionTemplate(sqlSessionFactory);
     }
 
+    /**
+     * 事务配置,考虑多数据源情况下
+     * @return
+     */
+    @Bean
+    @Override
+    public PlatformTransactionManager annotationDrivenTransactionManager() {
+        return new DataSourceTransactionManager(dataSourceProxy());
+    }
 }

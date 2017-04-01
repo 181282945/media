@@ -36,12 +36,12 @@ public class PageAndSort {
         this.sortOrder = sortOrder;
     }
 
-    public static PageAndSort createMaxPageDto(){
+    public static PageAndSort createMaxPage(){
         PageAndSort pageAndSort=new PageAndSort();
         pageAndSort.setRp(MAX_PAGE_SIZE).setPage(1);
         return pageAndSort;
     }
-    public static PageAndSort generateFlexiPageDto(Integer page, Integer rp, String orderBy) {
+    public static PageAndSort generatePageAndSort(Integer page, Integer rp, String orderBy) {
         PageAndSort pageAndSort = new PageAndSort(page, rp);
         if (!StringUtils.isBlank(orderBy)) {
             String[] orderBys = orderBy.split("_");

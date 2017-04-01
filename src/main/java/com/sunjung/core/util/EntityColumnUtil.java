@@ -31,7 +31,7 @@ public class EntityColumnUtil {
      */
     public static List<Pair<String, Class>> generateEntityManyToOne(Class cls) {
 
-        List<Pair<String, Class>> list = new ArrayList<Pair<String, Class>>();
+        List<Pair<String, Class>> list = new ArrayList<>();
         try {
             // 获取实体类的所有属性，返回Field数组
             Field[] fields = cls.getDeclaredFields();
@@ -40,7 +40,7 @@ public class EntityColumnUtil {
                 if (0 == field.getGenericType().toString().indexOf("class")) {
                     Class tempcls = Class.forName(field.getGenericType().toString().substring(6));
                     if (BaseEntity.class.isAssignableFrom(tempcls)) {
-                        list.add(new Pair<String, Class>(field.getName(), tempcls));
+                        list.add(new Pair<>(field.getName(), tempcls));
                     }
                 }
             }
@@ -103,13 +103,13 @@ public class EntityColumnUtil {
     public static List<QueryLike> setEntityQueryLike(BaseEntity entity, List<QueryLike> queryLikes) {
 
         // <属性名, QueryLike>
-        Map<String, QueryLike> map = new HashMap<String, QueryLike>();
+        Map<String, QueryLike> map = new HashMap<>();
         for (QueryLike queryLike : queryLikes) {
             map.put(queryLike.getColumnName(), queryLike);
         }
 
         List<Field> declaredFields = getClassAllFields(entity, entity.getClass());
-        List<Field> queryLikeFields = new ArrayList<Field>();
+        List<Field> queryLikeFields = new ArrayList<>();
         for (Field field : declaredFields) {
             if (map.containsKey(field.getName())) {
                 queryLikeFields.add(field);
@@ -157,11 +157,11 @@ public class EntityColumnUtil {
     private static List<Field> getClassAllFields(BaseEntity entity, Class cls) {
 
         if (Object.class.getName().equals(cls.getName())) {
-            return new ArrayList<Field>();
+            return new ArrayList<>();
         }
 
         Field[] declaredFields = cls.getDeclaredFields();
-        List<Field> list = new ArrayList<Field>();
+        List<Field> list = new ArrayList<>();
         for (Field field : declaredFields) {
             // 排除静态变量
             boolean isStatic = Modifier.isStatic(field.getModifiers());
@@ -187,10 +187,10 @@ public class EntityColumnUtil {
     private static List<QueryLike> generateEntityQueryLike(BaseEntity entity, Class cls, List<Field> fields) {
 
         if (Object.class.getName().equals(cls.getName())) {
-            return new ArrayList<QueryLike>();
+            return new ArrayList<>();
         }
 
-        List<QueryLike> list = new ArrayList<QueryLike>();
+        List<QueryLike> list = new ArrayList<>();
         try {
 
             for (Field field : fields) {
@@ -212,18 +212,15 @@ public class EntityColumnUtil {
                 // 如果type是类类型，则前面包含"class "，后面跟类名
                 // String类型
                 if (field.getGenericType().toString().equals("class java.lang.String")) {
-//                    // 拿到该属性的gettet方法
-//                    Method method = cls.getMethod("get" + getMethodName(field.getName()));
-//                    String value = (String) method.invoke(entity);// 调用getter方法获取属性值
-                    String value = field.get(entity).toString();
+                    Object value = field.get(entity);
                     if (value != null) {
-                        QueryLike queryLike = new QueryLike(field.getName(), value);
+                        QueryLike queryLike = new QueryLike(field.getName(), value.toString());
                         queryLike.setIsTransient(isTransient);
                         list.add(queryLike);
                     }
                     // 如果类型是Integer
                 }else if (field.getGenericType().toString().equals("class java.lang.Integer")) {
-                    Integer value = Integer.parseInt(field.get(entity).toString());
+                    Object value = field.get(entity);
                     if (value != null) {
                         QueryLike queryLike = new QueryLike(field.getName(), LikeMode.Eq, ColumnType.Integer, value.toString());
                         queryLike.setIsTransient(isTransient);
@@ -231,7 +228,7 @@ public class EntityColumnUtil {
                     }
                     // 如果类型是Double
                 }else if (field.getGenericType().toString().equals("class java.lang.Double")) {
-                    Double value = Double.parseDouble(field.get(entity).toString());
+                    Object value = field.get(entity);
                     if (value != null) {
                         QueryLike queryLike = new QueryLike(field.getName(), LikeMode.Eq, ColumnType.Double, value.toString());
                         queryLike.setIsTransient(isTransient);
@@ -239,29 +236,23 @@ public class EntityColumnUtil {
                     }
                     // 如果类型是Boolean 是封装类
                 }else if (field.getGenericType().toString().equals("class java.lang.Boolean")) {
-                    Boolean value = Boolean.parseBoolean(field.get(entity).toString());
-//                    Method m = cls.getMethod("get" + getMethodName(field.getName()));
-//                    Boolean value = (Boolean) m.invoke(entity);
+                    Object value = field.get(entity);
                     if (value != null) {
-                        QueryLike queryLike = new QueryLike(field.getName(), LikeMode.Eq, ColumnType.Boolean, value ? "1" : "0");
+                        QueryLike queryLike = new QueryLike(field.getName(), LikeMode.Eq, ColumnType.Boolean,Boolean.parseBoolean(value.toString()) ? "1" : "0");
                         queryLike.setIsTransient(isTransient);
                         list.add(queryLike);
                     }
                     // 如果类型是Date
                 }else if (field.getGenericType().toString().equals("class java.util.Date")) {
-                    Date value = (Date)field.get(entity);
-//                    Method m = cls.getMethod("get" + getMethodName(field.getName()));
-//                    Date value = (Date) m.invoke(entity);
+                      Object value = field.get(entity);
                     if (value != null) {
-                        QueryLike queryLike = new QueryLike(field.getName(), LikeMode.Eq, ColumnType.Date, DateUtil.format(value, DateUtil.C_TIME_PATTON_DEFAULT));
+                        QueryLike queryLike = new QueryLike(field.getName(), LikeMode.Eq, ColumnType.Date, DateUtil.format((Date)value, DateUtil.C_TIME_PATTON_DEFAULT));
                         queryLike.setIsTransient(isTransient);
                         list.add(queryLike);
                     }
                     // 如果类型是Short
                 }else if (field.getGenericType().toString().equals("class java.lang.Short")) {
-                    Short value = Short.parseShort(field.get(entity).toString());
-//                    Method m = cls.getMethod("get" + getMethodName(field.getName()));
-//                    Short value = (Short) m.invoke(entity);
+                    Object value = field.get(entity);
                     if (value != null) {
                         QueryLike queryLike = new QueryLike(field.getName(), LikeMode.Eq, ColumnType.Integer, value.toString());
                         queryLike.setIsTransient(isTransient);

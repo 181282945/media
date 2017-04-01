@@ -14,6 +14,11 @@ import java.util.List;
 public interface BaseService<T extends BaseEntity> {
 
     /**
+     *  查询一个
+     */
+    T getOne(Specification<T> specification);
+
+    /**
      * 根据Id查询实体
      */
     T findEntityById(String id);

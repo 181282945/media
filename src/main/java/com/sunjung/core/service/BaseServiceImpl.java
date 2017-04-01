@@ -1,6 +1,5 @@
 package com.sunjung.core.service;
 
-import com.sunjung.core.annotation.ServiceMapper;
 import com.sunjung.core.dao.BaseMapper;
 import com.sunjung.core.mybatis.specification.PageAndSort;
 import com.sunjung.core.dto.Pair;
@@ -24,6 +23,7 @@ import java.util.List;
 public class BaseServiceImpl<T extends BaseEntity,M extends BaseMapper<T>> implements BaseService<T> {
 
     private Class<?> entityClass = GenericeClassUtils.getSuperClassGenricType(this.getClass(), 0);
+    private Class<?> mapperClass = GenericeClassUtils.getSuperClassGenricType(this.getClass(), 1);
 
     @Resource(name="sqlSessionTemplate")
     private SqlSession sqlSession;
@@ -32,13 +32,9 @@ public class BaseServiceImpl<T extends BaseEntity,M extends BaseMapper<T>> imple
 //    private INaturalIdGeneratorFactory naturalIdGeneratorFactory;
 
     protected M getMapper() {
-        return (M) sqlSession.getMapper(getServiceMapper().value());
+        return (M) sqlSession.getMapper(mapperClass);
     }
 
-    @SuppressWarnings("unchecked")
-    protected M getMapper(Class<?> cls) {
-        return (M)sqlSession.getMapper(getServiceMapper(cls).value());
-    }
 
     @Override
     public T findEntityById(String id) {
@@ -199,6 +195,13 @@ public class BaseServiceImpl<T extends BaseEntity,M extends BaseMapper<T>> imple
     }
 
     @Override
+    public T getOne(Specification<T> specification) {
+        specification.setPageAndSort(new PageAndSort(1,1));
+        List<T> results = getMapper().findByLike(specification);
+        return results.isEmpty() ? null:results.get(0);
+    }
+
+    @Override
     public List<T> findByPage(Specification<T> specification) {
         Long rowCount = this.findRowCount(specification);
         specification.getPageAndSort().setRowCount(rowCount);
@@ -240,16 +243,6 @@ public class BaseServiceImpl<T extends BaseEntity,M extends BaseMapper<T>> imple
         return getMapper().findRowCount(pageAndSort);
     }
 
-    private ServiceMapper getServiceMapper() {
-        return getServiceMapper(this.getClass());
-    }
-    private ServiceMapper getServiceMapper(Class<?> serviceClass) {
-        ServiceMapper serviceMapper = serviceClass.getAnnotation(ServiceMapper.class);
-        if (null == serviceMapper) {
-            throw new RuntimeException(serviceClass+" , 请配置注解 ServiceMapper");
-        }
-        return serviceMapper;
-    }
     private BaseEntityMapper getBaseEntityMapper() {
         BaseEntityMapper baseEntityMapper = entityClass.getAnnotation(BaseEntityMapper.class);
         if (null == baseEntityMapper) {

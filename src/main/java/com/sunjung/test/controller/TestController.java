@@ -1,11 +1,12 @@
 package com.sunjung.test.controller;
 
 import com.sunjung.common.usersigninfo.service.UserSignInfoService;
-import com.sunjung.core.properties.WechatProperties;
 import com.sunjung.test.service.TestEntityService;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +16,7 @@ import java.io.PrintWriter;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
+import java.util.Map;
 
 /**
  * Created by ZhenWeiLai on 2016/12/28.
@@ -39,6 +41,13 @@ public class TestController {
 
     public TestController(){
 //        System.out.println(wechatProperties.getAppid());
+    }
+
+    @RequestMapping("/helloThymeleaf")
+    public ModelAndView testThymeleaf(){
+        ModelAndView mav = new ModelAndView("footer");
+        mav.addObject("hello", "Thymeleaf");
+        return mav;
     }
 
     @RequestMapping(value = "/testService",method = RequestMethod.GET)

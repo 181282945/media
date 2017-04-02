@@ -1,6 +1,6 @@
 package com.sunjung.core.security;
 
-import com.sunjung.core.security.service.UserService;
+import com.sunjung.core.security.user.service.UserService;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -27,7 +27,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 //        List<GrantedAuthority> auths = new ArrayList<GrantedAuthority>();
-          com.sunjung.core.security.entity.User user = userService.getUserByName(username);
+          com.sunjung.core.security.user.entity.User user = userService.getUserByName(username);
 //        String resourceIds = aclRoleResourcesService.selectResourceIdsByRoleIds(aclUser.getRoleIds());
 //        List<AclResources> aclResourcesList = aclResourcesService.selectAclResourcesByResourceIds(resourceIds);
 //        for (AclResources aclResources : aclResourcesList) {

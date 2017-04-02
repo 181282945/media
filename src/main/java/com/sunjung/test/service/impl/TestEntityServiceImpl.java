@@ -9,6 +9,6 @@ import org.springframework.stereotype.Service;
 /**
  * Created by ZhenWeiLai on 2017/3/26.
  */
-@Service("testEntityService")
+@Service("testEntityService1")
 public class TestEntityServiceImpl extends BaseServiceImpl<TestEntity,TestEntityMapper> implements TestEntityService {
 }

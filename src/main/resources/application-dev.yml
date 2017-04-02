@@ -7,3 +7,18 @@ spring:
         username: root
         password: 123
         driver-class-name: com.mysql.jdbc.Driver
+
+
+    #thymeleaf开发环境关闭thymeleaf缓存
+    thymeleaf:
+      prefix: classpath:/templates/
+      suffix: .html
+      cache: false
+      mode: LEGACYHTML5
+      encoding: utf-8
+      content-type: text/html
+      #
+server:
+  tomcat:
+    access_log_enabled: true
+    basedir: target/tomcat

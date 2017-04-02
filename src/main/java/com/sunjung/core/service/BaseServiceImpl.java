@@ -13,6 +13,7 @@ import com.sunjung.core.util.EntityColumnUtil;
 import com.sunjung.core.util.GenericeClassUtils;
 import org.apache.ibatis.session.SqlSession;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
@@ -20,16 +21,31 @@ import java.util.List;
 /**
  * Created by ZhenWeiLai on 2017/3/26.
  */
-public class BaseServiceImpl<T extends BaseEntity,M extends BaseMapper<T>> implements BaseService<T> {
+public class BaseServiceImpl<T extends BaseEntity,M extends BaseMapper<T>> implements BaseService<T,M> {
 
     private Class<?> entityClass = GenericeClassUtils.getSuperClassGenricType(this.getClass(), 0);
     private Class<?> mapperClass = GenericeClassUtils.getSuperClassGenricType(this.getClass(), 1);
+//    protected M mapper;
+//
+//    @PostConstruct
+//    protected final void setMapper(){
+//        this.mapper = (M) sqlSession.getMapper(mapperClass);
+//        System.out.println(mapper);
+//    }
+//
+//    protected M getMapper(){
+//        return this.mapper;
+//    }
 
     @Resource(name="sqlSessionTemplate")
     private SqlSession sqlSession;
 
 //    @Autowired
 //    private INaturalIdGeneratorFactory naturalIdGeneratorFactory;
+
+//    public BaseServiceImpl(){
+//
+//    }
 
     protected M getMapper() {
         return (M) sqlSession.getMapper(mapperClass);
@@ -86,7 +102,7 @@ public class BaseServiceImpl<T extends BaseEntity,M extends BaseMapper<T>> imple
 //            packageName = packageName.substring(0, packageName.lastIndexOf("."));
 //            Class<?> serviceClass = null;
 //            try {
-//                serviceClass = Class.forName(packageName+".service.impl."+pair.getRight().getSimpleName()+"ServiceImpl");
+//                serviceClass = Class.forName(packageName+".service.impl."+pair.getRight().getSimpleName()+"ResourceServiceImpl");
 //            } catch (ClassNotFoundException e) {
 //                throw new RuntimeException(this.getClass().getSimpleName()+" , 无法定位 BaseEntityMapper");
 //            }
@@ -184,9 +200,9 @@ public class BaseServiceImpl<T extends BaseEntity,M extends BaseMapper<T>> imple
 
     @Override
     public List<T> findAll() {
-        Specification<T> criteriaDto = new Specification<T>(entityClass);
-        criteriaDto.setPageAndSort(new PageAndSort(0, 0, getBaseEntityMapper().primaryKey()));
-        return getMapper().findAll(criteriaDto);
+        Specification<T> specification = new Specification<>(entityClass);
+        specification.setPageAndSort(new PageAndSort(0, 0, getBaseEntityMapper().primaryKey()));
+        return getMapper().findAll(specification);
     }
 
     @Override

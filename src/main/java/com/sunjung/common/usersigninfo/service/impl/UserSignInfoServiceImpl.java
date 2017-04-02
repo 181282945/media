@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 /**
  * Created by ZhenWeiLai on 2017/3/27.
  */
-@Service("userSignInfoService")
+@Service
 public class UserSignInfoServiceImpl extends BaseServiceImpl<UserSignInfo,UserSignInfoMapper> implements UserSignInfoService {
 
     public UserSignInfo getUserSignInfoByName(String name){

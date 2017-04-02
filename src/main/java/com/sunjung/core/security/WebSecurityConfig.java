@@ -1,7 +1,18 @@
 package com.sunjung.core.security;
 
+import com.sunjung.core.mybatis.MyBatisConfig;
+import com.sunjung.core.mybatis.MyBatisMapperScannerConfig;
+import com.sunjung.core.security.resource.service.ResourceService;
+import com.sunjung.core.security.resource.service.impl.ResourceServiceImpl;
+import org.aspectj.lang.annotation.After;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.access.AccessDecisionManager;
+import org.springframework.security.access.AccessDecisionVoter;
+import org.springframework.security.access.vote.AuthenticatedVoter;
+import org.springframework.security.access.vote.RoleVoter;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.event.LoggerListener;
 import org.springframework.security.config.annotation.ObjectPostProcessor;
@@ -23,12 +34,14 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by ZhenWeiLai on 2017/3/27.
- *
- *  三种方法级权限控制
- *
+ * <p>
+ * 三种方法级权限控制
+ * <p>
  * 1.securedEnabled: Spring Security’s native annotation
  * 2.jsr250Enabled: standards-based and allow simple role-based constraints
  * 3.prePostEnabled: expression-based
@@ -37,32 +50,78 @@ import javax.annotation.Resource;
 @EnableWebSecurity
 //@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
     @Resource
     private UserDetailsService userDetailsService;
-//
-//    @Resource
-//    private MySecurityMetadataSource mySecurityMetadataSource;
 
+    @Resource
+    private MySecurityMetadataSource securityMetadataSource;
 
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers("/js/**");
         web.ignoring().antMatchers("/user/**");
+        web.ignoring().antMatchers("/user/**");
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.addFilterAfter(MyUsernamePasswordAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+
+
+//        http.addFilterBefore(securityInterceptor(), FilterSecurityInterceptor.class)//在正确的位置添加我们自定义的过滤器
+//             .authorizeRequests()
+//             .antMatchers("/home").permitAll()
+//             .anyRequest().authenticated().and().addFilterAfter(MyUsernamePasswordAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+//             //.antMatchers("/hello").hasAuthority("ADMIN")
+////             .and()
+//             .formLogin()
+//             .loginPage("/login.html")
+//             .permitAll()
+////             .successHandler(loginSuccessHandler())//code3
+//             .and()
+//             .logout()
+//             .logoutSuccessUrl("/index.html")
+//             .permitAll()
+//             .invalidateHttpSession(true)
+//             .and()
+//             .rememberMe()
+//             .tokenValiditySeconds(1209600);
+
+
+//        http.addFilterAfter(MyUsernamePasswordAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         // 自定义accessDecisionManager访问控制器,并开启表达式语言
         http.exceptionHandling().accessDeniedHandler(accessDeniedHandler())
                 .and().authorizeRequests().anyRequest().authenticated().expressionHandler(webSecurityExpressionHandler());
 
         // 配置其所有页面必须经过验证
-        http.authorizeRequests().anyRequest().authenticated().and().exceptionHandling();
-
+//        http.authorizeRequests().anyRequest().authenticated().and().exceptionHandling();
+        // 开启默认登录页面
+        http.authorizeRequests().anyRequest().authenticated().withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
+            public <O extends FilterSecurityInterceptor> O postProcess(O fsi) {
+                fsi.setSecurityMetadataSource(securityMetadataSource);
+                fsi.setAccessDecisionManager(accessDecisionManager());
+                fsi.setAuthenticationManager(authenticationManagerBean());
+                return fsi;
+            }
+        }).and().exceptionHandling().authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login.html")).and().logout().logoutSuccessUrl("/index.html").permitAll();
+        http.authorizeRequests().antMatchers("/home").permitAll()
+             //.antMatchers("/hello").hasAuthority("ADMIN")
+             .and()
+             .formLogin()
+             .loginPage("/login.html")
+             .permitAll()
+//             .successHandler(loginSuccessHandler())//code3
+             .and()
+             .logout()
+             .logoutSuccessUrl("/index.html")
+             .permitAll()
+             .invalidateHttpSession(true)
+             .and()
+             .rememberMe()
+             .tokenValiditySeconds(1209600);
         //配置登录页面,退出后页面,不需要验证
-        http.formLogin().loginPage("/login.html").permitAll().and().logout().logoutSuccessUrl("/index.html").permitAll();
+//        http.formLogin().loginPage("/login.html").permitAll().and().logout().logoutSuccessUrl("/index.html").permitAll();
 
         // 自定义登录页面
         http.csrf().disable();
@@ -84,13 +143,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             throws Exception {
         // 自定义UserDetailsService
         auth.userDetailsService(userDetailsService);
+        //不删除凭据，以便记住用户
+        auth.eraseCredentials(false);
     }
 
     @Bean
-    UsernamePasswordAuthenticationFilter MyUsernamePasswordAuthenticationFilter(){
+    UsernamePasswordAuthenticationFilter MyUsernamePasswordAuthenticationFilter() throws Exception {
         UsernamePasswordAuthenticationFilter myUsernamePasswordAuthenticationFilter = new UsernamePasswordAuthenticationFilter();
         myUsernamePasswordAuthenticationFilter.setPostOnly(true);
-        myUsernamePasswordAuthenticationFilter.setAuthenticationManager(authenticationManagerBean());
+        myUsernamePasswordAuthenticationFilter.setAuthenticationManager(this.authenticationManager());
         myUsernamePasswordAuthenticationFilter.setUsernameParameter("name_key");
         myUsernamePasswordAuthenticationFilter.setPasswordParameter("pwd_key");
         myUsernamePasswordAuthenticationFilter.setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher("/login", "POST"));
@@ -99,7 +160,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    AccessDeniedHandler accessDeniedHandler(){
+    AccessDeniedHandler accessDeniedHandler() {
         AccessDeniedHandlerImpl accessDeniedHandler = new AccessDeniedHandlerImpl();
         accessDeniedHandler.setErrorPage("/securityException/accessDenied");
         return accessDeniedHandler;
@@ -119,16 +180,26 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     /**
      * 这里可以增加自定义的投票器
+     *
      * @return
      */
-//    @Bean(name = "accessDecisionManager")
-//    public AccessDecisionManager accessDecisionManager() {
-//        List<AccessDecisionVoter<? extends Object>> decisionVoters = new ArrayList();
-//        decisionVoters.add(new RoleVoter());
-//        decisionVoters.add(new AuthenticatedVoter());
-//        decisionVoters.add(webExpressionVoter());// 启用表达式投票器
-//        MyAccessDecisionManager accessDecisionManager =  new MyAccessDecisionManager(decisionVoters);
-//        return accessDecisionManager;
+    @Bean(name = "accessDecisionManager")
+    public MyAccessDecisionManager accessDecisionManager() {
+        List<AccessDecisionVoter<? extends Object>> decisionVoters = new ArrayList();
+        decisionVoters.add(new RoleVoter());
+        decisionVoters.add(new AuthenticatedVoter());
+        decisionVoters.add(webExpressionVoter());// 启用表达式投票器
+        MyAccessDecisionManager accessDecisionManager = new MyAccessDecisionManager(decisionVoters);
+        return accessDecisionManager;
+    }
+
+//    /**
+//     *
+//     * @return
+//     */
+//    @Bean(name = "securityMetadataSource")
+//    public MySecurityMetadataSource securityMetadataSource() {
+//        return new MySecurityMetadataSource(resourceService);
 //    }
 
     @Bean(name = "authenticationManager")
@@ -146,21 +217,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     /**
      * 验证异常处理器
+     *
      * @return
      */
     @Bean(name = "failureHandler")
-    public SimpleUrlAuthenticationFailureHandler simpleUrlAuthenticationFailureHandler(){
-        return  new SimpleUrlAuthenticationFailureHandler("/getLoginError");
+    public SimpleUrlAuthenticationFailureHandler simpleUrlAuthenticationFailureHandler() {
+        return new SimpleUrlAuthenticationFailureHandler("/getLoginError");
     }
 
-//    @Bean(name = "aclResourcesService")
-//    @ConditionalOnMissingBean
-//    public AclResourcesService aclResourcesService(){
-//        return new AclResourcesServiceImpl();
-//    }
 
     /**
      * 表达式控制器
+     *
      * @return
      */
     @Bean(name = "expressionHandler")
@@ -171,6 +239,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     /**
      * 表达式投票器
+     *
      * @return
      */
     @Bean(name = "expressionVoter")
@@ -179,4 +248,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         webExpressionVoter.setExpressionHandler(webSecurityExpressionHandler());
         return webExpressionVoter;
     }
+
+//    // Code5----------------------------------------------
+//    @Bean
+//    public BCryptPasswordEncoder passwordEncoder() {
+//        return new BCryptPasswordEncoder(4);
+//    }
+//
+//    // Code3----------------------------------------------
+//    @Bean
+//    public LoginSuccessHandler loginSuccessHandler(){
+//        return new LoginSuccessHandler();
+//    }
 }

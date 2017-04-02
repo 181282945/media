@@ -1,5 +1,6 @@
 package com.sunjung.core.service;
 
+import com.sunjung.core.dao.BaseMapper;
 import com.sunjung.core.dto.Pair;
 import com.sunjung.core.entity.BaseEntity;
 import com.sunjung.core.mybatis.specification.PageAndSort;
@@ -11,7 +12,7 @@ import java.util.List;
  * Created by ZhenWeiLai on 2017/3/26.
  * 基础服务接口
  */
-public interface BaseService<T extends BaseEntity> {
+public interface BaseService<T extends BaseEntity,M extends BaseMapper> {
 
     /**
      *  查询一个

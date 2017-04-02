@@ -3,9 +3,11 @@ package com.sunjung.core.mybatis;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
+import org.mybatis.spring.mapper.MapperScannerConfigurer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
@@ -63,7 +65,7 @@ public class MyBatisConfig implements TransactionManagementConfigurer {
     }
 
     @Bean(name = "sqlSessionFactory")
-    public SqlSessionFactory sqlSessionFactorys() {
+    public SqlSessionFactory sqlSessionFactory() {
         SqlSessionFactoryBean bean = new SqlSessionFactoryBean();
         bean.setDataSource(dataSourceProxy());
         bean.setTypeAliasesPackage("com.sunjung");
@@ -71,7 +73,7 @@ public class MyBatisConfig implements TransactionManagementConfigurer {
         //添加XML目录
         ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
         try {
-            bean.setMapperLocations(resolver.getResources("classpath:**/mapper/*.xml"));
+            bean.setMapperLocations(resolver.getResources("classpath:**/mapper/**.xml"));
             return bean.getObject();
         } catch (Exception e) {
             e.printStackTrace();
@@ -93,4 +95,5 @@ public class MyBatisConfig implements TransactionManagementConfigurer {
     public PlatformTransactionManager annotationDrivenTransactionManager() {
         return new DataSourceTransactionManager(dataSourceProxy());
     }
+
 }

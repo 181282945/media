@@ -1,5 +1,7 @@
 package com.sunjung.core.entity;
 
+import com.sunjung.core.entity.annotation.DefaultValue;
+
 import java.io.Serializable;
 
 /**
@@ -12,6 +14,7 @@ public abstract class EntityId implements Serializable {
     //id
     private Integer id;
     //版本号
+    @DefaultValue(value = "0")
     private Integer version;
 
     //------------------------getter setter--------------------------------------------------

@@ -19,12 +19,13 @@ import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 /**
- * Created by Athos on 2016-10-16.
+ * Created by ZhenWeiLai on 2017/4/3.
  */
-@Service("securityMetadataSource")
+@Component("securityMetadataSource")
 public class MySecurityMetadataSource  implements FilterInvocationSecurityMetadataSource {
 
     private static Map<String,Collection<ConfigAttribute>> rsourceMap = null;

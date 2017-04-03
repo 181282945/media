@@ -1,23 +1,14 @@
 package com.sunjung.core.security;
 
-import com.sunjung.core.mybatis.MyBatisConfig;
-import com.sunjung.core.mybatis.MyBatisMapperScannerConfig;
-import com.sunjung.core.security.resource.service.ResourceService;
-import com.sunjung.core.security.resource.service.impl.ResourceServiceImpl;
-import org.aspectj.lang.annotation.After;
-import org.springframework.boot.autoconfigure.AutoConfigureAfter;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.AccessDecisionVoter;
 import org.springframework.security.access.vote.AuthenticatedVoter;
 import org.springframework.security.access.vote.RoleVoter;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.event.LoggerListener;
-import org.springframework.security.config.annotation.ObjectPostProcessor;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -30,6 +21,7 @@ import org.springframework.security.web.access.expression.WebExpressionVoter;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
@@ -51,92 +43,45 @@ import java.util.List;
 //@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+    @Autowired
+    private SecurityInterceptor securityInterceptor;
+
     @Resource
     private UserDetailsService userDetailsService;
 
-    @Resource
-    private MySecurityMetadataSource securityMetadataSource;
+//    @Resource
+//    private MySecurityMetadataSource securityMetadataSource;
 
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers("/js/**");
-        web.ignoring().antMatchers("/user/**");
-        web.ignoring().antMatchers("/user/**");
+        web.ignoring().antMatchers("/css/**");
+        web.ignoring().antMatchers("/font/**");
+        web.ignoring().antMatchers("/ace/**");
+//        web.ignoring().antMatchers("/user/**");
+//        web.ignoring().antMatchers("/user/**");
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
 
-//        http.addFilterBefore(securityInterceptor(), FilterSecurityInterceptor.class)//在正确的位置添加我们自定义的过滤器
-//             .authorizeRequests()
-//             .antMatchers("/home").permitAll()
-//             .anyRequest().authenticated().and().addFilterAfter(MyUsernamePasswordAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
-//             //.antMatchers("/hello").hasAuthority("ADMIN")
-////             .and()
-//             .formLogin()
-//             .loginPage("/login.html")
-//             .permitAll()
-////             .successHandler(loginSuccessHandler())//code3
-//             .and()
-//             .logout()
-//             .logoutSuccessUrl("/index.html")
-//             .permitAll()
-//             .invalidateHttpSession(true)
-//             .and()
-//             .rememberMe()
-//             .tokenValiditySeconds(1209600);
-
-
-//        http.addFilterAfter(MyUsernamePasswordAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(securityInterceptor, FilterSecurityInterceptor.class)//在正确的位置添加我们自定义的过滤器
+             .authorizeRequests().antMatchers("/auth/**").denyAll()
+                .and().exceptionHandling().authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/ace/html/login.html"))
+                .and().logout().logoutSuccessUrl("/ace/html/index.html").permitAll().invalidateHttpSession(true)
+                .and().rememberMe().key("webmvc#FD637E6D9C0F1A5A67082AF56CE32485").tokenValiditySeconds(1209600);
 
         // 自定义accessDecisionManager访问控制器,并开启表达式语言
         http.exceptionHandling().accessDeniedHandler(accessDeniedHandler())
                 .and().authorizeRequests().anyRequest().authenticated().expressionHandler(webSecurityExpressionHandler());
-
-        // 配置其所有页面必须经过验证
-//        http.authorizeRequests().anyRequest().authenticated().and().exceptionHandling();
-        // 开启默认登录页面
-        http.authorizeRequests().anyRequest().authenticated().withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
-            public <O extends FilterSecurityInterceptor> O postProcess(O fsi) {
-                fsi.setSecurityMetadataSource(securityMetadataSource);
-                fsi.setAccessDecisionManager(accessDecisionManager());
-                fsi.setAuthenticationManager(authenticationManagerBean());
-                return fsi;
-            }
-        }).and().exceptionHandling().authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login.html")).and().logout().logoutSuccessUrl("/index.html").permitAll();
-        http.authorizeRequests().antMatchers("/home").permitAll()
-             //.antMatchers("/hello").hasAuthority("ADMIN")
-             .and()
-             .formLogin()
-             .loginPage("/login.html")
-             .permitAll()
-//             .successHandler(loginSuccessHandler())//code3
-             .and()
-             .logout()
-             .logoutSuccessUrl("/index.html")
-             .permitAll()
-             .invalidateHttpSession(true)
-             .and()
-             .rememberMe()
-             .tokenValiditySeconds(1209600);
-        //配置登录页面,退出后页面,不需要验证
-//        http.formLogin().loginPage("/login.html").permitAll().and().logout().logoutSuccessUrl("/index.html").permitAll();
-
-        // 自定义登录页面
+        // 关闭csrf
         http.csrf().disable();
 
-        // 自定义注销
-        //        http.logout().logoutUrl("/logout").logoutSuccessUrl("/login")
-        //                .invalidateHttpSession(true);
-
-        // session管理
-        http.sessionManagement().maximumSessions(1);
-
-        // RemeberMe
-        //        http.rememberMe().key("webmvc#FD637E6D9C0F1A5A67082AF56CE32485");
-
+        // session管理,只允许一个用户登录,如果同一个账户两次登录,那么第一个账户将被踢下线,跳转到登录页面
+        http.sessionManagement().maximumSessions(1).expiredUrl("/ace/html/login.html");
     }
+
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth)
@@ -256,8 +201,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //    }
 //
 //    // Code3----------------------------------------------
-//    @Bean
-//    public LoginSuccessHandler loginSuccessHandler(){
-//        return new LoginSuccessHandler();
-//    }
+
+
+    /**
+     * 登录成功后跳转
+     * 如果需要根据不同的角色做不同的跳转处理,那么继承AuthenticationSuccessHandler重写方法
+     * @return
+     */
+    @Bean
+    public SimpleUrlAuthenticationSuccessHandler loginSuccessHandler(){
+        return new SimpleUrlAuthenticationSuccessHandler("/ace/html/index.html");
+    }
 }

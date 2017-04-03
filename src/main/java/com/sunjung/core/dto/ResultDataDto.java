@@ -17,19 +17,14 @@ import com.sunjung.core.exception.RuntimeOtherException;
 import com.sunjung.core.exception.RuntimeServiceException;
 import com.sunjung.core.exception.RuntimeWebException;
 import com.sunjung.core.mybatis.specification.PageAndSort;
+import org.springframework.dao.NonTransientDataAccessException;
 
-@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class ResultDataDto {
 
 	/**
 	 * 200-成功
 	 */
 	public final static String CODE_SUCCESS = "200";
-
-	/**
-	 *	301-代表永久性转移
-     */
-	public final static String CODE_PERMANENTLY_MOVED = "301";
 
 	/**
 	 * 500-业务逻辑错误
@@ -45,12 +40,23 @@ public class ResultDataDto {
 	 * 502-网络异常
 	 */
 	public final static String CODE_ERROR_WEB = "502";
+
 	/**
 	 * 503-未知其它
 	 */
 	public final static String CODE_ERROR_OTHER = "503";
-	
-	
+
+	/**
+	 * S-操作成功
+	 */
+	public final static String CODE_OPERATE_SUCCESS = "S";
+
+	/**
+	 * S-操作成功
+	 */
+	public final static String CODE_OPERATE_FAILURE = "F";
+
+
 	/**
 	 * 文件流导入返回值，因IE不支持json返回
 	 * @return
@@ -61,7 +67,7 @@ public class ResultDataDto {
 			response.getWriter().write(new Gson().toJson(ResultDataDto.addSuccess(message)));
 		} catch (IOException e) {
 			throw new RuntimeServiceException(e);
-		} 
+		}
 	}
 	/**
 	 * 文件流导入返回值，因IE不支持json返回
@@ -73,59 +79,76 @@ public class ResultDataDto {
 			response.getWriter().write(new Gson().toJson(ResultDataDto.addSuccess("上传成功")));
 		} catch (IOException e) {
 			throw new RuntimeServiceException(e);
-		} 
+		}
 	}
-	
+
 	public static void addImportError(HttpServletResponse response, String message) {
 		try {
 			response.setContentType("text/html");
 			response.getWriter().write(new Gson().toJson(new ResultDataDto(CODE_ERROR_SERVICE, message)));
 		} catch (IOException e) {
 			throw new RuntimeServiceException(e);
-		} 
+		}
 	}
-	
+
 	public static ResultDataDto addSuccess() {
 		return new ResultDataDto(CODE_SUCCESS, null);
 	}
-	
+
 	public static ResultDataDto addSuccess(String message) {
 		return new ResultDataDto(CODE_SUCCESS, message);
 	}
-	
+
 	public static ResultDataDto addAddSuccess() {
 		return new ResultDataDto(CODE_SUCCESS, "新增成功");
 	}
-	
+
 	public static ResultDataDto addUpdateSuccess() {
 		return new ResultDataDto(CODE_SUCCESS, "更新成功");
 	}
-	
+
 	public static ResultDataDto addUpdateCheckSuccess() {
 		return new ResultDataDto(CODE_SUCCESS, "确定成功");
 	}
-	
+
 	public static ResultDataDto addDeleteSuccess() {
 		return new ResultDataDto(CODE_SUCCESS, "删除成功");
 	}
+
 	public static ResultDataDto addOperationSuccess() {
-		return new ResultDataDto(CODE_SUCCESS, "操作成功");
+		return new ResultDataDto(CODE_SUCCESS,CODE_OPERATE_SUCCESS,"操作成功");
 	}
+
+	public static ResultDataDto addOperationFailure() {
+		return new ResultDataDto(CODE_SUCCESS,CODE_OPERATE_FAILURE,"操作失败");
+	}
+
+	public static ResultDataDto addOperationFailure(String message) {
+		return new ResultDataDto(CODE_SUCCESS,CODE_OPERATE_FAILURE,message);
+	}
+
 	public ResultDataDto() {
 		super();
 	}
-	
+
 	public ResultDataDto(String code, String message) {
 		super();
 		this.code = code;
 		this.message = message;
 	}
-	
+
+	public ResultDataDto(String code,String operateCode,String message) {
+		super();
+		this.code = code;
+		this.message = message;
+		this.operateCode = operateCode;
+	}
+
 	public ResultDataDto(String message) {
 		super();
 		this.code = CODE_SUCCESS;
 		this.message = message;
-	}	
+	}
 
 	/**
 	 * 返回单个实体
@@ -135,16 +158,16 @@ public class ResultDataDto {
 		this.code = CODE_SUCCESS;
 		this.datas = entity;
 	}
-	
+
 	/**
 	 * 返回集合类型
 	 */
-	public ResultDataDto(List<? extends BaseEntity> list) {
+	public ResultDataDto(List<?> list) {
 		super();
 		this.code = CODE_SUCCESS;
 		this.datas = list;
 	}
-	
+
 	/**
 	 * 返回Map集合类型
 	 */
@@ -153,7 +176,7 @@ public class ResultDataDto {
 		this.code = CODE_SUCCESS;
 		this.datas = map;
 	}
-	
+
 	/**
 	 * 返回分页集合
 	 */
@@ -163,7 +186,7 @@ public class ResultDataDto {
 		this.datas = list;
 		this.pageAndSort = pageAndSort;
 	}
-	
+
 	/**
 	 * 500-业务逻辑错误
 	 */
@@ -172,7 +195,7 @@ public class ResultDataDto {
 		this.code = CODE_ERROR_SERVICE;
 		this.message = rex.getMessage();
 	}
-	
+
 	/**
 	 * 501-功能不完善，无对应方法
 	 */
@@ -181,7 +204,7 @@ public class ResultDataDto {
 		this.code = CODE_ERROR_FUNCTION;
 		this.message = rex.getMessage();
 	}
-	
+
 	/**
 	 * 502-网络异常
 	 */
@@ -190,7 +213,7 @@ public class ResultDataDto {
 		this.code = CODE_ERROR_WEB;
 		this.message = rex.getMessage();
 	}
-	
+
 	/**
 	 * 503-未知其它
 	 */
@@ -209,16 +232,17 @@ public class ResultDataDto {
 		this.message = getErrorMessage(ex);
 		ex.printStackTrace();
 	}
-	
+
 	/**
 	 * 运行时异常
 	 */
 	public ResultDataDto(RuntimeException rex) {
 		super();
 		this.code = CODE_ERROR_OTHER;
+		this.operateCode = CODE_OPERATE_FAILURE;
 		this.message = rex.getMessage();
 	}
-	
+
 	/**
 	 * 运行时异常
 	 */
@@ -227,28 +251,34 @@ public class ResultDataDto {
 		this.code = CODE_ERROR_OTHER;
 		this.message = tx.getMessage();
 	}
-	
+
+	private String operateCode;
+
 	/**
 	 * 结果编码
 	 */
-	@XmlElement(name="code")
 	private String code;
-	
+
 	/**
 	 * 消息
 	 */
 	private String message;
-	
+
 	/**
 	 * 结果数据，单个实体 或 List<T>
 	 */
 	private Object datas;
-	
+
+	/**
+	 * 权限集
+	 */
+//	private List<BaseAuthority> authorities = new ArrayList<BaseAuthority>();
+
 	/**
 	 * 分页数据
 	 */
 	private PageAndSort pageAndSort;
-	
+
 	private static String getErrorMessage(Exception ex) {
 		if (ex instanceof ArithmeticException) {
 			return "系统异常：计算错误";
@@ -274,6 +304,9 @@ public class ResultDataDto {
 		if (ex instanceof SQLException) {
 			return "系统异常：数据库异常";
 		}
+		if (ex instanceof NonTransientDataAccessException) {
+			return "系统异常：数据库异常";
+		}
 		if (ex instanceof IOException) {
 			return "系统异常：文件读写错误";
 		}
@@ -281,6 +314,10 @@ public class ResultDataDto {
 			return "系统异常：方法找不到";
 		}
 		return ex.getMessage();
+	}
+
+	public boolean isSuccessMessage() {
+		return CODE_SUCCESS.equals(code);
 	}
 
 	// -------------------------- getter and setter -----------------------------
@@ -315,9 +352,24 @@ public class ResultDataDto {
 		return pageAndSort;
 	}
 
-	public ResultDataDto setFlexiPage(PageAndSort pageAndSort) {
+	public void setPageAndSort(PageAndSort pageAndSort) {
 		this.pageAndSort = pageAndSort;
-		return this;
 	}
 
+//	public List<BaseAuthority> getAuthorities() {
+//		return authorities;
+//	}
+
+//	public void setAuthorities(List<BaseAuthority> authorities) {
+//		this.authorities = authorities;
+//	}
+
+	public String getOperateCode() {
+		return operateCode;
+	}
+
+	public ResultDataDto setOperateCode(String operateCode) {
+		this.operateCode = operateCode;
+		return this;
+	}
 }

@@ -1,14 +1,66 @@
 package com.sunjung.core.controller;
 
+import com.google.gson.Gson;
+import com.sunjung.core.dto.ResultDataDto;
+import com.sunjung.core.entity.BaseEntity;
+import com.sunjung.core.mybatis.specification.PageAndSort;
+import com.sunjung.core.util.GenericeClassUtils;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * Created by ZhenWeiLai on 2017/4/1.
  */
-public abstract class BaseController {
-    public final static Map<String,String> map = new HashMap<>();
-    protected void registration(){
-        map.put(this.getClass().getName(),"UserSign");
+public abstract class BaseController<T extends BaseEntity> {
+
+    // 异常信息拦截，返回
+    @ExceptionHandler(Exception.class)   //在Controller类中添加该注解方法即可(注意：添加到某个controller，只针对该controller起作用)
+    public void exceptionHandler(Exception ex, HttpServletResponse response, HttpServletRequest request) throws IOException {
+        ex.printStackTrace();
+        ResultDataDto resultDataDto = new ResultDataDto(ex);
+        response.setContentType("text/html");
+        response.getWriter().write(new Gson().toJson(resultDataDto));
+//		 return "redirect:/home.html";
+    }
+
+    private PageAndSort pageAndSort;
+
+    protected Class<T> entityClass = (Class<T>) GenericeClassUtils.getSuperClassGenricType(this.getClass(), 0);
+
+    protected ModelMap getModelMap(){
+
+        ModelMap modelMap = new ModelMap();
+
+        modelMap.addAttribute("pageAndSort",pageAndSort);
+        return modelMap;
+    }
+
+    /**
+     * 在每一个类中需要重置
+     * @return
+     */
+    protected String getActionNamespace(){
+        return "";
+    }
+    /**
+     * 在每一个类中需要重置
+     * @return
+     */
+    protected String getTypeName(){
+        return "";
+    }
+
+    public PageAndSort getPageAndSort() {
+        return pageAndSort;
+    }
+
+    public void setPageAndSort(PageAndSort pageAndSort) {
+        this.pageAndSort = pageAndSort;
     }
 }

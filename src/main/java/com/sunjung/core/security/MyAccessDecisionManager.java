@@ -14,10 +14,10 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * Created by Athos on 2016-10-16.
+ * Created by ZhenWeiLai on 2017/4/3.
+ * 因为要传入投票器,所以这里不能直接Component注解,选择在WebSecurityConfig 里面使用Bean注解
  */
 
-//@Component
 public class MyAccessDecisionManager  extends AbstractAccessDecisionManager {
     protected MyAccessDecisionManager(List<AccessDecisionVoter<? extends Object>> decisionVoters) {
         super(decisionVoters);

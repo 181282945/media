@@ -1,44 +1,3 @@
-<!--<HTML xmlns:th="http://www.w3.org/1999/xhtml">-->
-<!--<html>-->
-<!--<head>-->
-    <!--<meta charset="UTF-8">-->
-    <!--<title></title>-->
-    <!--<script src="js/jquery-3.0.0.js"></script>-->
-    <!--<script src="js/jquery.form.min.js"></script>-->
-<!--</head>-->
-<!--<body>-->
-<!--&lt;!&ndash;<form id="form1" action="/login" method="post">&ndash;&gt;-->
-    <!--&lt;!&ndash;<label for="name_key">Login</label>:&ndash;&gt;-->
-    <!--&lt;!&ndash;<input id="name_key" name="name_key"size="20" maxlength="50" type="text"/>&ndash;&gt;-->
-    <!--<br />-->
-    <!--&lt;!&ndash;<label for="pwd_key">Password</label>:&ndash;&gt;-->
-    <!--&lt;!&ndash;<input id="pwd_key" name="pwd_key" size="20" maxlength="50" type="password"/>&ndash;&gt;-->
-    <!--<br />-->
-    <!--&lt;!&ndash;<input type="button" id="btnAjaxSubmit" value="Login" />&ndash;&gt;-->
-<!--&lt;!&ndash;</form>&ndash;&gt;-->
-<!--</body>-->
-<!--<script>-->
-    <!--$(document).ready(function () {-->
-        <!--var options = {-->
-            <!--success: function (data) {-->
-                <!--alert("relod2");-->
-<!--//                alert(data);-->
-            <!--}-->
-        <!--};-->
-
-        <!--// ajaxForm-->
-        <!--$("#form1").ajaxForm(options);-->
-
-        <!--// ajaxSubmit-->
-        <!--$("#btnAjaxSubmit").click(function () {-->
-            <!--$("#form1").ajaxSubmit(options);-->
-        <!--});-->
-    <!--});-->
-<!--</script>-->
-<!--</html>-->
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -138,40 +97,40 @@
                                         </fieldset>
                                     </form>
 
-                                    <div class="social-or-login center">
-                                        <span class="bigger-110">Or Login Using</span>
-                                    </div>
+                                    <!--<div class="social-or-login center">-->
+                                    <!--<span class="bigger-110">Or Login Using</span>-->
+                                    <!--</div>-->
 
-                                    <div class="space-6"></div>
+                                    <!--<div class="space-6"></div>-->
 
-                                    <div class="social-login center">
-                                        <a class="btn btn-primary">
-                                            <i class="ace-icon fa fa-facebook"></i>
-                                        </a>
+                                    <!--<div class="social-login center">-->
+                                    <!--<a class="btn btn-primary">-->
+                                    <!--<i class="ace-icon fa fa-facebook"></i>-->
+                                    <!--</a>-->
 
-                                        <a class="btn btn-info">
-                                            <i class="ace-icon fa fa-twitter"></i>
-                                        </a>
+                                    <!--<a class="btn btn-info">-->
+                                    <!--<i class="ace-icon fa fa-twitter"></i>-->
+                                    <!--</a>-->
 
-                                        <a class="btn btn-danger">
-                                            <i class="ace-icon fa fa-google-plus"></i>
-                                        </a>
-                                    </div>
+                                    <!--<a class="btn btn-danger">-->
+                                    <!--<i class="ace-icon fa fa-google-plus"></i>-->
+                                    <!--</a>-->
+                                    <!--</div>-->
                                 </div><!-- /.widget-main -->
 
                                 <div class="toolbar clearfix">
                                     <div>
-                                        <a href="#" data-target="#forgot-box" class="forgot-password-link">
-                                            <i class="ace-icon fa fa-arrow-left"></i>
-                                            I forgot my password
-                                        </a>
+                                        <!--<a href="#" data-target="#forgot-box" class="forgot-password-link">-->
+                                        <!--<i class="ace-icon fa fa-arrow-left"></i>-->
+                                        <!--I forgot my password-->
+                                        <!--</a>-->
                                     </div>
 
                                     <div>
-                                        <a href="#" data-target="#signup-box" class="user-signup-link">
-                                            I want to register
-                                            <i class="ace-icon fa fa-arrow-right"></i>
-                                        </a>
+                                        <!--<a href="#" data-target="#signup-box" class="user-signup-link">-->
+                                        <!--I want to register-->
+                                        <!--<i class="ace-icon fa fa-arrow-right"></i>-->
+                                        <!--</a>-->
                                     </div>
                                 </div>
                             </div><!-- /.widget-body -->
@@ -316,7 +275,6 @@
 </div><!-- /.main-container -->
 
 <!-- basic scripts -->
-
 <!--[if !IE]> -->
 <script src="../components/jquery/dist/jquery.js"></script>
 
@@ -325,6 +283,7 @@
 <!--[if IE]>
 <script src="../components/jquery.1x/dist/jquery.js"></script>
 <![endif]-->
+<script src="../../js/jquery.form.min.js"></script>
 <script type="text/javascript">
     if('ontouchstart' in document.documentElement) document.write("<script src='../components/_mod/jquery.mobile.custom/jquery.mobile.custom.js'>"+"<"+"/script>");
 </script>
@@ -369,12 +328,15 @@
     });
 
 
-//提交登录信息
+    //提交登录信息
     $(document).ready(function () {
         var options = {
             success: function (data) {
-                alert("relod2");
-//                alert(data);
+                if(data.code == "200"){
+                    if(data.operateCode == "F"){
+                        alert(data.message);
+                    }
+                }
             }
         };
 

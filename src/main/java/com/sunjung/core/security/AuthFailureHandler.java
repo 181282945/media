@@ -15,40 +15,13 @@ import javax.servlet.http.HttpSession;
 
 /**
  * Created by ZhenWeiLai on 2017/4/3.
+ * 登录失败处理类
  */
 @RestController
-@RequestMapping("/")
 public class AuthFailureHandler extends BaseController<User> {
 
-    /**
-     * 登录成功跳转url
-     */
-//    private static final String HJICZOOM_URL_BUY_MEMBER_CENTER = PropertyUtil.getProperty("hjiczoom_url_buy_membercenter");
-//    private static final String HJICZOOM_URL_SELL_MEMBER_CENTER = PropertyUtil.getProperty("hjiczoom_url_sell_membercenter");
-
-//    @Autowired
-//    private MemberLoyaltyPointsService memberLoyaltyPointsService;
-//    @Autowired
-//    private EnterpriseService enterpriseService;
-
-    // 登录成功，获取当前用户信息
-    @RequestMapping(value = "getCurrentLoginedUser")
-    public ResultDataDto getCurrentLoginedUser() {
-//        MemberInformation memberInformation = UserContainerSessionUtil.getMemberInformation();
-//        if (null == memberInformation) {
-//            return ResultDataDto.addSuccess();
-//        }
-//        Integer integral = 0;
-//        MemberLoyaltyPoints memberLoyaltyPoints = memberLoyaltyPointsService.findMemberLoyaltyPointsCountTotal(memberInformation.getMember_id());
-//        if (null != memberLoyaltyPoints) {
-//            integral = memberLoyaltyPoints.getIntegral();
-//        }
-//        return ResultDataDto.addSuccess().setDatas(new MemberinformationLoginDto(memberInformation, integral));
-        return null;
-    }
-
     // 登录异常
-    @RequestMapping(value = "getLoginError")
+    @RequestMapping(value = "/getLoginError")
     public ResultDataDto getLoginError(HttpSession session) {
 
         RuntimeException ex=(RuntimeException)session.getAttribute("SPRING_SECURITY_LAST_EXCEPTION");

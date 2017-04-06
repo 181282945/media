@@ -4,6 +4,7 @@ import com.sunjung.core.security.resource.dao.ResourceMapper;
 import com.sunjung.core.security.resource.service.ResourceService;
 import com.sunjung.core.security.resource.entity.Resource;
 import com.sunjung.core.service.BaseServiceImpl;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 
 /**

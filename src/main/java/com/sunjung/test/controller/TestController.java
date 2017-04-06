@@ -1,8 +1,10 @@
 package com.sunjung.test.controller;
 
 import com.sunjung.common.usersigninfo.service.UserSignInfoService;
+import com.sunjung.core.security.user.entity.User;
+import com.sunjung.core.security.user.service.UserService;
+import com.sunjung.core.util.SpringUtils;
 import com.sunjung.test.service.TestEntityService;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,13 +18,21 @@ import java.io.PrintWriter;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
-import java.util.Map;
 
 /**
  * Created by ZhenWeiLai on 2016/12/28.
  */
 @RestController
+@RequestMapping("/test")
 public class TestController {
+
+//    private static final UserService userService;
+//    private static final User user;
+//    static {
+//        userService = (UserService)SpringUtils.getBean("userService");
+//        user = userService.findEntityById("1");
+//    }
+
 //    @Resource
 //    private WechatProperties wechatProperties;
 
@@ -55,6 +65,11 @@ public class TestController {
         System.out.println(testEntityService.findEntityById("1"));
 //        System.out.println(userSignInfoService.findEntityById("1"));
     }
+
+//    @RequestMapping(value = "/listennerTest",method = RequestMethod.GET)
+//    public void listennerTest(){
+//        System.out.println(user.getUsername());
+//    }
 
     /**
      * 验证url和token

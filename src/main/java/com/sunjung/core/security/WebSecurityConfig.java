@@ -9,6 +9,7 @@ import org.springframework.security.access.vote.RoleVoter;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.event.LoggerListener;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -26,8 +27,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by ZhenWeiLai on 2017/3/27.
@@ -40,7 +40,7 @@ import java.util.List;
  */
 @Configuration
 @EnableWebSecurity
-//@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -49,38 +49,39 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Resource
     private UserDetailsService userDetailsService;
 
-//    @Resource
-//    private MySecurityMetadataSource securityMetadataSource;
-
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers("/js/**");
         web.ignoring().antMatchers("/css/**");
         web.ignoring().antMatchers("/font/**");
         web.ignoring().antMatchers("/ace/**");
-//        web.ignoring().antMatchers("/user/**");
-//        web.ignoring().antMatchers("/user/**");
+        web.ignoring().antMatchers("/favicon.ico");
+        web.ignoring().antMatchers("/test/**");
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-
         http.addFilterBefore(securityInterceptor, FilterSecurityInterceptor.class)//在正确的位置添加我们自定义的过滤器
-             .authorizeRequests().antMatchers("/auth/**").denyAll()
+             .authorizeRequests()
                 .and().exceptionHandling().authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/ace/html/login.html"))
                 .and().logout().logoutSuccessUrl("/ace/html/index.html").permitAll().invalidateHttpSession(true)
                 .and().rememberMe().key("webmvc#FD637E6D9C0F1A5A67082AF56CE32485").tokenValiditySeconds(1209600);
 
+        http.authorizeRequests().antMatchers("/inquiry/**").hasAnyAuthority("BUYER");
+
+
         // 自定义accessDecisionManager访问控制器,并开启表达式语言
-        http.exceptionHandling().accessDeniedHandler(accessDeniedHandler())
-                .and().authorizeRequests().anyRequest().authenticated().expressionHandler(webSecurityExpressionHandler());
+//        http.exceptionHandling().accessDeniedHandler(accessDeniedHandler())
+//                .and().authorizeRequests().anyRequest().authenticated().expressionHandler(webSecurityExpressionHandler());
         // 关闭csrf
         http.csrf().disable();
 
         // session管理,只允许一个用户登录,如果同一个账户两次登录,那么第一个账户将被踢下线,跳转到登录页面
         http.sessionManagement().maximumSessions(1).expiredUrl("/ace/html/login.html");
     }
+
+
 
 
     @Override
@@ -101,6 +102,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         myUsernamePasswordAuthenticationFilter.setPasswordParameter("pwd_key");
         myUsernamePasswordAuthenticationFilter.setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher("/login", "POST"));
         myUsernamePasswordAuthenticationFilter.setAuthenticationFailureHandler(simpleUrlAuthenticationFailureHandler());
+        myUsernamePasswordAuthenticationFilter.setAuthenticationSuccessHandler(authenticationSuccessHandler());
         return myUsernamePasswordAuthenticationFilter;
     }
 
@@ -138,15 +140,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return accessDecisionManager;
     }
 
-//    /**
-//     *
-//     * @return
-//     */
-//    @Bean(name = "securityMetadataSource")
-//    public MySecurityMetadataSource securityMetadataSource() {
-//        return new MySecurityMetadataSource(resourceService);
-//    }
-
     @Bean(name = "authenticationManager")
     @Override
     public AuthenticationManager authenticationManagerBean(){
@@ -165,7 +158,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      *
      * @return
      */
-    @Bean(name = "failureHandler")
+//    @Bean(name = "failureHandler")
     public SimpleUrlAuthenticationFailureHandler simpleUrlAuthenticationFailureHandler() {
         return new SimpleUrlAuthenticationFailureHandler("/getLoginError");
     }
@@ -176,7 +169,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      *
      * @return
      */
-    @Bean(name = "expressionHandler")
+//    @Bean(name = "expressionHandler")
     public DefaultWebSecurityExpressionHandler webSecurityExpressionHandler() {
         DefaultWebSecurityExpressionHandler webSecurityExpressionHandler = new DefaultWebSecurityExpressionHandler();
         return webSecurityExpressionHandler;
@@ -208,8 +201,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      * 如果需要根据不同的角色做不同的跳转处理,那么继承AuthenticationSuccessHandler重写方法
      * @return
      */
-    @Bean
-    public SimpleUrlAuthenticationSuccessHandler loginSuccessHandler(){
-        return new SimpleUrlAuthenticationSuccessHandler("/ace/html/index.html");
+    public SimpleUrlAuthenticationSuccessHandler authenticationSuccessHandler(){
+        return new SimpleUrlAuthenticationSuccessHandler("/loginSuccess");
     }
+
 }

@@ -86,7 +86,6 @@
                                                     <input type="checkbox" class="ace" />
                                                     <span class="lbl"> 记住我</span>
                                                 </label>
-
                                                 <button id="btnAjaxSubmit" type="button" class="width-35 pull-right btn btn-sm btn-primary">
                                                     <i class="ace-icon fa fa-key"></i>
                                                     <span class="bigger-110">登录</span>
@@ -331,10 +330,13 @@
     //提交登录信息
     $(document).ready(function () {
         var options = {
-            success: function (data) {
-                if(data.code == "200"){
-                    if(data.operateCode == "F"){
-                        alert(data.message);
+            success: function (json) {
+                alert(JSON.stringify(json));
+                if(json.successMessage){
+                    if(json.operateCode == "F"){
+                        alert(json.message);
+                    }else if(json.operateCode == "S"){
+                        location.href = json.datas;
                     }
                 }
             }

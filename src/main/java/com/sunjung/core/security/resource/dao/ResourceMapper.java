@@ -2,6 +2,7 @@ package com.sunjung.core.security.resource.dao;
 
 import com.sunjung.core.dao.BaseMapper;
 import com.sunjung.core.security.resource.entity.Resource;
+import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
 /**

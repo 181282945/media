@@ -12,7 +12,10 @@ import org.apache.ibatis.type.Alias;
 public class Resource extends BaseEntity {
     //资源名称
     private String name;
-    //资源类型 URL或者BTN 等
+    /**
+     * 资源类型,可以是模块
+     * 或者是特殊的精细控制
+     */
     private String res_type;
     //请求地址
     private String res_string;

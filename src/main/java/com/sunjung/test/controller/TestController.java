@@ -1,14 +1,16 @@
 package com.sunjung.test.controller;
 
+import com.sunjung.common.usersigninfo.annotation.CustomAlias;
 import com.sunjung.common.usersigninfo.service.UserSignInfoService;
-import com.sunjung.core.security.user.entity.User;
-import com.sunjung.core.security.user.service.UserService;
 import com.sunjung.core.util.SpringUtils;
 import com.sunjung.test.service.TestEntityService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -18,6 +20,7 @@ import java.io.PrintWriter;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
+import java.util.Map;
 
 /**
  * Created by ZhenWeiLai on 2016/12/28.
@@ -70,6 +73,31 @@ public class TestController {
 //    public void listennerTest(){
 //        System.out.println(user.getUsername());
 //    }
+
+
+    @RequestMapping("/getUrlMapping")
+    @CustomAlias("aaa")
+    public Object getUrlMapping() {
+//        SpringUtils.getBean(RestController.class);
+        RequestMappingHandlerMapping rmhp = SpringUtils.getBean(RequestMappingHandlerMapping.class);
+//        System.out.println(rmhp.getClass().getSimpleName());
+        Map<RequestMappingInfo, HandlerMethod> map = rmhp.getHandlerMethods();
+        for(RequestMappingInfo info : map.keySet()){
+            CustomAlias alias = map.get(info).getMethod().getAnnotation(CustomAlias.class);
+            RequestMapping requestMapping = map.get(info).getBeanType().getAnnotation(RequestMapping.class);
+            if(requestMapping != null){
+                System.out.println(info.getPatternsCondition().toString()
+                        + "," + requestMapping.value()[0]);
+            }
+//            if(alias != null){
+//                System.out.println(info.getPatternsCondition().toString()
+//                        + "," + map.get(info).getBean().toString()+"," + alias.value());
+//            }
+//            System.out.println(info.getPatternsCondition().toString()
+//                    + "," + map.get(info).getBeanType());
+        }
+        return null;
+    }
 
     /**
      * 验证url和token

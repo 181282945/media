@@ -1,6 +1,7 @@
-alter table user add createByUserCode varchar(50) DEFAULT Null;
-alter table user add createByUserName varchar(50) DEFAULT Null;
-alter table user add createTime datetime DEFAULT Null;
-alter table user add lastModifyByUserCode varchar(50) DEFAULT Null;
-alter table user add lastModifyByUserName varchar(50) DEFAULT Null;
-alter table user add lastModifyTime  timestamp NULL DEFAULT CURRENT_TIMESTAMP;
+alter table resc add version int DEFAULT Null;
+alter table resc add createByUserCode varchar(50) DEFAULT Null;
+alter table resc add createByUserName varchar(50) DEFAULT Null;
+alter table resc add createTime datetime DEFAULT Null;
+alter table resc add lastModifyByUserCode varchar(50) DEFAULT Null;
+alter table resc add lastModifyByUserName varchar(50) DEFAULT Null;
+alter table resc add lastModifyTime  timestamp NULL DEFAULT CURRENT_TIMESTAMP;

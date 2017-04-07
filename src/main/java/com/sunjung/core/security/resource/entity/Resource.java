@@ -10,6 +10,30 @@ import org.apache.ibatis.type.Alias;
 @Alias("Resource")
 @BaseEntityMapper(tableName = "resc")
 public class Resource extends BaseEntity {
+
+
+    public Resource(){}
+
+    public Resource(String name,String res_string,String res_type,String descn){
+        this.name = name;
+        this.res_string = res_string;
+        this.res_type = res_type;
+        this.descn = descn;
+    }
+
+
+    public boolean equals(Object o){
+        Resource x = (Resource)o;
+        if(x.res_string.equals(this.res_string))
+            return true;
+        return false;
+    }
+
+    public int hashCode(){
+        return res_string.hashCode();
+
+    }
+
     //资源名称
     private String name;
     /**
@@ -23,6 +47,8 @@ public class Resource extends BaseEntity {
     private Integer priority;
     //中文描述
     private String descn;
+    //模块ID
+    private Integer moduleId;
 
 
 
@@ -68,5 +94,13 @@ public class Resource extends BaseEntity {
 
     public void setDescn(String descn) {
         this.descn = descn;
+    }
+
+    public Integer getModuleId() {
+        return moduleId;
+    }
+
+    public void setModuleId(Integer moduleId) {
+        this.moduleId = moduleId;
     }
 }

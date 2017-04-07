@@ -1,7 +1,7 @@
 package com.sunjung.test.controller;
 
-import com.sunjung.common.usersigninfo.annotation.CustomAlias;
 import com.sunjung.common.usersigninfo.service.UserSignInfoService;
+import com.sunjung.core.security.resource.annotation.Resc;
 import com.sunjung.core.util.SpringUtils;
 import com.sunjung.test.service.TestEntityService;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,11 +22,14 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Map;
 
+import com.sunjung.core.security.resource.entity.ResourceType;
+
 /**
  * Created by ZhenWeiLai on 2016/12/28.
  */
 @RestController
 @RequestMapping("/test")
+@Resc(name = "test",descn = "测试模块",resourceType = ResourceType.MODULE)
 public class TestController {
 
 //    private static final UserService userService;
@@ -57,6 +60,7 @@ public class TestController {
     }
 
     @RequestMapping("/helloThymeleaf")
+    @Resc(name = "helloThymeleaf",descn = "测试Thymeleaf",resourceType = ResourceType.METHOD)
     public ModelAndView testThymeleaf(){
         ModelAndView mav = new ModelAndView("footer");
         mav.addObject("hello", "Thymeleaf");
@@ -64,6 +68,7 @@ public class TestController {
     }
 
     @RequestMapping(value = "/testService",method = RequestMethod.GET)
+    @Resc(name = "testService",descn = "测试Service",resourceType = ResourceType.METHOD)
     public void testService(){
         System.out.println(testEntityService.findEntityById("1"));
 //        System.out.println(userSignInfoService.findEntityById("1"));
@@ -76,14 +81,14 @@ public class TestController {
 
 
     @RequestMapping("/getUrlMapping")
-    @CustomAlias("aaa")
+    @Resc(name = "getUrlMapping",descn = "获取UrlMappling",resourceType = ResourceType.METHOD)
     public Object getUrlMapping() {
 //        SpringUtils.getBean(RestController.class);
         RequestMappingHandlerMapping rmhp = SpringUtils.getBean(RequestMappingHandlerMapping.class);
 //        System.out.println(rmhp.getClass().getSimpleName());
         Map<RequestMappingInfo, HandlerMethod> map = rmhp.getHandlerMethods();
         for(RequestMappingInfo info : map.keySet()){
-            CustomAlias alias = map.get(info).getMethod().getAnnotation(CustomAlias.class);
+            Resc resc = map.get(info).getMethod().getAnnotation(Resc.class);
             RequestMapping requestMapping = map.get(info).getBeanType().getAnnotation(RequestMapping.class);
             if(requestMapping != null){
                 System.out.println(info.getPatternsCondition().toString()

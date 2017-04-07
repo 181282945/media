@@ -16,6 +16,7 @@ public class UserRole extends BaseEntity {
 
     //--------------------------------------getter and setter----------------------------------
 
+
     public Integer getUser_id() {
         return user_id;
     }

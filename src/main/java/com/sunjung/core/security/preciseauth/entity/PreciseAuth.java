@@ -14,39 +14,28 @@ public class PreciseAuth extends BaseBusinessEntity {
     /**
      * RequestMapping 里面的映射地址 value/path
      */
-    private String path;
+    private Integer rescId;
+
     /**
-     * 自定义别名
+     * 权限名称
      */
-    private String customAlias;
-    /**
-     * 模块ID
-     */
-    private String moduleId;
+    private String auth;
 
     //---------------------------------------getter and setter ------------------------------------------------
 
-    public String getPath() {
-        return path;
+    public Integer getRescId() {
+        return rescId;
     }
 
-    public void setPath(String path) {
-        this.path = path;
+    public void setRescId(Integer rescId) {
+        this.rescId = rescId;
     }
 
-    public String getCustomAlias() {
-        return customAlias;
+    public String getAuth() {
+        return auth;
     }
 
-    public void setCustomAlias(String customAlias) {
-        this.customAlias = customAlias;
-    }
-
-    public String getModuleId() {
-        return moduleId;
-    }
-
-    public void setModuleId(String moduleId) {
-        this.moduleId = moduleId;
+    public void setAuth(String auth) {
+        this.auth = auth;
     }
 }

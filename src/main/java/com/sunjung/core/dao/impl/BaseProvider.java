@@ -174,7 +174,6 @@ public class BaseProvider<T extends BaseEntity> {
      * 单表模糊分页查询，暂不支持链接查询
      */
     public String findByPage(Specification<T> specification) {
-
         StringBuffer sql = new StringBuffer();
         sql.append(findByLike(specification));
         sql.append(generateLimitOrderSql(specification.getPageAndSort()));

@@ -56,7 +56,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         web.ignoring().antMatchers("/font/**");
         web.ignoring().antMatchers("/ace/**");
         web.ignoring().antMatchers("/favicon.ico");
-        web.ignoring().antMatchers("/test/**");
+//        web.ignoring().antMatchers("/test/**");
     }
 
     @Override

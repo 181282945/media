@@ -17,8 +17,10 @@ import java.util.List;
  * Created by ZhenWeiLai on 2017/4/3.
  * 因为要传入投票器,所以这里不能直接Component注解,选择在WebSecurityConfig 里面使用Bean注解
  */
+public class MyAccessDecisionManager extends AbstractAccessDecisionManager {
 
-public class MyAccessDecisionManager  extends AbstractAccessDecisionManager {
+    private static final String ADMIN = "ADMIN";
+
     protected MyAccessDecisionManager(List<AccessDecisionVoter<? extends Object>> decisionVoters) {
         super(decisionVoters);
     }
@@ -33,13 +35,15 @@ public class MyAccessDecisionManager  extends AbstractAccessDecisionManager {
             ConfigAttribute ca = ite.next();
             String needRole = (ca).getAttribute();
             for (GrantedAuthority ga : authentication.getAuthorities()){
-                if (needRole.equals(ga.getAuthority())){
+                //具有权限,或者角色为amdin的可以通过
+                if (needRole.equals(ga.getAuthority())||ga.getAuthority().equals(ADMIN)){
                     return;
                 }
             }
         }
         throw new AccessDeniedException("没有权限,拒绝访问!");
     }
+
     @Override
     public boolean supports(ConfigAttribute attribute) {
         return true;

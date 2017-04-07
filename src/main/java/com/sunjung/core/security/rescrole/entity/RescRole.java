@@ -2,6 +2,7 @@ package com.sunjung.core.security.rescrole.entity;
 
 import com.sunjung.core.entity.BaseEntity;
 import com.sunjung.core.entity.annotation.BaseEntityMapper;
+import com.sunjung.core.entity.annotation.ColumnName;
 import org.apache.ibatis.type.Alias;
 
 /**
@@ -17,6 +18,7 @@ public class RescRole extends BaseEntity {
     private Integer role_id;
 
     //-------------------------------------------------getter and setter--------------------------
+
 
     public Integer getResc_id() {
         return resc_id;

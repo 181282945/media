@@ -1,6 +1,5 @@
 package com.sunjung.core.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.AccessDecisionVoter;
@@ -8,6 +7,7 @@ import org.springframework.security.access.vote.AuthenticatedVoter;
 import org.springframework.security.access.vote.RoleVoter;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.event.LoggerListener;
+import org.springframework.security.config.annotation.ObjectPostProcessor;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -43,11 +43,11 @@ import java.util.*;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private SecurityInterceptor securityInterceptor;
-
     @Resource
     private UserDetailsService userDetailsService;
+
+    @Resource
+    private MySecurityMetadataSource  securityMetadataSource;
 
     @Override
     public void configure(WebSecurity web) throws Exception {
@@ -61,19 +61,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        http.addFilterAfter(MyUsernamePasswordAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
-        http.addFilterBefore(securityInterceptor, FilterSecurityInterceptor.class)//在正确的位置添加我们自定义的过滤器
-             .authorizeRequests()
-                .and().exceptionHandling().authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/ace/html/login.html"))
-                .and().logout().logoutSuccessUrl("/ace/html/index.html").permitAll().invalidateHttpSession(true)
-                .and().rememberMe().key("webmvc#FD637E6D9C0F1A5A67082AF56CE32485").tokenValiditySeconds(1209600);
-
-        http.authorizeRequests().antMatchers("/inquiry/**").hasAnyAuthority("BUYER");
-
-
+        // 开启默认登录页面
+        http.authorizeRequests().anyRequest().authenticated().withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
+            public <O extends FilterSecurityInterceptor> O postProcess(O fsi) {
+                fsi.setSecurityMetadataSource(securityMetadataSource);
+                fsi.setAccessDecisionManager(accessDecisionManager());
+                fsi.setAuthenticationManager(authenticationManagerBean());
+                return fsi;
+            }
+        }).and().exceptionHandling().authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/ace/html/login.html")).and().logout().logoutSuccessUrl("/ace/html/index.html").permitAll();
         // 自定义accessDecisionManager访问控制器,并开启表达式语言
-//        http.exceptionHandling().accessDeniedHandler(accessDeniedHandler())
-//                .and().authorizeRequests().anyRequest().authenticated().expressionHandler(webSecurityExpressionHandler());
+        http.exceptionHandling().accessDeniedHandler(accessDeniedHandler()).and().authorizeRequests().anyRequest().authenticated().expressionHandler(webSecurityExpressionHandler());
         // 关闭csrf
         http.csrf().disable();
 
@@ -93,7 +93,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         auth.eraseCredentials(false);
     }
 
-    @Bean
     UsernamePasswordAuthenticationFilter MyUsernamePasswordAuthenticationFilter() throws Exception {
         UsernamePasswordAuthenticationFilter myUsernamePasswordAuthenticationFilter = new UsernamePasswordAuthenticationFilter();
         myUsernamePasswordAuthenticationFilter.setPostOnly(true);
@@ -106,10 +105,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return myUsernamePasswordAuthenticationFilter;
     }
 
-    @Bean
     AccessDeniedHandler accessDeniedHandler() {
         AccessDeniedHandlerImpl accessDeniedHandler = new AccessDeniedHandlerImpl();
-        accessDeniedHandler.setErrorPage("/securityException/accessDenied");
+        accessDeniedHandler.setErrorPage("/accessDenied");
+//        accessDeniedHandler.setErrorPage("/securityException/accessDenied");
         return accessDeniedHandler;
     }
 
@@ -130,7 +129,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      *
      * @return
      */
-    @Bean(name = "accessDecisionManager")
     public MyAccessDecisionManager accessDecisionManager() {
         List<AccessDecisionVoter<? extends Object>> decisionVoters = new ArrayList();
         decisionVoters.add(new RoleVoter());
@@ -140,7 +138,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return accessDecisionManager;
     }
 
-    @Bean(name = "authenticationManager")
     @Override
     public AuthenticationManager authenticationManagerBean(){
         AuthenticationManager authenticationManager = null;
@@ -158,7 +155,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      *
      * @return
      */
-//    @Bean(name = "failureHandler")
     public SimpleUrlAuthenticationFailureHandler simpleUrlAuthenticationFailureHandler() {
         return new SimpleUrlAuthenticationFailureHandler("/getLoginError");
     }
@@ -169,7 +165,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      *
      * @return
      */
-//    @Bean(name = "expressionHandler")
     public DefaultWebSecurityExpressionHandler webSecurityExpressionHandler() {
         DefaultWebSecurityExpressionHandler webSecurityExpressionHandler = new DefaultWebSecurityExpressionHandler();
         return webSecurityExpressionHandler;
@@ -180,7 +175,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      *
      * @return
      */
-    @Bean(name = "expressionVoter")
     public WebExpressionVoter webExpressionVoter() {
         WebExpressionVoter webExpressionVoter = new WebExpressionVoter();
         webExpressionVoter.setExpressionHandler(webSecurityExpressionHandler());

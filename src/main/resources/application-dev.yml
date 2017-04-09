@@ -11,7 +11,8 @@ spring:
 
     #thymeleaf开发环境关闭thymeleaf缓存
     thymeleaf:
-      prefix: classpath:/templates/
+#      prefix: classpath:/templates/
+      prefix: classpath:/static/ace/html/
       suffix: .html
       cache: false
       mode: LEGACYHTML5

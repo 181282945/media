@@ -2,6 +2,7 @@ package com.sunjung.test.controller;
 
 import com.sunjung.base.sysmgr.aclresource.annotation.AclResc;
 import com.sunjung.base.sysmgr.aclresource.common.AclResourceType;
+import com.sunjung.core.controller.BaseController;
 import com.sunjung.core.util.SpringUtils;
 import com.sunjung.test.service.TestEntityService;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,7 +30,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/test")
 @AclResc(code = "test",name = "测试模块",homePage = TestController.HOME_PAGE)
-public class TestController {
+public class TestController extends BaseController {
 
     final static String HOME_PAGE = "/test/list";
 
@@ -79,7 +80,7 @@ public class TestController {
 //    }
 
 
-    @RequestMapping("/getUrlMapping")
+    @RequestMapping(value = "/getUrlMapping")
     @AclResc(code = "getUrlMapping",name = "获取UrlMappling")
     public Object getUrlMapping() {
 //        SpringUtils.getBean(RestController.class);

@@ -136,10 +136,10 @@ public class MySecurityMetadataSource implements FilterInvocationSecurityMetadat
             Integer rescId = aclRescRole.getRescId();//资源ID
             String path = aclResourceService.findEntityById(rescId).getPath();
             Integer roleId = aclRescRole.getRoleId();//角色ID
-            String roleCode = aclRoleService.findEntityById(roleId).getName();//角色名
+            String roleCode = aclRoleService.findEntityById(roleId).getCode();//角色编码
             Collection<ConfigAttribute> collection = moduleMap.get(path);
             ConfigAttribute ca = new SecurityConfig(roleCode.toUpperCase());
-            stuff(collection,ca,moduleMap,path);
+            stuff(collection,ca,moduleMap,path+"/**");
         }
     }
 

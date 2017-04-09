@@ -282,7 +282,7 @@
 <!--[if IE]>
 <script src="../components/jquery.1x/dist/jquery.js"></script>
 <![endif]-->
-<script src="../../js/jquery.form.min.js"></script>
+<script src="../js/jquery.form.min.js"></script>
 <script type="text/javascript">
     if('ontouchstart' in document.documentElement) document.write("<script src='../components/_mod/jquery.mobile.custom/jquery.mobile.custom.js'>"+"<"+"/script>");
 </script>
@@ -331,7 +331,6 @@
     $(document).ready(function () {
         var options = {
             success: function (json) {
-                alert(JSON.stringify(json));
                 if(json.successMessage){
                     if(json.operateCode == "F"){
                         alert(json.message);

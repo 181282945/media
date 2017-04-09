@@ -1,15 +1,16 @@
 package com.sunjung.core.listener;
 
+import com.sunjung.base.sysmgr.aclcache.AclCache;
 import com.sunjung.base.sysmgr.aclresource.annotation.AclResc;
 import com.sunjung.base.sysmgr.aclresource.common.AclResourceType;
 import com.sunjung.base.sysmgr.aclresource.entity.AclResource;
 import com.sunjung.base.sysmgr.aclresource.service.AclResourceService;
-import com.sunjung.base.sysmgr.aclresource.service.impl.AclResourceServiceImpl;
 import com.sunjung.core.security.MySecurityMetadataSource;
 import com.sunjung.core.util.SpringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.security.access.ConfigAttribute;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,8 +30,29 @@ public class StartupListener implements ApplicationListener<ContextRefreshedEven
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
         MySecurityMetadataSource securityMetadataSource = (MySecurityMetadataSource)SpringUtils.getBean("securityMetadataSource");
+        /**
+         * 初始化模块MAP,因为没有精确权限设定的不需要保存到数据库
+         * 所以从这里可以返回页面需要的数据,方便设置特殊权限
+         */
         initModuleMap();
+        /**
+         * Spring Security 需要的资源-权限
+         */
         securityMetadataSource.doLoadResourceDefine();
+        /**
+         * 以下生成菜单-模块缓存视图
+         * 以方便用户登录的时候,直接从缓存中计算有权限的菜单以及模块
+         */
+        AclCache.moduleMapCache = securityMetadataSource.getModuleMap();
+
+        //初始化菜单缓存
+        AclCache.initAclMenuCache();
+
+        /**
+         * 完整的菜单-模块
+         */
+        AclCache.initAclMenuModuleMap();
+
     }
 
     /**
@@ -75,7 +97,7 @@ public class StartupListener implements ApplicationListener<ContextRefreshedEven
         /**
          * 返回不可编辑的视图MAP
          */
-        AclResourceServiceImpl.resourcesMap = Collections.unmodifiableMap(resourcesMap);
+        AclCache.resourcesMapCache = Collections.unmodifiableMap(resourcesMap);
 
     }
 
@@ -94,12 +116,14 @@ public class StartupListener implements ApplicationListener<ContextRefreshedEven
             if(resultResc == null){
                 Integer rescId = aclResourceService.addEntity(new AclResource(item.getKey().getCode(),item.getKey().getName(),item.getKey().getPath(),item.getKey().getType(),item.getKey().getHomePage()));
                 item.getKey().setId(rescId);
+                item.getKey().setMenuId(aclResourceService.findEntityById(rescId).getMenuId());
                 List<AclResource> resources = item.getValue();
                 for(AclResource resc : resources){
                     resc.setModuleId(rescId);
                 }
             }else{
                 item.getKey().setId(resultResc.getId());
+                item.getKey().setMenuId(resultResc.getMenuId());
                 List<AclResource> resources = item.getValue();
                 for(AclResource resc : resources){
                         resc.setModuleId(resultResc.getId());

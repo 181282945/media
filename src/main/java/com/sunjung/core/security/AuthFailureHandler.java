@@ -3,6 +3,7 @@ package com.sunjung.core.security;
 import com.sunjung.base.sysmgr.acluser.entity.AclUser;
 import com.sunjung.core.controller.BaseController;
 import com.sunjung.core.dto.ResultDataDto;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
+import java.awt.*;
 
 /**
  * Created by ZhenWeiLai on 2017/4/3.
@@ -20,7 +22,7 @@ import javax.servlet.http.HttpSession;
 public class AuthFailureHandler extends BaseController<AclUser> {
 
     // 登录异常
-    @RequestMapping(value = "/getLoginError")
+    @RequestMapping(value = "/getLoginError",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResultDataDto getLoginError(HttpSession session) {
 
         RuntimeException ex=(RuntimeException)session.getAttribute("SPRING_SECURITY_LAST_EXCEPTION");
@@ -38,4 +40,11 @@ public class AuthFailureHandler extends BaseController<AclUser> {
             return ResultDataDto.addOperationFailure("未知错误!");
         }
     }
+
+    // 访问拒绝处理
+    @RequestMapping(value = "/accessDenied",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResultDataDto accessDenied() {
+        return ResultDataDto.addOperationFailure("没有权限,拒绝访问!");
+    }
+
 }

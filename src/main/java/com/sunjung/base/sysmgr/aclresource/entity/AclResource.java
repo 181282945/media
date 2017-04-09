@@ -29,7 +29,11 @@ public class AclResource extends BaseEntity {
         this.homePage = homePage;
     }
 
-
+    /**
+     * 重写equals 为了可以当做key使用
+     * @param o
+     * @return
+     */
     public boolean equals(Object o){
         AclResource x = (AclResource)o;
         if(x.path.equals(this.path))

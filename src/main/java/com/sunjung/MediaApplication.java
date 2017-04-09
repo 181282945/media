@@ -26,6 +26,7 @@ public class MediaApplication extends SpringBootServletInitializer implements Em
 		springApplication.run(args);
 	}
 
+
 	/**
 	 * 自定义端口
 	 * @param container

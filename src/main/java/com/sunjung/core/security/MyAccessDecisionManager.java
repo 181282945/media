@@ -1,5 +1,6 @@
 package com.sunjung.core.security;
 
+import com.sunjung.core.security.util.SecurityUtil;
 import org.springframework.security.access.AccessDecisionVoter;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.ConfigAttribute;
@@ -18,7 +19,7 @@ import java.util.List;
  */
 public class MyAccessDecisionManager extends AbstractAccessDecisionManager {
 
-    public static final String ADMIN = "ADMIN";
+
 
     protected MyAccessDecisionManager(List<AccessDecisionVoter<? extends Object>> decisionVoters) {
         super(decisionVoters);
@@ -35,7 +36,7 @@ public class MyAccessDecisionManager extends AbstractAccessDecisionManager {
             String needRole = (ca).getAttribute();
             for (GrantedAuthority ga : authentication.getAuthorities()){
                 //具有权限,或者角色为amdin的可以通过
-                if (needRole.equals(ga.getAuthority())||ga.getAuthority().equals(ADMIN)){
+                if (needRole.equals(ga.getAuthority())||ga.getAuthority().equals(SecurityUtil.ADMIN)){
                     return;
                 }
             }

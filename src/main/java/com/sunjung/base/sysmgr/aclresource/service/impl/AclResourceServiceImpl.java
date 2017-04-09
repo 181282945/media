@@ -18,11 +18,6 @@ import java.util.Map;
 @Service("aclResourceService")
 public class AclResourceServiceImpl extends BaseServiceImpl<AclResource,AclResourceMapper> implements AclResourceService {
 
-    /**
-     * 模块 - 方法map
-     */
-    public static Map<AclResource, List<AclResource>> resourcesMap;
-
     @Override
     public AclResource findByPath(String path) {
         return getMapper().findByPath(path);

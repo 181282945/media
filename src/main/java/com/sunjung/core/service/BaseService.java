@@ -22,7 +22,7 @@ public interface BaseService<T extends BaseEntity,M extends BaseMapper> {
     /**
      * 根据Id查询实体
      */
-    T findEntityById(String id);
+    T findEntityById(Integer id);
 
     /**
      * 新增实体
@@ -38,12 +38,12 @@ public interface BaseService<T extends BaseEntity,M extends BaseMapper> {
     /**
      * 更新实体状态
      */
-    void updateEntityStatus(String entityId, String status);
+    void updateEntityStatus(Integer entityId, String status);
 
     /**
      * 根据Id删除实体
      */
-    void deleteById(String id);
+    void deleteById(Integer id);
 
     /**
      * 查询所有数据
@@ -83,9 +83,9 @@ public interface BaseService<T extends BaseEntity,M extends BaseMapper> {
     /**
      * 查找上一条
      */
-    T getEntityPreviousById(String id);
+    T getEntityPreviousById(Integer id);
     /**
      * 查找下一条
      */
-    T getEntityNextById(String id);
+    T getEntityNextById(Integer id);
 }

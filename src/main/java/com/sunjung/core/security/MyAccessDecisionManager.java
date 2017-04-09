@@ -7,7 +7,6 @@ import org.springframework.security.access.vote.AbstractAccessDecisionManager;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -19,7 +18,7 @@ import java.util.List;
  */
 public class MyAccessDecisionManager extends AbstractAccessDecisionManager {
 
-    private static final String ADMIN = "ADMIN";
+    public static final String ADMIN = "ADMIN";
 
     protected MyAccessDecisionManager(List<AccessDecisionVoter<? extends Object>> decisionVoters) {
         super(decisionVoters);

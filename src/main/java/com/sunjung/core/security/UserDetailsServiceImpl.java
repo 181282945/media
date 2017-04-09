@@ -1,11 +1,12 @@
 package com.sunjung.core.security;
 
-import com.sunjung.core.security.preciseauth.service.PreciseAuthService;
-import com.sunjung.core.security.role.entity.Role;
-import com.sunjung.core.security.role.service.RoleService;
-import com.sunjung.core.security.user.service.UserService;
-import com.sunjung.core.security.userrole.entity.UserRole;
-import com.sunjung.core.security.userrole.service.UserRoleService;
+import com.sunjung.base.sysmgr.aclauth.service.AclAuthService;
+import com.sunjung.base.sysmgr.aclrole.entity.AclRole;
+import com.sunjung.base.sysmgr.aclrole.service.AclRoleService;
+import com.sunjung.base.sysmgr.acluser.entity.AclUser;
+import com.sunjung.base.sysmgr.acluser.service.AclUserService;
+import com.sunjung.base.sysmgr.acluserrole.entity.AclUserRole;
+import com.sunjung.base.sysmgr.acluserrole.service.AclUserRoleService;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -26,16 +27,16 @@ import java.util.List;
 @Service("userDetailsService")
 public class UserDetailsServiceImpl implements UserDetailsService {
     @Resource
-    private UserService userService;
+    private AclUserService aclUserService;
 
     @Resource
-    private RoleService roleService;
+    private AclRoleService aclRoleService;
 
     @Resource
-    private UserRoleService userRoleService;
+    private AclUserRoleService aclUserRoleService;
 
     @Resource
-    private PreciseAuthService preciseAuthService;
+    private AclAuthService aclAuthService;
 
     /* (non-Javadoc)
      * @see org.springframework.security.core.userdetails.UserDetailsService#loadUserByUsername(java.lang.String)
@@ -44,21 +45,20 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         List<GrantedAuthority> auths = new ArrayList<>();//用户角色集合
-        com.sunjung.core.security.user.entity.User user = userService.getUserByName(username);
-        System.out.println(user);
-        if (user == null) {
+        AclUser aclUser = aclUserService.getUserByName(username);
+        if (aclUser == null) {
             throw new UsernameNotFoundException("用户名错误!");
         }
-        UserRole userRole = userRoleService.getUserRoleByUserId(user.getId().toString());
-        Role role = roleService.findEntityById(userRole.getRole_id().toString());
+        AclUserRole aclUserRole = aclUserRoleService.getByUserId(aclUser.getId());
+        AclRole aclRole = aclRoleService.findEntityById(aclUserRole.getRoleId());
         List<String> preAuths = new ArrayList<>();//用户权限集合
 
-        List<String> roleAuthTem = preciseAuthService.findAuthByRoleId(role.getId().toString());
+        List<String> roleAuthTem = aclAuthService.findCodeByRoleId(aclRole.getId());
         if (!roleAuthTem.isEmpty()) {
             preAuths.addAll(roleAuthTem);
         }
 
-        List<String> userAuthTem = preciseAuthService.findAuthByUserId(user.getId().toString());
+        List<String> userAuthTem = aclAuthService.findCodeByUserId(aclUser.getId());
         if (!userAuthTem.isEmpty()) {
             preAuths.addAll(userAuthTem);
         }
@@ -67,7 +67,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             auths.add(new MyGrantedAuthority(authStr.toUpperCase()));
         }
 
-        auths.add(new SimpleGrantedAuthority(role.getName().toUpperCase()));
-        return new User(user.getUsername(), user.getPassword(), user.getEnabled(), user.getAccountNonExpired(), user.getCredentialsNonExpired(), user.getAccountNonLocked(), auths);
+        auths.add(new SimpleGrantedAuthority(aclRole.getCode().toUpperCase()));
+        return new User(aclUser.getUserName(), aclUser.getPassword(), aclUser.getEnabled(), aclUser.getAccountNonExpired(), aclUser.getCredentialsNonExpired(), aclUser.getAccountNonLocked(), auths);
     }
 }

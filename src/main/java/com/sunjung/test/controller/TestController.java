@@ -1,7 +1,7 @@
 package com.sunjung.test.controller;
 
-import com.sunjung.common.usersigninfo.service.UserSignInfoService;
-import com.sunjung.core.security.resource.annotation.Resc;
+import com.sunjung.base.sysmgr.aclresource.annotation.AclResc;
+import com.sunjung.base.sysmgr.aclresource.common.AclResourceType;
 import com.sunjung.core.util.SpringUtils;
 import com.sunjung.test.service.TestEntityService;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,15 +22,16 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Map;
 
-import com.sunjung.core.security.resource.entity.ResourceType;
 
 /**
  * Created by ZhenWeiLai on 2016/12/28.
  */
 @RestController
 @RequestMapping("/test")
-@Resc(name = "test",descn = "测试模块",resourceType = ResourceType.MODULE)
+@AclResc(code = "test",name = "测试模块",homePage = TestController.HOME_PAGE)
 public class TestController {
+
+    final static String HOME_PAGE = "/test/list";
 
 //    private static final UserService userService;
 //    private static final User user;
@@ -45,8 +46,6 @@ public class TestController {
     @Resource
     private TestEntityService testEntityService;
 
-    @Resource
-    private UserSignInfoService userSignInfoService;
 
 //    @PreAuthorize("#oauth2.hasScope('read')")
 //    @RequestMapping( value = "/test", method = RequestMethod.GET)
@@ -60,7 +59,7 @@ public class TestController {
     }
 
     @RequestMapping("/helloThymeleaf")
-    @Resc(name = "helloThymeleaf",descn = "测试Thymeleaf",resourceType = ResourceType.METHOD)
+    @AclResc(code = "helloThymeleaf",name = "测试Thymeleaf")
     public ModelAndView testThymeleaf(){
         ModelAndView mav = new ModelAndView("footer");
         mav.addObject("hello", "Thymeleaf");
@@ -68,9 +67,9 @@ public class TestController {
     }
 
     @RequestMapping(value = "/testService",method = RequestMethod.GET)
-    @Resc(name = "testService",descn = "测试Service",resourceType = ResourceType.METHOD)
+    @AclResc(code = "testService",name = "测试Service")
     public void testService(){
-        System.out.println(testEntityService.findEntityById("1"));
+        System.out.println(testEntityService.findEntityById(1));
 //        System.out.println(userSignInfoService.findEntityById("1"));
     }
 
@@ -81,14 +80,14 @@ public class TestController {
 
 
     @RequestMapping("/getUrlMapping")
-    @Resc(name = "getUrlMapping",descn = "获取UrlMappling",resourceType = ResourceType.METHOD)
+    @AclResc(code = "getUrlMapping",name = "获取UrlMappling")
     public Object getUrlMapping() {
 //        SpringUtils.getBean(RestController.class);
         RequestMappingHandlerMapping rmhp = SpringUtils.getBean(RequestMappingHandlerMapping.class);
 //        System.out.println(rmhp.getClass().getSimpleName());
         Map<RequestMappingInfo, HandlerMethod> map = rmhp.getHandlerMethods();
         for(RequestMappingInfo info : map.keySet()){
-            Resc resc = map.get(info).getMethod().getAnnotation(Resc.class);
+            AclResc resc = map.get(info).getMethod().getAnnotation(AclResc.class);
             RequestMapping requestMapping = map.get(info).getBeanType().getAnnotation(RequestMapping.class);
             if(requestMapping != null){
                 System.out.println(info.getPatternsCondition().toString()

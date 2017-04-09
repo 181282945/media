@@ -1,11 +1,13 @@
 package com.sunjung.core.listener;
 
+import com.sunjung.base.sysmgr.aclresource.annotation.AclResc;
+import com.sunjung.base.sysmgr.aclresource.common.AclResourceType;
+import com.sunjung.base.sysmgr.aclresource.entity.AclResource;
+import com.sunjung.base.sysmgr.aclresource.service.AclResourceService;
+import com.sunjung.base.sysmgr.aclresource.service.impl.AclResourceServiceImpl;
 import com.sunjung.core.security.MySecurityMetadataSource;
-import com.sunjung.core.security.resource.annotation.Resc;
-import com.sunjung.core.security.resource.entity.Resource;
-import com.sunjung.core.security.resource.service.ResourceService;
-import com.sunjung.core.security.resource.service.impl.ResourceServiceImpl;
 import com.sunjung.core.util.SpringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.transaction.annotation.Propagation;
@@ -38,20 +40,22 @@ public class StartupListener implements ApplicationListener<ContextRefreshedEven
         /**
          * 模块 - 方法map
          */
-        Map<Resource, List<Resource>> resourcesMap = new HashMap<>();
+        Map<AclResource, List<AclResource>> resourcesMap = new HashMap<>();
         RequestMappingHandlerMapping rmhp = SpringUtils.getBean(RequestMappingHandlerMapping.class);
         Map<RequestMappingInfo, HandlerMethod> map = rmhp.getHandlerMethods();
         for (RequestMappingInfo info : map.keySet()) {
-            Resc moduleResc = map.get(info).getBeanType().getAnnotation(Resc.class);
-            if (moduleResc != null) {
+            AclResc moduleAclResc = map.get(info).getBeanType().getAnnotation(AclResc.class);
+            if (moduleAclResc != null) {
+                if(StringUtils.isBlank(moduleAclResc.homePage()))
+                    throw new RuntimeException("使用:"+AclResc.class.getName()+" 注解类时,请配置 homePage ");
                 RequestMapping moduleMapping = map.get(info).getBeanType().getAnnotation(RequestMapping.class);
-                Resource module = new Resource(moduleResc.name(),moduleMapping.value()[0], moduleResc.resourceType().getCode(), moduleResc.descn());
+                AclResource module = new AclResource(moduleAclResc.code(),moduleAclResc.name(),moduleMapping.value()[0], AclResourceType.MODULE.getCode(),moduleAclResc.homePage());
                 if (moduleMapping != null) {
-                    List<Resource> resources;
-                    Resource method;
-                    Resc methodResc = map.get(info).getMethod().getAnnotation(Resc.class);
+                    List<AclResource> resources;
+                    AclResource method;
+                    AclResc methodResc = map.get(info).getMethod().getAnnotation(AclResc.class);
                     if(methodResc != null){
-                        method = new Resource(methodResc.name(), info.getPatternsCondition().toString(), methodResc.resourceType().getCode(), methodResc.descn());
+                        method = new AclResource(methodResc.code(),methodResc.name(), info.getPatternsCondition().toString(), AclResourceType.METHOD.getCode());
                         if (resourcesMap.get(module) == null) {
                             resources = new ArrayList<>();
                             resources.add(method);
@@ -71,7 +75,7 @@ public class StartupListener implements ApplicationListener<ContextRefreshedEven
         /**
          * 返回不可编辑的视图MAP
          */
-        ResourceServiceImpl.resourcesMap = Collections.unmodifiableMap(resourcesMap);
+        AclResourceServiceImpl.resourcesMap = Collections.unmodifiableMap(resourcesMap);
 
     }
 
@@ -80,24 +84,24 @@ public class StartupListener implements ApplicationListener<ContextRefreshedEven
      * 检查新模块,添加到数据库,并更新视图的模块ID
      * @param resourcesMap
      */
-    private void addModule(Map<Resource, List<Resource>> resourcesMap){
-        ResourceService resourceService = (ResourceService)SpringUtils.getBean("resourceService");
-        Iterator<Map.Entry<Resource, List<Resource>>> it = resourcesMap.entrySet().iterator();
+    private void addModule(Map<AclResource, List<AclResource>> resourcesMap){
+        AclResourceService aclResourceService = (AclResourceService)SpringUtils.getBean("aclResourceService");
+        Iterator<Map.Entry<AclResource, List<AclResource>>> it = resourcesMap.entrySet().iterator();
         while(it.hasNext()){
-            Map.Entry<Resource, List<Resource>> item = it.next();
-            String path = item.getKey().getRes_string();
-            Resource resultResc = resourceService.findByPath(path);
+            Map.Entry<AclResource, List<AclResource>> item = it.next();
+            String path = item.getKey().getPath();
+            AclResource resultResc = aclResourceService.findByPath(path);
             if(resultResc == null){
-                Integer rescId = resourceService.addEntity(new Resource(item.getKey().getName(),item.getKey().getRes_string(),item.getKey().getRes_type(),item.getKey().getDescn()));
+                Integer rescId = aclResourceService.addEntity(new AclResource(item.getKey().getCode(),item.getKey().getName(),item.getKey().getPath(),item.getKey().getType(),item.getKey().getHomePage()));
                 item.getKey().setId(rescId);
-                List<Resource> resources = item.getValue();
-                for(Resource resc : resources){
+                List<AclResource> resources = item.getValue();
+                for(AclResource resc : resources){
                     resc.setModuleId(rescId);
                 }
             }else{
                 item.getKey().setId(resultResc.getId());
-                List<Resource> resources = item.getValue();
-                for(Resource resc : resources){
+                List<AclResource> resources = item.getValue();
+                for(AclResource resc : resources){
                         resc.setModuleId(resultResc.getId());
                 }
             }

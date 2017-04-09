@@ -26,7 +26,7 @@ public class Specification<T extends BaseEntity> {
         this.primaryKey = baseEntityMapper.primaryKey();
     }
 
-    public Specification(Class<?> entityClass, String entityId) {
+    public Specification(Class<?> entityClass, Integer entityId) {
         super();
         BaseEntityMapper baseEntityMapper = entityClass.getAnnotation(BaseEntityMapper.class);
         if (null == baseEntityMapper) {
@@ -40,7 +40,7 @@ public class Specification<T extends BaseEntity> {
     public Specification(T entity) {
         super();
         this.entity = entity;
-        this.entityId = entity.getId()+"";
+        this.entityId = entity.getId();
         BaseEntityMapper baseEntityMapper = entity.getClass().getAnnotation(BaseEntityMapper.class);
         if (null == baseEntityMapper) {
             throw new RuntimeException("实体："+entity.getClass().getName()+"  ,  请配置注解BaseEntityMapper");
@@ -63,7 +63,7 @@ public class Specification<T extends BaseEntity> {
     /**
      * 实体Id
      */
-    private String entityId;
+    private Integer entityId;
 
     /**
      * 表名
@@ -115,11 +115,11 @@ public class Specification<T extends BaseEntity> {
         this.queryLikes = queryLikes;
     }
 
-    public String getEntityId() {
+    public Integer getEntityId() {
         return entityId;
     }
 
-    public void setEntityId(String entityId) {
+    public void setEntityId(Integer entityId) {
         this.entityId = entityId;
     }
 

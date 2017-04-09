@@ -13,7 +13,6 @@ import com.sunjung.core.util.EntityColumnUtil;
 import com.sunjung.core.util.GenericeClassUtils;
 import org.apache.ibatis.session.SqlSession;
 
-import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
@@ -53,21 +52,21 @@ public class BaseServiceImpl<T extends BaseEntity,M extends BaseMapper<T>> imple
 
 
     @Override
-    public T findEntityById(String id) {
+    public T findEntityById(Integer id) {
         T entity = getMapper().findEntityById(new Specification<T>(entityClass, id));
 //        setEntityManyToOne(entity);
         return entity;
     }
 
     @Override
-    public T getEntityPreviousById(String id) {
+    public T getEntityPreviousById(Integer id) {
         T entity = getMapper().getEntityPreviousById(new Specification<T>(entityClass, id));
 //        setEntityManyToOne(entity);
         return entity;
     }
 
     @Override
-    public T getEntityNextById(String id) {
+    public T getEntityNextById(Integer id) {
         T entity = getMapper().getEntityNextById(new Specification<T>(entityClass, id));
 //        setEntityManyToOne(entity);
         return entity;
@@ -164,7 +163,7 @@ public class BaseServiceImpl<T extends BaseEntity,M extends BaseMapper<T>> imple
     }
 
     @Override
-    public void updateEntityStatus(String entityId, String status) {
+    public void updateEntityStatus(Integer entityId, String status) {
         validateUpdateEntityStatus(entityId, status);
         BaseBusinessEntity entity;
         try {
@@ -173,13 +172,13 @@ public class BaseServiceImpl<T extends BaseEntity,M extends BaseMapper<T>> imple
             throw new RuntimeException("更新状态失败，类型异常。");
         }
         setLastModifyBy(entity);
-        entity.setId(Integer.parseInt(entityId));
+        entity.setId(entityId);
         entity.setLastModifyTime(new Date());
         entity.setStatus(status);
         getMapper().updateEntityStatus(entity);
     }
 
-    protected void validateUpdateEntityStatus(String entityId, String status) {
+    protected void validateUpdateEntityStatus(Integer entityId, String status) {
 
     }
 
@@ -188,13 +187,13 @@ public class BaseServiceImpl<T extends BaseEntity,M extends BaseMapper<T>> imple
      */
     protected void validateUpdateEntity(T entity) {
         ConstraintUtil.setDefaultValue(entity);
-        entity.setVersion(this.findEntityById(entity.getId().toString()).getVersion()+1);
+        entity.setVersion(this.findEntityById(entity.getId()).getVersion()+1);
         ConstraintUtil.isNotNullConstraint(entity);
         setLastModifyBy(entity);
     }
 
     @Override
-    public void deleteById(String id) {
+    public void deleteById(Integer id) {
         getMapper().deleteById(new Specification<T>(entityClass, id));
     }
 

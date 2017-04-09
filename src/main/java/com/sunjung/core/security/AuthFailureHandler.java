@@ -1,9 +1,8 @@
 package com.sunjung.core.security;
 
+import com.sunjung.base.sysmgr.acluser.entity.AclUser;
 import com.sunjung.core.controller.BaseController;
 import com.sunjung.core.dto.ResultDataDto;
-import com.sunjung.core.exception.RuntimeServiceException;
-import com.sunjung.core.security.user.entity.User;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
@@ -18,7 +17,7 @@ import javax.servlet.http.HttpSession;
  * 登录失败处理类
  */
 @RestController
-public class AuthFailureHandler extends BaseController<User> {
+public class AuthFailureHandler extends BaseController<AclUser> {
 
     // 登录异常
     @RequestMapping(value = "/getLoginError")

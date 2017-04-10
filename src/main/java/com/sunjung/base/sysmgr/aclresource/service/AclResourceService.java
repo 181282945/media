@@ -10,7 +10,8 @@ import java.util.List;
  * Created by 为 on 2017-4-8.
  */
 public interface AclResourceService extends BaseService<AclResource,AclResourceMapper> {
-    AclResource findByPath(String path);
+
+    AclResource findByIdentify(Integer identify);
 
     List<AclResource> findAllModule();
 }

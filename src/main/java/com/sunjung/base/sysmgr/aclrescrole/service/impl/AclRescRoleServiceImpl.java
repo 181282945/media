@@ -15,7 +15,7 @@ import java.util.List;
 public class AclRescRoleServiceImpl extends BaseServiceImpl<AclRescRole,AclRescRoleMapper> implements AclRescRoleService {
 
     @Override
-    public List<AclRescRole> findByRescId(String rescId){
+    public List<AclRescRole> findByRescId(Integer rescId){
        return getMapper().findByRescId(rescId);
     }
 

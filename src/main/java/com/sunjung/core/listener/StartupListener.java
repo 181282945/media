@@ -70,8 +70,9 @@ public class StartupListener implements ApplicationListener<ContextRefreshedEven
             if (moduleAclResc != null) {
                 if(StringUtils.isBlank(moduleAclResc.homePage()))
                     throw new RuntimeException("使用:"+AclResc.class.getName()+" 注解类时,请配置 homePage ");
-                RequestMapping moduleMapping = map.get(info).getBeanType().getAnnotation(RequestMapping.class);
-                AclResource module = new AclResource(moduleAclResc.code(),moduleAclResc.name(),moduleMapping.value()[0], AclResourceType.MODULE.getCode(),moduleAclResc.homePage());
+                Class<?> aclResourceClass = map.get(info).getBeanType();
+                RequestMapping moduleMapping = aclResourceClass.getAnnotation(RequestMapping.class);
+                AclResource module = new AclResource(moduleAclResc.code(),moduleAclResc.name(),moduleMapping.value()[0], AclResourceType.MODULE.getCode(),moduleAclResc.homePage(),aclResourceClass.getSimpleName().hashCode());
                 if (moduleMapping != null) {
                     List<AclResource> resources;
                     AclResource method;
@@ -98,7 +99,6 @@ public class StartupListener implements ApplicationListener<ContextRefreshedEven
          * 返回不可编辑的视图MAP
          */
         AclCache.resourcesMapCache = Collections.unmodifiableMap(resourcesMap);
-
     }
 
 
@@ -111,10 +111,10 @@ public class StartupListener implements ApplicationListener<ContextRefreshedEven
         Iterator<Map.Entry<AclResource, List<AclResource>>> it = resourcesMap.entrySet().iterator();
         while(it.hasNext()){
             Map.Entry<AclResource, List<AclResource>> item = it.next();
-            String path = item.getKey().getPath();
-            AclResource resultResc = aclResourceService.findByPath(path);
+            Integer identify = item.getKey().getIdentify();
+            AclResource resultResc = aclResourceService.findByIdentify(identify);
             if(resultResc == null){
-                Integer rescId = aclResourceService.addEntity(new AclResource(item.getKey().getCode(),item.getKey().getName(),item.getKey().getPath(),item.getKey().getType(),item.getKey().getHomePage()));
+                Integer rescId = aclResourceService.addEntity(new AclResource(item.getKey().getCode(),item.getKey().getName(),item.getKey().getPath(),item.getKey().getType(),item.getKey().getHomePage(),identify));
                 item.getKey().setId(rescId);
                 item.getKey().setMenuId(aclResourceService.findEntityById(rescId).getMenuId());
                 List<AclResource> resources = item.getValue();

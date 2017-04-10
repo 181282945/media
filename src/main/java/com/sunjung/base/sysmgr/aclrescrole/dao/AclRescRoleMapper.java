@@ -15,5 +15,5 @@ import java.util.List;
 public interface AclRescRoleMapper extends BaseMapper<AclRescRole> {
 
     @Select("SELECT * FROM acl_resc_role WHERE rescId = #{rescId}")
-    List<AclRescRole> findByRescId(@Param("rescId") String rescId);
+    List<AclRescRole> findByRescId(@Param("rescId") Integer rescId);
 }

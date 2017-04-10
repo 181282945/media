@@ -89,7 +89,7 @@ public class AclCache {
 
             }
         }
-        AclCache.aclMenuModuleMapCache = Collections.unmodifiableMap(aclMenuModuleMap);
+        AclCache.aclMenuModuleMapCache = aclMenuModuleMap;
     }
 
 }

@@ -12,6 +12,6 @@ import java.util.List;
 
 public interface AclRescRoleService extends BaseService<AclRescRole,AclRescRoleMapper> {
 
-    List<AclRescRole> findByRescId(String rescId);
+    List<AclRescRole> findByRescId(Integer rescId);
 
 }

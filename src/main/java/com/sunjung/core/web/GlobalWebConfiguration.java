@@ -14,7 +14,6 @@ public class GlobalWebConfiguration extends WebMvcConfigurerAdapter {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/**").addResourceLocations("classpath:/static/ace/");
-//        registry.addResourceHandler("/page/ace/**").addResourceLocations("classpath:/static/ace/");
         super.addResourceHandlers(registry);
     }
 

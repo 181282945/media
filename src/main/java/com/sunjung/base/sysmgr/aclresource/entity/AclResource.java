@@ -1,5 +1,6 @@
 package com.sunjung.base.sysmgr.aclresource.entity;
 
+import com.sunjung.base.sysmgr.aclresource.common.AclResourceType;
 import com.sunjung.core.entity.BaseEntity;
 import com.sunjung.core.entity.annotation.BaseEntityMapper;
 import org.apache.ibatis.type.Alias;
@@ -21,12 +22,13 @@ public class AclResource extends BaseEntity {
         this.type = type;
     }
 
-    public AclResource(String code,String name,String path,String type,String homePage){
+    public AclResource(String code,String name,String path,String type,String homePage,Integer identify){
         this.code = code;
         this.name = name;
         this.path = path;
         this.type = type;
         this.homePage = homePage;
+        this.identify = identify;
     }
 
     /**
@@ -36,14 +38,21 @@ public class AclResource extends BaseEntity {
      */
     public boolean equals(Object o){
         AclResource x = (AclResource)o;
-        if(x.path.equals(this.path))
-            return true;
-        return false;
+        if(AclResourceType.MODULE.getCode().equals(this.type)){
+            if(x.identify.intValue()==this.identify)
+                return true;
+            return false;
+        }else{
+            return super.equals(o);
+        }
     }
 
     public int hashCode(){
-        return path.hashCode();
-
+        if(AclResourceType.MODULE.getCode().equals(this.type)){
+            return identify;
+        }else{
+            return super.hashCode();
+        }
     }
 
     //资源编码
@@ -69,6 +78,11 @@ public class AclResource extends BaseEntity {
     //菜单ID(属于哪个菜单的模块)
     private Integer menuId;
 
+    /**
+     * 唯一标识,因为在反射模块的时候并没有ID
+     * 简单类名的hashCode
+     */
+    private Integer identify;
 
     //-------------------------------------getter and setter-----------------------------------------------
 
@@ -135,5 +149,13 @@ public class AclResource extends BaseEntity {
 
     public void setHomePage(String homePage) {
         this.homePage = homePage;
+    }
+
+    public Integer getIdentify() {
+        return identify;
+    }
+
+    public void setIdentify(Integer identify) {
+        this.identify = identify;
     }
 }

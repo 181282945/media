@@ -7,6 +7,7 @@ import com.sunjung.base.sysmgr.aclmenu.service.AclMenuService;
 import com.sunjung.base.sysmgr.aclresource.entity.AclResource;
 import com.sunjung.core.security.util.SecurityUtil;
 import com.sunjung.core.service.BaseServiceImpl;
+import com.sunjung.core.util.CloneUtils;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +22,7 @@ public class AclMenuServiceImpl extends BaseServiceImpl<AclMenu, AclMenuMapper> 
     @Override
     public Map<AclMenu, List<AclResource>> getAclUserMenus() {
         //创建完整的菜单,然后删除没有权限的菜单
-        Map<AclMenu, List<AclResource>> userMenuModuleMap = new HashMap<>(AclCache.aclMenuModuleMapCache);
+        Map<AclMenu, List<AclResource>> userMenuModuleMap = CloneUtils.clone((HashMap<AclMenu, List<AclResource>>) AclCache.aclMenuModuleMapCache);
         //获取资源/权限集
         Map<String, Collection<ConfigAttribute>> moduleMap = AclCache.moduleMapCache;
         for (String path : moduleMap.keySet()) {
@@ -40,7 +41,7 @@ public class AclMenuServiceImpl extends BaseServiceImpl<AclMenu, AclMenuMapper> 
                         }
                         Iterator<AclResource> aclResourceIterator = modules.iterator();
                         while (aclResourceIterator.hasNext()) {
-                            if (aclResourceIterator.next().getPath().equals(path)) {
+                            if (aclResourceIterator.next().getPath().equals(path.substring(0,path.lastIndexOf("/**")))) {
                                 //从菜单模块中删除
                                 aclResourceIterator.remove();
                                 //如果模块为空

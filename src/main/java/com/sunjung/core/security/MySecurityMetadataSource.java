@@ -118,28 +118,25 @@ public class MySecurityMetadataSource implements FilterInvocationSecurityMetadat
      */
     private void loadModuleResources() {
         /**
-         * 因为只有权限控制的资源才需要被拦截验证,所以只加载有权限控制的资源
-         */
-        List<AclRescRole> aclRescRoles = new ArrayList<>();
-        /**
          * 查询模块资源权限,配置模块权限验证
          */
         List<AclResource> aclResources = aclResourceService.findAllModule();
-        for (AclResource aclResource : aclResources) {
-            aclRescRoles.addAll(aclRescRoleService.findByRescId(aclResource.getId().toString()));
-        }
 
         //模块资源为KEY,角色为Value 的list
         moduleMap = new HashMap<>();
-
-        for (AclRescRole aclRescRole : aclRescRoles) {
-            Integer rescId = aclRescRole.getRescId();//资源ID
-            String path = aclResourceService.findEntityById(rescId).getPath();
-            Integer roleId = aclRescRole.getRoleId();//角色ID
-            String roleCode = aclRoleService.findEntityById(roleId).getCode();//角色编码
-            Collection<ConfigAttribute> collection = moduleMap.get(path);
-            ConfigAttribute ca = new SecurityConfig(roleCode.toUpperCase());
-            stuff(collection,ca,moduleMap,path+"/**");
+//        stuff(null,new SecurityConfig(""),moduleMap,"/**");
+        for (AclResource module : aclResources) {
+            /**
+             * 因为只有权限控制的资源才需要被拦截验证,所以只加载有权限控制的资源
+             */
+            List<AclRescRole> aclRescRoles = aclRescRoleService.findByRescId(module.getId());
+            for(AclRescRole aclRescRole : aclRescRoles){
+                Integer roleId = aclRescRole.getRoleId();//角色ID
+                String roleCode = aclRoleService.findEntityById(roleId).getCode();//角色编码
+                Collection<ConfigAttribute> collection = moduleMap.get(module.getPath());
+                ConfigAttribute ca = new SecurityConfig(roleCode.toUpperCase());
+                stuff(collection,ca,moduleMap,module.getPath()+"/**");
+            }
         }
     }
 
@@ -171,5 +168,4 @@ public class MySecurityMetadataSource implements FilterInvocationSecurityMetadat
             map.put(path, collection);
         }
     }
-
 }

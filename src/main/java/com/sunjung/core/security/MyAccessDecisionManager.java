@@ -27,9 +27,11 @@ public class MyAccessDecisionManager extends AbstractAccessDecisionManager {
 
     @Override
     public void decide(Authentication authentication, Object object, Collection<ConfigAttribute> configAttributes) throws AccessDeniedException, InsufficientAuthenticationException {
+
         if(configAttributes==null){
             return;
         }
+
         Iterator<ConfigAttribute> ite = configAttributes.iterator();
         while(ite.hasNext()){
             ConfigAttribute ca = ite.next();
@@ -44,10 +46,10 @@ public class MyAccessDecisionManager extends AbstractAccessDecisionManager {
         throw new AccessDeniedException("没有权限,拒绝访问!");
     }
 
-    @Override
-    public boolean supports(ConfigAttribute attribute) {
-        return true;
-    }
+//    @Override
+//    public boolean supports(ConfigAttribute attribute) {
+//        super
+//    }
 
     /**
      * Iterates through all <code>AccessDecisionVoter</code>s and ensures each can support
@@ -59,8 +61,8 @@ public class MyAccessDecisionManager extends AbstractAccessDecisionManager {
      * @param clazz the type of secured object being presented
      * @return true if this type is supported
      */
-    @Override
-    public boolean supports(Class<?> clazz) {
-        return true;
-    }
+//    @Override
+//    public boolean supports(Class<?> clazz) {
+//        return true;
+//    }
 }

@@ -40,7 +40,7 @@ import java.util.*;
  */
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+//@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Resource
@@ -61,6 +61,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        //解决不允许显示在iframe的问题
+        http.headers().frameOptions().disable();
         http.addFilterAfter(MyUsernamePasswordAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         // 开启默认登录页面
@@ -71,14 +73,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 fsi.setAuthenticationManager(authenticationManagerBean());
                 return fsi;
             }
-        }).and().exceptionHandling().authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/ace/html/login.html")).and().logout().logoutSuccessUrl("/ace/html/index.html").permitAll();
+        }).and().exceptionHandling().authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login")).and().logout().logoutUrl("/logout").logoutSuccessUrl("/login").permitAll();
         // 自定义accessDecisionManager访问控制器,并开启表达式语言
-        http.exceptionHandling().accessDeniedHandler(accessDeniedHandler()).and().authorizeRequests().anyRequest().authenticated().expressionHandler(webSecurityExpressionHandler());
+        http.exceptionHandling().accessDeniedHandler(accessDeniedHandler());
         // 关闭csrf
         http.csrf().disable();
 
         // session管理,只允许一个用户登录,如果同一个账户两次登录,那么第一个账户将被踢下线,跳转到登录页面
-        http.sessionManagement().maximumSessions(1).expiredUrl("/ace/html/login.html");
+        http.sessionManagement().maximumSessions(1).expiredUrl("/login");
     }
 
 
@@ -99,7 +101,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         myUsernamePasswordAuthenticationFilter.setAuthenticationManager(this.authenticationManager());
         myUsernamePasswordAuthenticationFilter.setUsernameParameter("name_key");
         myUsernamePasswordAuthenticationFilter.setPasswordParameter("pwd_key");
-        myUsernamePasswordAuthenticationFilter.setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher("/login", "POST"));
+        myUsernamePasswordAuthenticationFilter.setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher("/checkLogin", "POST"));
         myUsernamePasswordAuthenticationFilter.setAuthenticationFailureHandler(simpleUrlAuthenticationFailureHandler());
         myUsernamePasswordAuthenticationFilter.setAuthenticationSuccessHandler(authenticationSuccessHandler());
         return myUsernamePasswordAuthenticationFilter;

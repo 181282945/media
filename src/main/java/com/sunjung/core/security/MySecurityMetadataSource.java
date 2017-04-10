@@ -13,6 +13,7 @@ import com.sunjung.base.sysmgr.aclresource.service.AclResourceService;
 import com.sunjung.base.sysmgr.aclrole.service.AclRoleService;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityConfig;
+import org.springframework.security.access.vote.AuthenticatedVoter;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -124,12 +125,20 @@ public class MySecurityMetadataSource implements FilterInvocationSecurityMetadat
 
         //模块资源为KEY,角色为Value 的list
         moduleMap = new HashMap<>();
-//        stuff(null,new SecurityConfig(""),moduleMap,"/**");
         for (AclResource module : aclResources) {
             /**
              * 因为只有权限控制的资源才需要被拦截验证,所以只加载有权限控制的资源
              */
             List<AclRescRole> aclRescRoles = aclRescRoleService.findByRescId(module.getId());
+
+            /**
+             * 如果没有设置权限,那么至少需要登录才能访问
+             */
+            if(aclRescRoles.isEmpty()){
+                stuff(null,new SecurityConfig(AuthenticatedVoter.IS_AUTHENTICATED_FULLY),moduleMap,module.getPath()+"/**");
+                continue;
+            }
+
             for(AclRescRole aclRescRole : aclRescRoles){
                 Integer roleId = aclRescRole.getRoleId();//角色ID
                 String roleCode = aclRoleService.findEntityById(roleId).getCode();//角色编码

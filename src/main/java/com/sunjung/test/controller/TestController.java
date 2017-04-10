@@ -3,8 +3,13 @@ package com.sunjung.test.controller;
 import com.sunjung.base.sysmgr.aclresource.annotation.AclResc;
 import com.sunjung.base.sysmgr.aclresource.common.AclResourceType;
 import com.sunjung.core.controller.BaseController;
+import com.sunjung.core.security.util.SecurityUtil;
 import com.sunjung.core.util.SpringUtils;
 import com.sunjung.test.service.TestEntityService;
+import org.springframework.security.authentication.AuthenticationTrustResolver;
+import org.springframework.security.authentication.AuthenticationTrustResolverImpl;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,6 +17,7 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
+import sun.security.util.SecurityConstants;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -80,28 +86,13 @@ public class TestController extends BaseController {
 //    }
 
 
-    @RequestMapping(value = "/getUrlMapping")
-    @AclResc(code = "getUrlMapping",name = "获取UrlMappling")
-    public Object getUrlMapping() {
-//        SpringUtils.getBean(RestController.class);
-        RequestMappingHandlerMapping rmhp = SpringUtils.getBean(RequestMappingHandlerMapping.class);
-//        System.out.println(rmhp.getClass().getSimpleName());
-        Map<RequestMappingInfo, HandlerMethod> map = rmhp.getHandlerMethods();
-        for(RequestMappingInfo info : map.keySet()){
-            AclResc resc = map.get(info).getMethod().getAnnotation(AclResc.class);
-            RequestMapping requestMapping = map.get(info).getBeanType().getAnnotation(RequestMapping.class);
-            if(requestMapping != null){
-                System.out.println(info.getPatternsCondition().toString()
-                        + "," + requestMapping.value()[0]);
-            }
-//            if(alias != null){
-//                System.out.println(info.getPatternsCondition().toString()
-//                        + "," + map.get(info).getBean().toString()+"," + alias.value());
-//            }
-//            System.out.println(info.getPatternsCondition().toString()
-//                    + "," + map.get(info).getBeanType());
-        }
-        return null;
+    @RequestMapping(value = "/getContext")
+    @AclResc(code = "getContext",name = "获取Context")
+    public void getContext() {
+        AuthenticationTrustResolver authenticationTrustResolver = new AuthenticationTrustResolverImpl();
+        SecurityContextHolder.getContext().getAuthentication();
+        System.out.println(authenticationTrustResolver.isAnonymous(SecurityContextHolder.getContext().getAuthentication()));
+        System.out.println();
     }
 
     /**

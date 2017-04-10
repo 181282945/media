@@ -1,13 +1,11 @@
 package com.sunjung.core.security;
 
-import com.sunjung.core.security.util.SecurityUtil;
 import org.springframework.security.access.AccessDecisionVoter;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.vote.AbstractAccessDecisionManager;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -27,23 +25,47 @@ public class MyAccessDecisionManager extends AbstractAccessDecisionManager {
 
     @Override
     public void decide(Authentication authentication, Object object, Collection<ConfigAttribute> configAttributes) throws AccessDeniedException, InsufficientAuthenticationException {
+        int deny = 0;
+        Iterator var5 = this.getDecisionVoters().iterator();
 
-        if(configAttributes==null){
-            return;
-        }
+        while(var5.hasNext()) {
+            AccessDecisionVoter voter = (AccessDecisionVoter)var5.next();
+            int result = voter.vote(authentication, object, configAttributes);
+            if(this.logger.isDebugEnabled()) {
+                this.logger.debug("Voter: " + voter + ", returned: " + result);
+            }
 
-        Iterator<ConfigAttribute> ite = configAttributes.iterator();
-        while(ite.hasNext()){
-            ConfigAttribute ca = ite.next();
-            String needRole = (ca).getAttribute();
-            for (GrantedAuthority ga : authentication.getAuthorities()){
-                //具有权限,或者角色为amdin的可以通过
-                if (needRole.equals(ga.getAuthority())||ga.getAuthority().equals(SecurityUtil.ADMIN)){
+            switch(result) {
+                case -1:
+                    ++deny;
+                    break;
+                case 1:
                     return;
-                }
             }
         }
-        throw new AccessDeniedException("没有权限,拒绝访问!");
+
+        if(deny > 0) {
+            throw new AccessDeniedException(this.messages.getMessage("AbstractAccessDecisionManager.accessDenied", "Access is denied"));
+        } else {
+            this.checkAllowIfAllAbstainDecisions();
+        }
+//
+//        Iterator<ConfigAttribute> ite = configAttributes.iterator();
+//        while(ite.hasNext()){
+//            ConfigAttribute ca = ite.next();
+////            if(supports(ca)){
+////                throw new AccessDeniedException("没有权限,拒绝访问!");
+////            }
+//
+//            String needRole = (ca).getAttribute();
+//            for (GrantedAuthority ga : authentication.getAuthorities()){
+//                //具有权限,或者角色为amdin的可以通过
+//                if (needRole.equals(ga.getAuthority())||ga.getAuthority().equals(SecurityUtil.ADMIN)){
+//                    return;
+//                }
+//            }
+//        }
+//        throw new AccessDeniedException("没有权限,拒绝访问!");
     }
 
 //    @Override

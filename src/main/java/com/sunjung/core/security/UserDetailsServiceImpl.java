@@ -7,6 +7,7 @@ import com.sunjung.base.sysmgr.acluser.entity.AclUser;
 import com.sunjung.base.sysmgr.acluser.service.AclUserService;
 import com.sunjung.base.sysmgr.acluserrole.entity.AclUserRole;
 import com.sunjung.base.sysmgr.acluserrole.service.AclUserRoleService;
+import org.springframework.security.access.vote.AuthenticatedVoter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -64,10 +65,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
 
         for (String authStr : preAuths) {
-            auths.add(new MyGrantedAuthority(authStr.toUpperCase()));
+            auths.add(new SimpleGrantedAuthority(authStr.toUpperCase()));
         }
-
         auths.add(new SimpleGrantedAuthority(aclRole.getCode().toUpperCase()));
+//        auths.add(new SimpleGrantedAuthority(AuthenticatedVoter.IS_AUTHENTICATED_FULLY));
         return new User(aclUser.getUserName(), aclUser.getPassword(), aclUser.getEnabled(), aclUser.getAccountNonExpired(), aclUser.getCredentialsNonExpired(), aclUser.getAccountNonLocked(), auths);
     }
 }

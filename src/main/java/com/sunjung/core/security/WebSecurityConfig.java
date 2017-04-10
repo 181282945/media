@@ -9,7 +9,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.event.LoggerListener;
 import org.springframework.security.config.annotation.ObjectPostProcessor;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -64,7 +63,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         //解决不允许显示在iframe的问题
         http.headers().frameOptions().disable();
         http.addFilterAfter(MyUsernamePasswordAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
-
         // 开启默认登录页面
         http.authorizeRequests().anyRequest().authenticated().withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
             public <O extends FilterSecurityInterceptor> O postProcess(O fsi) {
@@ -74,7 +72,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 return fsi;
             }
         }).and().exceptionHandling().authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login")).and().logout().logoutUrl("/logout").logoutSuccessUrl("/login").permitAll();
-        // 自定义accessDecisionManager访问控制器,并开启表达式语言
+        // 自定义accessDecisionManager访问控制器
         http.exceptionHandling().accessDeniedHandler(accessDeniedHandler());
         // 关闭csrf
         http.csrf().disable();
@@ -133,9 +131,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      */
     public MyAccessDecisionManager accessDecisionManager() {
         List<AccessDecisionVoter<? extends Object>> decisionVoters = new ArrayList();
-        decisionVoters.add(new RoleVoter());
         decisionVoters.add(new AuthenticatedVoter());
-        decisionVoters.add(webExpressionVoter());// 启用表达式投票器
+        decisionVoters.add(new RoleVoter());//角色投票器,默认前缀为ROLE_
+        RoleVoter AuthVoter = new RoleVoter();
+        AuthVoter.setRolePrefix("AUTH_");//特殊权限投票器,修改前缀为AUTH_
+        decisionVoters.add(AuthVoter);
+//        decisionVoters.add(webExpressionVoter());// 启用表达式投票器
         MyAccessDecisionManager accessDecisionManager = new MyAccessDecisionManager(decisionVoters);
         return accessDecisionManager;
     }

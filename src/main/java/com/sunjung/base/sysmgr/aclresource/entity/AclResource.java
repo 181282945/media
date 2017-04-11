@@ -1,5 +1,6 @@
 package com.sunjung.base.sysmgr.aclresource.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.sunjung.base.sysmgr.aclresource.common.AclResourceType;
 import com.sunjung.core.entity.BaseEntity;
 import com.sunjung.core.entity.annotation.BaseEntityMapper;
@@ -11,7 +12,6 @@ import org.apache.ibatis.type.Alias;
 @Alias("AclResource")
 @BaseEntityMapper(tableName = "acl_resource")
 public class AclResource extends BaseEntity {
-
 
     public AclResource(){}
 
@@ -157,5 +157,14 @@ public class AclResource extends BaseEntity {
 
     public void setIdentify(Integer identify) {
         this.identify = identify;
+    }
+
+
+    /**
+     * 返回模块地址
+     * @return
+     */
+    public String getHref(){
+        return "javascript:addTabs({id:'" + this.getId() + "',title: '" + this.name + "',close: true,url:'" +this.homePage+ "'});";
     }
 }

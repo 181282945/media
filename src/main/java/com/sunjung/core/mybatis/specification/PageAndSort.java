@@ -1,11 +1,13 @@
 package com.sunjung.core.mybatis.specification;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.sunjung.core.util.Delimiter;
 import org.apache.commons.lang3.StringUtils;
 
 /**
  * Created by ZhenWeiLai on 2017/3/28.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class PageAndSort {
 
     public static final Integer MAX_PAGE_SIZE=3000;

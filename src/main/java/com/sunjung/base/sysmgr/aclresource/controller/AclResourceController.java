@@ -2,24 +2,53 @@ package com.sunjung.base.sysmgr.aclresource.controller;
 
 import com.sunjung.base.sysmgr.aclresource.annotation.AclResc;
 import com.sunjung.base.sysmgr.aclresource.entity.AclResource;
+import com.sunjung.base.sysmgr.aclresource.service.AclResourceService;
 import com.sunjung.core.controller.BaseController;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import com.sunjung.core.dto.ResultDataDto;
+import com.sunjung.core.mybatis.specification.PageAndSort;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * Created by 为 on 2017-4-8.
  */
 @RestController
-@RequestMapping(value = {"/base/sysmgr/aclresource"})
-@AclResc(code = "aclResource", name = "资源权限",homePage = AclResourceController.HOME_PAGE)
+@RequestMapping(value = AclResourceController.PATH)
+@AclResc(code = "aclResource", name = AclResourceController.MODULE_NAME,homePage = AclResourceController.PATH + AclResourceController.HOME_PAGE)
 public class AclResourceController extends BaseController<AclResource> {
-    final static String HOME_PAGE = "/base/sysmgr/aclresource/list";
+    final static String PATH = "/base/sysmgr/aclresource";
+    final static String HOME_PAGE = PATH + "/tolist";
 
-    @RequestMapping(value = "/list",method = RequestMethod.GET)
-    @AclResc(code = "list",name = "测试Thymeleaf")
-    public void list(){
+    final static String MODULE_NAME = "资源管理";
 
+    @Resource
+    private AclResourceService aclResourceService;
+
+    @RequestMapping(value = AclResourceController.HOME_PAGE,method = RequestMethod.GET,produces = MediaType.TEXT_HTML_VALUE)
+    public ModelAndView toList(){
+        ModelAndView mav = new ModelAndView(PATH+"/list_aclresource");
+        mav.addObject("MODULE_NAME",MODULE_NAME);
+
+        return mav;
+    }
+
+
+    @RequestMapping(value = "/list",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @AclResc(code = "list",name = "查询列表")
+    public ResultDataDto list(@RequestBody AclResource aclResource,PageAndSort pageAndSort){
+        List<AclResource> aclResources = aclResourceService.findByPage(aclResource,pageAndSort);
+        ResultDataDto resultDataDto =new ResultDataDto(aclResources,pageAndSort);
+        System.out.println();
+        return resultDataDto;
+    }
+
+    @RequestMapping(value = "/getJson",method = RequestMethod.GET)
+    public AclResource getJson(){
+        return new AclResource();
     }
 
 }

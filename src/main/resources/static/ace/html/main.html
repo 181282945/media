@@ -9,39 +9,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
 
     <!-- bootstrap & fontawesome -->
-    <link rel="stylesheet" href="../assets/css/bootstrap.css"/>
-    <link rel="stylesheet" href="../components/font-awesome/css/font-awesome.css"/>
+    <link rel="stylesheet" href="/assets/css/bootstrap.css"/>
+    <link rel="stylesheet" href="/components/font-awesome/css/font-awesome.css"/>
 
     <!-- page specific plugin styles -->
-    <link rel="stylesheet" href="../components/_mod/jquery-ui/jquery-ui.css"/>
-    <link rel="stylesheet" href="../components/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css"/>
-    <link rel="stylesheet" href="../components/_mod/jqgrid/ui.jqgrid.css"/>
+    <link rel="stylesheet" href="/components/_mod/jquery-ui/jquery-ui.css"/>
+    <link rel="stylesheet" href="/components/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css"/>
+    <link rel="stylesheet" href="/components/_mod/jqgrid/ui.jqgrid.css"/>
 
     <!-- text fonts -->
-    <link rel="stylesheet" href="../assets/css/ace-fonts.css"/>
+    <link rel="stylesheet" href="/assets/css/ace-fonts.css"/>
 
     <!-- ace styles -->
-    <link rel="stylesheet" href="../assets/css/ace.css" class="ace-main-stylesheet" id="main-ace-style"/>
+    <link rel="stylesheet" href="/assets/css/ace.css" class="ace-main-stylesheet" id="main-ace-style"/>
 
     <!--[if lte IE 9]>
-    <link rel="stylesheet" href="../assets/css/ace-part2.css" class="ace-main-stylesheet"/>
+    <link rel="stylesheet" href="/assets/css/ace-part2.css" class="ace-main-stylesheet"/>
     <![endif]-->
-    <link rel="stylesheet" href="../assets/css/ace-skins.css"/>
-    <link rel="stylesheet" href="../assets/css/ace-rtl.css"/>
+    <link rel="stylesheet" href="/assets/css/ace-skins.css"/>
+    <link rel="stylesheet" href="/assets/css/ace-rtl.css"/>
 
     <!--[if lte IE 9]>
-    <link rel="stylesheet" href="../assets/css/ace-ie.css"/>
+    <link rel="stylesheet" href="/assets/css/ace-ie.css"/>
     <![endif]-->
 
     <!-- inline styles related to this page -->
     <!-- ace settings handler -->
-    <script src="../assets/js/ace-extra.js"></script>
+    <script src="/assets/js/ace-extra.js"></script>
 
     <!-- HTML5shiv and Respond.js for IE8 to support HTML5 elements and media queries -->
 
     <!--[if lte IE 8]>
-    <script src="../components/html5shiv/dist/html5shiv.min.js"></script>
-    <script src="../components/respond/dest/respond.min.js"></script>
+    <script src="/components/html5shiv/dist/html5shiv.min.js"></script>
+    <script src="/components/respond/dest/respond.min.js"></script>
     <![endif]-->
 </head>
 
@@ -85,7 +85,7 @@
                 <!-- #section:basics/navbar.user_menu -->
                 <li class="light-blue dropdown-modal">
                     <a data-toggle="dropdown" href="#" class="dropdown-toggle">
-                        <img class="nav-user-photo" src="../assets/avatars/user.jpg" alt="Jason's Photo"/>
+                        <img class="nav-user-photo" src="/assets/avatars/user.jpg" alt="Jason's Photo"/>
                         <span class="user-info">
 									<small>您好,</small>
                             <!--/*@thymesVar id="userName" type="java.lang.String"*/-->
@@ -132,9 +132,36 @@
 <!-- /section:basics/navbar.layout -->
 <div class="main-container ace-save-state" id="main-container">
     <div class="sidebar" id="sidebar">
-        <ul class="nav nav-list" id="menu"></ul>
+        <ul class="nav nav-list" id="menu">
+
+
+            <li th:each="menu, menuS:${menus}" th:value="${menu.key.code}"><a href="#" class="dropdown-toggle"><i class="icon-cog"></i><span class="menu-text" th:text="${menu.key.name}"></span><b
+                    class="arrow icon-angle-down"></b></a>
+                <ul class="submenu">
+                    <li th:each="item,itemS: ${menu.value}"><a th:href="${item.href}">
+                        <i class="icon-glass"></i>
+                        <span class="menu-text" th:text="${item.name}">编码管理</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+
+            <!--<li><a href="#" class="dropdown-toggle"><i class="icon-cog"></i><span class="menu-text" > aa</span><b-->
+                    <!--class="arrow icon-angle-down"></b></a>-->
+                <!--<ul class="submenu">-->
+                    <!--<li"><a href="javascript:addTabs({id:'1',title: 'aas',close: true,url: '/baidu.com'});">-->
+                        <!--<i class="icon-glass"></i>-->
+                        <!--<span class="menu-text">编码管理</span>-->
+                    <!--</a>-->
+                    <!--</li>-->
+                <!--</ul>-->
+            <!--</li>-->
+
+        </ul>
         <div class="sidebar-collapse" id="sidebar-collapse">
-            <i class="icon-double-angle-left" data-icon1="icon-double-angle-left" data-icon2="icon-double-angle-right"></i>
+            <i class="icon-double-angle-left" data-icon1="icon-double-angle-left"
+               data-icon2="icon-double-angle-right"></i>
         </div>
     </div>
     　
@@ -196,175 +223,26 @@
 <!-- basic scripts -->
 
 <!--[if !IE]> -->
-<script src="../components/jquery/dist/jquery.js"></script>
+<script src="/components/jquery/dist/jquery.js"></script>
 
 <!-- <![endif]-->
 
 <!--[if IE]>
-<script src="../components/jquery.1x/dist/jquery.js"></script>
+<script src="/components/jquery.1x/dist/jquery.js"></script>
 <![endif]-->
 <script type="text/javascript">
-    if ('ontouchstart' in document.documentElement) document.write("<script src='../components/_mod/jquery.mobile.custom/jquery.mobile.custom.js'>" + "<" + "/script>");
+    if ('ontouchstart' in document.documentElement) document.write("<script src='/components/_mod/jquery.mobile.custom/jquery.mobile.custom.js'>" + "<" + "/script>");
 </script>
-<script src="../components/bootstrap/dist/js/bootstrap.js"></script>
+<script src="/components/bootstrap/dist/js/bootstrap.js"></script>
 
-<!-- page specific plugin scripts -->
-<!--<script src="../components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js"></script>-->
-<!--<script src="../components/jqGrid/js/jquery.jqGrid.js"></script>-->
-<!--<script src="../components/jqGrid/js/i18n/grid.locale-cn.js"></script>-->
+<script src="/assets/js/src/ace.js"></script>
+<script src="/assets/js/src/ace.basics.js"></script>
+<script src="/assets/js/src/ace.sidebar.js"></script>
+<script src="/assets/js/src/ace.sidebar-scroll-1.js"></script>
+<script src="/assets/js/src/ace.submenu-hover.js"></script>
 
-<!-- ace scripts -->
-<!--<script src="../assets/js/src/elements.scroller.js"></script>-->
-<!--<script src="../assets/js/src/elements.colorpicker.js"></script>-->
-<!--<script src="../assets/js/src/elements.fileinput.js"></script>-->
-<!--<script src="../assets/js/src/elements.typeahead.js"></script>-->
-<!--<script src="../assets/js/src/elements.wysiwyg.js"></script>-->
-<!--<script src="../assets/js/src/elements.spinner.js"></script>-->
-<!--<script src="../assets/js/src/elements.treeview.js"></script>-->
-<!--<script src="../assets/js/src/elements.wizard.js"></script>-->
-<!--<script src="../assets/js/src/elements.aside.js"></script>-->
-<script src="../assets/js/src/ace.js"></script>
-<script src="../assets/js/src/ace.basics.js"></script>
-<!--<script src="../assets/js/src/ace.scrolltop.js"></script>-->
-<!--<script src="../assets/js/src/ace.ajax-content.js"></script>-->
-<!--<script src="../assets/js/src/ace.touch-drag.js"></script>-->
-<script src="../assets/js/src/ace.sidebar.js"></script>
-<script src="../assets/js/src/ace.sidebar-scroll-1.js"></script>
-<script src="../assets/js/src/ace.submenu-hover.js"></script>
-<!--<script src="../assets/js/src/ace.widget-box.js"></script>-->
-<!--<script src="../assets/js/src/ace.settings.js"></script>-->
-<!--<script src="../assets/js/src/ace.settings-rtl.js"></script>-->
-<!--<script src="../assets/js/src/ace.settings-skin.js"></script>-->
-<!--<script src="../assets/js/src/ace.widget-on-reload.js"></script>-->
-<!--<script src="../assets/js/src/ace.searchbox-autocomplete.js"></script>-->
 
-<script type="text/javascript">
-
-    $(function () {
-        $('#menu').sidebarMenu({
-            data: [{
-                id: '1',
-                text: '系统设置',
-                icon: 'icon-cog',
-                url: '',
-                menus: [{
-                    id: '11',
-                    text: '编码管理',
-                    icon: 'icon-glass',
-                    url: '/error.html'
-                }]
-            }, {
-                id: '2',
-                text: '基础数据',
-                icon: 'icon-leaf',
-                url: '',
-                menus: [{
-                    id: '21',
-                    text: '基础特征',
-                    icon: 'icon-glass',
-                    url: '/BasicData/BasicFeature/Index'
-                }, {
-                    id: '22',
-                    text: '特征管理',
-                    icon: 'icon-glass',
-                    url: '/BasicData/Features/Index'
-                }, {
-                    id: '23',
-                    text: '物料维护',
-                    icon: 'icon-glass',
-                    url: '/Model/Index'
-                }, {
-                    id: '24',
-                    text: '站点管理',
-                    icon: 'icon-glass',
-                    url: '/Station/Index'
-                }]
-            }, {
-                id: '3',
-                text: '权限管理',
-                icon: 'icon-user',
-                url: '',
-                menus: [{
-                    id: '31',
-                    text: '用户管理',
-                    icon: 'icon-user',
-                    url: '/SystemSetting/User'
-                }, {
-                    id: '32',
-                    text: '角色管理',
-                    icon: 'icon-apple',
-                    url: '/SystemSetting/Role'
-                }, {
-                    id: '33',
-                    text: '菜单管理',
-                    icon: 'icon-list',
-                    url: '/SystemSetting/Menu'
-                }, {
-                    id: '34',
-                    text: '部门管理',
-                    icon: 'icon-glass',
-                    url: '/SystemSetting/Department'
-                }]
-            }, {
-                id: '4',
-                text: '订单管理',
-                icon: 'icon-envelope',
-                url: '',
-                menus: [{
-                    id: '41',
-                    text: '订单查询',
-                    icon: 'icon-glass',
-                    url: '/Order/Query'
-                }, {
-                    id: '42',
-                    text: '订单排产',
-                    icon: 'icon-glass',
-                    url: '/Order/PLANTPRODUCT'
-                }, {
-                    id: '43',
-                    text: '订单撤排',
-                    icon: 'icon-glass',
-                    url: '/Order/cancelPRODUCT'
-                }, {
-                    id: '44',
-                    text: '订单HOLD',
-                    icon: 'icon-glass',
-                    url: '/Order/hold'
-                }, {
-                    id: '45',
-                    text: '订单删除',
-                    icon: 'icon-glass',
-                    url: '/Order/delete'
-                }, {
-                    id: '47',
-                    text: '订单插单',
-                    icon: 'icon-glass',
-                    url: '/Order/insertorder'
-                }, {
-                    id: '48',
-                    text: '订单导入',
-                    icon: 'icon-glass',
-                    url: '/Order/Import'
-                }]
-            }]
-        });
-    });
-
-</script>
-
-<!-- the following scripts are used in demo only for onpage help and you don't need them -->
-<!--<link rel="stylesheet" href="../assets/css/ace.onpage-help.css"/>-->
-<!--<link rel="stylesheet" href="../docs/assets/js/themes/sunburst.css"/>-->
-
-<!--<script type="text/javascript"> ace.vars['base'] = '..'; </script>-->
-<!--<script src="../assets/js/src/elements.onpage-help.js"></script>-->
-<!--<script src="../assets/js/src/ace.onpage-help.js"></script>-->
-<!--<script src="../docs/assets/js/rainbow.js"></script>-->
-<!--<script src="../docs/assets/js/language/generic.js"></script>-->
-<!--<script src="../docs/assets/js/language/html.js"></script>-->
-<!--<script src="../docs/assets/js/language/css.js"></script>-->
-<!--<script src="../docs/assets/js/language/javascript.js"></script>-->
-<script src="bootstrap-tab.js"></script>
-<script src="sidebar-menu.js"></script>
+<script src="/js/bootstrap-tab.js"></script>
+<!--<script src="/js/sidebar-menu.js"></script>-->
 </body>
 </html>

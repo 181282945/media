@@ -1,7 +1,6 @@
 package com.sunjung.core.security;
 
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.AccessDecisionVoter;
 import org.springframework.security.access.vote.AuthenticatedVoter;
 import org.springframework.security.access.vote.RoleVoter;
@@ -16,8 +15,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.access.AccessDeniedHandlerImpl;
-import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
-import org.springframework.security.web.access.expression.WebExpressionVoter;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
@@ -37,7 +34,6 @@ import java.util.*;
  * 2.jsr250Enabled: standards-based and allow simple role-based constraints
  * 3.prePostEnabled: expression-based
  */
-@Configuration
 @EnableWebSecurity
 //@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -55,7 +51,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         web.ignoring().antMatchers("/font/**");
         web.ignoring().antMatchers("/ace/**");
         web.ignoring().antMatchers("/favicon.ico");
-//        web.ignoring().antMatchers("/test/**");
+//        web.ignoring().antMatchers("/**");
     }
 
     @Override
@@ -168,21 +164,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      *
      * @return
      */
-    public DefaultWebSecurityExpressionHandler webSecurityExpressionHandler() {
-        DefaultWebSecurityExpressionHandler webSecurityExpressionHandler = new DefaultWebSecurityExpressionHandler();
-        return webSecurityExpressionHandler;
-    }
+//    public DefaultWebSecurityExpressionHandler webSecurityExpressionHandler() {
+//        DefaultWebSecurityExpressionHandler webSecurityExpressionHandler = new DefaultWebSecurityExpressionHandler();
+//        return webSecurityExpressionHandler;
+//    }
 
     /**
      * 表达式投票器
      *
      * @return
      */
-    public WebExpressionVoter webExpressionVoter() {
-        WebExpressionVoter webExpressionVoter = new WebExpressionVoter();
-        webExpressionVoter.setExpressionHandler(webSecurityExpressionHandler());
-        return webExpressionVoter;
-    }
+//    public WebExpressionVoter webExpressionVoter() {
+//        WebExpressionVoter webExpressionVoter = new WebExpressionVoter();
+//        webExpressionVoter.setExpressionHandler(webSecurityExpressionHandler());
+//        return webExpressionVoter;
+//    }
 
 //    // Code5----------------------------------------------
 //    @Bean

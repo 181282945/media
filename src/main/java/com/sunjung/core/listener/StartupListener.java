@@ -124,6 +124,7 @@ public class StartupListener implements ApplicationListener<ContextRefreshedEven
             }else{
                 item.getKey().setId(resultResc.getId());
                 item.getKey().setMenuId(resultResc.getMenuId());
+                aclResourceService.updateEntity(item.getKey());
                 List<AclResource> resources = item.getValue();
                 for(AclResource resc : resources){
                         resc.setModuleId(resultResc.getId());

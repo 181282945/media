@@ -1186,7 +1186,9 @@ $.fn.jqGrid = function( pin ) {
 			onSortCol: null,
 			ondblClickRow: null,
 			onRightClickRow: null,
-			onPaging: null,
+			onPaging: function(){
+				alert("aa");
+			},
 			onSelectAll: null,
 			onInitGrid : null,
 			loadComplete: null,

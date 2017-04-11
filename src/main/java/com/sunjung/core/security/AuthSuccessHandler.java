@@ -30,7 +30,7 @@ public class AuthSuccessHandler extends BaseController<AclUser> {
 
     @RequestMapping(value = "/toIndex",method = RequestMethod.GET)
     public ModelAndView toIndex(){
-        ModelAndView mav = new ModelAndView("index");
+        ModelAndView mav = new ModelAndView("main");
         AclUser aclUser = SecurityUtil.getCurrentUser();
         mav.addObject("userName",aclUser.getUserName());
         mav.addObject("menus",aclMenuService.getAclUserMenus());

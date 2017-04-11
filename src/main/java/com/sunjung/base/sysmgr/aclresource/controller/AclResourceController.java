@@ -7,6 +7,7 @@ import com.sunjung.core.controller.BaseController;
 import com.sunjung.core.dto.ResultDataDto;
 import com.sunjung.core.mybatis.specification.PageAndSort;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -25,6 +26,11 @@ public class AclResourceController extends BaseController<AclResource> {
 
     final static String MODULE_NAME = "资源管理";
 
+    @InitBinder("aclResource")
+    public void initBinder1(WebDataBinder binder) {
+        binder.setFieldDefaultPrefix("aclResource.");
+    }
+
     @Resource
     private AclResourceService aclResourceService;
 
@@ -39,7 +45,7 @@ public class AclResourceController extends BaseController<AclResource> {
 
     @RequestMapping(value = "/list",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @AclResc(code = "list",name = "查询列表")
-    public ResultDataDto list(@RequestBody AclResource aclResource,PageAndSort pageAndSort){
+    public ResultDataDto list(@ModelAttribute("aclResource")AclResource aclResource,@ModelAttribute("pageAndSort")PageAndSort pageAndSort){
         List<AclResource> aclResources = aclResourceService.findByPage(aclResource,pageAndSort);
         ResultDataDto resultDataDto =new ResultDataDto(aclResources,pageAndSort);
         System.out.println();

@@ -6,7 +6,9 @@ import com.sunjung.core.entity.BaseEntity;
 import com.sunjung.core.mybatis.specification.PageAndSort;
 import com.sunjung.core.util.GenericeClassUtils;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.InitBinder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,6 +20,11 @@ import java.util.Map;
  * Created by ZhenWeiLai on 2017/4/1.
  */
 public abstract class BaseController<T extends BaseEntity> {
+
+    @InitBinder("pageAndSort")
+    public void initBinderPageAndSort(WebDataBinder binder) {
+        binder.setFieldDefaultPrefix("pageAndSort.");
+    }
 
     // 异常信息拦截，返回
     @ExceptionHandler(Exception.class)   //在Controller类中添加该注解方法即可(注意：添加到某个controller，只针对该controller起作用)

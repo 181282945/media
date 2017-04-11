@@ -157,18 +157,18 @@
 
 
 
-    $.ajax({
-        type:"POST",
-        url:"/base/sysmgr/aclresource/list?page=1&rp=10",
-        async: false,
-        contentType:"application/json",  //发送信息至服务器时内容编码类型。
-        dataType:"json",  // 预期服务器返回的数据类型。如果不指定，jQuery 将自动根据 HTTP 包 MIME 信息来智能判断，比如XML MIME类型就被识别为XML。
-        data:'{"id": null,"version": null,"createByUserCode": null,"createByUserName": null, "createTime": null, "lastModifyByUserCode": null, "lastModifyByUserName": null, "lastModifyTime": null,  "code": null, "type": null,  "path": null, "homePage": null, "seq": null,   "name": null, "moduleId": null,"menuId": null,"identify": null}',
-        success:function(data){
-            grid_data = data.datas;
-//            alert(JSON.stringify(data.datas));
-        }
-    });
+    //    $.ajax({
+    //        type:"POST",
+    //        url:"/base/sysmgr/aclresource/list?page=1&rp=10",
+    //        async: false,
+    //        contentType:"application/json",  //发送信息至服务器时内容编码类型。
+    //        dataType:"json",  // 预期服务器返回的数据类型。如果不指定，jQuery 将自动根据 HTTP 包 MIME 信息来智能判断，比如XML MIME类型就被识别为XML。
+    //        data:'{"id": null,"version": null,"createByUserCode": null,"createByUserName": null, "createTime": null, "lastModifyByUserCode": null, "lastModifyByUserName": null, "lastModifyTime": null,  "code": null, "type": null,  "path": null, "homePage": null, "seq": null,   "name": null, "moduleId": null,"menuId": null,"identify": null}',
+    //        success:function(data){
+    //            grid_data = data.datas;
+    ////            alert(JSON.stringify(data.datas));
+    //        }
+    //    });
 
 
 
@@ -282,31 +282,31 @@
 
             url:"/base/sysmgr/aclresource/list",
             mtype:"POST",
-            ajaxGridOptions: { contentType: 'application/json; charset=utf-8',data:'{"id": null,"version": null,"createByUserCode": null,"createByUserName": null, "createTime": null, "lastModifyByUserCode": null, "lastModifyByUserName": null, "lastModifyTime": null,  "code": null, "type": null,  "path": null, "homePage": null, "seq": null,   "name": null, "moduleId": null,"menuId": null,"identify": null}' },
+//            ajaxGridOptions: { contentType: 'application/json; charset=utf-8',data:'{"id": null,"version": null,"createByUserCode": null,"createByUserName": null, "createTime": null, "lastModifyByUserCode": null, "lastModifyByUserName": null, "lastModifyTime": null,  "code": null, "type": null,  "path": null, "homePage": null, "seq": null,   "name": null, "moduleId": null,"menuId": null,"identify": null}' },
 //            data: grid_data,
             datatype: "json",
             jsonReader: {
                 root:"datas",
-                page: "page",
-                total: "totalPage",
-                records: "rowCount",
+                page: "pageAndSort.page",
+                total: "pageAndSort.totalPage",
+                records: "pageAndSort.rowCount",
                 repeatitems : false
             },
             prmNames : {
-                page:"page",    // 表示请求页码的参数名称
-                rows:"rp",    // 表示请求行数的参数名称
+                page:"pageAndSort.page",    // 表示请求页码的参数名称
+                rows:"pageAndSort.rp",    // 表示请求行数的参数名称
 //                sort: "sidx", // 表示用于排序的列名的参数名称
-//                order: "sord", // 表示采用的排序方式的参数名称
+                order: "pageAndSort.sortOrder", // 表示采用的排序方式的参数名称
 //                search:"_search", // 表示是否是搜索请求的参数名称
 //                nd:"nd", // 表示已经发送请求的次数的参数名称
                 id:"id", // 表示当在编辑数据模块中发送数据时，使用的id的名称
 //                oper:"oper",    // operation参数名称（我暂时还没用到）
-//                editoper:"edit", // 当在edit模式中提交数据时，操作的名称
-//                addoper:"add", // 当在add模式中提交数据时，操作的名称
-//                deloper:"del", // 当在delete模式中提交数据时，操作的名称
+                editoper:"edit", // 当在edit模式中提交数据时，操作的名称
+                addoper:"add", // 当在add模式中提交数据时，操作的名称
+                deloper:"del", // 当在delete模式中提交数据时，操作的名称
                 subgridid:"id", // 当点击以载入数据到子表时，传递的数据名称
                 npage: null,
-                totalrows:"rowCount" // 表示需从Server得到总共多少行数据的参数名称，参见jqGrid选项中的rowTotal
+//                totalrows:"rowCount" // 表示需从Server得到总共多少行数据的参数名称，参见jqGrid选项中的rowTotal
             },
             height: 400,
             colNames:[' ', 'id','编码','type', 'path', 'homePage','moduleId','name','menuId','seq','identify','version','createByUserCode','createByUserName','createTime','lastModifyByUserName','lastModifyByUserCode','lastModifyTime'],

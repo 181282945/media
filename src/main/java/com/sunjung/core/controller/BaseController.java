@@ -1,6 +1,7 @@
 package com.sunjung.core.controller;
 
 import com.google.gson.Gson;
+import com.sunjung.common.dto.JqgridFilters;
 import com.sunjung.core.dto.ResultDataDto;
 import com.sunjung.core.entity.BaseEntity;
 import com.sunjung.core.mybatis.specification.PageAndSort;
@@ -9,6 +10,8 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,6 +27,13 @@ public abstract class BaseController<T extends BaseEntity> {
     @InitBinder("pageAndSort")
     public void initBinderPageAndSort(WebDataBinder binder) {
         binder.setFieldDefaultPrefix("pageAndSort.");
+    }
+
+    @ModelAttribute
+    public JqgridFilters populateModel(@RequestParam(value = "filters",required = false) String filters) {
+        Gson gson = new Gson();
+        JqgridFilters jqgridFilters = gson.fromJson(filters, JqgridFilters.class);
+        return jqgridFilters;
     }
 
     // 异常信息拦截，返回

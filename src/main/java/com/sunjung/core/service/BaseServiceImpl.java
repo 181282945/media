@@ -13,6 +13,7 @@ import com.sunjung.core.mybatis.specification.Specification;
 import com.sunjung.core.util.ConstraintUtil;
 import com.sunjung.core.util.EntityColumnUtil;
 import com.sunjung.core.util.GenericeClassUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.session.SqlSession;
 
 import javax.annotation.Resource;
@@ -267,17 +268,16 @@ public class BaseServiceImpl<T extends BaseEntity,M extends BaseMapper<T>> imple
      */
     protected Specification<T> makeSpecificationByJqgridFilters(JqgridFilters jqgridFilters,PageAndSort pageAndSort) {
         Specification<T> specification = makeSpecification(pageAndSort);
-        String groupOp =  jqgridFilters.getGroupOp();
+        if(jqgridFilters == null || jqgridFilters.getRules() == null || jqgridFilters.getRules().isEmpty() || StringUtils.isBlank(jqgridFilters.getGroupOp()))
+            return specification;
         List<JqgridFilters.Rule> rules = jqgridFilters.getRules();
-        if(rules!=null){
-            QueryLike[] queryLikes = new QueryLike[rules.size()];
-
-            for(int i=0;i<queryLikes.length;i++){
-                JqgridFilters.Rule rule = rules.get(i);
-                queryLikes[i] = new QueryLike(rule.getField(),QueryLike.LikeMode.getByCode(rule.getOp()),rule.getData()).setOperator(groupOp);
-            }
-            specification.setQueryLikes(Arrays.asList(queryLikes));
+        String groupOp =  jqgridFilters.getGroupOp();
+        QueryLike[] queryLikes = new QueryLike[rules.size()];
+        for(int i=0;i<queryLikes.length;i++){
+            JqgridFilters.Rule rule = rules.get(i);
+            queryLikes[i] = new QueryLike(rule.getField(),QueryLike.LikeMode.getByCode(rule.getOp()),rule.getData()).setOperator(groupOp);
         }
+        specification.setQueryLikes(Arrays.asList(queryLikes));
         return specification;
     }
 

@@ -1,5 +1,6 @@
 package com.sunjung.base.sysmgr.aclresource.controller;
 
+import com.google.gson.Gson;
 import com.sunjung.base.sysmgr.aclresource.annotation.AclResc;
 import com.sunjung.base.sysmgr.aclresource.entity.AclResource;
 import com.sunjung.base.sysmgr.aclresource.service.AclResourceService;
@@ -35,7 +36,6 @@ public class AclResourceController extends BaseController<AclResource> {
     @Resource
     private AclResourceService aclResourceService;
 
-
     /**
      *
      * @return
@@ -44,7 +44,6 @@ public class AclResourceController extends BaseController<AclResource> {
     public ModelAndView toList(){
         ModelAndView mav = new ModelAndView(PATH+"/list_aclresource");
         mav.addObject("MODULE_NAME",MODULE_NAME);
-
         return mav;
     }
 
@@ -56,7 +55,7 @@ public class AclResourceController extends BaseController<AclResource> {
      */
     @RequestMapping(value = "/list",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @AclResc(code = "list",name = "查询列表")
-    public ResultDataDto list(@RequestBody JqgridFilters jqgridFilters,@ModelAttribute("pageAndSort")PageAndSort pageAndSort){
+    public ResultDataDto list(JqgridFilters jqgridFilters, @ModelAttribute("pageAndSort")PageAndSort pageAndSort){
         List<AclResource> aclResources = aclResourceService.findByJqgridFilters(jqgridFilters,pageAndSort);
         return new ResultDataDto(aclResources,pageAndSort);
     }

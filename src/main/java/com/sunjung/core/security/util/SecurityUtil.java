@@ -3,9 +3,14 @@ package com.sunjung.core.security.util;
 import com.sunjung.base.sysmgr.acluser.entity.AclUser;
 import com.sunjung.base.sysmgr.acluser.service.AclUserService;
 import com.sunjung.core.util.SpringUtils;
+import org.springframework.security.access.vote.AuthenticatedVoter;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationTrustResolver;
+import org.springframework.security.authentication.AuthenticationTrustResolverImpl;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
+import sun.security.util.SecurityConstants;
 
 import java.util.Collection;
 
@@ -15,6 +20,8 @@ import java.util.Collection;
 public class SecurityUtil {
 
     public static final String ADMIN = "ADMIN";
+
+    private static final AuthenticationTrustResolver authenticationTrustResolver = new AuthenticationTrustResolverImpl();
 
     /**
      *
@@ -37,11 +44,11 @@ public class SecurityUtil {
      * @return
      */
     public static AclUser getCurrentUser(){
+        if(authenticationTrustResolver.isAnonymous(SecurityContextHolder.getContext().getAuthentication()))
+            return null;
         String aclUserName = ((User)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
         return getAclUserService().getUserByName(aclUserName);
     }
-
-
     private static AclUserService getAclUserService(){
         return (AclUserService)SpringUtils.getBean("aclUserService");
     }

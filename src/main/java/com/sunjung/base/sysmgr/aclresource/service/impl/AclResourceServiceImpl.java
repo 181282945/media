@@ -3,6 +3,7 @@ package com.sunjung.base.sysmgr.aclresource.service.impl;
 import com.sunjung.base.sysmgr.aclresource.dao.AclResourceMapper;
 import com.sunjung.base.sysmgr.aclresource.entity.AclResource;
 import com.sunjung.base.sysmgr.aclresource.service.AclResourceService;
+import com.sunjung.common.dto.JqgridFilters;
 import com.sunjung.core.mybatis.specification.PageAndSort;
 import com.sunjung.core.mybatis.specification.QueryLike;
 import com.sunjung.core.mybatis.specification.Specification;

@@ -216,6 +216,16 @@ public class QueryLike {
             return value;
         }
 
+
+        public static LikeMode getByCode(String code){
+            for(LikeMode item : LikeMode.values()){
+                if(item.code.toLowerCase().equals(code.toLowerCase()))
+                    return item;
+            }
+            throw new RuntimeException(LikeMode.class.getName() + ":没有匹配的操作符!");
+        }
+
+
     }
 
     public String getColumnName() {

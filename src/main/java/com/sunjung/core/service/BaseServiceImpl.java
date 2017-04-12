@@ -1,5 +1,7 @@
 package com.sunjung.core.service;
 
+import com.sunjung.base.sysmgr.aclresource.entity.AclResource;
+import com.sunjung.common.dto.JqgridFilters;
 import com.sunjung.core.dao.BaseMapper;
 import com.sunjung.core.mybatis.specification.PageAndSort;
 import com.sunjung.core.dto.Pair;
@@ -14,6 +16,7 @@ import com.sunjung.core.util.GenericeClassUtils;
 import org.apache.ibatis.session.SqlSession;
 
 import javax.annotation.Resource;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -244,12 +247,37 @@ public class BaseServiceImpl<T extends BaseEntity,M extends BaseMapper<T>> imple
         return this.findByPage(specification);
     }
 
+    @Override
+    public List<T> findByJqgridFilters(JqgridFilters jqgridFilters, PageAndSort pageAndSort) {
+        Specification<T> specification = makeSpecificationByJqgridFilters(jqgridFilters,pageAndSort);
+        return this.findByPage(specification);
+    }
+
     /**
      * 模糊搜索条件
      */
     protected Specification<T> makeSpecification(PageAndSort pageAndSort) {
         Specification<T> specification = new Specification<T>(entityClass);
         specification.setPageAndSort(pageAndSort);
+        return specification;
+    }
+
+    /**
+     * JQGRID 模糊查询条件
+     */
+    protected Specification<T> makeSpecificationByJqgridFilters(JqgridFilters jqgridFilters,PageAndSort pageAndSort) {
+        Specification<T> specification = makeSpecification(pageAndSort);
+        String groupOp =  jqgridFilters.getGroupOp();
+        List<JqgridFilters.Rule> rules = jqgridFilters.getRules();
+        if(rules!=null){
+            QueryLike[] queryLikes = new QueryLike[rules.size()];
+
+            for(int i=0;i<queryLikes.length;i++){
+                JqgridFilters.Rule rule = rules.get(i);
+                queryLikes[i] = new QueryLike(rule.getField(),QueryLike.LikeMode.getByCode(rule.getOp()),rule.getData()).setOperator(groupOp);
+            }
+            specification.setQueryLikes(Arrays.asList(queryLikes));
+        }
         return specification;
     }
 

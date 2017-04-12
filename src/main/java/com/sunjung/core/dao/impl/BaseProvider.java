@@ -301,7 +301,7 @@ public class BaseProvider<T extends BaseEntity> {
         if (null == pageAndSort.getPage() || null == pageAndSort.getRp() || null == pageAndSort.getRowCount()) {
             throw new RuntimeException("缺少参数：第几页、每页显示数、总记录数");
         }
-        limitOrderSql.append(" limit " + pageAndSort.getSeq() + ", " + pageAndSort.getRp());
+        limitOrderSql.append(" limit " + pageAndSort.getStartIndex() + ", " + pageAndSort.getRp());
         return limitOrderSql.toString();
     }
 

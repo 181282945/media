@@ -1,5 +1,6 @@
 package com.sunjung.core.service;
 
+import com.sunjung.common.dto.JqgridFilters;
 import com.sunjung.core.dao.BaseMapper;
 import com.sunjung.core.dto.Pair;
 import com.sunjung.core.entity.BaseEntity;
@@ -74,6 +75,11 @@ public interface BaseService<T extends BaseEntity,M extends BaseMapper> {
      * 根据实体模糊分页查询
      */
     List<T> findByPage(T entity, PageAndSort pageAndSort);
+
+    /**
+     * 根据JqgridFilters模糊分页查询
+     */
+    List<T> findByJqgridFilters(JqgridFilters jqgridFilters, PageAndSort pageAndSort);
 
     /**
      * 单表模糊查询总记录数

@@ -130,7 +130,7 @@
 </div>
 
 <!-- /section:basics/navbar.layout -->
-<div class="main-container ace-save-state" id="main-container">
+<div class="main-container ace-save-state" style="height: 650px;" id="main-container">
     <div class="sidebar" id="sidebar">
         <ul class="nav nav-list" id="menu">
 
@@ -141,21 +141,21 @@
                     <li th:each="item,itemS: ${menu.value}"><a th:href="${item.href}">
                         <i class="icon-glass"></i>
                         <span class="menu-text" th:text="${item.name}">编码管理</span>
-                        </a>
+                    </a>
                     </li>
                 </ul>
             </li>
 
 
             <!--<li><a href="#" class="dropdown-toggle"><i class="icon-cog"></i><span class="menu-text" > aa</span><b-->
-                    <!--class="arrow icon-angle-down"></b></a>-->
-                <!--<ul class="submenu">-->
-                    <!--<li"><a href="javascript:addTabs({id:'1',title: 'aas',close: true,url: '/baidu.com'});">-->
-                        <!--<i class="icon-glass"></i>-->
-                        <!--<span class="menu-text">编码管理</span>-->
-                    <!--</a>-->
-                    <!--</li>-->
-                <!--</ul>-->
+            <!--class="arrow icon-angle-down"></b></a>-->
+            <!--<ul class="submenu">-->
+            <!--<li"><a href="javascript:addTabs({id:'1',title: 'aas',close: true,url: '/baidu.com'});">-->
+            <!--<i class="icon-glass"></i>-->
+            <!--<span class="menu-text">编码管理</span>-->
+            <!--</a>-->
+            <!--</li>-->
+            <!--</ul>-->
             <!--</li>-->
 
         </ul>
@@ -185,35 +185,6 @@
         </div><!-- /.page-content -->
     </div>
 </div><!-- /.main-content -->
-
-<div class="footer">
-    <div class="footer-inner">
-        <!-- #section:basics/footer -->
-        <div class="footer-content">
-						<span class="bigger-120">
-							<span class="blue bolder">htxx</span>
-							Application &copy; 2013-2014
-						</span>
-
-            &nbsp; &nbsp;
-            <span class="action-buttons">
-							<a href="#">
-								<i class="ace-icon fa fa-twitter-square light-blue bigger-150"></i>
-							</a>
-
-							<a href="#">
-								<i class="ace-icon fa fa-facebook-square text-primary bigger-150"></i>
-							</a>
-
-							<a href="#">
-								<i class="ace-icon fa fa-rss-square orange bigger-150"></i>
-							</a>
-						</span>
-        </div>
-
-        <!-- /section:basics/footer -->
-    </div>
-</div>
 
 <a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
     <i class="ace-icon fa fa-angle-double-up icon-only bigger-110"></i>

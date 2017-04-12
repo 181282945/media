@@ -71,7 +71,7 @@ public class PageAndSort {
     /**
      * 开始序号
      */
-    private Long seq;
+    private Long startIndex;
 
     /**
      * 排序字段
@@ -88,8 +88,8 @@ public class PageAndSort {
     /**
      * 数据开始坐标，Mysql从0开始
      */
-    public Long getSeq(){
-        return this.seq;
+    public Long getStartIndex(){
+        return this.startIndex;
     }
 
     /**
@@ -155,7 +155,7 @@ public class PageAndSort {
 
     public PageAndSort setRowCount(Long rowCount) {
         this.rowCount = rowCount;
-        this.seq = (this.getPage()-1)*this.getRp()*1L;
+        this.startIndex = (this.getPage()-1)*this.getRp()*1L;
         return this;
     }
 
@@ -178,8 +178,8 @@ public class PageAndSort {
         return sql;
     }
 
-    public PageAndSort setSeq(Long seq) {
-        this.seq = seq;
+    public PageAndSort setStartIndex(Long startIndex) {
+        this.startIndex = startIndex;
         return this;
     }
 

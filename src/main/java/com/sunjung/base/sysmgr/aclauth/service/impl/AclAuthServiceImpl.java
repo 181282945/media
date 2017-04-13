@@ -28,4 +28,10 @@ public class AclAuthServiceImpl extends BaseServiceImpl<AclAuth,AclAuthMapper> i
     public List<Map<String, String>> findPathCode() {
         return getMapper().findPathCode();
     }
+
+    @Override
+    public int updateCodeByRescId(String code, Integer rescId) {
+        return getMapper().updateCodeByRescId(code,rescId);
+    }
+
 }

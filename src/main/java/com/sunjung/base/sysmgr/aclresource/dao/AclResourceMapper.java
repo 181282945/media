@@ -1,10 +1,10 @@
 package com.sunjung.base.sysmgr.aclresource.dao;
 
-import com.sunjung.base.sysmgr.aclresource.common.AclResourceType;
 import com.sunjung.base.sysmgr.aclresource.entity.AclResource;
 import com.sunjung.core.dao.BaseMapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

@@ -1,6 +1,5 @@
 package com.sunjung.base.sysmgr.aclresource.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.sunjung.base.sysmgr.aclresource.common.AclResourceType;
 import com.sunjung.core.entity.BaseEntity;
 import com.sunjung.core.entity.annotation.BaseEntityMapper;
@@ -22,12 +21,37 @@ public class AclResource extends BaseEntity {
         this.type = type;
     }
 
+    /**
+     * 模块资源造方法
+     * @param code
+     * @param name
+     * @param path
+     * @param type
+     * @param homePage
+     * @param identify
+     */
     public AclResource(String code,String name,String path,String type,String homePage,Integer identify){
         this.code = code;
         this.name = name;
         this.path = path;
         this.type = type;
         this.homePage = homePage;
+        this.identify = identify;
+    }
+
+    /**
+     * 方法资源构造方法
+     * @param code
+     * @param name
+     * @param path
+     * @param type
+     * @param identify
+     */
+    public AclResource(String code,String name,String path,String type,Integer identify){
+        this.code = code;
+        this.name = name;
+        this.path = path;
+        this.type = type;
         this.identify = identify;
     }
 

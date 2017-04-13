@@ -90,7 +90,7 @@ public class MySecurityMetadataSource implements FilterInvocationSecurityMetadat
     }
 
 
-    @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    @Transactional(propagation = Propagation.SUPPORTS)
     private void loadResourceDefine() {
         loadModuleResources();
         loadMethodResources();

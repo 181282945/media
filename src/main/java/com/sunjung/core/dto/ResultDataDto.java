@@ -18,6 +18,7 @@ import com.sunjung.core.exception.RuntimeServiceException;
 import com.sunjung.core.exception.RuntimeWebException;
 import com.sunjung.core.mybatis.specification.PageAndSort;
 import org.springframework.dao.NonTransientDataAccessException;
+import org.springframework.validation.BindException;
 
 public class ResultDataDto {
 
@@ -85,34 +86,34 @@ public class ResultDataDto {
 	public static void addImportError(HttpServletResponse response, String message) {
 		try {
 			response.setContentType("text/html");
-			response.getWriter().write(new Gson().toJson(new ResultDataDto(CODE_ERROR_SERVICE, message)));
+			response.getWriter().write(new Gson().toJson(new ResultDataDto(CODE_ERROR_SERVICE,CODE_OPERATE_FAILURE, message)));
 		} catch (IOException e) {
 			throw new RuntimeServiceException(e);
 		}
 	}
 
 	public static ResultDataDto addSuccess() {
-		return new ResultDataDto(CODE_SUCCESS, null);
+		return new ResultDataDto(CODE_SUCCESS,CODE_OPERATE_SUCCESS, null);
 	}
 
 	public static ResultDataDto addSuccess(String message) {
-		return new ResultDataDto(CODE_SUCCESS, message);
+		return new ResultDataDto(CODE_SUCCESS,CODE_OPERATE_SUCCESS, message);
 	}
 
 	public static ResultDataDto addAddSuccess() {
-		return new ResultDataDto(CODE_SUCCESS, "新增成功");
+		return new ResultDataDto(CODE_SUCCESS,CODE_OPERATE_SUCCESS, "新增成功");
 	}
 
 	public static ResultDataDto addUpdateSuccess() {
-		return new ResultDataDto(CODE_SUCCESS, "更新成功");
+		return new ResultDataDto(CODE_SUCCESS,CODE_OPERATE_SUCCESS, "更新成功");
 	}
 
 	public static ResultDataDto addUpdateCheckSuccess() {
-		return new ResultDataDto(CODE_SUCCESS, "确定成功");
+		return new ResultDataDto(CODE_SUCCESS,CODE_OPERATE_SUCCESS, "确定成功");
 	}
 
 	public static ResultDataDto addDeleteSuccess() {
-		return new ResultDataDto(CODE_SUCCESS, "删除成功");
+		return new ResultDataDto(CODE_SUCCESS,CODE_OPERATE_SUCCESS, "删除成功");
 	}
 
 	public static ResultDataDto addOperationSuccess() {
@@ -131,12 +132,6 @@ public class ResultDataDto {
 		super();
 	}
 
-	public ResultDataDto(String code, String message) {
-		super();
-		this.code = code;
-		this.message = message;
-	}
-
 	public ResultDataDto(String code,String operateCode,String message) {
 		super();
 		this.code = code;
@@ -147,6 +142,7 @@ public class ResultDataDto {
 	public ResultDataDto(String message) {
 		super();
 		this.code = CODE_SUCCESS;
+		this.operateCode = CODE_OPERATE_SUCCESS;
 		this.message = message;
 	}
 
@@ -156,6 +152,7 @@ public class ResultDataDto {
 	public<T extends BaseEntity> ResultDataDto(T entity) {
 		super();
 		this.code = CODE_SUCCESS;
+		this.operateCode = CODE_OPERATE_SUCCESS;
 		this.datas = entity;
 	}
 
@@ -165,6 +162,7 @@ public class ResultDataDto {
 	public ResultDataDto(List<?> list) {
 		super();
 		this.code = CODE_SUCCESS;
+		this.operateCode = CODE_OPERATE_SUCCESS;
 		this.datas = list;
 	}
 
@@ -174,6 +172,7 @@ public class ResultDataDto {
 	public ResultDataDto(Map<String, Object> map) {
 		super();
 		this.code = CODE_SUCCESS;
+		this.operateCode = CODE_OPERATE_SUCCESS;
 		this.datas = map;
 	}
 
@@ -193,6 +192,7 @@ public class ResultDataDto {
 	public ResultDataDto(RuntimeServiceException rex) {
 		super();
 		this.code = CODE_ERROR_SERVICE;
+		this.operateCode = CODE_OPERATE_FAILURE;
 		this.message = rex.getMessage();
 	}
 
@@ -202,6 +202,7 @@ public class ResultDataDto {
 	public ResultDataDto(RuntimeFunctionException rex) {
 		super();
 		this.code = CODE_ERROR_FUNCTION;
+		this.operateCode = CODE_OPERATE_FAILURE;
 		this.message = rex.getMessage();
 	}
 
@@ -211,6 +212,7 @@ public class ResultDataDto {
 	public ResultDataDto(RuntimeWebException rex) {
 		super();
 		this.code = CODE_ERROR_WEB;
+		this.operateCode = CODE_OPERATE_FAILURE;
 		this.message = rex.getMessage();
 	}
 
@@ -220,6 +222,7 @@ public class ResultDataDto {
 	public ResultDataDto(RuntimeOtherException rex) {
 		super();
 		this.code = CODE_ERROR_OTHER;
+		this.operateCode = CODE_OPERATE_FAILURE;
 		this.message = rex.getMessage();
 	}
 
@@ -229,6 +232,7 @@ public class ResultDataDto {
 	public ResultDataDto(Exception ex) {
 		super();
 		this.code = CODE_ERROR_OTHER;
+		this.operateCode = CODE_OPERATE_FAILURE;
 		this.message = getErrorMessage(ex);
 		ex.printStackTrace();
 	}
@@ -249,6 +253,7 @@ public class ResultDataDto {
 	public ResultDataDto(Throwable tx) {
 		super();
 		this.code = CODE_ERROR_OTHER;
+		this.operateCode = CODE_OPERATE_FAILURE;
 		this.message = tx.getMessage();
 	}
 
@@ -312,6 +317,9 @@ public class ResultDataDto {
 		}
 		if (ex instanceof NoSuchMethodException) {
 			return "系统异常：方法找不到";
+		}
+		if (ex instanceof BindException) {
+			return "系统异常：控制器参数装配异常!";
 		}
 		return ex.getMessage();
 	}

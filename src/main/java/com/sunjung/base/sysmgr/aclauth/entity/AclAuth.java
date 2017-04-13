@@ -2,6 +2,7 @@ package com.sunjung.base.sysmgr.aclauth.entity;
 
 import com.sunjung.core.entity.BaseBusinessEntity;
 import com.sunjung.core.entity.annotation.BaseEntityMapper;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.type.Alias;
 
 /**
@@ -10,6 +11,10 @@ import org.apache.ibatis.type.Alias;
 @Alias("AclAuth")
 @BaseEntityMapper(tableName = "acl_auth")
 public class AclAuth extends BaseBusinessEntity {
+
+    private String authPrefix = "AUTH_";
+
+
     /**
      * RequestMapping 里面的映射地址 value/path
      */
@@ -42,7 +47,9 @@ public class AclAuth extends BaseBusinessEntity {
     }
 
     public void setCode(String code) {
-        this.code = code;
+        if(StringUtils.isBlank(code))
+            throw new RuntimeException("code 不能为 null!");
+        this.code = this.authPrefix + code.toUpperCase();
     }
 
     public String getName() {

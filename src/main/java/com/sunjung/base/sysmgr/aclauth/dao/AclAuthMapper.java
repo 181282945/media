@@ -4,6 +4,7 @@ import com.sunjung.base.sysmgr.aclauth.entity.AclAuth;
 import com.sunjung.core.dao.BaseMapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -23,4 +24,7 @@ public interface AclAuthMapper extends BaseMapper<AclAuth> {
 
     @Select("SELECT b.path,a.code FROM acl_auth a INNER JOIN acl_resource b ON a.resourceId = b.id")
     List<Map<String,String>> findPathCode();
+
+    @Update(" UPDATE acl_auth SET code = #{code} WHERE id = #{rescId} ")
+    int updateCodeByRescId(@Param("code")String code,@Param("rescId")Integer rescId);
 }

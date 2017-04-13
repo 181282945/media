@@ -6,6 +6,8 @@ import com.sunjung.base.sysmgr.aclresource.annotation.AclResc;
 import com.sunjung.core.controller.BaseController;
 import com.sunjung.core.dto.ResultDataDto;
 import org.springframework.http.MediaType;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,6 +37,7 @@ public class AclMenuController extends BaseController<AclMenu> {
 
     @RequestMapping(value = "/getaclusermenus",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @AclResc(code = "getAclUserMenus",name = "获取菜单")
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public ResultDataDto getAclUserMenus(){
         return ResultDataDto.addSuccess().setDatas(aclMenuService.getAclUserMenus());
     }

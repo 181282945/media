@@ -1,6 +1,5 @@
 package com.sunjung.base.sysmgr.aclresource.controller;
 
-import com.google.gson.Gson;
 import com.sunjung.base.sysmgr.aclresource.annotation.AclResc;
 import com.sunjung.base.sysmgr.aclresource.entity.AclResource;
 import com.sunjung.base.sysmgr.aclresource.service.AclResourceService;
@@ -9,6 +8,8 @@ import com.sunjung.core.controller.BaseController;
 import com.sunjung.core.dto.ResultDataDto;
 import com.sunjung.core.mybatis.specification.PageAndSort;
 import org.springframework.http.MediaType;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -55,6 +56,7 @@ public class AclResourceController extends BaseController<AclResource> {
      */
     @RequestMapping(value = "/list",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @AclResc(code = "list",name = "查询列表")
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public ResultDataDto list(JqgridFilters jqgridFilters, @ModelAttribute("pageAndSort")PageAndSort pageAndSort){
         List<AclResource> aclResources = aclResourceService.findByJqgridFilters(jqgridFilters,pageAndSort);
         return new ResultDataDto(aclResources,pageAndSort);
@@ -68,19 +70,22 @@ public class AclResourceController extends BaseController<AclResource> {
     @RequestMapping(value = "/add",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @AclResc(code = "add",name = "新增增资源")
     public ResultDataDto add(@ModelAttribute("aclResource")AclResource aclResource){
-         if(aclResourceService.addEntity(aclResource)!=null)
-             return ResultDataDto.addAddSuccess();
-         return ResultDataDto.addOperationFailure("保存失败!");
+//         if(aclResourceService.addEntity(aclResource)!=null)
+//             return ResultDataDto.addAddSuccess();
+//         return ResultDataDto.addOperationFailure("保存失败!");
+        throw new RuntimeException("add");
     }
 
     /**
      * 查询方法
      * @return
      */
-    @RequestMapping(value = "/getById",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @AclResc(code = "getById",name = "查询列表")
-    public ResultDataDto list(@RequestParam("id")Integer id){
-        return new ResultDataDto(aclResourceService.findEntityById(id));
+    @RequestMapping(value = "/view",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @AclResc(code = "view",name = "查询列表")
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    public ResultDataDto view(@RequestParam("id")Integer id){
+//        return new ResultDataDto(aclResourceService.findEntityById(id));
+        throw new RuntimeException("view");
     }
 
     /**
@@ -89,8 +94,9 @@ public class AclResourceController extends BaseController<AclResource> {
     @RequestMapping(value = "/delete",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @AclResc(code = "delete",name = "删除资源")
     public ResultDataDto delete(@RequestParam("id") Integer id){
-        aclResourceService.deleteById(id);
-        return ResultDataDto.addDeleteSuccess();
+//        aclResourceService.deleteById(id);
+//        return ResultDataDto.addDeleteSuccess();
+        throw new RuntimeException("delete");
     }
 
     /**
@@ -101,13 +107,8 @@ public class AclResourceController extends BaseController<AclResource> {
     @RequestMapping(value = "/update",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @AclResc(code = "update",name = "更新资源")
     public ResultDataDto update(@ModelAttribute("aclResource")AclResource aclResource){
-        aclResourceService.updateEntity(aclResource);
-        return ResultDataDto.addUpdateSuccess();
+//        aclResourceService.updateEntity(aclResource);
+//        return ResultDataDto.addUpdateSuccess();
+        throw new RuntimeException("update");
     }
-
-//    @RequestMapping(value = "/getJson",method = RequestMethod.GET)
-//    public AclResource getJson(){
-//        return new AclResource();
-//    }
-
 }

@@ -30,7 +30,6 @@ public class AclResourceServiceImpl extends BaseServiceImpl<AclResource,AclResou
         return getMapper().findAllModule();
     }
 
-
     /**
      * 模糊搜索条件
      */

@@ -1,5 +1,6 @@
 package com.sunjung.core.mybatis;
 
+import com.sunjung.common.handler.CuzDataSource;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -33,6 +34,8 @@ public class MyBatisConfig implements TransactionManagementConfigurer {
 
 //    @Resource(name = "readDataSource")
 //    private DataSource readDataSource;
+
+    public static DataSource readDataSource = new CuzDataSource();
 
     //直接点属性,说我没初始化,加个get方法就可以,这是在逗我
     private DataSource getWriteDataSource(){

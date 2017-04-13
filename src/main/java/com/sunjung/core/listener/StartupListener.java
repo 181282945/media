@@ -1,5 +1,6 @@
 package com.sunjung.core.listener;
 
+import com.sunjung.base.sysmgr.aclauth.service.AclAuthService;
 import com.sunjung.base.sysmgr.aclcache.AclCache;
 import com.sunjung.base.sysmgr.aclresource.annotation.AclResc;
 import com.sunjung.base.sysmgr.aclresource.common.AclResourceType;
@@ -10,7 +11,7 @@ import com.sunjung.core.util.SpringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
-import org.springframework.security.access.ConfigAttribute;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +19,7 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
+import java.lang.reflect.Method;
 import java.util.*;
 
 /**
@@ -25,10 +27,21 @@ import java.util.*;
  * 监听器
  * 当Spring环境准备好以后,做些事情
  */
+@Component
 public class StartupListener implements ApplicationListener<ContextRefreshedEvent> {
+
+
+    private AclResourceService aclResourceService;
+    private AclAuthService aclAuthService;
+
     @Override
-    @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    @Transactional(propagation = Propagation.SUPPORTS)
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
+
+        aclResourceService = (AclResourceService)SpringUtils.getBean("aclResourceService");
+
+        aclAuthService = (AclAuthService)SpringUtils.getBean("aclAuthService");
+
         MySecurityMetadataSource securityMetadataSource = (MySecurityMetadataSource)SpringUtils.getBean("securityMetadataSource");
         /**
          * 初始化模块MAP,因为没有精确权限设定的不需要保存到数据库
@@ -72,28 +85,28 @@ public class StartupListener implements ApplicationListener<ContextRefreshedEven
                     throw new RuntimeException("使用:"+AclResc.class.getName()+" 注解类时,请配置 homePage ");
                 Class<?> aclResourceClass = map.get(info).getBeanType();
                 RequestMapping moduleMapping = aclResourceClass.getAnnotation(RequestMapping.class);
-                AclResource module = new AclResource(moduleAclResc.code(),moduleAclResc.name(),moduleMapping.value()[0], AclResourceType.MODULE.getCode(),moduleAclResc.homePage(),aclResourceClass.getSimpleName().hashCode());
+                AclResource moduleResc = new AclResource(moduleAclResc.code(),moduleAclResc.name(),moduleMapping.value()[0], AclResourceType.MODULE.getCode(),moduleAclResc.homePage(),aclResourceClass.getSimpleName().hashCode());
                 if (moduleMapping != null) {
                     List<AclResource> resources;
-                    AclResource method;
-                    AclResc methodResc = map.get(info).getMethod().getAnnotation(AclResc.class);
-                    if(methodResc != null){
-                        method = new AclResource(methodResc.code(),methodResc.name(), info.getPatternsCondition().toString(), AclResourceType.METHOD.getCode());
-                        if (resourcesMap.get(module) == null) {
+                    AclResource methodResc;
+                    Method method =map.get(info).getMethod();
+                    AclResc methodAclResc = method.getAnnotation(AclResc.class);
+                    if(methodAclResc != null){
+                        //类名+方法名 的hashCode 作为唯一标识
+                        Integer methodRescIdentify = (aclResourceClass.getSimpleName() + method.getName()).hashCode();
+                        methodResc = new AclResource(methodAclResc.code(),methodAclResc.name(), info.getPatternsCondition().toString(), AclResourceType.METHOD.getCode(),methodRescIdentify);
+                        if (resourcesMap.get(moduleResc) == null) {
                             resources = new ArrayList<>();
-                            resources.add(method);
-                            resourcesMap.put(module, resources);
+                            resources.add(methodResc);
+                            resourcesMap.put(moduleResc, resources);
                         } else {
-                            resourcesMap.get(module).add(method);
+                            resourcesMap.get(moduleResc).add(methodResc);
                         }
                     }
                 }
             }
         }
 
-        /**
-         * 把模块保存在数据库
-         */
         addModule(resourcesMap);
         /**
          * 返回不可编辑的视图MAP
@@ -107,29 +120,36 @@ public class StartupListener implements ApplicationListener<ContextRefreshedEven
      * @param resourcesMap
      */
     private void addModule(Map<AclResource, List<AclResource>> resourcesMap){
-        AclResourceService aclResourceService = (AclResourceService)SpringUtils.getBean("aclResourceService");
-        Iterator<Map.Entry<AclResource, List<AclResource>>> it = resourcesMap.entrySet().iterator();
-        while(it.hasNext()){
-            Map.Entry<AclResource, List<AclResource>> item = it.next();
+        for (Map.Entry<AclResource, List<AclResource>> item : resourcesMap.entrySet()) {
             Integer identify = item.getKey().getIdentify();
             AclResource resultResc = aclResourceService.findByIdentify(identify);
-            if(resultResc == null){
-                Integer rescId = aclResourceService.addEntity(new AclResource(item.getKey().getCode(),item.getKey().getName(),item.getKey().getPath(),item.getKey().getType(),item.getKey().getHomePage(),identify));
+            if (resultResc == null) {
+                Integer rescId = aclResourceService.addEntity(new AclResource(item.getKey().getCode(), item.getKey().getName(), item.getKey().getPath(), item.getKey().getType(), item.getKey().getHomePage(), identify));
                 item.getKey().setId(rescId);
                 item.getKey().setMenuId(aclResourceService.findEntityById(rescId).getMenuId());
                 List<AclResource> resources = item.getValue();
-                for(AclResource resc : resources){
+                for (AclResource resc : resources) {
                     resc.setModuleId(rescId);
                 }
-            }else{
+            } else {
                 item.getKey().setId(resultResc.getId());
                 item.getKey().setMenuId(resultResc.getMenuId());
                 aclResourceService.updateEntity(item.getKey());
                 List<AclResource> resources = item.getValue();
-                for(AclResource resc : resources){
-                        resc.setModuleId(resultResc.getId());
+                for (AclResource methodResc : resources) {
+                    methodResc.setModuleId(resultResc.getId());
+                    AclResource oringinalMethodResc = aclResourceService.findByIdentify(methodResc.getIdentify());
+                    if (oringinalMethodResc != null) {
+                        methodResc.setId(oringinalMethodResc.getId());
+                        //RequestMapping可能被修改,所以这里要做一次更新
+                        aclResourceService.updateEntity(methodResc);
+                        //同时code也可能被更改,所以更新权限code
+                        aclAuthService.updateCodeByRescId(methodResc.getCode(), methodResc.getId());
+                    }
+
                 }
             }
         }
     }
+
 }

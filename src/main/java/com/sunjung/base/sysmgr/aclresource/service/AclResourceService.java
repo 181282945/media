@@ -14,4 +14,5 @@ public interface AclResourceService extends BaseService<AclResource,AclResourceM
     AclResource findByIdentify(Integer identify);
 
     List<AclResource> findAllModule();
+
 }

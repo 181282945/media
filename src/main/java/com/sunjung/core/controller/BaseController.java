@@ -6,6 +6,7 @@ import com.sunjung.core.dto.ResultDataDto;
 import com.sunjung.core.entity.BaseEntity;
 import com.sunjung.core.mybatis.specification.PageAndSort;
 import com.sunjung.core.util.GenericeClassUtils;
+import org.springframework.http.MediaType;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -15,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.awt.*;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,7 +44,8 @@ public abstract class BaseController<T extends BaseEntity> {
     public void exceptionHandler(Exception ex, HttpServletResponse response, HttpServletRequest request) throws IOException {
         ex.printStackTrace();
         ResultDataDto resultDataDto = new ResultDataDto(ex);
-        response.setContentType("text/html");
+        response.setContentType(MediaType.TEXT_HTML_VALUE);
+        response.setCharacterEncoding("UTF-8");
         response.getWriter().write(new Gson().toJson(resultDataDto));
 //		 return "redirect:/home.html";
     }

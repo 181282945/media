@@ -36,7 +36,7 @@
     <!-- inline styles related to this page -->
 
     <!-- ace settings handler -->
-    <script src="/assets/js/ace-extra.js"></script>
+    <!--<script src="/assets/js/ace-extra.js"></script>-->
 
     <!-- HTML5shiv and Respond.js for IE8 to support HTML5 elements and media queries -->
 
@@ -96,6 +96,8 @@
 <script type="text/javascript">
     if('ontouchstart' in document.documentElement) document.write("<script src='/components/_mod/jquery.mobile.custom/jquery.mobile.custom.js'>"+"<"+"/script>");
 </script>
+<script src="/js/layer/layer.js"></script>
+<script src="/js/base.js"></script>
 <script src="/components/bootstrap/dist/js/bootstrap.js"></script>
 
 <!-- page specific plugin scripts -->
@@ -104,29 +106,29 @@
 <script src="/components/jqGrid/js/i18n/grid.locale-cn.js"></script>
 
 <!-- ace scripts -->
-<script src="/assets/js/src/elements.scroller.js"></script>
-<script src="/assets/js/src/elements.colorpicker.js"></script>
-<script src="/assets/js/src/elements.fileinput.js"></script>
-<script src="/assets/js/src/elements.typeahead.js"></script>
-<script src="/assets/js/src/elements.wysiwyg.js"></script>
-<script src="/assets/js/src/elements.spinner.js"></script>
-<script src="/assets/js/src/elements.treeview.js"></script>
-<script src="/assets/js/src/elements.wizard.js"></script>
-<script src="/assets/js/src/elements.aside.js"></script>
-<script src="/assets/js/src/ace.js"></script>
-<script src="/assets/js/src/ace.basics.js"></script>
-<script src="/assets/js/src/ace.scrolltop.js"></script>
-<script src="/assets/js/src/ace.ajax-content.js"></script>
-<script src="/assets/js/src/ace.touch-drag.js"></script>
-<script src="/assets/js/src/ace.sidebar.js"></script>
-<script src="/assets/js/src/ace.sidebar-scroll-1.js"></script>
-<script src="/assets/js/src/ace.submenu-hover.js"></script>
-<script src="/assets/js/src/ace.widget-box.js"></script>
-<script src="/assets/js/src/ace.settings.js"></script>
-<script src="/assets/js/src/ace.settings-rtl.js"></script>
-<script src="/assets/js/src/ace.settings-skin.js"></script>
-<script src="/assets/js/src/ace.widget-on-reload.js"></script>
-<script src="/assets/js/src/ace.searchbox-autocomplete.js"></script>
+<!--<script src="/assets/js/src/elements.scroller.js"></script>-->
+<!--<script src="/assets/js/src/elements.colorpicker.js"></script>-->
+<!--<script src="/assets/js/src/elements.fileinput.js"></script>-->
+<!--<script src="/assets/js/src/elements.typeahead.js"></script>-->
+<!--<script src="/assets/js/src/elements.wysiwyg.js"></script>-->
+<!--<script src="/assets/js/src/elements.spinner.js"></script>-->
+<!--<script src="/assets/js/src/elements.treeview.js"></script>-->
+<!--<script src="/assets/js/src/elements.wizard.js"></script>-->
+<!--<script src="/assets/js/src/elements.aside.js"></script>-->
+<!--<script src="/assets/js/src/ace.js"></script>-->
+<!--<script src="/assets/js/src/ace.basics.js"></script>-->
+<!--<script src="/assets/js/src/ace.scrolltop.js"></script>-->
+<!--<script src="/assets/js/src/ace.ajax-content.js"></script>-->
+<!--<script src="/assets/js/src/ace.touch-drag.js"></script>-->
+<!--<script src="/assets/js/src/ace.sidebar.js"></script>-->
+<!--<script src="/assets/js/src/ace.sidebar-scroll-1.js"></script>-->
+<!--<script src="/assets/js/src/ace.submenu-hover.js"></script>-->
+<!--<script src="/assets/js/src/ace.widget-box.js"></script>-->
+<!--<script src="/assets/js/src/ace.settings.js"></script>-->
+<!--<script src="/assets/js/src/ace.settings-rtl.js"></script>-->
+<!--<script src="/assets/js/src/ace.settings-skin.js"></script>-->
+<!--<script src="/assets/js/src/ace.widget-on-reload.js"></script>-->
+<!--<script src="/assets/js/src/ace.searchbox-autocomplete.js"></script>-->
 
 <!-- inline scripts related to this page -->
 <script type="text/javascript" th:inline="javascript">
@@ -189,7 +191,6 @@
             //subgrid options
 //            subGrid : true,
             //subGridModel: [{ name : ['No','Item Name','Qty'], width : [55,200,80] }],
-            datatype: "json",
 //            subGridOptions : {
 //                plusicon : "ace-icon fa fa-plus center bigger-110 blue",
 //                minusicon  : "ace-icon fa fa-minus center bigger-110 blue",
@@ -244,9 +245,18 @@
                         keys:true,
                         delbutton: true,//行内显示删除按钮
                         //行内请求参数
-                        delOptions:{url:"/base/sysmgr/aclresource/delete",recreateForm: true, beforeShowForm:beforeDeleteCallback},
-//                        editformbutton:false,
-//                        editOptions:{url:"/base/sysmgr/aclresource/update",recreateForm: true, beforeShowForm:beforeEditCallback}
+                        delOptions:{
+                            url:"/base/sysmgr/aclresource/delete",
+                            recreateForm: true,
+                            beforeShowForm:beforeDeleteCallback,
+                            afterComplete:afterCompleteCallback
+                        },
+                        editformbutton:true,
+                        editOptions:{
+                            recreateForm: true,
+                            beforeShowForm:beforeEditCallback,
+                            afterComplete:afterCompleteCallback
+                        },
                     }
                 },
                 {name:'id',index:'id',  sorttype:"int", editable: true,search:true},
@@ -290,8 +300,10 @@
             },
 
             editurl: "/base/sysmgr/aclresource/update",
-            caption: "[[${MODULE_NAME}]]"
 
+            /*<![CDATA[*/
+            caption: /*[[${MODULE_NAME}]]*/
+            /*]]>*/
 
             //,autowidth: true,
 
@@ -338,11 +350,6 @@
 
         //navButtons
         jQuery(grid_selector).jqGrid('navGrid',pager_selector,
-//            {edit:false,add:false,del:false},
-//            {},
-//            {},
-//            {},
-//            {multipleSearch:true, multipleGroup:true, showQuery: true}
             { 	//navbar options
                 edit: true,
                 editicon : 'ace-icon fa fa-pencil blue',
@@ -366,7 +373,9 @@
                     var form = $(e[0]);
                     form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
                     style_edit_form(form);
-                } },
+                },
+                afterComplete:afterCompleteCallback
+            },
             //add options
             { url: '/base/sysmgr/aclresource/add',
                 //new record form
@@ -379,7 +388,8 @@
                     form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar')
                         .wrapInner('<div class="widget-header" />')
                     style_edit_form(form);
-                }
+                },
+                afterComplete:afterCompleteCallback
             },
             //delete options
             { url: '/base/sysmgr/aclresource/delete',
@@ -394,8 +404,9 @@
 
                     form.data('styled', true);
                 },
+                afterComplete:afterCompleteCallback,
                 onClick : function(e) {
-                    //alert(1);
+//                    alert(1);
                 }
             },
             //search
@@ -418,16 +429,6 @@
                  multipleGroup:true,
                  showQuery: true
                  */
-            },
-            //view options
-            {
-                url: '/base/sysmgr/aclresource/getById',
-                //view record form
-                recreateForm: true,
-                beforeShowForm: function(e){
-                    var form = $(e[0]);
-                    form.closest('.ui-jqdialog').find('.ui-jqdialog-title').wrap('<div class="widget-header" />')
-                }
             }
         )
 
@@ -549,6 +550,15 @@
         function enableTooltips(table) {
             $('.navtable .ui-pg-button').tooltip({container:'body'});
             $(table).find('.ui-pg-div').tooltip({container:'body'});
+        }
+
+
+        /**
+         * 自定义请求完成后处理事件
+         * @param data
+         */
+        function afterCompleteCallback(data){
+            afterCompleteMsg(data)
         }
 
         //var selr = jQuery(grid_selector).jqGrid('getGridParam','selrow');

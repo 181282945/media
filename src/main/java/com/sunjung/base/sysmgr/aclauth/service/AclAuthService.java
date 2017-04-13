@@ -3,6 +3,7 @@ package com.sunjung.base.sysmgr.aclauth.service;
 import com.sunjung.base.sysmgr.aclauth.dao.AclAuthMapper;
 import com.sunjung.base.sysmgr.aclauth.entity.AclAuth;
 import com.sunjung.core.service.BaseService;
+
 import java.util.List;
 import java.util.Map;
 
@@ -16,5 +17,13 @@ public interface AclAuthService extends BaseService<AclAuth,AclAuthMapper> {
     List<String> findCodeByUserId(Integer userId);
 
     List<Map<String,String>> findPathCode();
+
+    /**
+     * 根据资源ID更新code
+     * @param code
+     * @param rescId
+     * @return
+     */
+    int updateCodeByRescId(String code,Integer rescId);
 
 }

@@ -7,7 +7,8 @@ import com.sunjung.base.sysmgr.acluser.entity.AclUser;
 import com.sunjung.base.sysmgr.acluser.service.AclUserService;
 import com.sunjung.base.sysmgr.acluserrole.entity.AclUserRole;
 import com.sunjung.base.sysmgr.acluserrole.service.AclUserRoleService;
-import org.springframework.security.access.vote.AuthenticatedVoter;
+import com.sunjung.core.mybatis.MyRoutingDataSource;
+import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -39,6 +40,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Resource
     private AclAuthService aclAuthService;
 
+    @Resource
+    private MyRoutingDataSource routingDataSource;
+
     /* (non-Javadoc)
      * @see org.springframework.security.core.userdetails.UserDetailsService#loadUserByUsername(java.lang.String)
      */
@@ -69,6 +73,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
         auths.add(new SimpleGrantedAuthority(aclRole.getCode().toUpperCase()));
 //        auths.add(new SimpleGrantedAuthority(AuthenticatedVoter.IS_AUTHENTICATED_FULLY));
+
+        /**
+         * 加入用户数据源
+         */
+        routingDataSource.addCuzDataSource(aclUser);
+
         return new User(aclUser.getUserName(), aclUser.getPassword(), aclUser.getEnabled(), aclUser.getAccountNonExpired(), aclUser.getCredentialsNonExpired(), aclUser.getAccountNonLocked(), auths);
     }
 }

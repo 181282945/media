@@ -26,8 +26,8 @@ import java.util.HashMap;
 @Configuration
 public class MyBatisConfig implements TransactionManagementConfigurer {
 
-    @Value("${spring.datasource.readSize}")
-    private String dataSourceSize;
+//    @Value("${spring.datasource.readSize}")
+//    private String dataSourceSize;
 
     @Resource(name = "writeDataSource")
     private DataSource writeDataSource;
@@ -51,10 +51,10 @@ public class MyBatisConfig implements TransactionManagementConfigurer {
      * 所以可以直接丢去构建 SqlSessionFactory
      * @return
      */
-    @Bean
-    public AbstractRoutingDataSource dataSourceProxy(){
-        int size = Integer.parseInt(dataSourceSize);
-        MyRoutingDataSource proxy = new MyRoutingDataSource(size);
+    @Bean("routingDataSource")
+    public MyRoutingDataSource dataSourceProxy(){
+//        int size = Integer.parseInt(dataSourceSize);
+        MyRoutingDataSource proxy = new MyRoutingDataSource();
         Map<Object,Object> dataSourceMap = new HashMap<>();
         DataSource writeSource = getWriteDataSource();
 //        DataSource readSource = getReadDataSource();

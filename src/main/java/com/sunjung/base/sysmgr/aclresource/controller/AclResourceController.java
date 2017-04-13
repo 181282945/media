@@ -3,9 +3,12 @@ package com.sunjung.base.sysmgr.aclresource.controller;
 import com.sunjung.base.sysmgr.aclresource.annotation.AclResc;
 import com.sunjung.base.sysmgr.aclresource.entity.AclResource;
 import com.sunjung.base.sysmgr.aclresource.service.AclResourceService;
+import com.sunjung.base.sysmgr.acluser.entity.AclUser;
+import com.sunjung.base.sysmgr.acluser.service.AclUserService;
 import com.sunjung.common.dto.JqgridFilters;
 import com.sunjung.core.controller.BaseController;
 import com.sunjung.core.dto.ResultDataDto;
+import com.sunjung.core.mybatis.DataSourceSwitch;
 import com.sunjung.core.mybatis.specification.PageAndSort;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Propagation;
@@ -36,6 +39,9 @@ public class AclResourceController extends BaseController<AclResource> {
 
     @Resource
     private AclResourceService aclResourceService;
+
+    @Resource
+    private AclUserService aclUserService;
 
     /**
      *

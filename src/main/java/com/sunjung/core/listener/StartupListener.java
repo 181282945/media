@@ -56,7 +56,7 @@ public class StartupListener implements ApplicationListener<ContextRefreshedEven
          * 以下生成菜单-模块缓存视图
          * 以方便用户登录的时候,直接从缓存中计算有权限的菜单以及模块
          */
-        AclCache.moduleMapCache = securityMetadataSource.getModuleMap();
+        AclCache.moduleMapCache = Collections.unmodifiableMap(securityMetadataSource.getModuleMap());
 
         //初始化菜单缓存
         AclCache.initAclMenuCache();
@@ -75,7 +75,7 @@ public class StartupListener implements ApplicationListener<ContextRefreshedEven
         /**
          * 模块 - 方法map
          */
-        Map<AclResource, List<AclResource>> resourcesMap = new HashMap<>();
+
         RequestMappingHandlerMapping rmhp = SpringUtils.getBean(RequestMappingHandlerMapping.class);
         Map<RequestMappingInfo, HandlerMethod> map = rmhp.getHandlerMethods();
         for (RequestMappingInfo info : map.keySet()) {
@@ -95,23 +95,19 @@ public class StartupListener implements ApplicationListener<ContextRefreshedEven
                         //类名+方法名 的hashCode 作为唯一标识
                         Integer methodRescIdentify = (aclResourceClass.getSimpleName() + method.getName()).hashCode();
                         methodResc = new AclResource(methodAclResc.code(),methodAclResc.name(), info.getPatternsCondition().toString(), AclResourceType.METHOD.getCode(),methodRescIdentify);
-                        if (resourcesMap.get(moduleResc) == null) {
+                        if (AclCache.resourcesMapCache.get(moduleResc) == null) {
                             resources = new ArrayList<>();
                             resources.add(methodResc);
-                            resourcesMap.put(moduleResc, resources);
+                            AclCache.resourcesMapCache.put(moduleResc, resources);
                         } else {
-                            resourcesMap.get(moduleResc).add(methodResc);
+                            AclCache.resourcesMapCache.get(moduleResc).add(methodResc);
                         }
                     }
                 }
             }
         }
 
-        addModule(resourcesMap);
-        /**
-         * 返回不可编辑的视图MAP
-         */
-        AclCache.resourcesMapCache = Collections.unmodifiableMap(resourcesMap);
+        addModule(AclCache.resourcesMapCache);
     }
 
 
@@ -134,6 +130,7 @@ public class StartupListener implements ApplicationListener<ContextRefreshedEven
             } else {
                 item.getKey().setId(resultResc.getId());
                 item.getKey().setMenuId(resultResc.getMenuId());
+                item.getKey().setSeq(resultResc.getSeq());
                 aclResourceService.updateEntity(item.getKey());
                 List<AclResource> resources = item.getValue();
                 for (AclResource methodResc : resources) {
@@ -141,6 +138,7 @@ public class StartupListener implements ApplicationListener<ContextRefreshedEven
                     AclResource oringinalMethodResc = aclResourceService.findByIdentify(methodResc.getIdentify());
                     if (oringinalMethodResc != null) {
                         methodResc.setId(oringinalMethodResc.getId());
+                        methodResc.setSeq(oringinalMethodResc.getSeq());
                         //RequestMapping可能被修改,所以这里要做一次更新
                         aclResourceService.updateEntity(methodResc);
                         //同时code也可能被更改,所以更新权限code

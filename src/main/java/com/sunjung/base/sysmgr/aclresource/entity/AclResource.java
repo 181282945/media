@@ -1,20 +1,22 @@
 package com.sunjung.base.sysmgr.aclresource.entity;
 
-import com.sunjung.base.sysmgr.aclresource.common.AclResourceType;
 import com.sunjung.core.entity.BaseEntity;
 import com.sunjung.core.entity.annotation.BaseEntityMapper;
 import org.apache.ibatis.type.Alias;
+
+import java.util.Objects;
 
 /**
  * Created by 为 on 2017-4-8.
  */
 @Alias("AclResource")
 @BaseEntityMapper(tableName = "acl_resource")
-public class AclResource extends BaseEntity {
+public class AclResource extends BaseEntity implements Comparable<AclResource> {
 
-    public AclResource(){}
+    public AclResource() {
+    }
 
-    public AclResource(String code,String name,String path,String type){
+    public AclResource(String code, String name, String path, String type) {
         this.code = code;
         this.name = name;
         this.path = path;
@@ -23,6 +25,7 @@ public class AclResource extends BaseEntity {
 
     /**
      * 模块资源造方法
+     *
      * @param code
      * @param name
      * @param path
@@ -30,7 +33,7 @@ public class AclResource extends BaseEntity {
      * @param homePage
      * @param identify
      */
-    public AclResource(String code,String name,String path,String type,String homePage,Integer identify){
+    public AclResource(String code, String name, String path, String type, String homePage, Integer identify) {
         this.code = code;
         this.name = name;
         this.path = path;
@@ -41,13 +44,14 @@ public class AclResource extends BaseEntity {
 
     /**
      * 方法资源构造方法
+     *
      * @param code
      * @param name
      * @param path
      * @param type
      * @param identify
      */
-    public AclResource(String code,String name,String path,String type,Integer identify){
+    public AclResource(String code, String name, String path, String type, Integer identify) {
         this.code = code;
         this.name = name;
         this.path = path;
@@ -57,26 +61,22 @@ public class AclResource extends BaseEntity {
 
     /**
      * 重写equals 为了可以当做key使用
+     *
      * @param o
      * @return
      */
-    public boolean equals(Object o){
-        AclResource x = (AclResource)o;
-        if(AclResourceType.MODULE.getCode().equals(this.type)){
-            if(x.identify.intValue()==this.identify)
-                return true;
+    public boolean equals(Object o) {
+        if (o == this) return true;
+        if (!(o instanceof AclResource))
             return false;
-        }else{
-            return super.equals(o);
-        }
+        AclResource x = (AclResource) o;
+        if (x.identify.equals(this.identify))
+            return true;
+        return false;
     }
 
-    public int hashCode(){
-        if(AclResourceType.MODULE.getCode().equals(this.type)){
-            return identify;
-        }else{
-            return super.hashCode();
-        }
+    public int hashCode() {
+        return Objects.hash(identify);
     }
 
     //资源编码
@@ -186,9 +186,17 @@ public class AclResource extends BaseEntity {
 
     /**
      * 返回模块地址
+     *
      * @return
      */
-    public String getHref(){
-        return "javascript:addTabs({id:'" + this.getId() + "',title: '" + this.name + "',close: true,url:'" +this.homePage+ "'});";
+    public String getHref() {
+        return "javascript:addTabs({id:'" + this.getId() + "',title: '" + this.name + "',close: true,url:'" + this.homePage + "'});";
+    }
+
+    @Override
+    public int compareTo(AclResource o) {
+        if (this.seq == null || o.seq == null)
+            return -1;
+        return this.seq.compareTo(o.seq);
     }
 }

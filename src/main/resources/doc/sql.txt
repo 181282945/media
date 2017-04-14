@@ -1,7 +1,1 @@
-alter table resc add version int DEFAULT Null;
-alter table resc add createByUserCode varchar(50) DEFAULT Null;
-alter table resc add createByUserName varchar(50) DEFAULT Null;
-alter table resc add createTime datetime DEFAULT Null;
-alter table resc add lastModifyByUserCode varchar(50) DEFAULT Null;
-alter table resc add lastModifyByUserName varchar(50) DEFAULT Null;
-alter table resc add lastModifyTime  timestamp NULL DEFAULT CURRENT_TIMESTAMP;
+alter table acl_user_role add insertDate timestamp NULL DEFAULT CURRENT_TIMESTAMP;

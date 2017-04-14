@@ -11,6 +11,7 @@ import com.sunjung.base.sysmgr.aclrescrole.service.AclRescRoleService;
 import com.sunjung.base.sysmgr.aclresource.entity.AclResource;
 import com.sunjung.base.sysmgr.aclresource.service.AclResourceService;
 import com.sunjung.base.sysmgr.aclrole.service.AclRoleService;
+import com.sunjung.core.util.CloneUtils;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityConfig;
 import org.springframework.security.access.vote.AuthenticatedVoter;
@@ -102,7 +103,7 @@ public class MySecurityMetadataSource implements FilterInvocationSecurityMetadat
      * @return
      */
     public Map<String, Collection<ConfigAttribute>> getModuleMap(){
-        return Collections.unmodifiableMap(moduleMap);
+        return CloneUtils.clone((HashMap<String, Collection<ConfigAttribute>>)moduleMap);
     }
 
 

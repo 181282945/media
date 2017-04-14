@@ -1,13 +1,11 @@
 package com.sunjung.core.util;
 
-import com.sunjung.core.dto.Pair;
 import com.sunjung.core.mybatis.specification.QueryLike;
 import com.sunjung.core.entity.BaseEntity;
 import com.sunjung.core.entity.annotation.Transient;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.*;
 import com.sunjung.core.mybatis.specification.QueryLike.*;
@@ -25,31 +23,31 @@ public class EntityColumnUtil {
         return generateEntityQueryLike(entity, entity.getClass());
     }
 
-    /**
-     * 根据反射 ManyToOne 实体
-     * Pair<属性名, Class>
-     */
-    public static List<Pair<String, Class>> generateEntityManyToOne(Class cls) {
-
-        List<Pair<String, Class>> list = new ArrayList<>();
-        try {
-            // 获取实体类的所有属性，返回Field数组
-            Field[] fields = cls.getDeclaredFields();
-            for (Field field : fields) {
-
-                if (0 == field.getGenericType().toString().indexOf("class")) {
-                    Class tempcls = Class.forName(field.getGenericType().toString().substring(6));
-                    if (BaseEntity.class.isAssignableFrom(tempcls)) {
-                        list.add(new Pair<>(field.getName(), tempcls));
-                    }
-                }
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
-        return list;
-    }
+//    /**
+//     * 根据反射 ManyToOne 实体
+//     * Pair<属性名, Class>
+//     */
+//    public static List<Pair<String, Class>> generateEntityManyToOne(Class cls) {
+//
+//        List<Pair<String, Class>> list = new ArrayList<>();
+//        try {
+//            // 获取实体类的所有属性，返回Field数组
+//            Field[] fields = cls.getDeclaredFields();
+//            for (Field field : fields) {
+//
+//                if (0 == field.getGenericType().toString().indexOf("class")) {
+//                    Class tempcls = Class.forName(field.getGenericType().toString().substring(6));
+//                    if (BaseEntity.class.isAssignableFrom(tempcls)) {
+//                        list.add(new Pair<>(field.getName(), tempcls));
+//                    }
+//                }
+//            }
+//        } catch (Exception e) {
+//            throw new RuntimeException(e);
+//        }
+//
+//        return list;
+//    }
 
     /**
      * 反射设置对象属性
@@ -74,27 +72,27 @@ public class EntityColumnUtil {
 
     }
 
-    /**
-     * 反射设置对象属性
-     */
-    public static void setEntityProperty(BaseEntity entity, String propertyName, Object value) {
-
-        try {
-            // 获取实体类的所有属性，返回Field数组
-            Field[] fields = entity.getClass().getDeclaredFields();
-            for (Field field : fields) {
-
-                if (propertyName.equals(field.getName())) {
-                    Method method = entity.getClass().getDeclaredMethod("set" + getMethodName(field.getName()), value.getClass());
-                    method.invoke(entity, value);// 调用getter方法获取属性值
-                }
-
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
-    }
+//    /**
+//     * 反射设置对象属性
+//     */
+//    public static void setEntityProperty(BaseEntity entity, String propertyName, Object value) {
+//
+//        try {
+//            // 获取实体类的所有属性，返回Field数组
+//            Field[] fields = entity.getClass().getDeclaredFields();
+//            for (Field field : fields) {
+//
+//                if (propertyName.equals(field.getName())) {
+//                    Method method = entity.getClass().getDeclaredMethod("set" + getMethodName(field.getName()), value.getClass());
+//                    method.invoke(entity, value);// 调用getter方法获取属性值
+//                }
+//
+//            }
+//        } catch (Exception e) {
+//            throw new RuntimeException(e);
+//        }
+//
+//    }
 
     /**
      * 只针对实体模板方法使用

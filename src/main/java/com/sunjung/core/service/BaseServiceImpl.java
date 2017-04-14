@@ -1,6 +1,5 @@
 package com.sunjung.core.service;
 
-import com.sunjung.base.sysmgr.aclresource.entity.AclResource;
 import com.sunjung.common.dto.JqgridFilters;
 import com.sunjung.core.dao.BaseMapper;
 import com.sunjung.core.mybatis.specification.PageAndSort;
@@ -18,7 +17,6 @@ import org.apache.ibatis.session.SqlSession;
 
 import javax.annotation.Resource;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -28,17 +26,6 @@ public class BaseServiceImpl<T extends BaseEntity,M extends BaseMapper<T>> imple
 
     private Class<?> entityClass = GenericeClassUtils.getSuperClassGenricType(this.getClass(), 0);
     private Class<?> mapperClass = GenericeClassUtils.getSuperClassGenricType(this.getClass(), 1);
-//    protected M mapper;
-//
-//    @PostConstruct
-//    protected final void setMapper(){
-//        this.mapper = (M) sqlSession.getMapper(mapperClass);
-//        System.out.println(mapper);
-//    }
-//
-//    protected M getMapper(){
-//        return this.mapper;
-//    }
 
     @Resource(name="sqlSessionTemplate")
     private SqlSession sqlSession;
@@ -157,7 +144,6 @@ public class BaseServiceImpl<T extends BaseEntity,M extends BaseMapper<T>> imple
     protected void validateAddEntity(T entity) {
         ConstraintUtil.setDefaultValue(entity);
         ConstraintUtil.isNotNullConstraint(entity);
-        setCreateBy(entity);
     }
 
     @Override
@@ -175,9 +161,7 @@ public class BaseServiceImpl<T extends BaseEntity,M extends BaseMapper<T>> imple
         } catch (Exception e) {
             throw new RuntimeException("更新状态失败，类型异常。");
         }
-        setLastModifyBy(entity);
         entity.setId(entityId);
-        entity.setLastModifyTime(new Date());
         entity.setStatus(status);
         getMapper().updateEntityStatus(entity);
     }
@@ -191,9 +175,8 @@ public class BaseServiceImpl<T extends BaseEntity,M extends BaseMapper<T>> imple
      */
     protected void validateUpdateEntity(T entity) {
         ConstraintUtil.setDefaultValue(entity);
-        entity.setVersion(this.findEntityById(entity.getId()).getVersion()+1);
+//        entity.setVersion(this.findEntityById(entity.getId()).getVersion()+1);
         ConstraintUtil.isNotNullConstraint(entity);
-        setLastModifyBy(entity);
     }
 
     @Override
@@ -292,36 +275,5 @@ public class BaseServiceImpl<T extends BaseEntity,M extends BaseMapper<T>> imple
             throw new RuntimeException(this.getClass().getSimpleName()+" , 请配置注解 BaseEntityMapper");
         }
         return baseEntityMapper;
-    }
-
-    private void setCreateBy(T entity){
-        entity.setCreateTime(new Date());
-        entity.setLastModifyTime(new Date());
-        entity.setVersion(0);
-//        MemberInformation memberInformation = UserContainerSessionUtil.getMemberInformation();
-//        if(memberInformation != null){
-//            entity.setCreateByUserName(memberInformation.getMember_name());
-//            entity.setCreateByUserCode(memberInformation.getMember_id());
-//            entity.setLastModifyByUserCode(memberInformation.getMember_id());
-//            entity.setLastModifyByUserName(memberInformation.getMember_name());
-//        }
-    }
-
-    private void setLastModifyBy(T entity){
-        entity.setLastModifyTime(new Date());
-//        MemberInformation memberInformation = UserContainerSessionUtil.getMemberInformation();
-//        if(memberInformation != null){
-//            entity.setLastModifyByUserCode(memberInformation.getMember_id());
-//            entity.setLastModifyByUserName(memberInformation.getMember_name());
-//        }
-    }
-
-    private void setLastModifyBy(BaseBusinessEntity entity){
-        entity.setLastModifyTime(new Date());
-//        MemberInformation memberInformation = UserContainerSessionUtil.getMemberInformation();
-//        if(memberInformation != null){
-//            entity.setLastModifyByUserCode(memberInformation.getMember_id());
-//            entity.setLastModifyByUserName(memberInformation.getMember_name());
-//        }
     }
 }

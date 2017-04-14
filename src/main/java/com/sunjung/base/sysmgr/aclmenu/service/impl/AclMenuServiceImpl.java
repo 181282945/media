@@ -7,7 +7,6 @@ import com.sunjung.base.sysmgr.aclmenu.service.AclMenuService;
 import com.sunjung.base.sysmgr.aclresource.entity.AclResource;
 import com.sunjung.core.security.util.SecurityUtil;
 import com.sunjung.core.service.BaseServiceImpl;
-import com.sunjung.core.util.CloneUtils;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.stereotype.Service;
 
@@ -21,20 +20,18 @@ public class AclMenuServiceImpl extends BaseServiceImpl<AclMenu, AclMenuMapper> 
 
     @Override
     public Map<AclMenu, List<AclResource>> getAclUserMenus() {
+
         //创建完整的菜单,然后删除没有权限的菜单
-        Map<AclMenu, List<AclResource>> userMenuModuleMap = CloneUtils.clone((HashMap<AclMenu, List<AclResource>>) AclCache.aclMenuModuleMapCache);
+        Map<AclMenu, List<AclResource>> userMenuModuleMap = new LinkedHashMap<>(AclCache.aclMenuModuleMapCache);
         //获取资源/权限集
         Map<String, Collection<ConfigAttribute>> moduleMap = AclCache.moduleMapCache;
         for (String path : moduleMap.keySet()) {
-            Iterator<ConfigAttribute> ite = moduleMap.get(path).iterator();
-            while (ite.hasNext()) {
-                ConfigAttribute ca = ite.next();
-                String needRole = (ca).getAttribute();
                 //如果没有权限
-                if (!SecurityUtil.hastAuth(needRole)) {
+                if (!SecurityUtil.hastAnyAuth(moduleMap.get(path))) {
                     Iterator<AclMenu> userMenuModuleMapKey = userMenuModuleMap.keySet().iterator();
                     while (userMenuModuleMapKey.hasNext()) {
-                        List<AclResource> modules = userMenuModuleMap.get(userMenuModuleMapKey.next());
+                        AclMenu key = userMenuModuleMapKey.next();
+                        List<AclResource> modules = userMenuModuleMap.get(key);
                         if(modules.isEmpty()){
                             userMenuModuleMapKey.remove();
                             continue;
@@ -53,7 +50,6 @@ public class AclMenuServiceImpl extends BaseServiceImpl<AclMenu, AclMenuMapper> 
                         }
                     }
                 }
-            }
         }
         return userMenuModuleMap;
     }

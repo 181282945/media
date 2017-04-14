@@ -3,6 +3,7 @@ package com.sunjung.base.sysmgr.aclcache;
 import com.sunjung.base.sysmgr.aclmenu.domain.entity.AclMenu;
 import com.sunjung.base.sysmgr.aclmenu.service.AclMenuService;
 import com.sunjung.base.sysmgr.aclresource.entity.AclResource;
+import com.sunjung.core.util.CloneUtils;
 import com.sunjung.core.util.SpringUtils;
 import org.springframework.security.access.ConfigAttribute;
 
@@ -30,11 +31,10 @@ public class AclCache {
      */
     public static Map<String, Collection<ConfigAttribute>> moduleMapCache;
 
-
     /**
      * 完整 模块 - 方法 原型缓存
      */
-    public static Map<AclResource, List<AclResource>> resourcesMapCache;
+    public static Map<AclResource, List<AclResource>> resourcesMapCache = new HashMap<>();
 
     /**
      * 初始化菜单缓存
@@ -42,6 +42,7 @@ public class AclCache {
     public static final void initAclMenuCache(){
         AclMenuService aclMenuService = (AclMenuService) SpringUtils.getBean("aclMenuService");
         List<AclMenu> aclMenus = aclMenuService.findAll();
+        Collections.sort(aclMenus);
         aclMenuCache = Collections.unmodifiableList(aclMenus);
     }
 
@@ -49,7 +50,7 @@ public class AclCache {
         /**
          * 菜单-List<模块> 的map
          */
-        Map<AclMenu,List<AclResource>> aclMenuModuleMap = new HashMap<>();
+        Map<AclMenu,List<AclResource>> aclMenuModuleMap = new LinkedHashMap<>();
         //新加入一个未分类的key
         AclMenu unclassified = new AclMenu("unclassified","未分类",Integer.MAX_VALUE);
         aclMenuModuleMap.put(unclassified,new ArrayList<AclResource>());
@@ -89,7 +90,10 @@ public class AclCache {
 
             }
         }
-        AclCache.aclMenuModuleMapCache = aclMenuModuleMap;
+        for(Map.Entry<AclMenu,List<AclResource>> entry: aclMenuModuleMap.entrySet()){
+            Collections.sort(entry.getValue());
+        }
+        AclCache.aclMenuModuleMapCache = Collections.unmodifiableMap(aclMenuModuleMap);
     }
 
 }

@@ -69,8 +69,7 @@ public class BaseProvider<T extends BaseEntity> {
      * 新增实体
      */
     public String addEntity(T entity) {
-        entity.setCreateTime(new Date());
-        entity.setLastModifyTime(new Date());
+        entity.setInsertDate(new Date());
         List<QueryLike> queryLikes = EntityColumnUtil.generateEntityQueryLike(entity);
 
         StringBuilder sql = new StringBuilder();
@@ -112,7 +111,6 @@ public class BaseProvider<T extends BaseEntity> {
      * 更新实体
      */
     public String updateEntity(T entity) {
-        entity.setLastModifyTime(new Date());
         List<QueryLike> queryLikes = EntityColumnUtil.generateEntityQueryLike(entity);
 
         BaseEntityMapper baseEntityMapper = getBaseEntityMapperThrowException(entity.getClass());
@@ -144,7 +142,7 @@ public class BaseProvider<T extends BaseEntity> {
      * 更新实体状态
      */
     public <S extends BaseBusinessEntity> String updateEntityStatus(S entity) {
-        return "update " + getTableNameThrowException(entity.getClass()) + " set status = '" + entity.getStatus() + "',lastmodifytime = '"+ DateUtil.format(entity.getLastModifyTime(),DateUtil.C_TIME_PATTON_DEFAULT)+"',lastModifyByUserName = '"+entity.getLastModifyByUserName()+"' where id = " + entity.getId();
+        return "update " + getTableNameThrowException(entity.getClass()) + " set status = '" + entity.getStatus() + "' where id = " + entity.getId();
     }
 
     /**

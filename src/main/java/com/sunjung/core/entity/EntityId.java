@@ -1,7 +1,5 @@
 package com.sunjung.core.entity;
 
-import com.sunjung.core.entity.annotation.DefaultValue;
-
 import java.io.Serializable;
 
 /**
@@ -13,9 +11,9 @@ public abstract class EntityId implements Serializable {
 
     //id
     private Integer id;
-    //版本号
-    @DefaultValue(value = "0")
-    private Integer version;
+//    //版本号
+//    @DefaultValue(value = "0")
+//    private Integer version;
 
     //------------------------getter setter--------------------------------------------------
 
@@ -26,11 +24,11 @@ public abstract class EntityId implements Serializable {
         this.id = id;
         return this;
     }
-    public Integer getVersion() {
-        return version;
-    }
-    public EntityId setVersion(Integer version) {
-        this.version = version;
-        return this;
-    }
+//    public Integer getVersion() {
+//        return version;
+//    }
+//    public EntityId setVersion(Integer version) {
+//        this.version = version;
+//        return this;
+//    }
 }

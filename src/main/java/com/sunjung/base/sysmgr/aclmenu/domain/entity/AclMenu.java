@@ -1,16 +1,17 @@
 package com.sunjung.base.sysmgr.aclmenu.domain.entity;
 
-import com.sunjung.base.sysmgr.aclresource.entity.AclResource;
 import com.sunjung.core.entity.BaseEntity;
 import com.sunjung.core.entity.annotation.BaseEntityMapper;
 import org.apache.ibatis.type.Alias;
+
+import java.util.Objects;
 
 /**
  * Created by 为 on 2017-4-8.
  */
 @Alias("AclMenu")
 @BaseEntityMapper(tableName = "acl_menu")
-public class AclMenu extends BaseEntity {
+public class AclMenu extends BaseEntity implements Comparable<AclMenu> {
 
     public AclMenu(){}
 
@@ -25,15 +26,20 @@ public class AclMenu extends BaseEntity {
      * @param o
      * @return
      */
+    @Override
     public boolean equals(Object o){
+        if (o == this) return true;
+        if (!(o instanceof AclMenu))
+            return false;
         AclMenu x = (AclMenu)o;
         if(x.code.equals(this.code))
             return true;
         return false;
     }
 
+    @Override
     public int hashCode(){
-        return code.hashCode();
+        return Objects.hash(code);
     }
 
     /**
@@ -74,5 +80,12 @@ public class AclMenu extends BaseEntity {
 
     public void setSeq(Integer seq) {
         this.seq = seq;
+    }
+
+    @Override
+    public int compareTo(AclMenu o) {
+        if(this.seq ==null || o.seq == null)
+            return -1;
+        return this.seq.compareTo(o.seq);
     }
 }

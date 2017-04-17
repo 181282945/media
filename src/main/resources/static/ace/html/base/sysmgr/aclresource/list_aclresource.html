@@ -253,6 +253,7 @@
                         },onSuccess : afterCompleteMsg
                     }
                 },
+
                 {name:'id',index:'id', editable: true,search:true},
                 {name:'code',index:'code', editable: false},
                 {name:'type',index:'type', editable: false},
@@ -260,7 +261,7 @@
                 {name:'homePage',index:'homePage',  editable: false},
                 {name:'moduleId',index:'moduleId',  editable: false},
                 {name:'name',index:'name', editable: true},
-                {name:'menuId',index:'menuId', editable: true,edittype:"checkbox",editoptions: {value:"Yes:No"},unformat: aceSwitch},
+                {name:'menuId',index:'menuId', editable: true,edittype:"select",editoptions: {value: [[${aclMenuParams}]]},formatter:'select'},
                 {name:'seq',index:'seq', editable: true},
                 {name:'identify',index:'identify', editable: false,hidden:true},
                 {name:'version',index:'version', editable: false,hidden:true},
@@ -270,6 +271,7 @@
                 {name:'lastModifyByUserName',index:'lastModifyByUserName', editable: false,hidden:true},
                 {name:'lastModifyByUserCode',index:'lastModifyByUserCode', editable: false,hidden:true},
                 {name:'lastModifyTime',index:'lastModifyTime', editable: false,hidden:true},
+                /*]]>*/
             ],
 
             viewrecords : true,

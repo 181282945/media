@@ -3,8 +3,10 @@ package com.sunjung.base.sysmgr.aclresource.controller;
 import com.sunjung.base.sysmgr.aclresource.annotation.AclResc;
 import com.sunjung.base.sysmgr.aclresource.entity.AclResource;
 import com.sunjung.base.sysmgr.aclresource.service.AclResourceService;
-import com.sunjung.base.sysmgr.acluser.service.AclUserService;
 import com.sunjung.common.dto.jqgrid.JqgridFilters;
+import com.sunjung.common.dto.param.ParamDto;
+import com.sunjung.common.params.Params;
+import com.sunjung.common.util.ParamUtil;
 import com.sunjung.core.controller.BaseController;
 import com.sunjung.core.dto.ResultDataDto;
 import com.sunjung.core.mybatis.specification.PageAndSort;
@@ -36,22 +38,20 @@ public class AclResourceController extends BaseController<AclResource> {
     }
 
     @Resource
-    private AclResourceService aclResourceService;
+    private Params params;
 
     @Resource
-    private AclUserService aclUserService;
+    private AclResourceService aclResourceService;
 
-    /**
-     * 页面末班路径
-     */
+    //页面模板路径
     private static final String VIEW = "/list_aclresource";
-    //
+    //修改更新
     private static final String UPDATE_URL = "/base/sysmgr/aclresource/update";
-
+    //新增
     private static final String ADD_URL = "/base/sysmgr/aclresource/add";
-
+    //删除
     private static final String DELETE_URL = "/base/sysmgr/aclresource/delete";
-
+    //查询
     private static final String SEARCH_URL = "/base/sysmgr/aclresource/list";
 
     /**
@@ -65,7 +65,7 @@ public class AclResourceController extends BaseController<AclResource> {
         mav.addObject("ADD_URL",ADD_URL);
         mav.addObject("DELETE_URL",DELETE_URL);
         mav.addObject("SEARCH_URL",SEARCH_URL);
-        mav.addObject("jqgridFormatList",this.jqgridFormatList);
+        mav.addObject("aclMenuParams",ParamUtil.JqgridSelectVal(Params.getAclMenuParams()));
         return mav;
     }
 
@@ -81,7 +81,6 @@ public class AclResourceController extends BaseController<AclResource> {
     public ResultDataDto list(JqgridFilters jqgridFilters, @ModelAttribute("pageAndSort")PageAndSort pageAndSort){
         List<AclResource> aclResources = aclResourceService.findByJqgridFilters(jqgridFilters,pageAndSort);
         return new ResultDataDto(aclResources,pageAndSort);
-//        throw new RuntimeException("search");
     }
 
     /**
@@ -92,10 +91,9 @@ public class AclResourceController extends BaseController<AclResource> {
     @RequestMapping(value = "/add",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @AclResc(code = "add",name = "新增增资源")
     public ResultDataDto add(@ModelAttribute("aclResource")AclResource aclResource){
-//         if(aclResourceService.addEntity(aclResource)!=null)
-//             return ResultDataDto.addAddSuccess();
-//         return ResultDataDto.addOperationFailure("保存失败!");
-        throw new RuntimeException("add");
+         if(aclResourceService.addEntity(aclResource)!=null)
+             return ResultDataDto.addAddSuccess();
+         return ResultDataDto.addOperationFailure("保存失败!");
     }
 
     /**
@@ -106,8 +104,7 @@ public class AclResourceController extends BaseController<AclResource> {
     @AclResc(code = "view",name = "查询列表")
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public ResultDataDto view(@RequestParam("id")Integer id){
-//        return new ResultDataDto(aclResourceService.findEntityById(id));
-        throw new RuntimeException("view");
+        return new ResultDataDto(aclResourceService.findEntityById(id));
     }
 
     /**
@@ -116,9 +113,8 @@ public class AclResourceController extends BaseController<AclResource> {
     @RequestMapping(value = "/delete",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @AclResc(code = "delete",name = "删除资源")
     public ResultDataDto delete(@RequestParam("id") Integer id){
-//        aclResourceService.deleteById(id);
-//        return ResultDataDto.addDeleteSuccess();
-        throw new RuntimeException("delete");
+        aclResourceService.deleteById(id);
+        return ResultDataDto.addDeleteSuccess();
     }
 
     /**
@@ -129,8 +125,7 @@ public class AclResourceController extends BaseController<AclResource> {
     @RequestMapping(value = "/update",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @AclResc(code = "update",name = "更新资源")
     public ResultDataDto update(@ModelAttribute("aclResource")AclResource aclResource){
-//        aclResourceService.updateEntity(aclResource);
-//        return ResultDataDto.addUpdateSuccess();
-        throw new RuntimeException("update");
+        aclResourceService.updateEntity(aclResource);
+        return ResultDataDto.addUpdateSuccess();
     }
 }

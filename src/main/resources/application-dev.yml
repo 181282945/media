@@ -9,7 +9,10 @@ spring:
         password: 123
         driver-class-name: com.mysql.jdbc.Driver
 
-
+    http:
+      encoding:
+        charset: UTF-8
+        enabled: true
 
     #thymeleaf开发环境关闭thymeleaf缓存
     thymeleaf:
@@ -20,6 +23,7 @@ spring:
       mode: LEGACYHTML5
       encoding: utf-8
       content-type: text/html
+
       #
 server:
   tomcat:

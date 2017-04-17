@@ -21,4 +21,10 @@ public interface AclMenuService extends BaseService<AclMenu,AclMenuMapper> {
      * @return
      */
     Map<AclMenu,List<AclResource>> getAclUserMenus();
+
+    /**
+     * 获取CODE NAME 作为选择参数
+     * @return
+     */
+    List<AclMenu> findParams();
 }

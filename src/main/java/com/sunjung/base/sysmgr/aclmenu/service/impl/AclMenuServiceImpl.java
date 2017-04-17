@@ -60,4 +60,9 @@ public class AclMenuServiceImpl extends BaseServiceImpl<AclMenu, AclMenuMapper> 
         }
         return userMenuModuleMap;
     }
+
+    @Override
+    public List<AclMenu> findParams() {
+        return getMapper().findParams();
+    }
 }

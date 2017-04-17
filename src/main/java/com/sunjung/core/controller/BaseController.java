@@ -1,7 +1,7 @@
 package com.sunjung.core.controller;
 
 import com.google.gson.Gson;
-import com.sunjung.common.dto.JqgridFilters;
+import com.sunjung.common.dto.jqgrid.JqgridFilters;
 import com.sunjung.core.dto.ResultDataDto;
 import com.sunjung.core.entity.BaseEntity;
 import com.sunjung.core.mybatis.specification.PageAndSort;
@@ -16,11 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.awt.*;
 import java.io.IOException;
-import java.nio.charset.Charset;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by ZhenWeiLai on 2017/4/1.

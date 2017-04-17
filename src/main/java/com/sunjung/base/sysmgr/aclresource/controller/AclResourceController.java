@@ -4,7 +4,7 @@ import com.sunjung.base.sysmgr.aclresource.annotation.AclResc;
 import com.sunjung.base.sysmgr.aclresource.entity.AclResource;
 import com.sunjung.base.sysmgr.aclresource.service.AclResourceService;
 import com.sunjung.base.sysmgr.acluser.service.AclUserService;
-import com.sunjung.common.dto.JqgridFilters;
+import com.sunjung.common.dto.jqgrid.JqgridFilters;
 import com.sunjung.core.controller.BaseController;
 import com.sunjung.core.dto.ResultDataDto;
 import com.sunjung.core.mybatis.specification.PageAndSort;
@@ -64,6 +64,7 @@ public class AclResourceController extends BaseController<AclResource> {
     public ResultDataDto list(JqgridFilters jqgridFilters, @ModelAttribute("pageAndSort")PageAndSort pageAndSort){
         List<AclResource> aclResources = aclResourceService.findByJqgridFilters(jqgridFilters,pageAndSort);
         return new ResultDataDto(aclResources,pageAndSort);
+//        throw new RuntimeException("search");
     }
 
     /**

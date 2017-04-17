@@ -3,7 +3,6 @@ package com.sunjung.base.sysmgr.aclcache;
 import com.sunjung.base.sysmgr.aclmenu.domain.entity.AclMenu;
 import com.sunjung.base.sysmgr.aclmenu.service.AclMenuService;
 import com.sunjung.base.sysmgr.aclresource.entity.AclResource;
-import com.sunjung.core.util.CloneUtils;
 import com.sunjung.core.util.SpringUtils;
 import org.springframework.security.access.ConfigAttribute;
 

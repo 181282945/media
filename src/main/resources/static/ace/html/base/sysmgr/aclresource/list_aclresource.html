@@ -223,7 +223,7 @@
             prmNames : {
                 page:"pageAndSort.page",    // 表示请求页码的参数名称
                 rows:"pageAndSort.rp",    // 表示请求行数的参数名称
-//                sort: "sidx", // 表示用于排序的列名的参数名称
+                sort: "pageAndSort.sortName", // 表示用于排序的列名的参数名称
                 order: "pageAndSort.sortOrder", // 表示采用的排序方式的参数名称
                 search:"_search", // 表示是否是搜索请求的参数名称
 //                nd:"nd", // 表示已经发送请求的次数的参数名称
@@ -243,39 +243,33 @@
                     formatter:'actions',
                     formatoptions:{
                         keys:true,
-                        delbutton: true,//行内显示删除按钮
-                        //行内请求参数
+                        editbutton : true,
+                        delbutton : true,
                         delOptions:{
                             url:"/base/sysmgr/aclresource/delete",
                             recreateForm: true,
                             beforeShowForm:beforeDeleteCallback,
                             afterComplete:afterCompleteCallback
-                        },
-                        editformbutton:true,
-                        editOptions:{
-                            recreateForm: true,
-                            beforeShowForm:beforeEditCallback,
-                            afterComplete:afterCompleteCallback
-                        },
+                        },onSuccess : afterCompleteMsg
                     }
                 },
-                {name:'id',index:'id',  sorttype:"int", editable: true,search:true},
-                {name:'code',index:'code',  editable: false},
-                {name:'type',index:'type',  editable: false},
+                {name:'id',index:'id', editable: true,search:true},
+                {name:'code',index:'code', editable: false},
+                {name:'type',index:'type', editable: false},
                 {name:'path',index:'path',  editable: false},
                 {name:'homePage',index:'homePage',  editable: false},
                 {name:'moduleId',index:'moduleId',  editable: false},
-                {name:'name',index:'name',  editable: true},
-                {name:'menuId',index:'menuId',  editable: true,edittype:"checkbox",editoptions: {value:"Yes:No"},unformat: aceSwitch},
-                {name:'seq',index:'seq',  editable: true},
-                {name:'identify',index:'identify',  editable: false,hidden:true},
-                {name:'version',index:'version',  sorttype:"int", editable: false,hidden:true},
+                {name:'name',index:'name', editable: true},
+                {name:'menuId',index:'menuId', editable: true,edittype:"checkbox",editoptions: {value:"Yes:No"},unformat: aceSwitch},
+                {name:'seq',index:'seq', editable: true},
+                {name:'identify',index:'identify', editable: false,hidden:true},
+                {name:'version',index:'version', editable: false,hidden:true},
                 {name:'createByUserCode',index:'createByUserCode', editable: false,hidden:true},
-                {name:'createByUserName',index:'createByUserName',  editable: false,hidden:true},
-                {name:'createTime',index:'createTime',  sorttype:"date", editable: false,hidden:true},
-                {name:'lastModifyByUserName',index:'lastModifyByUserName',  editable: false,hidden:true},
-                {name:'lastModifyByUserCode',index:'lastModifyByUserCode',  editable: false,hidden:true},
-                {name:'lastModifyTime',index:'lastModifyTime',  sorttype:"date", editable: false,hidden:true}
+                {name:'createByUserName',index:'createByUserName', editable: false,hidden:true},
+                {name:'createTime',index:'createTime', editable: false,hidden:true},
+                {name:'lastModifyByUserName',index:'lastModifyByUserName', editable: false,hidden:true},
+                {name:'lastModifyByUserCode',index:'lastModifyByUserCode', editable: false,hidden:true},
+                {name:'lastModifyTime',index:'lastModifyTime', editable: false,hidden:true},
             ],
 
             viewrecords : true,

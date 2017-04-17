@@ -1,6 +1,6 @@
 package com.sunjung.core.service;
 
-import com.sunjung.common.dto.JqgridFilters;
+import com.sunjung.common.dto.jqgrid.JqgridFilters;
 import com.sunjung.core.dao.BaseMapper;
 import com.sunjung.core.dto.Pair;
 import com.sunjung.core.entity.BaseEntity;

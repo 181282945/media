@@ -1,4 +1,4 @@
-package com.sunjung.common.dto;
+package com.sunjung.common.dto.jqgrid;
 
 
 import java.util.List;

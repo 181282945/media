@@ -1,5 +1,6 @@
 package com.sunjung.base.sysmgr.aclresource.entity;
 
+import com.sunjung.common.annotation.jqgrid.JqgridColumn;
 import com.sunjung.core.entity.BaseEntity;
 import com.sunjung.core.entity.annotation.BaseEntityMapper;
 import org.apache.ibatis.type.Alias;
@@ -80,32 +81,41 @@ public class AclResource extends BaseEntity implements Comparable<AclResource> {
     }
 
     //资源编码
+    @JqgridColumn(displayName = "编码",editable = false)
     private String code;
     /**
      * 资源类型,可以是模块
      * 或者是特殊的精细控制
      */
+    @JqgridColumn(displayName = "类型",editable = false)
     private String type;
     //请求地址
+    @JqgridColumn(displayName = "请求地址",editable = false)
     private String path;
 
     /**
      * 模块主页
      */
+    @JqgridColumn(displayName = "主页",editable = false)
     private String homePage;
     //序号
+    @JqgridColumn(displayName = "序号")
     private Integer seq;
     //资源名称
+    @JqgridColumn(displayName = "资源名称",editable = false)
     private String name;
     //模块ID
+    @JqgridColumn(displayName = "模块ID",editable = false)
     private Integer moduleId;
     //菜单ID(属于哪个菜单的模块)
+    @JqgridColumn(displayName = "菜单ID")
     private Integer menuId;
 
     /**
      * 唯一标识,因为在反射模块的时候并没有ID
      * 简单类名的hashCode
      */
+    @JqgridColumn(displayName = "识别码",editable = false)
     private Integer identify;
 
     //-------------------------------------getter and setter-----------------------------------------------

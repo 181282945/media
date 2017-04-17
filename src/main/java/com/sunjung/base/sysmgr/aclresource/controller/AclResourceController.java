@@ -42,13 +42,30 @@ public class AclResourceController extends BaseController<AclResource> {
     private AclUserService aclUserService;
 
     /**
-     *
+     * 页面末班路径
+     */
+    private static final String VIEW = "/list_aclresource";
+    //
+    private static final String UPDATE_URL = "/base/sysmgr/aclresource/update";
+
+    private static final String ADD_URL = "/base/sysmgr/aclresource/add";
+
+    private static final String DELETE_URL = "/base/sysmgr/aclresource/delete";
+
+    private static final String SEARCH_URL = "/base/sysmgr/aclresource/list";
+
+    /**
      * @return
      */
     @RequestMapping(value = AclResourceController.HOME_PAGE,method = RequestMethod.GET,produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView toList(){
-        ModelAndView mav = new ModelAndView(PATH+"/list_aclresource");
+        ModelAndView mav = new ModelAndView(PATH + VIEW);
         mav.addObject("MODULE_NAME",MODULE_NAME);
+        mav.addObject("UPDATE_URL",UPDATE_URL);
+        mav.addObject("ADD_URL",ADD_URL);
+        mav.addObject("DELETE_URL",DELETE_URL);
+        mav.addObject("SEARCH_URL",SEARCH_URL);
+        mav.addObject("jqgridFormatList",this.jqgridFormatList);
         return mav;
     }
 

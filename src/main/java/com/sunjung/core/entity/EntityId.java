@@ -1,5 +1,7 @@
 package com.sunjung.core.entity;
 
+import com.sunjung.common.annotation.jqgrid.JqgridColumn;
+
 import java.io.Serializable;
 
 /**
@@ -10,6 +12,7 @@ public abstract class EntityId implements Serializable {
     private static final long serialVersionUID = 5702056668183673909L;
 
     //id
+    @JqgridColumn(displayName = "ID",editable = false)
     private Integer id;
 //    //版本号
 //    @DefaultValue(value = "0")

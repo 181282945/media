@@ -211,7 +211,7 @@
                     ]
                 });
             },
-            url:"/base/sysmgr/aclresource/list",
+            url:[[${SEARCH_URL}]],
             datatype: "json",
             jsonReader: {
                 root:"datas",
@@ -246,7 +246,7 @@
                         editbutton : true,
                         delbutton : true,
                         delOptions:{
-                            url:"/base/sysmgr/aclresource/delete",
+                            url:[[${DELETE_URL}]],
                             recreateForm: true,
                             beforeShowForm:beforeDeleteCallback,
                             afterComplete:afterCompleteCallback
@@ -293,7 +293,7 @@
                 }, 0);
             },
 
-            editurl: "/base/sysmgr/aclresource/update",
+            editurl: [[${UPDATE_URL}]],
 
             /*<![CDATA[*/
             caption: /*[[${MODULE_NAME}]]*/
@@ -358,7 +358,7 @@
                 view: true,
                 viewicon : 'ace-icon fa fa-search-plus grey',
             },
-            {url: '/base/sysmgr/aclresource/update',
+            {url: [[${UPDATE_URL}]],
                 //edit record form
                 //closeAfterEdit: true,
                 //width: 700,
@@ -371,7 +371,7 @@
                 afterComplete:afterCompleteCallback
             },
             //add options
-            { url: '/base/sysmgr/aclresource/add',
+            { url: [[${ADD_URL}]],
                 //new record form
                 //width: 700,
                 closeAfterAdd: true,
@@ -386,7 +386,7 @@
                 afterComplete:afterCompleteCallback
             },
             //delete options
-            { url: '/base/sysmgr/aclresource/delete',
+            { url: [[${DELETE_URL}]],
                 //delete record form
                 recreateForm: true,
                 beforeShowForm : function(e) {
@@ -405,7 +405,7 @@
             },
             //search
             {
-                url: '/base/sysmgr/aclresource/list',
+                url: [[${SEARCH_URL}]],
                 //search form
                 recreateForm: true,
                 afterShowSearch: function(e){
@@ -564,7 +564,6 @@
 
         $(grid_selector).closest(".ui-jqgrid-bdiv").css({ 'overflow-x' : 'scroll' });
     });
-
 
 </script>
 

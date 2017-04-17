@@ -7,6 +7,7 @@ import com.sunjung.base.sysmgr.aclmenu.service.AclMenuService;
 import com.sunjung.base.sysmgr.aclresource.entity.AclResource;
 import com.sunjung.core.security.util.SecurityUtil;
 import com.sunjung.core.service.BaseServiceImpl;
+import com.sunjung.core.util.CloneUtils;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.stereotype.Service;
 
@@ -18,11 +19,17 @@ import java.util.*;
 @Service("aclMenuService")
 public class AclMenuServiceImpl extends BaseServiceImpl<AclMenu, AclMenuMapper> implements AclMenuService {
 
+
+    /**
+     *   不建议修改此方法
+     * 因为:此类关系到MAP 的可变对象引用以及对象复制问题.
+     * @return
+     */
     @Override
     public Map<AclMenu, List<AclResource>> getAclUserMenus() {
 
         //创建完整的菜单,然后删除没有权限的菜单
-        Map<AclMenu, List<AclResource>> userMenuModuleMap = new LinkedHashMap<>(AclCache.aclMenuModuleMapCache);
+        Map<AclMenu, List<AclResource>> userMenuModuleMap = CloneUtils.clone((new LinkedHashMap<>(AclCache.aclMenuModuleMapCache)));
         //获取资源/权限集
         Map<String, Collection<ConfigAttribute>> moduleMap = AclCache.moduleMapCache;
         for (String path : moduleMap.keySet()) {

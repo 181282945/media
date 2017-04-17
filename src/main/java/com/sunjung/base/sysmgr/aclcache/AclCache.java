@@ -12,6 +12,9 @@ import java.util.*;
 /**
  * Created by ZhenWeiLai on 2017/4/9.
  * 权限管理缓存
+ *
+ * 不建议修改此类
+ * 因为:此类关系到MAP 的可变对象引用以及对象复制问题.
  */
 public class AclCache {
 
@@ -34,7 +37,7 @@ public class AclCache {
     /**
      * 完整 模块 - 方法 原型缓存
      */
-    public static Map<AclResource, List<AclResource>> resourcesMapCache = new HashMap<>();
+    public static Map<AclResource, List<AclResource>> resourcesMapCache;
 
     /**
      * 初始化菜单缓存
@@ -43,7 +46,7 @@ public class AclCache {
         AclMenuService aclMenuService = (AclMenuService) SpringUtils.getBean("aclMenuService");
         List<AclMenu> aclMenus = aclMenuService.findAll();
         Collections.sort(aclMenus);
-        aclMenuCache = Collections.unmodifiableList(aclMenus);
+        aclMenuCache =  Collections.unmodifiableList(aclMenus);
     }
 
     public static final void initAclMenuModuleMap(){
@@ -58,20 +61,20 @@ public class AclCache {
         /**
          * 获取菜单缓存
          */
-        List<AclMenu> aclMenus = AclCache.aclMenuCache;
+        List<AclMenu> aclMenus = new ArrayList<>(AclCache.aclMenuCache);
 
         /**
          * 获取key模块-value方法缓存
          * 只需要resourcesMap的key
          */
-        Map<AclResource, List<AclResource>> resourcesMap = new HashMap<>(AclCache.resourcesMapCache);
+        Map<AclResource, List<AclResource>> resourcesMap = new HashMap<>(resourcesMapCache);
 
         for(AclMenu key : aclMenus){
             Iterator<AclResource> iterator = resourcesMap.keySet().iterator();
             while(iterator.hasNext()){
                 AclResource module = iterator.next();
                 if(module.getMenuId() !=null ){
-                    if(module.getMenuId().intValue() == key.getId().intValue()){
+                    if(module.getMenuId().equals(key.getId())){
                         List<AclResource> value = aclMenuModuleMap.get(key);
                         if(value == null){
                             value = new ArrayList<>();
@@ -80,6 +83,11 @@ public class AclCache {
                         }else {
                             value.add(module);
                         }
+                        /**
+                         *  虽然resourcesMapCache不可编辑,但是只针对KEY
+                         *  然而value依然是可以根据引用删除,因为resourcesMapCache存在重复值
+                         *  所以这里允许使用引用删除
+                         */
                         iterator.remove();
                     }
                 }else{
@@ -87,13 +95,12 @@ public class AclCache {
                     aclMenuModuleMap.get(unclassified).add(module);
                     iterator.remove();
                 }
-
             }
         }
         for(Map.Entry<AclMenu,List<AclResource>> entry: aclMenuModuleMap.entrySet()){
             Collections.sort(entry.getValue());
         }
-        AclCache.aclMenuModuleMapCache = Collections.unmodifiableMap(aclMenuModuleMap);
+        aclMenuModuleMapCache = Collections.unmodifiableMap(aclMenuModuleMap);
     }
 
 }

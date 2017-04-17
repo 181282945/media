@@ -26,6 +26,9 @@ import java.util.*;
  * Created by 为 on 2017-4-7.
  * 监听器
  * 当Spring环境准备好以后,做些事情
+ *
+ *  * 不建议修改此类
+ * 因为:此类关系到MAP 的可变对象引用以及对象复制问题.
  */
 @Component
 public class StartupListener implements ApplicationListener<ContextRefreshedEvent> {
@@ -58,6 +61,7 @@ public class StartupListener implements ApplicationListener<ContextRefreshedEven
          */
         AclCache.moduleMapCache = Collections.unmodifiableMap(securityMetadataSource.getModuleMap());
 
+
         //初始化菜单缓存
         AclCache.initAclMenuCache();
 
@@ -65,6 +69,7 @@ public class StartupListener implements ApplicationListener<ContextRefreshedEven
          * 完整的菜单-模块
          */
         AclCache.initAclMenuModuleMap();
+
 
     }
 
@@ -75,7 +80,7 @@ public class StartupListener implements ApplicationListener<ContextRefreshedEven
         /**
          * 模块 - 方法map
          */
-
+        Map<AclResource, List<AclResource>> resourcesMap = new HashMap<>();
         RequestMappingHandlerMapping rmhp = SpringUtils.getBean(RequestMappingHandlerMapping.class);
         Map<RequestMappingInfo, HandlerMethod> map = rmhp.getHandlerMethods();
         for (RequestMappingInfo info : map.keySet()) {
@@ -95,19 +100,20 @@ public class StartupListener implements ApplicationListener<ContextRefreshedEven
                         //类名+方法名 的hashCode 作为唯一标识
                         Integer methodRescIdentify = (aclResourceClass.getSimpleName() + method.getName()).hashCode();
                         methodResc = new AclResource(methodAclResc.code(),methodAclResc.name(), info.getPatternsCondition().toString(), AclResourceType.METHOD.getCode(),methodRescIdentify);
-                        if (AclCache.resourcesMapCache.get(moduleResc) == null) {
+                        if (resourcesMap.get(moduleResc) == null) {
                             resources = new ArrayList<>();
                             resources.add(methodResc);
-                            AclCache.resourcesMapCache.put(moduleResc, resources);
+                            resourcesMap.put(moduleResc, resources);
                         } else {
-                            AclCache.resourcesMapCache.get(moduleResc).add(methodResc);
+                            resourcesMap.get(moduleResc).add(methodResc);
                         }
                     }
                 }
             }
         }
 
-        addModule(AclCache.resourcesMapCache);
+        addModule(resourcesMap);
+        AclCache.resourcesMapCache = Collections.unmodifiableMap(resourcesMap);
     }
 
 

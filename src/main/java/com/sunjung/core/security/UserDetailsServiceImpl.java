@@ -9,6 +9,7 @@ import com.sunjung.base.sysmgr.acluserrole.entity.AclUserRole;
 import com.sunjung.base.sysmgr.acluserrole.service.AclUserRoleService;
 import com.sunjung.core.mybatis.MyRoutingDataSource;
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
+import org.springframework.security.access.vote.AuthenticatedVoter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;

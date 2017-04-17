@@ -62,8 +62,9 @@ public class AclMenu extends BaseEntity implements Comparable<AclMenu> {
         return code;
     }
 
-    public void setCode(String code) {
+    public AclMenu setCode(String code) {
         this.code = code;
+        return this;
     }
 
     public String getName() {

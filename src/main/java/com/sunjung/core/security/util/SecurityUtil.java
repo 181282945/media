@@ -35,6 +35,7 @@ public class SecurityUtil {
         Collection<? extends GrantedAuthority> authorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
         for(GrantedAuthority ga : authorities){
             String gaAuth = ga.getAuthority().toUpperCase();
+//            !this.authenticationTrustResolver.isAnonymous(authentication) && !this.authenticationTrustResolver.isRememberMe(authentication);
             if(gaAuth.equals(auth)||gaAuth.equals(SecurityUtil.ADMIN))
                 return true;
         }

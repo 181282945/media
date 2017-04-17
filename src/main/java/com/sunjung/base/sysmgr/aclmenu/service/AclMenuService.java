@@ -15,6 +15,9 @@ public interface AclMenuService extends BaseService<AclMenu,AclMenuMapper> {
 
     /**
      * 计算当前用户有权限的菜单
+     *
+     *   不建议修改此方法
+     * 因为:此方法关系到MAP 的可变对象引用以及对象复制问题.
      * @return
      */
     Map<AclMenu,List<AclResource>> getAclUserMenus();

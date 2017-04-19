@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta charset="utf-8" />
-    <title>htxx</title>
+    <title th:text="${MODULE_NAME}">htxx</title>
 
     <meta name="description" content="Dynamic tables and grids using jqGrid plugin" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
@@ -133,18 +133,6 @@
 <!-- inline scripts related to this page -->
 <script type="text/javascript" th:inline="javascript">
 
-    //    var subgrid_data =
-    //        [
-    //            {id:"1", name:"sub grid item 1", qty: 11},
-    //            {id:"2", name:"sub grid item 2", qty: 3},
-    //            {id:"3", name:"sub grid item 3", qty: 12},
-    //            {id:"4", name:"sub grid item 4", qty: 5},
-    //            {id:"5", name:"sub grid item 5", qty: 2},
-    //            {id:"6", name:"sub grid item 6", qty: 9},
-    //            {id:"7", name:"sub grid item 7", qty: 3},
-    //            {id:"8", name:"sub grid item 8", qty: 8}
-    //        ];
-
     jQuery(function($) {
         var grid_selector = "#grid-table";
         var pager_selector = "#grid-pager";
@@ -188,30 +176,59 @@
             //direction: "rtl",
             shrinkToFit:false,
             autoScroll: true,
-            //subgrid options
-//            subGrid : true,
-            //subGridModel: [{ name : ['No','Item Name','Qty'], width : [55,200,80] }],
-//            subGridOptions : {
-//                plusicon : "ace-icon fa fa-plus center bigger-110 blue",
-//                minusicon  : "ace-icon fa fa-minus center bigger-110 blue",
-//                openicon : "ace-icon fa fa-chevron-right center orange"
-//            },
+
+            subGrid : true,
+//            subGridModel: [{
+////                name : ['No','Item Name','Qty'], width : [55,200,80]
+//                params : ['id'],
+//            }],
+            //datatype: "xml",
+            subGridOptions : {
+                plusicon : "ace-icon fa fa-plus center bigger-110 blue",
+                minusicon  : "ace-icon fa fa-minus center bigger-110 blue",
+                openicon : "ace-icon fa fa-chevron-right center orange"
+            },
             //for this example we are using local data
             subGridRowExpanded: function (subgridDivId, rowId) {
                 var subgridTableId = subgridDivId + "_t";
                 $("#" + subgridDivId).html("<table id='" + subgridTableId + "'></table>");
                 $("#" + subgridTableId).jqGrid({
-                    datatype: 'local',
-                    data: subgrid_data,
-                    colNames: ['No','Item Name','Qty'],
+                    url:[[${SEARCH_METHOD_URL}]] +"?moduleId=" +rowId,
+                    editurl: [[${UPDATE_URL}]],
+                    datatype: 'json',
+//                    data: subgrid_data,
+                    colNames: [' ', 'id','编码','type', 'path','moduleId','name','seq','identify'],
                     colModel: [
-                        { name: 'id', width: 50 },
-                        { name: 'name', width: 150 },
-                        { name: 'qty', width: 50 }
-                    ]
+                        {name:'myac',index:'', width:80, fixed:true, sortable:false, resize:false,
+                            formatter:'actions',
+                            formatoptions:{
+                                keys:true,
+                                editbutton : true,
+                                delbutton : false,
+//                        delOptions:{
+//                            url:[[${DELETE_URL}]],
+//                            recreateForm: true,
+//                            beforeShowForm:beforeDeleteCallback,
+//                            afterComplete:afterCompleteCallback
+//                        },onSuccess : afterCompleteMsg
+                            }
+                        },
+                        {name:'id',index:'id',width:50, editable: false,search:true,hidden:true},
+                        {name:'code',index:'code', editable: false},
+                        {name:'type',index:'type', editable: false},
+                        {name:'path',index:'path',  editable: false},
+                        {name:'moduleId',index:'moduleId',  editable: false},
+                        {name:'name',index:'name', editable: false},
+                        {name:'seq',index:'seq', editable: true},
+                        {name:'identify',index:'identify', editable: false,hidden:true}
+                    ],
+                    jsonReader: {
+                        root:"datas",
+                    },
                 });
             },
-            url:[[${SEARCH_URL}]],
+
+            url:[[${SEARCH_MODULE_URL}]],
             datatype: "json",
             jsonReader: {
                 root:"datas",
@@ -237,30 +254,30 @@
 //                totalrows:"rowCount" // 表示需从Server得到总共多少行数据的参数名称，参见jqGrid选项中的rowTotal
             },
             height: 400,
-            colNames:[' ', 'id','编码','type', 'path', 'homePage','moduleId','name','menuId','seq','identify','version','createByUserCode','createByUserName','createTime','lastModifyByUserName','lastModifyByUserCode','lastModifyTime'],
+            colNames:[' ', 'id','编码','type', 'path', 'homePage','name','menuId','seq','identify','version','createByUserCode','createByUserName','createTime','lastModifyByUserName','lastModifyByUserCode','lastModifyTime'],
             colModel:[
                 {name:'myac',index:'', width:80, fixed:true, sortable:false, resize:false,
                     formatter:'actions',
                     formatoptions:{
                         keys:true,
                         editbutton : true,
-                        delbutton : true,
-                        delOptions:{
-                            url:[[${DELETE_URL}]],
-                            recreateForm: true,
-                            beforeShowForm:beforeDeleteCallback,
-                            afterComplete:afterCompleteCallback
-                        },onSuccess : afterCompleteMsg
+                        delbutton : false,
+//                        delbutton : true,
+//                        delOptions:{
+//                            url:[[${DELETE_URL}]],
+//                            recreateForm: true,
+//                            beforeShowForm:beforeDeleteCallback,
+//                            afterComplete:afterCompleteCallback
+//                        },onSuccess : afterCompleteMsg
                     }
                 },
 
-                {name:'id',index:'id', editable: true,search:true},
+                {name:'id',index:'id',width:50, editable: false,search:true,hidden:true},
                 {name:'code',index:'code', editable: false},
                 {name:'type',index:'type', editable: false},
                 {name:'path',index:'path',  editable: false},
                 {name:'homePage',index:'homePage',  editable: false},
-                {name:'moduleId',index:'moduleId',  editable: false},
-                {name:'name',index:'name', editable: true},
+                {name:'name',index:'name', editable: false},
                 {name:'menuId',index:'menuId', editable: true,edittype:"select",editoptions: {value: [[${aclMenuParams}]]},formatter:'select'},
                 {name:'seq',index:'seq', editable: true},
                 {name:'identify',index:'identify', editable: false,hidden:true},
@@ -271,7 +288,6 @@
                 {name:'lastModifyByUserName',index:'lastModifyByUserName', editable: false,hidden:true},
                 {name:'lastModifyByUserCode',index:'lastModifyByUserCode', editable: false,hidden:true},
                 {name:'lastModifyTime',index:'lastModifyTime', editable: false,hidden:true},
-                /*]]>*/
             ],
 
             viewrecords : true,
@@ -281,9 +297,9 @@
             altRows: true,
             //toppager: true,
 
-            multiselect: true,
+            multiselect: false,
             //multikey: "ctrlKey",
-            multiboxonly: true,
+            multiboxonly: false,
 
             loadComplete : function() {
                 var table = this;
@@ -407,7 +423,7 @@
             },
             //search
             {
-                url: [[${SEARCH_URL}]],
+                url: [[${SEARCH_MODULE_URL}]],
                 //search form
                 recreateForm: true,
                 afterShowSearch: function(e){
@@ -464,6 +480,7 @@
             form.find('.add-group').addClass('btn btn-xs btn-success');
             form.find('.delete-group').addClass('btn btn-xs btn-danger');
         }
+
         function style_search_form(form) {
             var dialog = form.closest('.ui-jqdialog');
             var buttons = dialog.find('.EditTable')

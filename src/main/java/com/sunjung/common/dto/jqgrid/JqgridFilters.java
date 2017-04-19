@@ -1,15 +1,19 @@
 package com.sunjung.common.dto.jqgrid;
 
 
+import com.sunjung.core.mybatis.specification.PageAndSort;
+import com.sunjung.core.mybatis.specification.QueryLike;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by 为 on 2017-4-12.
  */
 public class JqgridFilters{
-    private String groupOp;
+    private String groupOp = QueryLike.OPERATOR_AND;
 
-    private List<Rule> rules;
+    private List<Rule> rules = new ArrayList<>();
 
     public JqgridFilters(String groupOp, List<Rule> rules) {
         this.groupOp = groupOp;
@@ -39,6 +43,13 @@ public class JqgridFilters{
     }
 
     public static class Rule{
+
+        public Rule(String field,String op,String data){
+            this.field = field;
+            this.op = op;
+            this.data = data;
+        }
+
         /**
          * 属性名,数据库字段名
          */

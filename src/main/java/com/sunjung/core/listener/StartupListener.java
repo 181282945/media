@@ -7,6 +7,7 @@ import com.sunjung.base.sysmgr.aclresource.common.AclResourceType;
 import com.sunjung.base.sysmgr.aclresource.entity.AclResource;
 import com.sunjung.base.sysmgr.aclresource.service.AclResourceService;
 import com.sunjung.core.security.MySecurityMetadataSource;
+import com.sunjung.core.util.Delimiter;
 import com.sunjung.core.util.SpringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.ApplicationListener;
@@ -90,7 +91,7 @@ public class StartupListener implements ApplicationListener<ContextRefreshedEven
                     throw new RuntimeException("使用:"+AclResc.class.getName()+" 注解类时,请配置 homePage ");
                 Class<?> aclResourceClass = map.get(info).getBeanType();
                 RequestMapping moduleMapping = aclResourceClass.getAnnotation(RequestMapping.class);
-                AclResource moduleResc = new AclResource(moduleAclResc.code(),moduleAclResc.name(),moduleMapping.value()[0], AclResourceType.MODULE.getCode(),moduleAclResc.homePage(),aclResourceClass.getSimpleName().hashCode());
+                AclResource moduleResc = new AclResource(moduleAclResc.code(),moduleAclResc.name(),Arrays.toString(moduleMapping.value()), AclResourceType.MODULE.getCode(),moduleAclResc.homePage(),aclResourceClass.getSimpleName().hashCode());
                 if (moduleMapping != null) {
                     List<AclResource> resources;
                     AclResource methodResc;
@@ -99,7 +100,7 @@ public class StartupListener implements ApplicationListener<ContextRefreshedEven
                     if(methodAclResc != null){
                         //类名+方法名 的hashCode 作为唯一标识
                         Integer methodRescIdentify = (aclResourceClass.getSimpleName() + method.getName()).hashCode();
-                        methodResc = new AclResource(methodAclResc.code(),methodAclResc.name(), info.getPatternsCondition().toString(), AclResourceType.METHOD.getCode(),methodRescIdentify);
+                        methodResc = new AclResource(methodAclResc.code(),methodAclResc.name(),info.getPatternsCondition().toString().replace("||", Delimiter.COMMA.getDelimiter()), AclResourceType.METHOD.getCode(),methodRescIdentify);
                         if (resourcesMap.get(moduleResc) == null) {
                             resources = new ArrayList<>();
                             resources.add(methodResc);
@@ -149,8 +150,9 @@ public class StartupListener implements ApplicationListener<ContextRefreshedEven
                         aclResourceService.updateEntity(methodResc);
                         //同时code也可能被更改,所以更新权限code
                         aclAuthService.updateCodeByRescId(methodResc.getCode(), methodResc.getId());
+                    }else{
+                        aclResourceService.addEntity(methodResc);
                     }
-
                 }
             }
         }

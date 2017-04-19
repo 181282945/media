@@ -12,6 +12,8 @@ import com.sunjung.base.sysmgr.aclresource.entity.AclResource;
 import com.sunjung.base.sysmgr.aclresource.service.AclResourceService;
 import com.sunjung.base.sysmgr.aclrole.service.AclRoleService;
 import com.sunjung.core.util.CloneUtils;
+import com.sunjung.core.util.Delimiter;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityConfig;
 import org.springframework.security.access.vote.AuthenticatedVoter;
@@ -136,7 +138,7 @@ public class MySecurityMetadataSource implements FilterInvocationSecurityMetadat
              * 如果没有设置权限,那么至少需要登录才能访问
              */
             if(aclRescRoles.isEmpty()){
-                stuff(null,new SecurityConfig(AuthenticatedVoter.IS_AUTHENTICATED_FULLY),moduleMap,module.getPath()+"/**");
+                stuff(null,new SecurityConfig(AuthenticatedVoter.IS_AUTHENTICATED_FULLY),moduleMap,module.getPath());
                 continue;
             }
 
@@ -145,7 +147,7 @@ public class MySecurityMetadataSource implements FilterInvocationSecurityMetadat
                 String roleCode = aclRoleService.findEntityById(roleId).getCode();//角色编码
                 Collection<ConfigAttribute> collection = moduleMap.get(module.getPath());
                 ConfigAttribute ca = new SecurityConfig(roleCode.toUpperCase());
-                stuff(collection,ca,moduleMap,module.getPath()+"/**");
+                stuff(collection,ca,moduleMap, module.getPath());
             }
         }
     }
@@ -170,12 +172,15 @@ public class MySecurityMetadataSource implements FilterInvocationSecurityMetadat
     }
 
     private void stuff(Collection<ConfigAttribute> collection,ConfigAttribute ca,Map<String, Collection<ConfigAttribute>> map,String path){
-        if (collection != null) {
-            collection.add(ca);
-        }else {
-            collection = new ArrayList<>();
-            collection.add(ca);
-            map.put(path, collection);
+        String [] pathArr = path.substring(1,path.length()-1).split(Delimiter.COMMA.getDelimiter());
+        for(String item : pathArr){
+            if (collection != null) {
+                collection.add(ca);
+            }else {
+                collection = new ArrayList<>();
+                collection.add(ca);
+                map.put(StringUtils.trimToEmpty(item)+"/**", collection);
+            }
         }
     }
 }

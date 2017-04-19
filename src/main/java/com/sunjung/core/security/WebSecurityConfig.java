@@ -2,6 +2,8 @@ package com.sunjung.core.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.access.AccessDecisionVoter;
+import org.springframework.security.access.vote.AbstractAccessDecisionManager;
+import org.springframework.security.access.vote.AffirmativeBased;
 import org.springframework.security.access.vote.AuthenticatedVoter;
 import org.springframework.security.access.vote.RoleVoter;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -58,7 +60,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         //解决不允许显示在iframe的问题
         http.headers().frameOptions().disable();
-        http.addFilterAfter(MyUsernamePasswordAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterAt(MyUsernamePasswordAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+
         // 开启默认登录页面
         http.authorizeRequests().anyRequest().authenticated().withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
             public <O extends FilterSecurityInterceptor> O postProcess(O fsi) {
@@ -73,7 +76,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // 关闭csrf
         http.csrf().disable();
 
-        // session管理,只允许一个用户登录,如果同一个账户两次登录,那么第一个账户将被踢下线,跳转到登录页面
+        //session管理
+        //session失效后跳转
+        http.sessionManagement().invalidSessionUrl("/login");
+        //只允许一个用户登录,如果同一个账户两次登录,那么第一个账户将被踢下线,跳转到登录页面
         http.sessionManagement().maximumSessions(1).expiredUrl("/login");
     }
 
@@ -120,22 +126,36 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new org.springframework.security.access.event.LoggerListener();
     }
 
-    /**
-     * 这里可以增加自定义的投票器
-     *
-     * @return
-     */
-    public MyAccessDecisionManager accessDecisionManager() {
+
+    public AbstractAccessDecisionManager accessDecisionManager(){
         List<AccessDecisionVoter<? extends Object>> decisionVoters = new ArrayList();
         decisionVoters.add(new AuthenticatedVoter());
         decisionVoters.add(new RoleVoter());//角色投票器,默认前缀为ROLE_
         RoleVoter AuthVoter = new RoleVoter();
         AuthVoter.setRolePrefix("AUTH_");//特殊权限投票器,修改前缀为AUTH_
         decisionVoters.add(AuthVoter);
+
 //        decisionVoters.add(webExpressionVoter());// 启用表达式投票器
-        MyAccessDecisionManager accessDecisionManager = new MyAccessDecisionManager(decisionVoters);
-        return accessDecisionManager;
+        AffirmativeBased affirmativeBased = new AffirmativeBased(decisionVoters);
+        return  affirmativeBased;
     }
+
+    /**
+     * 这里可以增加自定义的投票器
+     *
+     * @return
+     */
+//    public MyAccessDecisionManager accessDecisionManager() {
+//        List<AccessDecisionVoter<? extends Object>> decisionVoters = new ArrayList();
+//        decisionVoters.add(new AuthenticatedVoter());
+//        decisionVoters.add(new RoleVoter());//角色投票器,默认前缀为ROLE_
+//        RoleVoter AuthVoter = new RoleVoter();
+//        AuthVoter.setRolePrefix("AUTH_");//特殊权限投票器,修改前缀为AUTH_
+//        decisionVoters.add(AuthVoter);
+////        decisionVoters.add(webExpressionVoter());// 启用表达式投票器
+//        MyAccessDecisionManager accessDecisionManager = new MyAccessDecisionManager(decisionVoters);
+//        return accessDecisionManager;
+//    }
 
     @Override
     public AuthenticationManager authenticationManagerBean(){

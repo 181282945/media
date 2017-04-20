@@ -11,6 +11,14 @@ import org.apache.ibatis.type.Alias;
 @BaseEntityMapper(tableName = "acl_role_auth")
 public class AclRoleAuth extends BaseEntity {
 
+    public AclRoleAuth(){}
+
+    public AclRoleAuth(Integer authId,Integer roleId){
+        this.authId = authId;
+        this.roleId = roleId;
+    }
+
+
     private Integer authId;
 
     private Integer roleId;

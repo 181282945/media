@@ -2,6 +2,7 @@ package com.sunjung.base.sysmgr.aclresource.entity;
 
 import com.sunjung.core.entity.BaseEntity;
 import com.sunjung.core.entity.annotation.BaseEntityMapper;
+import com.sunjung.core.entity.annotation.Transient;
 import org.apache.ibatis.type.Alias;
 
 import java.util.Objects;
@@ -33,7 +34,7 @@ public class AclResource extends BaseEntity implements Comparable<AclResource> {
      * @param homePage
      * @param identify
      */
-    public AclResource(String code, String name, String path, String type, String homePage, Integer identify) {
+    public AclResource(String code, String name, String path, String type, String homePage, String identify) {
         this.code = code;
         this.name = name;
         this.path = path;
@@ -51,7 +52,7 @@ public class AclResource extends BaseEntity implements Comparable<AclResource> {
      * @param type
      * @param identify
      */
-    public AclResource(String code, String name, String path, String type, Integer identify) {
+    public AclResource(String code, String name, String path, String type, String identify) {
         this.code = code;
         this.name = name;
         this.path = path;
@@ -102,11 +103,19 @@ public class AclResource extends BaseEntity implements Comparable<AclResource> {
     //菜单ID(属于哪个菜单的模块)
     private Integer menuId;
 
+
+
+    //瞬时,是否精确权限控制
+    @Transient
+    private Boolean isAuth;
+
+
+
     /**
      * 唯一标识,因为在反射模块的时候并没有ID
      * 简单类名的hashCode
      */
-    private Integer identify;
+    private String identify;
 
     //-------------------------------------getter and setter-----------------------------------------------
 
@@ -175,14 +184,22 @@ public class AclResource extends BaseEntity implements Comparable<AclResource> {
         this.homePage = homePage;
     }
 
-    public Integer getIdentify() {
+    public String getIdentify() {
         return identify;
     }
 
-    public void setIdentify(Integer identify) {
+    public void setIdentify(String identify) {
         this.identify = identify;
     }
 
+
+    public Boolean isAuth() {
+        return isAuth;
+    }
+
+    public void setAuth(Boolean auth) {
+        isAuth = auth;
+    }
 
     /**
      * 返回模块地址

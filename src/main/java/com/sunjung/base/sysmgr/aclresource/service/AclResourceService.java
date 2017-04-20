@@ -13,7 +13,7 @@ import java.util.List;
  */
 public interface AclResourceService extends BaseService<AclResource,AclResourceMapper> {
 
-    AclResource findByIdentify(Integer identify);
+    AclResource findByIdentify(String identify);
 
     List<AclResource> findAllModule();
 
@@ -27,5 +27,24 @@ public interface AclResourceService extends BaseService<AclResource,AclResourceM
      * @return
      */
     List<AclResource> findMethodAuth(Integer moduleId);
+
+
+    /**
+     * 填充瞬时属性
+     * @param aclResources
+     */
+    void fillIsAuth(List<AclResource> aclResources);
+
+    /**
+     * 填充瞬时属性
+     * 角色是否有用权限
+     * @param aclResources
+     */
+    void fillIsAuthByRescRole(List<AclResource> aclResources,Integer roleId);
+
+    /**
+     * 根据权限ID,角色ID查询是否有权限
+     */
+    void fillIsAuthByRoleAuth(List<AclResource> aclResources,Integer roleId);
 
 }

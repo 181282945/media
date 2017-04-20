@@ -14,4 +14,21 @@ public interface AclRescRoleService extends BaseService<AclRescRole,AclRescRoleM
 
     List<AclRescRole> findByRescId(Integer rescId);
 
+
+    /**
+     * 根据角色ID,资源ID,查询是否存在权限
+     * @param roleId
+     * @param rescId
+     * @return
+     */
+    int existByRoleIdRescId(Integer roleId, Integer rescId);
+
+    /**
+     * 根据角色ID,资源ID 删除角色权限
+     * @param roleId
+     * @param rescId
+     * @return
+     */
+    int deleteByRescIdRoleId(Integer roleId,Integer rescId);
+
 }

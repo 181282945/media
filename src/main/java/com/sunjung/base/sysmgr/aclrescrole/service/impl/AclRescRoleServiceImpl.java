@@ -19,4 +19,14 @@ public class AclRescRoleServiceImpl extends BaseServiceImpl<AclRescRole,AclRescR
        return getMapper().findByRescId(rescId);
     }
 
+    @Override
+    public int existByRoleIdRescId(Integer roleId, Integer rescId) {
+        return getMapper().existByRoleIdRescId(roleId,rescId);
+    }
+
+    @Override
+    public int deleteByRescIdRoleId(Integer roleId, Integer rescId) {
+        return getMapper().deleteByRescIdRoleId(roleId,rescId);
+    }
+
 }

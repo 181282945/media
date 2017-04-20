@@ -25,6 +25,17 @@ public interface AclAuthMapper extends BaseMapper<AclAuth> {
     @Select("SELECT b.path,a.code FROM acl_auth a INNER JOIN acl_resource b ON a.resourceId = b.id")
     List<Map<String,String>> findPathCode();
 
-    @Update(" UPDATE acl_auth SET code = #{code} WHERE id = #{rescId} ")
-    int updateCodeByRescId(@Param("code")String code,@Param("rescId")Integer rescId);
+    @Update(" UPDATE acl_auth SET code = #{code} WHERE id = #{resourceId} ")
+    int updateCodeByRescId(@Param("code")String code,@Param("resourceId")Integer resourceId);
+
+    @Update(" DELETE FROM acl_auth WHERE resourceId = #{resourceId} ")
+    int deleteByRescId(@Param("resourceId")Integer resourceId);
+
+
+    @Select(" SELECT count(0) FROM acl_auth WHERE resourceId = #{resourceId} LIMIT 1 ")
+    int existByRescId(@Param("resourceId")Integer resourceId);
+
+
+    @Select(" SELECT * FROM acl_auth WHERE resourceId = #{rescId} LIMIT 1 ")
+    AclAuth getByRescId(@Param("rescId")Integer rescId);
 }

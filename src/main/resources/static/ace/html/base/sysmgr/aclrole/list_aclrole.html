@@ -98,6 +98,7 @@
 </script>
 <script src="/js/layer/layer.js"></script>
 <script src="/js/base.js"></script>
+<script src="/js/base/sysmgr/aclrole/list_aclrole.js"></script>
 <script src="/components/bootstrap/dist/js/bootstrap.js"></script>
 
 <!-- page specific plugin scripts -->
@@ -187,11 +188,11 @@
                 openicon : "ace-icon fa fa-chevron-right center orange"
             },
             //for this example we are using local data
-            subGridRowExpanded: function (subgridDivId, rowId) {
-                var subgridTableId = subgridDivId + "_t";
+            subGridRowExpanded: function (subgridDivId, roleId) {
+                var moduleSubgrid = subgridDivId + "_t";
 
-                $("#" + subgridDivId).html("<table id='" + subgridTableId + "'></table>");
-                $("#" + subgridTableId).jqGrid({
+                $("#" + subgridDivId).html("<table id='" + moduleSubgrid + "'></table>");
+                $("#" + moduleSubgrid).jqGrid({
                     subGrid : true,
                     subGridOptions : {
                         plusicon : "ace-icon fa fa-plus center bigger-110 blue",
@@ -199,40 +200,40 @@
                         openicon : "ace-icon fa fa-chevron-right center orange"
                     },
                     subGridRowExpanded: function (subgridDivId, rowId) {
-                        var subgridTableId = subgridDivId + "_t";
+                        var methodSubgrid = subgridDivId + "_t";
 
-                        $("#" + subgridDivId).html("<table id='" + subgridTableId + "'></table>");
-                        $("#" + subgridTableId).jqGrid({
-                            url:'/base/sysmgr/aclresource/listMethodAuth?moduleId=' +rowId,
+                        $("#" + subgridDivId).html("<table id='" + methodSubgrid + "'></table>");
+                        $("#" + methodSubgrid).jqGrid({
+                            url:'/base/sysmgr/aclresource/listMethodAuthByRoleId?roleId=' + roleId + '&moduleId=' +rowId,
                             datatype: 'json',
                             colNames:['id','编码','名称','类型', '映射URL','模块首页','标识码','精确权限'],
                             colModel:[
                                 {name:'id',index:'id',width:50, editable: false,search:true,hidden:true},
                                 {name:'code',index:'code', editable: false},
                                 {name:'name',index:'name', editable: false},
-                                {name:'type',index:'type', editable: false},
+                                {name: 'type', index: 'type', editable: false,edittype: "select",editoptions: {value: [[${aclResrouceTypeParams}]]},formatter: 'select'},
                                 {name:'path',index:'path',  editable: false},
                                 {name:'homePage',index:'homePage',  editable: false},
                                 {name:'identify',index:'identify', editable: false},
-                                {name:'auth',index:'auth',formatter: function(cellvalue, options, rowObject){return '<input type="checkbox" checked value="1" offval="0" id='+"'+options.rowId+'"+'_stock" name="stock" rowid="'+options.rowId+'" role="checkbox" class="editable inline-edit-cell ace ace-switch ace-switch-5"><span class="lbl"></span>'}},
+                                {name:'auth',index:'auth',formatter: methodSwitch,formatoptions:{value: roleId,subgridTableId:methodSubgrid}},
                             ],
                             jsonReader: {
                                 root:"datas",
                             },
                         });
                     },
-                    url:'/base/sysmgr/aclresource/listModule',
+                    url:'/base/sysmgr/aclresource/listModuleAuthByRoleId?roleId=' + roleId,
                     datatype: 'json',
                     colNames:['id','编码','名称','类型', '映射URL','模块首页','标识码','权限'],
                     colModel:[
                         {name:'id',index:'id',width:50, editable: false,search:true,hidden:true},
                         {name:'code',index:'code', editable: false},
                         {name:'name',index:'name', editable: false},
-                        {name:'type',index:'type', editable: false},
+                        {name: 'type', index: 'type', editable: false,edittype: "select",editoptions: {value: [[${aclResrouceTypeParams}]]},formatter: 'select'},
                         {name:'path',index:'path',  editable: false},
                         {name:'homePage',index:'homePage',  editable: false},
                         {name:'identify',index:'identify', editable: false},
-                        {name:'auth',index:'auth',formatter: function(cellvalue, options, rowObject){return '<input type="checkbox" value="1" offval="0" id='+"'+options.rowId+'"+'"_stock" name="stock" rowid="'+options.rowId+'" role="checkbox" class="editable inline-edit-cell ace ace-switch ace-switch-5"><span class="lbl"></span>'}},
+                        {name:'auth',index:'auth',formatter: moduleSwitch,formatoptions:{value: roleId,subgridTableId:moduleSubgrid}},
                     ],
                     jsonReader: {
                         root:"datas",

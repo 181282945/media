@@ -1,9 +1,11 @@
 package com.sunjung.base.sysmgr.aclrole.controller;
 
 import com.sunjung.base.sysmgr.aclresource.annotation.AclResc;
+import com.sunjung.base.sysmgr.aclresource.common.AclResourceType;
 import com.sunjung.base.sysmgr.aclrole.entity.AclRole;
 import com.sunjung.base.sysmgr.aclrole.service.AclRoleService;
 import com.sunjung.common.dto.jqgrid.JqgridFilters;
+import com.sunjung.common.util.ParamUtil;
 import com.sunjung.core.controller.BaseController;
 import com.sunjung.core.dto.ResultDataDto;
 import com.sunjung.core.mybatis.specification.PageAndSort;
@@ -56,6 +58,7 @@ public class AclRoleController extends BaseController<AclRole> {
         mav.addObject("ADD_URL",ADD_URL);
         mav.addObject("DELETE_URL",DELETE_URL);
         mav.addObject("SEARCH_MODULE_URL",SEARCH_URL);
+        mav.addObject("aclResrouceTypeParams", ParamUtil.JqgridSelectVal(AclResourceType.getParams()));
         return mav;
     }
 

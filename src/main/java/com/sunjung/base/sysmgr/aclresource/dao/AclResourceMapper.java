@@ -14,7 +14,7 @@ import java.util.List;
 @Repository
 public interface AclResourceMapper extends BaseMapper<AclResource> {
     @Select("SELECT * FROM acl_resource WHERE identify = #{identify} limit 1")
-    AclResource findByIdentify(@Param("identify")Integer identify);
+    AclResource findByIdentify(@Param("identify")String identify);
 
 
     @Select("SELECT * FROM acl_resource WHERE type = 'module' ")

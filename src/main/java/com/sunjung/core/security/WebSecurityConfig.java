@@ -136,8 +136,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         decisionVoters.add(AuthVoter);
 
 //        decisionVoters.add(webExpressionVoter());// 启用表达式投票器
-        AffirmativeBased affirmativeBased = new AffirmativeBased(decisionVoters);
-        return  affirmativeBased;
+        MyAccessDecisionManager accessDecisionManager = new MyAccessDecisionManager(decisionVoters);
+        return  accessDecisionManager;
     }
 
     /**

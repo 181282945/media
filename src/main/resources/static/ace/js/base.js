@@ -13,3 +13,23 @@ function afterCompleteMsg(data){
             scrollbar: false
         });
 }
+
+
+function commonCompleteMsg(data,gridTable){
+    if(data.operateCode == "S")
+        jQuery("#"+gridTable).trigger("reloadGrid");
+
+    if(data.operateCode == "F")
+        layer.open({
+            content: data.message,
+            scrollbar: false
+        });
+}
+
+function commonCompleteMsg(data){
+    if(data.operateCode == "F")
+        layer.open({
+            content: data.message,
+            scrollbar: false
+        });
+}

@@ -1,6 +1,7 @@
 package com.sunjung.base.sysmgr.aclresource.controller;
 
 import com.sunjung.base.sysmgr.aclresource.annotation.AclResc;
+import com.sunjung.base.sysmgr.aclresource.common.AclResourceType;
 import com.sunjung.base.sysmgr.aclresource.entity.AclResource;
 import com.sunjung.base.sysmgr.aclresource.service.AclResourceService;
 import com.sunjung.common.dto.jqgrid.JqgridFilters;
@@ -58,6 +59,7 @@ public class AclResourceController extends BaseController<AclResource> {
         mav.addObject("DELETE_URL",DELETE_URL);
         mav.addObject("SEARCH_MODULE_URL",SEARCH_MODULE_URL);
         mav.addObject("SEARCH_METHOD_URL",SEARCH_METHOD_URL);
+        mav.addObject("aclResrouceTypeParams",ParamUtil.JqgridSelectVal(AclResourceType.getParams()));
         mav.addObject("aclMenuParams",ParamUtil.JqgridSelectVal(Params.getAclMenuParams()));
         return mav;
     }
@@ -77,6 +79,21 @@ public class AclResourceController extends BaseController<AclResource> {
     }
 
     /**
+     * 根据角色ID查询,返回该角色是否拥有权限
+     * @param roleId
+     * @param
+     * @return
+     */
+    @RequestMapping(value = "/listModuleAuthByRoleId",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @AclResc(code = "listModuleAuthByRoleId",name = "角色模块权限查询")
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    public ResultDataDto listModuleAuthByRoleId(@RequestParam("roleId")Integer roleId){
+        List<AclResource> aclResources = aclResourceService.findAllModule();
+        aclResourceService.fillIsAuthByRescRole(aclResources,roleId);
+        return new ResultDataDto(aclResources);
+    }
+
+    /**
      * 查询方法
      */
     @RequestMapping(value = "/listMethod",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -84,6 +101,7 @@ public class AclResourceController extends BaseController<AclResource> {
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public ResultDataDto listMethod(@RequestParam("moduleId") Integer moduleId){
         List<AclResource> aclResources = aclResourceService.findMethodByModuleId(moduleId);
+        aclResourceService.fillIsAuth(aclResources);
         return new ResultDataDto(aclResources);
     }
 
@@ -99,12 +117,24 @@ public class AclResourceController extends BaseController<AclResource> {
     }
 
     /**
-     * 更新
+     * 查询方法
+     */
+    @RequestMapping(value = "/listMethodAuthByRoleId",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @AclResc(code = "listMethodAuthByRoleId",name = "角色方法权限查询")
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    public ResultDataDto listMethodAuthByRoleId(@RequestParam("moduleId") Integer moduleId,@RequestParam("roleId") Integer roleId){
+        List<AclResource> aclResources = aclResourceService.findMethodAuth(moduleId);
+        aclResourceService.fillIsAuthByRoleAuth(aclResources,roleId);
+        return new ResultDataDto(aclResources);
+    }
+
+    /**
+     * 新增
      * @param aclResource
      * @return
      */
-    @RequestMapping(value = {"/add","asdfwe"},method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @AclResc(code = "add",name = "新增增资源")
+    @RequestMapping(value = "/add",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @AclResc(code = "add",name = "新增资源")
     public ResultDataDto add(@ModelAttribute("aclResource")AclResource aclResource){
          if(aclResourceService.addEntity(aclResource)!=null)
              return ResultDataDto.addAddSuccess();

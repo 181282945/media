@@ -3,6 +3,7 @@ package com.sunjung.base.sysmgr.aclauth.service;
 import com.sunjung.base.sysmgr.aclauth.dao.AclAuthMapper;
 import com.sunjung.base.sysmgr.aclauth.entity.AclAuth;
 import com.sunjung.core.service.BaseService;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -21,9 +22,31 @@ public interface AclAuthService extends BaseService<AclAuth,AclAuthMapper> {
     /**
      * 根据资源ID更新code
      * @param code
+     * @param updateCodeByRescId
+     * @return
+     */
+    int updateCodeByRescId(String code,Integer updateCodeByRescId);
+
+
+    /**
+     * 根据资源ID删除权限限制
+     * @param resourceId
+     * @return
+     */
+    int deleteByRescId(Integer resourceId);
+
+    /**
+     * 存在返回1,否则返回0
+     * @param resourceId
+     * @return
+     */
+    int existByRescId(Integer resourceId);
+
+    /**
+     * 根据资源ID查询
      * @param rescId
      * @return
      */
-    int updateCodeByRescId(String code,Integer rescId);
+    AclAuth getByRescId(@Param("rescId")Integer rescId);
 
 }

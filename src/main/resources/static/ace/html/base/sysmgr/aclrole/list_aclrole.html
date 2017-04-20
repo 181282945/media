@@ -175,11 +175,11 @@
 
         jQuery(grid_selector).jqGrid({
             //direction: "rtl",
-            shrinkToFit:false,
+            shrinkToFit:true,
             autoScroll: true,
             subGrid : true,
 //            subGridModel: [{
-////                name : ['No','Item Name','Qty'], width : [55,200,80]
+//                name : ['No','Item Name','Qty'], width : [55,200,80]
 //            }],
             //datatype: "xml",
             subGridOptions : {
@@ -190,9 +190,11 @@
             //for this example we are using local data
             subGridRowExpanded: function (subgridDivId, roleId) {
                 var moduleSubgrid = subgridDivId + "_t";
-
-                $("#" + subgridDivId).html("<table id='" + moduleSubgrid + "'></table>");
+                var pager_id = "p_"+moduleSubgrid;
+                $("#" + subgridDivId).html("<table id='" + moduleSubgrid + "' ></table><div id='" + pager_id + "'></div>");
                 $("#" + moduleSubgrid).jqGrid({
+//                    shrinkToFit:false,
+//                    autoScroll: true,
                     subGrid : true,
                     subGridOptions : {
                         plusicon : "ace-icon fa fa-plus center bigger-110 blue",
@@ -201,44 +203,102 @@
                     },
                     subGridRowExpanded: function (subgridDivId, rowId) {
                         var methodSubgrid = subgridDivId + "_t";
-
-                        $("#" + subgridDivId).html("<table id='" + methodSubgrid + "'></table>");
+                        var pager_id = "p_"+methodSubgrid;
+                        $("#" + subgridDivId).html("<table id='" + methodSubgrid + "' ></table><div id='" + pager_id + "'></div>");
                         $("#" + methodSubgrid).jqGrid({
+//                            shrinkToFit:false,
+//                            autoScroll: true,
                             url:'/base/sysmgr/aclresource/listMethodAuthByRoleId?roleId=' + roleId + '&moduleId=' +rowId,
                             datatype: 'json',
-                            colNames:['id','编码','名称','类型', '映射URL','模块首页','标识码','精确权限'],
+                            colNames:['id','编码','名称','类型', '映射URL','标识码','精确权限'],
                             colModel:[
-                                {name:'id',index:'id',width:50, editable: false,search:true,hidden:true},
+                                {name:'id',index:'id',width:0, editable: false,search:true,hidden:true},
                                 {name:'code',index:'code', editable: false},
                                 {name:'name',index:'name', editable: false},
                                 {name: 'type', index: 'type', editable: false,edittype: "select",editoptions: {value: [[${aclResrouceTypeParams}]]},formatter: 'select'},
-                                {name:'path',index:'path',  editable: false},
-                                {name:'homePage',index:'homePage',  editable: false},
+                                {name:'path',index:'path', editable: false},
                                 {name:'identify',index:'identify', editable: false},
                                 {name:'auth',index:'auth',formatter: methodSwitch,formatoptions:{value: roleId,subgridTableId:methodSubgrid}},
                             ],
                             jsonReader: {
                                 root:"datas",
+                                page: "pageAndSort.page",
+                                total: "pageAndSort.totalPage",
+                                records: "pageAndSort.rowCount",
+                                repeatitems : false
                             },
+                            prmNames : {
+                                page:"pageAndSort.page",    // 表示请求页码的参数名称
+                                rows:"pageAndSort.rp",    // 表示请求行数的参数名称
+                                sort: "pageAndSort.sortName", // 表示用于排序的列名的参数名称
+                                order: "pageAndSort.sortOrder", // 表示采用的排序方式的参数名称
+                                search:"_search", // 表示是否是搜索请求的参数名称
+//                nd:"nd", // 表示已经发送请求的次数的参数名称
+                                id:"id", // 表示当在编辑数据模块中发送数据时，使用的id的名称
+                                oper:"oper",    // operation参数名称（我暂时还没用到）
+                                editoper:"edit", // 当在edit模式中提交数据时，操作的名称
+                                addoper:"add", // 当在add模式中提交数据时，操作的名称
+                                deloper:"del", // 当在delete模式中提交数据时，操作的名称
+                                subgridid:"id", // 当点击以载入数据到子表时，传递的数据名称
+                                npage: null,
+//                totalrows:"rowCount" // 表示需从Server得到总共多少行数据的参数名称，参见jqGrid选项中的rowTotal
+                            },
+
+                            viewrecords : true,
+                            rowNum:10,
+                            rowList:[10,20,30],
+                            pager : pager_id,
+                            height: '100%', //自动适应行高
+                            width: '100%',
+//                            altRows: true,
                         });
+//                        jQuery("#"+methodSubgrid).jqGrid('navGrid',"#"+pager_id,{edit:false,add:false,del:false});
                     },
                     url:'/base/sysmgr/aclresource/listModuleAuthByRoleId?roleId=' + roleId,
                     datatype: 'json',
                     colNames:['id','编码','名称','类型', '映射URL','模块首页','标识码','权限'],
                     colModel:[
-                        {name:'id',index:'id',width:50, editable: false,search:true,hidden:true},
+                        {name:'id',index:'id',width:0, editable: false,search:true,hidden:true},
                         {name:'code',index:'code', editable: false},
                         {name:'name',index:'name', editable: false},
-                        {name: 'type', index: 'type', editable: false,edittype: "select",editoptions: {value: [[${aclResrouceTypeParams}]]},formatter: 'select'},
-                        {name:'path',index:'path',  editable: false},
-                        {name:'homePage',index:'homePage',  editable: false},
-                        {name:'identify',index:'identify', editable: false},
+                        {name: 'type', index: 'type',editable: false,edittype: "select",editoptions: {value: [[${aclResrouceTypeParams}]]},formatter: 'select'},
+                        {name:'path',index:'path',width:300, editable: false},
+                        {name:'homePage',index:'homePage',width:300, editable: false},
+                        {name:'identify',index:'identify',editable: false},
                         {name:'auth',index:'auth',formatter: moduleSwitch,formatoptions:{value: roleId,subgridTableId:moduleSubgrid}},
                     ],
                     jsonReader: {
                         root:"datas",
+                        page: "pageAndSort.page",
+                        total: "pageAndSort.totalPage",
+                        records: "pageAndSort.rowCount",
+                        repeatitems : false
                     },
+                    prmNames : {
+                        page:"pageAndSort.page",    // 表示请求页码的参数名称
+                        rows:"pageAndSort.rp",    // 表示请求行数的参数名称
+                        sort: "pageAndSort.sortName", // 表示用于排序的列名的参数名称
+                        order: "pageAndSort.sortOrder", // 表示采用的排序方式的参数名称
+                        search:"_search", // 表示是否是搜索请求的参数名称
+//                nd:"nd", // 表示已经发送请求的次数的参数名称
+                        id:"id", // 表示当在编辑数据模块中发送数据时，使用的id的名称
+                        oper:"oper",    // operation参数名称（我暂时还没用到）
+                        editoper:"edit", // 当在edit模式中提交数据时，操作的名称
+                        addoper:"add", // 当在add模式中提交数据时，操作的名称
+                        deloper:"del", // 当在delete模式中提交数据时，操作的名称
+                        subgridid:"id", // 当点击以载入数据到子表时，传递的数据名称
+                        npage: null,
+//                totalrows:"rowCount" // 表示需从Server得到总共多少行数据的参数名称，参见jqGrid选项中的rowTotal
+                    },
+                    viewrecords : true,
+                    rowNum:10,
+                    rowList:[10,20,30],
+                    pager : pager_id,
+                    height: '100%', //自动适应行高
+                    width: '100%',
+//                    altRows: true,
                 });
+//                jQuery("#"+moduleSubgrid).jqGrid('navGrid',"#"+pager_id,{edit:false,add:false,del:false});
             },
 
             url:[[${SEARCH_MODULE_URL}]],

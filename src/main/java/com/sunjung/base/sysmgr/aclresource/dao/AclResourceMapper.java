@@ -2,6 +2,7 @@ package com.sunjung.base.sysmgr.aclresource.dao;
 
 import com.sunjung.base.sysmgr.aclresource.entity.AclResource;
 import com.sunjung.core.dao.BaseMapper;
+import com.sunjung.core.mybatis.specification.PageAndSort;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
@@ -20,12 +21,15 @@ public interface AclResourceMapper extends BaseMapper<AclResource> {
     @Select("SELECT * FROM acl_resource WHERE type = 'module' ")
     List<AclResource> findAllModule();
 
+
+    /**
+     * 查询已经配置了精确权限的方法资源  数量
+     */
+    Long findMethodAuthCount(@Param("moduleId") Integer moduleId);
+
     /**
      * 查询已经配置了精确权限的方法资源
-     * @param moduleId
-     * @return
      */
-    @Select(" SELECT a.* FROM acl_resource a INNER JOIN acl_auth b ON a.id = b.resourceId WHERE a.moduleid = #{moduleId} ")
-    List<AclResource> findMethodAuth(@Param("moduleId") Integer moduleId);
+    List<AclResource> findMethodAuth(@Param("moduleId") Integer moduleId, @Param("pageAndSort")PageAndSort pageAndSort);
 
 }

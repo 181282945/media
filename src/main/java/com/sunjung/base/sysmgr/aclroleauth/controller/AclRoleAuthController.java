@@ -3,17 +3,18 @@ package com.sunjung.base.sysmgr.aclroleauth.controller;
 import com.sunjung.base.sysmgr.aclresource.annotation.AclResc;
 import com.sunjung.base.sysmgr.aclroleauth.entity.AclRoleAuth;
 import com.sunjung.base.sysmgr.aclroleauth.service.AclRoleAuthService;
+import com.sunjung.common.dto.jqgrid.JqgridFilters;
 import com.sunjung.core.controller.BaseController;
 import com.sunjung.core.dto.ResultDataDto;
+import com.sunjung.core.mybatis.specification.PageAndSort;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * Created by 为 on 2017-4-20.
@@ -42,6 +43,31 @@ public class AclRoleAuthController extends BaseController<AclRoleAuth> {
     //查询
     private static final String SEARCH_URL = PATH + "/list";
 
+
+
+    /**
+     * @return
+     */
+    @RequestMapping(value = AclRoleAuthController.HOME_PAGE,method = RequestMethod.GET,produces = MediaType.TEXT_HTML_VALUE)
+    public ModelAndView toList(){
+        ModelAndView mav = new ModelAndView(PATH + VIEW_NAME);
+        mav.addObject("MODULE_NAME",MODULE_NAME);
+        mav.addObject("UPDATE_URL",UPDATE_URL);
+        mav.addObject("ADD_URL",ADD_URL);
+        mav.addObject("DELETE_URL",DELETE_URL);
+        mav.addObject("SEARCH_URL",SEARCH_URL);
+        return mav;
+    }
+
+
+    @RequestMapping(value = "/list",method = RequestMethod.GET)
+    @AclResc(code = "list",name = "角色权限列表")
+    public ResultDataDto list(JqgridFilters jqgridFilters, @ModelAttribute("pageAndSort")PageAndSort pageAndSort){
+        List<AclRoleAuth> aclRoleAuths = aclRoleAuthService.findByJqgridFilters(jqgridFilters,pageAndSort);
+        return new ResultDataDto(aclRoleAuths,pageAndSort);
+    }
+
+
     /**
      * 新增
      * @param aclRoleAuth
@@ -55,6 +81,33 @@ public class AclRoleAuthController extends BaseController<AclRoleAuth> {
             return ResultDataDto.addAddSuccess();
         return ResultDataDto.addOperationFailure("保存失败!");
     }
+
+
+
+
+
+    /**
+     * 更新
+     */
+    @RequestMapping(value = "/update",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @AclResc(code = "update",name = "更新角色权限")
+    public ResultDataDto update(@ModelAttribute("aclRoleAuth")AclRoleAuth aclRoleAuth){
+        aclRoleAuthService.updateEntity(aclRoleAuth);
+        return ResultDataDto.addUpdateSuccess();
+    }
+
+    /**
+     * 删除
+     */
+    @RequestMapping(value = "/delete",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @AclResc(code = "delete",name = "删除角色资源")
+    public ResultDataDto delete(@RequestParam("id") Integer id){
+        aclRoleAuthService.deleteById(id);
+        return ResultDataDto.addDeleteSuccess();
+    }
+
+
+
 
     /**
      * 根据资源角色新增

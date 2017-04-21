@@ -6,18 +6,18 @@ import com.sunjung.base.sysmgr.aclresource.annotation.AclResc;
 import com.sunjung.base.sysmgr.aclresource.common.AclResourceType;
 import com.sunjung.base.sysmgr.aclresource.entity.AclResource;
 import com.sunjung.base.sysmgr.aclresource.service.AclResourceService;
+import com.sunjung.common.dto.jqgrid.JqgridFilters;
 import com.sunjung.core.controller.BaseController;
 import com.sunjung.core.dto.ResultDataDto;
+import com.sunjung.core.mybatis.specification.PageAndSort;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * Created by 为 on 2017-4-20.
@@ -61,6 +61,47 @@ public class AclAuthController extends BaseController<AclAuth> {
         mav.addObject("DELETE_URL",DELETE_URL);
         mav.addObject("SEARCH_URL",SEARCH_URL);
         return mav;
+    }
+
+
+
+    @RequestMapping(value = "/list",method = RequestMethod.GET)
+    @AclResc(code = "list",name = "权限列表")
+    public ResultDataDto list(JqgridFilters jqgridFilters, @ModelAttribute("pageAndSort")PageAndSort pageAndSort){
+        List<AclAuth> aclAuths = aclAuthService.findByJqgridFilters(jqgridFilters,pageAndSort);
+        return new ResultDataDto(aclAuths,pageAndSort);
+    }
+
+
+    /**
+     * 新增
+     */
+    @RequestMapping(value = "/add",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @AclResc(code = "add",name = "新增权限")
+    public ResultDataDto add(@ModelAttribute("aclAuth")AclAuth aclAuth){
+        if(aclAuthService.addEntity(aclAuth)!=null)
+            return ResultDataDto.addAddSuccess();
+        return ResultDataDto.addOperationFailure("保存失败!");
+    }
+
+    /**
+     * 更新
+     */
+    @RequestMapping(value = "/update",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @AclResc(code = "update",name = "更新权限")
+    public ResultDataDto update(@ModelAttribute("aclAuth")AclAuth aclAuth){
+        aclAuthService.updateEntity(aclAuth);
+        return ResultDataDto.addUpdateSuccess();
+    }
+
+    /**
+     * 删除
+     */
+    @RequestMapping(value = "/delete",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @AclResc(code = "delete",name = "删除权限")
+    public ResultDataDto delete(@RequestParam("id") Integer id){
+        aclAuthService.deleteById(id);
+        return ResultDataDto.addDeleteSuccess();
     }
 
 

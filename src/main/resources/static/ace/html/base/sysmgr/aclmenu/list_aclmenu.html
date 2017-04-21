@@ -174,67 +174,9 @@
 
 
         jQuery(grid_selector).jqGrid({
-            //direction: "rtl",
             shrinkToFit:true,
             autoScroll: true,
-
-            subGrid: true,
-//            subGridModel: [{
-////                name : ['No','Item Name','Qty'], width : [55,200,80]
-//                params : ['id'],
-//            }],
-            //datatype: "xml",
-            subGridOptions: {
-                plusicon: "ace-icon fa fa-plus center bigger-110 blue",
-                minusicon: "ace-icon fa fa-minus center bigger-110 blue",
-                openicon: "ace-icon fa fa-chevron-right center orange"
-            },
-            //for this example we are using local data
-            subGridRowExpanded: function (subgridDivId, rowId) {
-                var subgridTableId = subgridDivId + "_t";
-                $("#" + subgridDivId).html("<table id='" + subgridTableId + "'></table>");
-                $("#" + subgridTableId).jqGrid({
-                    url: [[${SEARCH_METHOD_URL}]] + "?moduleId=" + rowId,
-                    editurl: [[${UPDATE_URL}]],
-                    datatype: 'json',
-//                    data: subgrid_data,
-                    colNames: [' ', 'id', '编码', '类型', '映射路径', '名称', '识别码', '开启精确权限'],
-                    colModel: [
-                        {
-                            name: 'myac', index: '', width: 80, fixed: true, sortable: false, resize: false,
-                            formatter: 'actions',
-                            formatoptions: {
-                                keys: true,
-                                editbutton: true,
-                                delbutton: false,
-//                        delOptions:{
-//                            url:[[${DELETE_URL}]],
-//                            recreateForm: true,
-//                            beforeShowForm:beforeDeleteCallback,
-//                            afterComplete:afterCompleteCallback
-//                        },onSuccess : afterCompleteMsg
-                            }
-                        },
-                        {name: 'id', index: 'id', width: 50, editable: false, search: true, hidden: true},
-                        {name: 'code', index: 'code', editable: false},
-                        {name: 'type', index: 'type', editable: false,edittype: "select",editoptions: {value: [[${aclResrouceTypeParams}]]},formatter: 'select'},
-                        {name: 'path', index: 'path', editable: false},
-                        {name: 'name', index: 'name', editable: false},
-                        {name: 'identify', index: 'identify', editable: false, hidden: true},
-                        {name: 'auth', index: 'auth', formatter:customizeSwitch},
-                    ],
-                    height: '100%', //自动适应行高
-                    width: '100%',
-                    jsonReader: {
-                        root: "datas",
-                    },
-                    loadComplete : function() {
-                        $("#gbox_"+subgridTableId).removeClass("ui-jqgrid").css("cssText","position: relative;");
-                    },
-                });
-            },
-
-            url: [[${SEARCH_MODULE_URL}]],
+            url: [[${SEARCH_URL}]],
             datatype: "json",
             jsonReader: {
                 root: "datas",
@@ -260,7 +202,7 @@
 //                totalrows:"rowCount" // 表示需从Server得到总共多少行数据的参数名称，参见jqGrid选项中的rowTotal
             },
             height: 400,
-            colNames: [' ', 'id', '编码', 'type', 'path', 'homePage', 'name', 'menuId', 'seq', 'identify', 'version', 'createByUserCode', 'createByUserName', 'createTime', 'lastModifyByUserName', 'lastModifyByUserCode', 'lastModifyTime'],
+            colNames: [' ', 'id', '编码', '名称', '序号', '创建时间'],
             colModel: [
                 {
                     name: 'myac', index: '', width: 80, fixed: true, sortable: false, resize: false,
@@ -269,32 +211,21 @@
                         keys: true,
                         editbutton: true,
                         delbutton: false,
-//                        delbutton : true,
-//                        delOptions:{
-//                            url:[[${DELETE_URL}]],
-//                            recreateForm: true,
-//                            beforeShowForm:beforeDeleteCallback,
-//                            afterComplete:afterCompleteCallback
-//                        },onSuccess : afterCompleteMsg
+                        delbutton : true,
+                        delOptions:{
+                            url:[[${DELETE_URL}]],
+                            recreateForm: true,
+                            beforeShowForm:beforeDeleteCallback,
+                            afterComplete:afterCompleteCallback
+                        },onSuccess : afterCompleteMsg
                     }
                 },
 
                 {name: 'id', index: 'id', width: 50, editable: false, search: true, hidden: true},
                 {name: 'code', index: 'code', editable: false},
-                {name: 'type', index: 'type', editable: false,edittype: "select",editoptions: {value: [[${aclResrouceTypeParams}]]},formatter: 'select'},
-                {name: 'path', index: 'path', editable: false},
-                {name: 'homePage', index: 'homePage', editable: false},
                 {name: 'name', index: 'name', editable: false},
-                {name: 'menuId',index: 'menuId',editable: true,edittype: "select",editoptions: {value: [[${aclMenuParams}]]},formatter: 'select'},
                 {name: 'seq', index: 'seq', editable: true},
-                {name: 'identify', index: 'identify', editable: false, hidden: true},
-                {name: 'version', index: 'version', editable: false, hidden: true},
-                {name: 'createByUserCode', index: 'createByUserCode', editable: false, hidden: true},
-                {name: 'createByUserName', index: 'createByUserName', editable: false, hidden: true},
-                {name: 'createTime', index: 'createTime', editable: false, hidden: true},
-                {name: 'lastModifyByUserName', index: 'lastModifyByUserName', editable: false, hidden: true},
-                {name: 'lastModifyByUserCode', index: 'lastModifyByUserCode', editable: false, hidden: true},
-                {name: 'lastModifyTime', index: 'lastModifyTime', editable: false, hidden: true},
+                {name: 'insertDate', index: 'insertDate', editable: false,formatter:'date',formatter:'date', formatoptions: {srcformat: 'u', newformat:'Y-m-d H:i'}},
             ],
 
             viewrecords: true,

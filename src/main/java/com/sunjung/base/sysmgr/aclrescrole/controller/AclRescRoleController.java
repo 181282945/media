@@ -3,16 +3,16 @@ package com.sunjung.base.sysmgr.aclrescrole.controller;
 import com.sunjung.base.sysmgr.aclrescrole.entity.AclRescRole;
 import com.sunjung.base.sysmgr.aclrescrole.service.AclRescRoleService;
 import com.sunjung.base.sysmgr.aclresource.annotation.AclResc;
+import com.sunjung.common.dto.jqgrid.JqgridFilters;
 import com.sunjung.core.controller.BaseController;
 import com.sunjung.core.dto.ResultDataDto;
+import com.sunjung.core.mybatis.specification.PageAndSort;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * Created by 为 on 2017-4-20.
@@ -39,10 +39,8 @@ public class AclRescRoleController extends BaseController<AclRescRole> {
     private static final String ADD_URL = PATH + "/add";
     //删除
     private static final String DELETE_URL = PATH + "/delete";
-    //查询 模块
-    private static final String SEARCH_MODULE_URL = PATH + "/listModule";
-    //查询 方法
-    private static final String SEARCH_METHOD_URL = PATH + "/listMethod";
+    //查询
+    private static final String SEARCH_URL = PATH + "/list";
 
     /**
      * @return
@@ -54,9 +52,49 @@ public class AclRescRoleController extends BaseController<AclRescRole> {
         mav.addObject("UPDATE_URL",UPDATE_URL);
         mav.addObject("ADD_URL",ADD_URL);
         mav.addObject("DELETE_URL",DELETE_URL);
-        mav.addObject("SEARCH_MODULE_URL",SEARCH_MODULE_URL);
-        mav.addObject("SEARCH_METHOD_URL",SEARCH_METHOD_URL);
+        mav.addObject("SEARCH_URL",SEARCH_URL);
         return mav;
+    }
+
+
+
+    @RequestMapping(value = "/list",method = RequestMethod.GET)
+    @AclResc(code = "list",name = "角色资源列表")
+    public ResultDataDto list(JqgridFilters jqgridFilters, @ModelAttribute("pageAndSort")PageAndSort pageAndSort){
+        List<AclRescRole> aclRescRoles = aclRescRoleService.findByJqgridFilters(jqgridFilters,pageAndSort);
+        return new ResultDataDto(aclRescRoles,pageAndSort);
+    }
+
+
+    /**
+     * 新增
+     */
+    @RequestMapping(value = "/add",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @AclResc(code = "add",name = "新增角色资源")
+    public ResultDataDto add(@ModelAttribute("aclRescRole")AclRescRole aclRescRole){
+        if(aclRescRoleService.addEntity(aclRescRole)!=null)
+            return ResultDataDto.addAddSuccess();
+        return ResultDataDto.addOperationFailure("保存失败!");
+    }
+
+    /**
+     * 更新
+     */
+    @RequestMapping(value = "/update",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @AclResc(code = "update",name = "更新角色资源")
+    public ResultDataDto update(@ModelAttribute("aclRescRole")AclRescRole aclRescRole){
+        aclRescRoleService.updateEntity(aclRescRole);
+        return ResultDataDto.addUpdateSuccess();
+    }
+
+    /**
+     * 删除
+     */
+    @RequestMapping(value = "/delete",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @AclResc(code = "delete",name = "删除角色资源")
+    public ResultDataDto delete(@RequestParam("id") Integer id){
+        aclRescRoleService.deleteById(id);
+        return ResultDataDto.addDeleteSuccess();
     }
 
     /**

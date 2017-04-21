@@ -111,9 +111,9 @@ public class AclResourceController extends BaseController<AclResource> {
     @RequestMapping(value = "/listMethodAuth",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @AclResc(code = "listMethodAuth",name = "精确权限")
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
-    public ResultDataDto listMethodAuth(@RequestParam("moduleId") Integer moduleId){
-        List<AclResource> aclResources = aclResourceService.findMethodAuth(moduleId);
-        return new ResultDataDto(aclResources);
+    public ResultDataDto listMethodAuth(@RequestParam("moduleId") Integer moduleId,@ModelAttribute("pageAndSort")PageAndSort pageAndSort){
+        List<AclResource> aclResources = aclResourceService.findMethodAuth(moduleId,pageAndSort);
+        return new ResultDataDto(aclResources,pageAndSort);
     }
 
     /**
@@ -122,10 +122,10 @@ public class AclResourceController extends BaseController<AclResource> {
     @RequestMapping(value = "/listMethodAuthByRoleId",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @AclResc(code = "listMethodAuthByRoleId",name = "角色方法权限查询")
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
-    public ResultDataDto listMethodAuthByRoleId(@RequestParam("moduleId") Integer moduleId,@RequestParam("roleId") Integer roleId){
-        List<AclResource> aclResources = aclResourceService.findMethodAuth(moduleId);
+    public ResultDataDto listMethodAuthByRoleId(@RequestParam("moduleId") Integer moduleId,@RequestParam("roleId") Integer roleId,@ModelAttribute("pageAndSort")PageAndSort pageAndSort){
+        List<AclResource> aclResources = aclResourceService.findMethodAuth(moduleId,pageAndSort);
         aclResourceService.fillIsAuthByRoleAuth(aclResources,roleId);
-        return new ResultDataDto(aclResources);
+        return new ResultDataDto(aclResources,pageAndSort);
     }
 
     /**

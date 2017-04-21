@@ -23,10 +23,10 @@ public interface AclResourceService extends BaseService<AclResource,AclResourceM
 
     /**
      * 查询已经配置了精确权限的方法资源
-     * @param moduleId
-     * @return
      */
-    List<AclResource> findMethodAuth(Integer moduleId);
+    List<AclResource> findMethodAuth(Integer moduleId,PageAndSort pageAndSort);
+
+//    List<AclResource> findMethodAuthCount(Integer moduleId);
 
 
     /**

@@ -62,8 +62,9 @@ public class AclResourceServiceImpl extends BaseServiceImpl<AclResource, AclReso
     }
 
     @Override
-    public List<AclResource> findMethodAuth(Integer moduleId) {
-        return getMapper().findMethodAuth(moduleId);
+    public List<AclResource> findMethodAuth(Integer moduleId,PageAndSort pageAndSort) {
+        pageAndSort.setRowCount(getMapper().findMethodAuthCount(moduleId));
+        return getMapper().findMethodAuth(moduleId,pageAndSort);
     }
 
 

@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>P1.首页</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+
+
+    <link href="invoice/css/jquery-ui-themes.css" type="text/css" rel="stylesheet"/>
+    <link href="invoice/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
+    <link href="data/styles.css" type="text/css" rel="stylesheet"/>
+    <link href="files/p1_首页/styles.css" type="text/css" rel="stylesheet"/>
+    <script src="invoice/scripts/jquery-1.7.1.min.js"></script>
+    <script src="invoice/scripts/jquery-ui-1.8.10.custom.min.js"></script>
+
+
+    <!--上面是产品原型图生成的莫名其妙的东西-->
+
+
+    <!-- bootstrap & fontawesome -->
+    <link rel="stylesheet" href="/assets/css/bootstrap.css"/>
+    <link rel="stylesheet" href="/components/font-awesome/css/font-awesome.css"/>
+
+    <!-- page specific plugin styles -->
+    <link rel="stylesheet" href="/components/_mod/jquery-ui.custom/jquery-ui.custom.css"/>
+    <link rel="stylesheet" href="/components/jquery.gritter/css/jquery.gritter.css"/>
+
+    <!-- text fonts -->
+    <link rel="stylesheet" href="/assets/css/ace-fonts.css"/>
+
+    <!-- ace styles -->
+    <link rel="stylesheet" href="/assets/css/ace.css" class="ace-main-stylesheet" id="main-ace-style"/>
+
+    <!--[if lte IE 9]>
+    <link rel="stylesheet" href="/assets/css/ace-part2.css" class="ace-main-stylesheet"/>
+    <![endif]-->
+    <link rel="stylesheet" href="/assets/css/ace-skins.css"/>
+    <link rel="stylesheet" href="/assets/css/ace-rtl.css"/>
+
+    <!--[if lte IE 9]>
+    <link rel="stylesheet" href="/assets/css/ace-ie.css"/>
+    <![endif]-->
+
+    <!-- inline styles related to this page -->
+    <style>
+        /* some elements used in demo only */
+        .spinner-preview {
+            width: 100px;
+            height: 100px;
+            text-align: center;
+            margin-top: 60px;
+        }
+
+        .dropdown-preview {
+            margin: 0 5px;
+            display: inline-block;
+        }
+
+        .dropdown-preview > .dropdown-menu {
+            display: block;
+            position: static;
+            margin-bottom: 5px;
+        }
+    </style>
+
+    <!-- ace settings handler -->
+    <script src="/assets/js/ace-extra.js"></script>
+
+    <!-- HTML5shiv and Respond.js for IE8 to support HTML5 elements and media queries -->
+
+    <!--[if lte IE 8]>
+    <script src="/components/html5shiv/dist/html5shiv.min.js"></script>
+    <script src="/components/respond/dest/respond.min.js"></script>
+    <![endif]-->
+
+
+    <script src="js/jquery.form.min.js"></script>
+    <script src="/js/layer/layer.js"></script>
+    <script src="js/base.js"></script>
+    <link href="css/base.css" type="text/css" rel="stylesheet"/>
+    <script type="text/javascript">
+
+        //提交登录信息
+        $(document).ready(function () {
+
+            $("#base").addClass("")
+
+
+            var options = {
+                success: function (json) {
+                    commonCompleteMsg(json);
+                }
+            };
+
+            // ajaxSubmit
+            $("#u20_div").click(function () {
+                $("#loginForm").ajaxSubmit(options);
+            });
+        });
+    </script>
+    <!--<style type="text/css">-->
+    <!--input:-webkit-autofill {-->
+    <!-- -webkit-box-shadow: 0 0 0px 1000px white inset;-->
+    <!--border: 1px solid #CCC !important;-->
+    <!--}-->
+    <!--</style>-->
+
+
+</head>
+<body class="no-skin">
+<div class="main-container ace-save-state" id="main-container">
+
+    <!-- Unnamed (矩形) -->
+    <div id="u0" class="ax_default box_1">
+        <div id="u0_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u1" class="text" style="display: none; visibility: hidden">
+            <p><span></span></p>
+        </div>
+    </div>
+
+    <!-- Unnamed (矩形) -->
+    <div id="u2" class="ax_default box_1">
+        <div id="u2_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u3" class="text" style="display: none; visibility: hidden">
+            <p><span></span></p>
+        </div>
+    </div>
+
+    <!-- Unnamed (矩形) -->
+    <div id="u4" class="ax_default box_1">
+        <img id="u4_img" class="img " src="images/p1_首页/u4.png"/>
+        <!-- Unnamed () -->
+        <div id="u5" class="text" style="display: none; visibility: hidden">
+            <p><span></span></p>
+        </div>
+    </div>
+    <div id="u6" class="ax_default" data-label="login">
+        <div class="col-sm-6" id="u6_state0" class="panel_state">
+            <!-- #section:elements.tab.option -->
+            <div class="tabbable">
+                <ul class="nav nav-tabs padding-12 tab-color-blue background-blue" id="myTab4">
+                    <li class="active">
+                        <a data-toggle="tab" href="#home4">登录</a>
+                    </li>
+
+                    <li>
+                        <a data-toggle="tab" href="#profile4">注册</a>
+                    </li>
+                </ul>
+
+                <div class="tab-content">
+                    <div id="home4" class="tab-pane in active">
+                        <form id="form1" action="/checkLogin" method="post">
+                            <fieldset>
+                                <label class="block clearfix" for="name_key">
+										<span class="block input-icon input-icon-right">
+											<input id="name_key" name="name_key" type="text" class="form-control"
+                                                   placeholder="用户名"/>
+											<i class="ace-icon fa fa-user"></i>
+										</span>
+                                </label>
+
+                                <label class="block clearfix" for="pwd_key">
+										<span class="block input-icon input-icon-right">
+											<input id="pwd_key" name="pwd_key" type="password" class="form-control"
+                                                   placeholder="密码"/>
+											<i class="ace-icon fa fa-lock"></i>
+										</span>
+                                </label>
+
+                                <label class="block clearfix" for="verification_code">
+										<span class="block input-icon input-icon-right">
+                                            <!--<input    class="col-xs-1" type="text" id="form-field-5" placeholder="验证码" >-->
+											<input id="verification_code" name="verification_code"
+                                                   class="input-medium form-control" type="text" id="form-field-4"
+                                                   placeholder="验证码">
+                                            <!--<input type="text" class="form-control" placeholder="验证码" />-->
+											<i class="ace-icon fa fa-lock"></i>
+										</span>
+                                </label>
+
+                                <div class="space"></div>
+
+                                <div class="clearfix">
+                                    <label class="inline">
+                                        <input type="checkbox" class="ace"/>
+                                        <span class="lbl"> 记住我</span>
+                                    </label>
+                                    <button id="btnAjaxSubmit" type="button"
+                                            class="width-35 pull-right btn btn-sm btn-primary">
+                                        <i class="ace-icon fa fa-key"></i>
+                                        <span class="bigger-110">登录</span>
+                                    </button>
+                                </div>
+
+                                <div class="space-4"></div>
+                            </fieldset>
+                        </form>
+                    </div>
+
+                    <div id="profile4" class="tab-pane">
+                        <form>
+                            <fieldset>
+                                <label class="block clearfix">
+														<span class="block input-icon input-icon-right">
+															<input type="email" class="form-control"
+                                                                   placeholder="Email"/>
+															<i class="ace-icon fa fa-envelope"></i>
+														</span>
+                                </label>
+
+                                <label class="block clearfix">
+														<span class="block input-icon input-icon-right">
+															<input type="text" class="form-control"
+                                                                   placeholder="Username"/>
+															<i class="ace-icon fa fa-user"></i>
+														</span>
+                                </label>
+
+                                <label class="block clearfix">
+														<span class="block input-icon input-icon-right">
+															<input type="password" class="form-control"
+                                                                   placeholder="Password"/>
+															<i class="ace-icon fa fa-lock"></i>
+														</span>
+                                </label>
+
+                                <label class="block clearfix">
+														<span class="block input-icon input-icon-right">
+															<input type="password" class="form-control"
+                                                                   placeholder="Repeat password"/>
+															<i class="ace-icon fa fa-retweet"></i>
+														</span>
+                                </label>
+
+                                <label class="block">
+                                    <input type="checkbox" class="ace"/>
+                                    <span class="lbl">
+															I accept the
+															<a href="#">User Agreement</a>
+														</span>
+                                </label>
+
+                                <div class="space-24"></div>
+
+                                <div class="clearfix">
+                                    <button type="reset" class="width-30 pull-left btn btn-sm">
+                                        <i class="ace-icon fa fa-refresh"></i>
+                                        <span class="bigger-110">Reset</span>
+                                    </button>
+
+                                    <button type="button" class="width-65 pull-right btn btn-sm btn-success">
+                                        <span class="bigger-110">Register</span>
+
+                                        <i class="ace-icon fa fa-arrow-right icon-on-right"></i>
+                                    </button>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- /section:elements.tab.option -->
+        </div>
+    </div>
+
+    <!-- Unnamed (图片) -->
+    <div id="u73" class="ax_default image">
+        <img id="u73_img" class="img " src="images/p1_首页/u73.png"/>
+        <!-- Unnamed () -->
+        <div id="u74" class="text" style="display: none; visibility: hidden">
+            <p><span></span></p>
+        </div>
+    </div>
+
+    <!-- Unnamed (矩形) -->
+    <div id="u75" class="ax_default button">
+        <img id="u75_img" class="img " src="images/p1_首页/u75.png"/>
+        <!-- Unnamed () -->
+        <div id="u76" class="text" style="visibility: visible;">
+            <p><span>首&nbsp; 页</span></p>
+        </div>
+    </div>
+
+    <!-- Unnamed (矩形) -->
+    <div id="u77" class="ax_default button">
+        <img id="u77_img" class="img " src="images/p1_首页/u77.png"/>
+        <!-- Unnamed () -->
+        <div id="u78" class="text" style="visibility: visible;">
+            <p><span>订单仓库</span></p>
+        </div>
+    </div>
+
+    <!-- Unnamed (矩形) -->
+    <div id="u79" class="ax_default button">
+        <img id="u79_img" class="img " src="images/p1_首页/u77.png"/>
+        <!-- Unnamed () -->
+        <div id="u80" class="text" style="visibility: visible;">
+            <p><span>发票管理</span></p>
+        </div>
+    </div>
+
+    <!-- Unnamed (矩形) -->
+    <div id="u81" class="ax_default button">
+        <img id="u81_img" class="img " src="images/p1_首页/u77.png"/>
+        <!-- Unnamed () -->
+        <div id="u82" class="text" style="visibility: visible;">
+            <p><span>个人中心</span></p>
+        </div>
+    </div>
+
+    <!-- Unnamed (垂直线) -->
+    <div id="u83" class="ax_default line">
+        <img id="u83_img" class="img " src="images/p1_首页/u83.png"/>
+        <!-- Unnamed () -->
+        <div id="u84" class="text" style="display: none; visibility: hidden">
+            <p><span></span></p>
+        </div>
+    </div>
+
+    <!-- Unnamed (矩形) -->
+    <div id="u85" class="ax_default _一级标题">
+        <div id="u85_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u86" class="text" style="visibility: visible;">
+            <p><span>云开票</span></p>
+        </div>
+    </div>
+
+    <!-- Unnamed (水平线) -->
+    <div id="u87" class="ax_default line">
+        <img id="u87_img" class="img " src="images/p1_首页/u87.png"/>
+        <!-- Unnamed () -->
+        <div id="u88" class="text" style="display: none; visibility: hidden">
+            <p><span></span></p>
+        </div>
+    </div>
+
+    <!-- Unnamed (图片) -->
+    <div id="u89" class="ax_default image">
+        <img id="u89_img" class="img " src="images/p1_首页/u89.png"/>
+        <!-- Unnamed () -->
+        <div id="u90" class="text" style="display: none; visibility: hidden">
+            <p><span></span></p>
+        </div>
+    </div>
+
+    <!-- Unnamed (矩形) -->
+    <div id="u91" class="ax_default box_1">
+        <img id="u91_img" class="img " src="images/p1_首页/u91.png"/>
+        <!-- Unnamed () -->
+        <div id="u92" class="text" style="display: none; visibility: hidden">
+            <p><span></span></p>
+        </div>
+    </div>
+
+    <!-- Unnamed (矩形) -->
+    <div id="u93" class="ax_default box_1">
+        <img id="u93_img" class="img " src="images/p1_首页/u93.png"/>
+        <!-- Unnamed () -->
+        <div id="u94" class="text" style="display: none; visibility: hidden">
+            <p><span></span></p>
+        </div>
+    </div>
+
+    <!-- Unnamed (矩形) -->
+    <div id="u95" class="ax_default box_1">
+        <img id="u95_img" class="img " src="images/p1_首页/u93.png"/>
+        <!-- Unnamed () -->
+        <div id="u96" class="text" style="display: none; visibility: hidden">
+            <p><span></span></p>
+        </div>
+    </div>
+
+    <!-- Unnamed (矩形) -->
+    <div id="u97" class="ax_default _一级标题">
+        <div id="u97_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u98" class="text" style="visibility: visible;">
+            <p><span>新闻动态</span></p>
+        </div>
+    </div>
+
+    <!-- Unnamed (矩形) -->
+    <div id="u99" class="ax_default box_1">
+        <img id="u99_img" class="img " src="images/p1_首页/u99.png"/>
+        <!-- Unnamed () -->
+        <div id="u100" class="text" style="display: none; visibility: hidden">
+            <p><span></span></p>
+        </div>
+    </div>
+
+    <!-- Unnamed (矩形) -->
+    <div id="u101" class="ax_default _一级标题">
+        <div id="u101_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u102" class="text" style="visibility: visible;">
+            <p><span>政策动态</span></p>
+        </div>
+    </div>
+
+    <!-- Unnamed (矩形) -->
+    <div id="u103" class="ax_default _文本段落">
+        <div id="u103_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u104" class="text" style="visibility: visible;">
+            <p><span>&nbsp;深圳航信成功签约深港驾校电子发票项目&nbsp; new</span></p>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Unnamed (矩形) -->
+    <div id="u105" class="ax_default box_1">
+        <img id="u105_img" class="img " src="images/p1_首页/u99.png"/>
+        <!-- Unnamed () -->
+        <div id="u106" class="text" style="display: none; visibility: hidden">
+            <p><span></span></p>
+        </div>
+    </div>
+
+    <!-- Unnamed (矩形) -->
+    <div id="u107" class="ax_default box_2">
+        <div id="u107_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u108" class="text" style="display: none; visibility: hidden">
+            <p><span></span></p>
+        </div>
+    </div>
+
+    <!-- Unnamed (图片) -->
+    <div id="u109" class="ax_default image">
+        <img id="u109_img" class="img " src="images/p1_首页/u109.jpg"/>
+        <!-- Unnamed () -->
+        <div id="u110" class="text" style="display: none; visibility: hidden">
+            <p><span></span></p>
+        </div>
+    </div>
+
+    <!-- Unnamed (矩形) -->
+    <div id="u111" class="ax_default _文本段落">
+        <div id="u111_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u112" class="text" style="visibility: visible;">
+            <p><span>服务热线：0755-95113</span></p>
+            <p><span>Hotline：0755-95113</span></p>
+            <p><span>传真：0755-32993339-8200</span></p>
+            <p><span>Fax: 0755-32993339-8200</span></p>
+        </div>
+    </div>
+
+    <!-- Unnamed (矩形) -->
+    <div id="u113" class="ax_default _一级标题">
+        <div id="u113_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u114" class="text" style="visibility: visible;">
+            <p><span>深圳航天信息微服务</span></p>
+        </div>
+    </div>
+
+    <!-- Unnamed (矩形) -->
+    <div id="u115" class="ax_default _文本段落">
+        <div id="u115_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u116" class="text" style="visibility: visible;">
+            <p style="font-size:16px;"><span>公司名称：深圳航天信息有限公司</span></p>
+            <p style="font-size:16px;"><span><br></span></p>
+            <p style="font-size:13px;"><span>&nbsp;开户行：工行深圳分行鸿翔支行</span></p>
+            <p style="font-size:13px;"><span>&nbsp;账号：4000 0288 0920 0263 475</span></p>
+            <p style="font-size:13px;"><span>地址：深圳市福田区梅林街道下梅林北环大道7018号701航天信息</span></p>
+        </div>
+    </div>
+
+    <!-- Unnamed (矩形) -->
+    <div id="u117" class="ax_default _文本段落">
+        <div id="u117_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u118" class="text" style="visibility: visible;">
+            <p>
+                <span>701, Aisino, No. 7018, Beihuan Avenue, Xiameilin, Meilin sub-district，Futian District, Shenzhen</span>
+            </p>
+            <p><span>版权所有©2017 深圳航天信息有限公司&nbsp; 粤ICP备14036066号</span></p>
+        </div>
+    </div>
+
+    <!-- Unnamed (水平线) -->
+    <div id="u119" class="ax_default line">
+        <img id="u119_img" class="img " src="images/p1_首页/u119.png"/>
+        <!-- Unnamed () -->
+        <div id="u120" class="text" style="display: none; visibility: hidden">
+            <p><span></span></p>
+        </div>
+    </div>
+
+    <!-- Unnamed (矩形) -->
+    <div id="u121" class="ax_default _一级标题">
+        <div id="u121_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u122" class="text" style="visibility: visible;">
+            <p><span>法律声明</span></p>
+        </div>
+    </div>
+
+    <!-- Unnamed (垂直线) -->
+    <div id="u123" class="ax_default line">
+        <img id="u123_img" class="img " src="images/p1_首页/u123.png"/>
+        <!-- Unnamed () -->
+        <div id="u124" class="text" style="display: none; visibility: hidden">
+            <p><span></span></p>
+        </div>
+    </div>
+    <br />
+    <!-- Unnamed (矩形) -->
+    <div id="u125" class="ax_default _一级标题">
+        <div id="u125_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u126" class="text" style="visibility: visible;">
+            <p><span>联系我们</span></p>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Unnamed (矩形) -->
+    <div id="u127" class="ax_default _文本段落">
+        <div id="u127_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u128" class="text" style="visibility: visible;">
+            <p><span>&nbsp;深圳航信协助龙华区国家税务局开出 ---- 深圳第一张增值税卷式发票&nbsp; new</span></p>
+        </div>
+    </div>
+
+    <!-- Unnamed (矩形) -->
+    <div id="u129" class="ax_default _文本段落">
+        <div id="u129_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u130" class="text" style="visibility: visible;">
+            <p><span>&nbsp;汇聚青春力量，共建美丽梅林&nbsp; new</span></p>
+        </div>
+    </div>
+
+    <!-- Unnamed (矩形) -->
+    <div id="u131" class="ax_default _文本段落">
+        <div id="u131_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u132" class="text" style="visibility: visible;">
+            <p><span>&nbsp;人民日报┃身份证也能自助办理，航天信息科技改变生活&nbsp; new</span></p>
+        </div>
+    </div>
+
+    <!-- Unnamed (矩形) -->
+    <div id="u133" class="ax_default _文本段落">
+        <div id="u133_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u134" class="text" style="visibility: visible;">
+            <p><span>&nbsp;迎接挑战促转型 开拓创新谋发展&nbsp;&nbsp; new</span></p>
+        </div>
+    </div>
+
+    <!-- Unnamed (矩形) -->
+    <div id="u135" class="ax_default _文本段落">
+        <div id="u135_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u136" class="text" style="visibility: visible;">
+            <p><span>&nbsp;深圳航信成功签约深港驾校电子发票项目&nbsp; new</span></p>
+        </div>
+    </div>
+
+    <!-- Unnamed (矩形) -->
+    <div id="u137" class="ax_default _文本段落">
+        <div id="u137_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u138" class="text" style="visibility: visible;">
+            <p><span>&nbsp;深圳航信协助龙华区国家税务局开出 ---- 深圳第一张增值税卷式发票&nbsp; new</span></p>
+        </div>
+    </div>
+
+    <!-- Unnamed (矩形) -->
+    <div id="u139" class="ax_default _文本段落">
+        <div id="u139_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u140" class="text" style="visibility: visible;">
+            <p><span>&nbsp;汇聚青春力量，共建美丽梅林&nbsp; new</span></p>
+        </div>
+    </div>
+
+    <!-- Unnamed (矩形) -->
+    <div id="u141" class="ax_default _文本段落">
+        <div id="u141_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u142" class="text" style="visibility: visible;">
+            <p><span>&nbsp;人民日报┃身份证也能自助办理，航天信息科技改变生活&nbsp; new</span></p>
+        </div>
+    </div>
+
+    <!-- Unnamed (矩形) -->
+    <div id="u143" class="ax_default _文本段落">
+        <div id="u143_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u144" class="text" style="visibility: visible;">
+            <p><span>&nbsp;迎接挑战促转型 开拓创新谋发展&nbsp;&nbsp; new</span></p>
+        </div>
+    </div>
+
+    <!-- Unnamed (矩形) -->
+    <div id="u145" class="ax_default sticky_2">
+        <div id="u145_div" class=""></div>
+        <!-- Unnamed () -->
+        <div id="u146" class="text" style="visibility: visible;">
+            <p><span>规则说明：</span></p>
+            <p><span>1、用户账号：数字+字母+符号（下划线或杠），长度20位；</span></p>
+            <p><span>2、密码：数字、字母、特殊符合组合而成，至少两种以上不同字符组合，长度8-16位。</span></p>
+            <p><span><br></span></p>
+        </div>
+    </div>
+</div>
+
+<!-- basic scripts -->
+
+<!--[if !IE]> -->
+<script src="/components/jquery/dist/jquery.js"></script>
+
+<!-- <![endif]-->
+
+<!--[if IE]>
+<script src="/components/jquery.1x/dist/jquery.js"></script>
+<![endif]-->
+<script type="text/javascript">
+    if ('ontouchstart' in document.documentElement) document.write("<script src='/components/_mod/jquery.mobile.custom/jquery.mobile.custom.js'>" + "<" + "/script>");
+</script>
+<script src="/components/bootstrap/dist/js/bootstrap.js"></script>
+
+<!-- page specific plugin scripts -->
+
+<!--[if lte IE 8]>
+<script src="/components/ExplorerCanvas/excanvas.js"></script>
+<![endif]-->
+<script src="/components/_mod/jquery-ui.custom/jquery-ui.custom.js"></script>
+<script src="/components/jqueryui-touch-punch/jquery.ui.touch-punch.js"></script>
+<script src="/components/bootbox.js/bootbox.js"></script>
+<script src="/components/_mod/easypiechart/jquery.easypiechart.js"></script>
+<script src="/components/jquery.gritter/js/jquery.gritter.js"></script>
+<script src="/components/spin.js/spin.js"></script>
+
+<!-- ace scripts -->
+<script src="/assets/js/src/elements.scroller.js"></script>
+<script src="/assets/js/src/elements.colorpicker.js"></script>
+<script src="/assets/js/src/elements.fileinput.js"></script>
+<script src="/assets/js/src/elements.typeahead.js"></script>
+<script src="/assets/js/src/elements.wysiwyg.js"></script>
+<script src="/assets/js/src/elements.spinner.js"></script>
+<script src="/assets/js/src/elements.treeview.js"></script>
+<script src="/assets/js/src/elements.wizard.js"></script>
+<script src="/assets/js/src/elements.aside.js"></script>
+<script src="/assets/js/src/ace.js"></script>
+<script src="/assets/js/src/ace.basics.js"></script>
+<script src="/assets/js/src/ace.scrolltop.js"></script>
+<script src="/assets/js/src/ace.ajax-content.js"></script>
+<script src="/assets/js/src/ace.touch-drag.js"></script>
+<script src="/assets/js/src/ace.sidebar.js"></script>
+<script src="/assets/js/src/ace.sidebar-scroll-1.js"></script>
+<script src="/assets/js/src/ace.submenu-hover.js"></script>
+<script src="/assets/js/src/ace.widget-box.js"></script>
+<script src="/assets/js/src/ace.settings.js"></script>
+<script src="/assets/js/src/ace.settings-rtl.js"></script>
+<script src="/assets/js/src/ace.settings-skin.js"></script>
+<script src="/assets/js/src/ace.widget-on-reload.js"></script>
+<script src="/assets/js/src/ace.searchbox-autocomplete.js"></script>
+
+<!-- inline scripts related to this page -->
+<script type="text/javascript">
+    jQuery(function ($) {
+        /**
+         $('#myTab a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+				  //console.log(e.target.getAttribute("href"));
+				})
+
+         $('#accordion').on('shown.bs.collapse', function (e) {
+					//console.log($(e.target).is('#collapseTwo'))
+				});
+         */
+
+        $('#myTab a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            //if($(e.target).attr('href') == "#home") doSomethingNow();
+        })
+
+
+        /**
+         //go to next tab, without user clicking
+         $('#myTab > .active').next().find('> a').trigger('click');
+         */
+
+
+        $('#accordion-style').on('click', function (ev) {
+            var target = $('input', ev.target);
+            var which = parseInt(target.val());
+            if (which == 2) $('#accordion').addClass('accordion-style2');
+            else $('#accordion').removeClass('accordion-style2');
+        });
+
+        //$('[href="#collapseTwo"]').trigger('click');
+
+
+        $('.easy-pie-chart.percentage').each(function () {
+            $(this).easyPieChart({
+                barColor: $(this).data('color'),
+                trackColor: '#EEEEEE',
+                scaleColor: false,
+                lineCap: 'butt',
+                lineWidth: 8,
+                animate: ace.vars['old_ie'] ? false : 1000,
+                size: 75
+            }).css('color', $(this).data('color'));
+        });
+
+        $('[data-rel=tooltip]').tooltip();
+        $('[data-rel=popover]').popover({html: true});
+
+
+        $('#gritter-regular').on(ace.click_event, function () {
+            $.gritter.add({
+                title: 'This is a regular notice!',
+                text: 'This will fade out after a certain amount of time. Vivamus eget tincidunt velit. Cum sociis natoque penatibus et <a href="#" class="blue">magnis dis parturient</a> montes, nascetur ridiculus mus.',
+                image: '/assets/avatars/avatar1.png', //in Ace demo /assets will be replaced by correct assets path
+                sticky: false,
+                time: '',
+                class_name: (!$('#gritter-light').get(0).checked ? 'gritter-light' : '')
+            });
+
+            return false;
+        });
+
+        $('#gritter-sticky').on(ace.click_event, function () {
+            var unique_id = $.gritter.add({
+                title: 'This is a sticky notice!',
+                text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus eget tincidunt velit. Cum sociis natoque penatibus et <a href="#" class="red">magnis dis parturient</a> montes, nascetur ridiculus mus.',
+                image: '/assets/avatars/avatar.png',
+                sticky: true,
+                time: '',
+                class_name: 'gritter-info' + (!$('#gritter-light').get(0).checked ? ' gritter-light' : '')
+            });
+
+            return false;
+        });
+
+
+        $('#gritter-without-image').on(ace.click_event, function () {
+            $.gritter.add({
+                // (string | mandatory) the heading of the notification
+                title: 'This is a notice without an image!',
+                // (string | mandatory) the text inside the notification
+                text: 'This will fade out after a certain amount of time. Vivamus eget tincidunt velit. Cum sociis natoque penatibus et <a href="#" class="orange">magnis dis parturient</a> montes, nascetur ridiculus mus.',
+                class_name: 'gritter-success' + (!$('#gritter-light').get(0).checked ? ' gritter-light' : '')
+            });
+
+            return false;
+        });
+
+
+        $('#gritter-max3').on(ace.click_event, function () {
+            $.gritter.add({
+                title: 'This is a notice with a max of 3 on screen at one time!',
+                text: 'This will fade out after a certain amount of time. Vivamus eget tincidunt velit. Cum sociis natoque penatibus et <a href="#" class="green">magnis dis parturient</a> montes, nascetur ridiculus mus.',
+                image: '/assets/avatars/avatar3.png', //in Ace demo /assets will be replaced by correct assets path
+                sticky: false,
+                before_open: function () {
+                    if ($('.gritter-item-wrapper').length >= 3) {
+                        return false;
+                    }
+                },
+                class_name: 'gritter-warning' + (!$('#gritter-light').get(0).checked ? ' gritter-light' : '')
+            });
+
+            return false;
+        });
+
+
+        $('#gritter-center').on(ace.click_event, function () {
+            $.gritter.add({
+                title: 'This is a centered notification',
+                text: 'Just add a "gritter-center" class_name to your $.gritter.add or globally to $.gritter.options.class_name',
+                class_name: 'gritter-info gritter-center' + (!$('#gritter-light').get(0).checked ? ' gritter-light' : '')
+            });
+
+            return false;
+        });
+
+        $('#gritter-error').on(ace.click_event, function () {
+            $.gritter.add({
+                title: 'This is a warning notification',
+                text: 'Just add a "gritter-light" class_name to your $.gritter.add or globally to $.gritter.options.class_name',
+                class_name: 'gritter-error' + (!$('#gritter-light').get(0).checked ? ' gritter-light' : '')
+            });
+
+            return false;
+        });
+
+
+        $("#gritter-remove").on(ace.click_event, function () {
+            $.gritter.removeAll();
+            return false;
+        });
+
+
+        ///////
+
+
+        $("#bootbox-regular").on(ace.click_event, function () {
+            bootbox.prompt("What is your name?", function (result) {
+                if (result === null) {
+
+                } else {
+
+                }
+            });
+        });
+
+        $("#bootbox-confirm").on(ace.click_event, function () {
+            bootbox.confirm("Are you sure?", function (result) {
+                if (result) {
+                    //
+                }
+            });
+        });
+
+        /**
+         $("#bootbox-confirm").on(ace.click_event, function() {
+					bootbox.confirm({
+						message: "Are you sure?",
+						buttons: {
+						  confirm: {
+							 label: "OK",
+							 className: "btn-primary btn-sm",
+						  },
+						  cancel: {
+							 label: "Cancel",
+							 className: "btn-sm",
+						  }
+						},
+						callback: function(result) {
+							if(result) alert(1)
+						}
+					  }
+					);
+				});
+         **/
+
+
+        $("#bootbox-options").on(ace.click_event, function () {
+            bootbox.dialog({
+                message: "<span class='bigger-110'>I am a custom dialog with smaller buttons</span>",
+                buttons: {
+                    "success": {
+                        "label": "<i class='ace-icon fa fa-check'></i> Success!",
+                        "className": "btn-sm btn-success",
+                        "callback": function () {
+                            //Example.show("great success");
+                        }
+                    },
+                    "danger": {
+                        "label": "Danger!",
+                        "className": "btn-sm btn-danger",
+                        "callback": function () {
+                            //Example.show("uh oh, look out!");
+                        }
+                    },
+                    "click": {
+                        "label": "Click ME!",
+                        "className": "btn-sm btn-primary",
+                        "callback": function () {
+                            //Example.show("Primary button");
+                        }
+                    },
+                    "button": {
+                        "label": "Just a button...",
+                        "className": "btn-sm"
+                    }
+                }
+            });
+        });
+
+
+        $('#spinner-opts small').css({display: 'inline-block', width: '60px'})
+
+        var slide_styles = ['', 'green', 'red', 'purple', 'orange', 'dark'];
+        var ii = 0;
+        $("#spinner-opts input[type=text]").each(function () {
+            var $this = $(this);
+            $this.hide().after('<span />');
+            $this.next().addClass('ui-slider-small').addClass("inline ui-slider-" + slide_styles[ii++ % slide_styles.length]).css('width', '125px').slider({
+                value: parseInt($this.val()),
+                range: "min",
+                animate: true,
+                min: parseInt($this.attr('data-min')),
+                max: parseInt($this.attr('data-max')),
+                step: parseFloat($this.attr('data-step')) || 1,
+                slide: function (event, ui) {
+                    $this.val(ui.value);
+                    spinner_update();
+                }
+            });
+        });
+
+
+        //CSS3 spinner
+        $.fn.spin = function (opts) {
+            this.each(function () {
+                var $this = $(this),
+                    data = $this.data();
+
+                if (data.spinner) {
+                    data.spinner.stop();
+                    delete data.spinner;
+                }
+                if (opts !== false) {
+                    data.spinner = new Spinner($.extend({color: $this.css('color')}, opts)).spin(this);
+                }
+            });
+            return this;
+        };
+
+        function spinner_update() {
+            var opts = {};
+            $('#spinner-opts input[type=text]').each(function () {
+                opts[this.name] = parseFloat(this.value);
+            });
+            opts['left'] = 'auto';
+            $('#spinner-preview').spin(opts);
+        }
+
+
+        $('#id-pills-stacked').removeAttr('checked').on('click', function () {
+            $('.nav-pills').toggleClass('nav-stacked');
+        });
+
+
+        ///////////
+        $(document).one('ajaxloadstart.page', function (e) {
+            $.gritter.removeAll();
+            $('.modal').modal('hide');
+        });
+
+    });
+</script>
+
+<!-- the following scripts are used in demo only for onpage help and you don't need them -->
+<link rel="stylesheet" href="/assets/css/ace.onpage-help.css"/>
+<link rel="stylesheet" href="/docs/assets/js/themes/sunburst.css"/>
+
+<script type="text/javascript"> ace.vars['base'] = '..'; </script>
+<script src="/assets/js/src/elements.onpage-help.js"></script>
+<script src="/assets/js/src/ace.onpage-help.js"></script>
+<script src="/docs/assets/js/rainbow.js"></script>
+<script src="/docs/assets/js/language/generic.js"></script>
+<script src="/docs/assets/js/language/html.js"></script>
+<script src="/docs/assets/js/language/css.js"></script>
+<script src="/docs/assets/js/language/javascript.js"></script>
+</body>
+</html>

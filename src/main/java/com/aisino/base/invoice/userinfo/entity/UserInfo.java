@@ -2,6 +2,8 @@ package com.aisino.base.invoice.userinfo.entity;
 
 import com.aisino.core.entity.BaseBusinessEntity;
 import com.aisino.core.entity.annotation.BaseEntityMapper;
+import com.aisino.core.entity.annotation.IsNotNull;
+import com.aisino.core.entity.annotation.Transient;
 import org.apache.ibatis.type.Alias;
 
 /**
@@ -13,6 +15,7 @@ public class UserInfo extends BaseBusinessEntity {
     /**
      * 账号
      */
+    @IsNotNull
     private String usrno;
     /**
      * 用户名
@@ -21,7 +24,15 @@ public class UserInfo extends BaseBusinessEntity {
     /**
      * 密码
      */
+    @IsNotNull
     private String password;
+
+    /**
+     * 第二次输入密码
+     */
+    @Transient
+    private String repeatPassword;
+
     /**
      * 税号
      */
@@ -33,6 +44,7 @@ public class UserInfo extends BaseBusinessEntity {
     /**
      * 手机号码
      */
+    @IsNotNull
     private String mobilePhone;
     /**
      * 邮箱地址
@@ -96,5 +108,14 @@ public class UserInfo extends BaseBusinessEntity {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+
+    public String getRepeatPassword() {
+        return repeatPassword;
+    }
+
+    public void setRepeatPassword(String repeatPassword) {
+        this.repeatPassword = repeatPassword;
     }
 }

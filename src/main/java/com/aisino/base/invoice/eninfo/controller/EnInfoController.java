@@ -54,6 +54,13 @@ public class EnInfoController extends BaseController<EnInfo> {
         return mav;
     }
 
+
+    @RequestMapping(value = "/addEnfo",method = RequestMethod.GET,produces = MediaType.TEXT_HTML_VALUE)
+    public ModelAndView addEnfo(){
+        ModelAndView mav = new ModelAndView(PATH + "/add_enfo");
+        return mav;
+    }
+
     @RequestMapping(value = "/list",method = RequestMethod.GET)
     @AclResc(code = "list",name = "企业列表")
     public ResultDataDto list(JqgridFilters jqgridFilters, @ModelAttribute("pageAndSort")PageAndSort pageAndSort){

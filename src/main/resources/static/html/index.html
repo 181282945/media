@@ -11,8 +11,8 @@
     <link href="invoice/css/axure_rp_page.css" type="text/css" rel="stylesheet"/>
     <link href="data/styles.css" type="text/css" rel="stylesheet"/>
     <link href="files/p1_首页/styles.css" type="text/css" rel="stylesheet"/>
-    <script src="invoice/scripts/jquery-1.7.1.min.js"></script>
-    <script src="invoice/scripts/jquery-ui-1.8.10.custom.min.js"></script>
+    <!--<script src="invoice/scripts/jquery-1.7.1.min.js"></script>-->
+    <!--<script src="invoice/scripts/jquery-ui-1.8.10.custom.min.js"></script>-->
 
 
     <!--上面是产品原型图生成的莫名其妙的东西-->
@@ -62,6 +62,8 @@
             position: static;
             margin-bottom: 5px;
         }
+
+
     </style>
 
     <!-- ace settings handler -->
@@ -75,42 +77,13 @@
     <![endif]-->
 
 
-    <script src="js/jquery.form.min.js"></script>
-    <script src="/js/layer/layer.js"></script>
-    <script src="js/base.js"></script>
+
     <link href="css/base.css" type="text/css" rel="stylesheet"/>
-    <script type="text/javascript">
-
-        //提交登录信息
-        $(document).ready(function () {
-
-            $("#base").addClass("")
-
-
-            var options = {
-                success: function (json) {
-                    commonCompleteMsg(json);
-                }
-            };
-
-            // ajaxSubmit
-            $("#u20_div").click(function () {
-                $("#loginForm").ajaxSubmit(options);
-            });
-        });
-    </script>
-    <!--<style type="text/css">-->
-    <!--input:-webkit-autofill {-->
-    <!-- -webkit-box-shadow: 0 0 0px 1000px white inset;-->
-    <!--border: 1px solid #CCC !important;-->
-    <!--}-->
-    <!--</style>-->
 
 
 </head>
 <body class="no-skin">
 <div class="main-container ace-save-state" id="main-container">
-
     <!-- Unnamed (矩形) -->
     <div id="u0" class="ax_default box_1">
         <div id="u0_div" class=""></div>
@@ -137,10 +110,10 @@
             <p><span></span></p>
         </div>
     </div>
-    <div id="u6" class="ax_default" data-label="login">
-        <div class="col-sm-6" id="u6_state0" class="panel_state">
+    <div id="u6" class="ax_default" data-label="login"  >
+        <div class="col-sm-6 panel_state" id="u6_state0" >
             <!-- #section:elements.tab.option -->
-            <div class="tabbable">
+            <div class="tabbable"  id="logindiv" th:style="${userName}!=null? 'display: none':'' ">
                 <ul class="nav nav-tabs padding-12 tab-color-blue background-blue" id="myTab4">
                     <li class="active">
                         <a data-toggle="tab" href="#home4">登录</a>
@@ -151,9 +124,9 @@
                     </li>
                 </ul>
 
-                <div class="tab-content">
+                <div class="tab-content" >
                     <div id="home4" class="tab-pane in active">
-                        <form id="form1" action="/checkLogin" method="post">
+                        <form id="loginForm" action="/checkLogin" method="post">
                             <fieldset>
                                 <label class="block clearfix" for="name_key">
 										<span class="block input-icon input-icon-right">
@@ -174,12 +147,12 @@
                                 <label class="block clearfix" for="verification_code">
 										<span class="block input-icon input-icon-right">
                                             <!--<input    class="col-xs-1" type="text" id="form-field-5" placeholder="验证码" >-->
-											<input id="verification_code" name="verification_code"
-                                                   class="input-medium form-control" type="text" id="form-field-4"
-                                                   placeholder="验证码">
+											<input id="verification_code" name="verification_code" class="input-medium form-control" type="text" placeholder="验证码">
+                                              <img class="block input-icon input-icon-right" style="width:47%;display:inline;float:left;" id="kaptcha" src="/images/kaptcha.jpg" title="点击更换" onclick="javascript:refreshCaptcha();"/>
                                             <!--<input type="text" class="form-control" placeholder="验证码" />-->
-											<i class="ace-icon fa fa-lock"></i>
+											<i class="ace-icon fa fa-key"></i>
 										</span>
+
                                 </label>
 
                                 <div class="space"></div>
@@ -189,8 +162,7 @@
                                         <input type="checkbox" class="ace"/>
                                         <span class="lbl"> 记住我</span>
                                     </label>
-                                    <button id="btnAjaxSubmit" type="button"
-                                            class="width-35 pull-right btn btn-sm btn-primary">
+                                    <button id="btnAjaxSubmit" type="button" class="width-35 pull-right btn btn-sm btn-primary">
                                         <i class="ace-icon fa fa-key"></i>
                                         <span class="bigger-110">登录</span>
                                     </button>
@@ -202,39 +174,61 @@
                     </div>
 
                     <div id="profile4" class="tab-pane">
-                        <form>
+                        <form id="regForm" method="post" th:action="@{/base/invoice/userinfo/add}">
                             <fieldset>
                                 <label class="block clearfix">
 														<span class="block input-icon input-icon-right">
-															<input type="email" class="form-control"
-                                                                   placeholder="Email"/>
-															<i class="ace-icon fa fa-envelope"></i>
-														</span>
-                                </label>
-
-                                <label class="block clearfix">
-														<span class="block input-icon input-icon-right">
-															<input type="text" class="form-control"
-                                                                   placeholder="Username"/>
+                                                            <input type="text" name="usrno" class="form-control" style="height:25px;" placeholder="用户账号"/>
 															<i class="ace-icon fa fa-user"></i>
 														</span>
                                 </label>
 
                                 <label class="block clearfix">
+														<span class="block">
+															<input type="text" name="usrname" class="form-control" style="height:25px;" placeholder="昵称"/>
+														</span>
+                                </label>
+
+                                <label class="block clearfix">
 														<span class="block input-icon input-icon-right">
-															<input type="password" class="form-control"
-                                                                   placeholder="Password"/>
+															<input type="password" name="password" class="form-control" style="height:25px;" placeholder="密码"/>
 															<i class="ace-icon fa fa-lock"></i>
 														</span>
                                 </label>
 
                                 <label class="block clearfix">
 														<span class="block input-icon input-icon-right">
-															<input type="password" class="form-control"
-                                                                   placeholder="Repeat password"/>
+															<input type="password" name="repeatPassword" class="form-control" style="height:25px;" placeholder="再次输入密码"/>
 															<i class="ace-icon fa fa-retweet"></i>
 														</span>
                                 </label>
+
+                                <label class="block clearfix">
+														<span class="block">
+															<input type="text" name="mobilePhone" class="form-control" style="height:25px;" placeholder="手机号码"/>
+														</span>
+                                </label>
+
+                                <label class="block clearfix">
+														<span class="block input-icon input-icon-right">
+															<input type="text" name="verification_code" style="height:25px;" placeholder="验证码">
+															<i class="ace-icon fa fa-key"></i>
+														</span>
+                                </label>
+
+                                <!--<label class="block clearfix">-->
+                                <!--<span class="block">-->
+                                <!--<input type="text" name="telephone" class="form-control" style="height:25px;" placeholder="固定电话"/>-->
+                                <!--</span>-->
+                                <!--</label>-->
+
+                                <!--<label class="block clearfix">-->
+                                <!--<span class="block input-icon input-icon-right">-->
+                                <!--<input type="email" name="email" class="form-control" style="height:25px;" placeholder="邮箱"/>-->
+                                <!--<i class="ace-icon fa fa-envelope"></i>-->
+                                <!--</span>-->
+                                <!--</label>-->
+
 
                                 <label class="block">
                                     <input type="checkbox" class="ace"/>
@@ -244,22 +238,55 @@
 														</span>
                                 </label>
 
-                                <div class="space-24"></div>
+                                <!--<div class="space-24"></div>-->
 
                                 <div class="clearfix">
                                     <button type="reset" class="width-30 pull-left btn btn-sm">
                                         <i class="ace-icon fa fa-refresh"></i>
-                                        <span class="bigger-110">Reset</span>
+                                        <span class="bigger-110">重置</span>
                                     </button>
 
-                                    <button type="button" class="width-65 pull-right btn btn-sm btn-success">
-                                        <span class="bigger-110">Register</span>
+                                    <button type="button" id="BtnRegSubmit" class="width-65 pull-right btn btn-sm btn-success">
+                                        <span class="bigger-110">注册</span>
 
                                         <i class="ace-icon fa fa-arrow-right icon-on-right"></i>
                                     </button>
                                 </div>
                             </fieldset>
                         </form>
+                    </div>
+                </div>
+            </div>
+            <div class="tabbable" id="userdiv" th:style="${userName}!=null? '':'display: none'">
+                <div class="col-sm-20">
+                    <div class="widget-box">
+                        <div class="widget-header">
+                            <h4 class="smaller">
+                                提示
+                                <!--<small>different directions and colors</small>-->
+                            </h4>
+                        </div>
+
+                        <div class="widget-body">
+                            <div class="widget-main">
+                                <p><h4 th:text="${userName}!=null? ${userName}:''">尊敬的XXXX</h4></p>
+                                <p><h4>欢迎使用云开票！</h4></p>
+                                <br /><br />
+                                <p><h5>我们致力于提供电子发票的云开票服务，成为您贴心的税务管家。</h5></p>
+                                <br /><br />
+                                <hr>
+
+
+
+                                <!-- #section:elements.tooltip -->
+                                <p>
+                                    <span class="btn btn-sm" data-rel="tooltip"><a href="/logout"> 退出登录</a></span>
+                                    <span class="btn btn-info btn-sm tooltip-info" >去开票</span>
+                                </p>
+
+                                <!-- /section:elements.tooltip -->
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -707,8 +734,74 @@
 <script src="/assets/js/src/ace.widget-on-reload.js"></script>
 <script src="/assets/js/src/ace.searchbox-autocomplete.js"></script>
 
+
+<!-- 自定义JS -->
+
+<script src="js/jquery.form.min.js"></script>
+<script src="js/layer/layer.js"></script>
+<script src="js/base.js"></script>
+
 <!-- inline scripts related to this page -->
 <script type="text/javascript">
+
+
+    //提交登录信息
+    $(document).ready(function () {
+
+        $("#base").addClass("")
+
+
+        var options = {
+            success: function (json) {
+                if(json.successMessage){
+                    if(json.operateCode == "F"){
+                        alert(json.message);
+                    }else if(json.operateCode == "S"){
+                        location.href = json.datas;
+                    }
+                }
+            }
+        };
+
+        // ajaxSubmit
+        $("#btnAjaxSubmit").click(function () {
+            $("#loginForm").ajaxSubmit(options);
+        });
+
+
+
+
+        // ajaxSubmit
+        $("#BtnRegSubmit").click(function () {
+            $("#regForm").ajaxSubmit(function(data){
+                if(data.operateCode == "F"){
+
+                }else if(data.operateCode == "S"){
+                    //询问框
+                    layer.confirm('<h4 style="color: red"><b>恭喜您注册成功!</b></h4><br />为方便您后续可以直接进行开票操作,建议立即前往完善企业信息.', {
+                        btn: ['完善信息','取消'] //按钮
+                    }, function(){
+                        layer.open({
+                            type: 2,
+                            title: '很多时候，我们想最大化看，比如像这个页面。',
+                            shadeClose: true,
+                            shade: false,
+                            maxmin: true, //开启最大化最小化按钮
+                            area: ['893px', '600px'],
+                            content: '//fly.layui.com/'
+                        });
+                    });
+                }
+            });
+        });
+
+    });
+
+
+    function refreshCaptcha() {
+        $("#kaptcha").attr("src","/images/kaptcha.jpg?t=" + Math.random());
+    }
+
     jQuery(function ($) {
         /**
          $('#myTab a[data-toggle="tab"]').on('shown.bs.tab', function (e) {

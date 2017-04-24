@@ -2,7 +2,7 @@
 <configuration debug="true">
     <contextName>logback</contextName>
 
-    <property name="log.path" value="sunjungLogs/logback.log" />
+    <property name="log.path" value="cloudinvoice/logback.log" />
 
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
@@ -35,7 +35,7 @@
     <Logger name="org.apache.coyote.http11.Http11NioProtocol" level="warn" />
     <Logger name="org.apache.tomcat.util.net.NioSelectorPool" level="warn" />
     <!--<Logger name="org.springframework" level="debug" />-->
-    <logger name="com.sunjung" level="debug" />
+    <logger name="com.aisino" level="debug" />
     <logger name="org.mybatis" level="debug" />
     <logger name="java.sql" level="debug" />
     <logger name="java.sql.Connection" level="debug" />

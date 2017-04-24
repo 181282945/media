@@ -1,7 +1,7 @@
-package com.sunjung.base.sysmgr.aclrescrole.controller;
+package com.sunjung.base.sysmgr.aclrescuser.controller;
 
-import com.sunjung.base.sysmgr.aclrescrole.entity.AclRescRole;
-import com.sunjung.base.sysmgr.aclrescrole.service.AclRescRoleService;
+import com.sunjung.base.sysmgr.aclrescuser.entity.AclRescUser;
+import com.sunjung.base.sysmgr.aclrescuser.service.AclRescUserService;
 import com.sunjung.base.sysmgr.aclresource.annotation.AclResc;
 import com.sunjung.common.dto.jqgrid.JqgridFilters;
 import com.sunjung.core.controller.BaseController;
@@ -15,19 +15,19 @@ import javax.annotation.Resource;
 import java.util.List;
 
 /**
- * Created by 为 on 2017-4-20.
+ * Created by ZhenWeiLai on 2017/4/23.
  */
 @RestController
-@RequestMapping(value = AclRescRoleController.PATH)
-@AclResc(code = "aclRescRole", name = AclRescRoleController.MODULE_NAME,homePage = AclRescRoleController.PATH + AclRescRoleController.HOME_PAGE)
-public class AclRescRoleController extends BaseController<AclRescRole> {
+@RequestMapping(value = AclRescUserController.PATH)
+@AclResc(code = "aclRescUser", name = AclRescUserController.MODULE_NAME,homePage = AclRescUserController.PATH + AclRescUserController.HOME_PAGE)
+public class AclRescUserController extends BaseController<AclRescUser> {
     final static String PATH = "/base/sysmgr/aclrescrole";
     final static String HOME_PAGE = PATH + "/tolist";
 
-    final static String MODULE_NAME = "角色资源管理";
+    final static String MODULE_NAME = "用户资源管理";
 
     @Resource
-    private AclRescRoleService aclRescRoleService;
+    private AclRescUserService aclRescUserService;
 
 
 
@@ -45,7 +45,7 @@ public class AclRescRoleController extends BaseController<AclRescRole> {
     /**
      * @return
      */
-    @RequestMapping(value = AclRescRoleController.HOME_PAGE,method = RequestMethod.GET,produces = MediaType.TEXT_HTML_VALUE)
+    @RequestMapping(value = AclRescUserController.HOME_PAGE,method = RequestMethod.GET,produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView toList(){
         ModelAndView mav = new ModelAndView(PATH + VIEW_NAME);
         mav.addObject("MODULE_NAME",MODULE_NAME);
@@ -59,10 +59,10 @@ public class AclRescRoleController extends BaseController<AclRescRole> {
 
 
     @RequestMapping(value = "/list",method = RequestMethod.GET)
-    @AclResc(code = "list",name = "角色资源列表")
+    @AclResc(code = "list",name = "用户资源列表")
     public ResultDataDto list(JqgridFilters jqgridFilters, @ModelAttribute("pageAndSort")PageAndSort pageAndSort){
-        List<AclRescRole> aclRescRoles = aclRescRoleService.findByJqgridFilters(jqgridFilters,pageAndSort);
-        return new ResultDataDto(aclRescRoles,pageAndSort);
+        List<AclRescUser> aclRescUsers = aclRescUserService.findByJqgridFilters(jqgridFilters,pageAndSort);
+        return new ResultDataDto(aclRescUsers,pageAndSort);
     }
 
 
@@ -70,9 +70,9 @@ public class AclRescRoleController extends BaseController<AclRescRole> {
      * 新增
      */
     @RequestMapping(value = "/add",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @AclResc(code = "add",name = "新增角色资源")
-    public ResultDataDto add(@ModelAttribute("aclRescRole")AclRescRole aclRescRole){
-        if(aclRescRoleService.addEntity(aclRescRole)!=null)
+    @AclResc(code = "add",name = "新增用户资源")
+    public ResultDataDto add(@ModelAttribute("aclRescUser")AclRescUser aclRescUser){
+        if(aclRescUserService.addEntity(aclRescUser)!=null)
             return ResultDataDto.addAddSuccess();
         return ResultDataDto.addOperationFailure("保存失败!");
     }
@@ -81,9 +81,9 @@ public class AclRescRoleController extends BaseController<AclRescRole> {
      * 更新
      */
     @RequestMapping(value = "/update",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @AclResc(code = "update",name = "更新角色资源")
-    public ResultDataDto update(@ModelAttribute("aclRescRole")AclRescRole aclRescRole){
-        aclRescRoleService.updateEntity(aclRescRole);
+    @AclResc(code = "update",name = "更新用户资源")
+    public ResultDataDto update(@ModelAttribute("aclRescUser")AclRescUser aclRescUser){
+        aclRescUserService.updateEntity(aclRescUser);
         return ResultDataDto.addUpdateSuccess();
     }
 
@@ -91,34 +91,30 @@ public class AclRescRoleController extends BaseController<AclRescRole> {
      * 删除
      */
     @RequestMapping(value = "/delete",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @AclResc(code = "delete",name = "删除角色资源")
+    @AclResc(code = "delete",name = "删除用户资源")
     public ResultDataDto delete(@RequestParam("id") Integer id){
-        aclRescRoleService.deleteById(id);
+        aclRescUserService.deleteById(id);
         return ResultDataDto.addDeleteSuccess();
     }
 
     /**
      * 根据资源角色新增
-     * @param aclRescRole
-     * @return
      */
     @RequestMapping(value = "/addByRescIdRoleId",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @AclResc(code = "addByRescIdRoleId",name = "根据资源角色新增")
-    public ResultDataDto addByRescIdRoleId(@ModelAttribute("aclRescRole")AclRescRole aclRescRole){
-        if(aclRescRoleService.addEntity(aclRescRole)!=null)
+    public ResultDataDto addByRescIdRoleId(@ModelAttribute("aclRescUser")AclRescUser aclRescUser){
+        if(aclRescUserService.addEntity(aclRescUser)!=null)
             return ResultDataDto.addAddSuccess();
         return ResultDataDto.addOperationFailure("保存失败!");
     }
 
     /**
      * 根据资源角色新增
-     * @param aclRescRole
-     * @return
      */
     @RequestMapping(value = "/deleteByRescIdRoleId",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @AclResc(code = "deleteByRescIdRoleId",name = "根据资源角色删除")
-    public ResultDataDto deleteByRescIdRoleId(@ModelAttribute("aclRescRole")AclRescRole aclRescRole){
-        aclRescRoleService.deleteByRescIdRoleId(aclRescRole.getRoleId(),aclRescRole.getRescId());
+    @AclResc(code = "deleteByRescIdRoleId",name = "根据资源用户删除")
+    public ResultDataDto deleteByRescIdRoleId(@ModelAttribute("aclRescUser")AclRescUser aclRescUser){
+        aclRescUserService.deleteByRescIdUserId(aclRescUser.getUserId(),aclRescUser.getRescId());
         return ResultDataDto.addDeleteSuccess();
     }
 

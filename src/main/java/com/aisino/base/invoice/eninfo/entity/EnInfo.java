@@ -1,6 +1,6 @@
 package com.aisino.base.invoice.eninfo.entity;
 
-import com.aisino.core.entity.BaseBusinessEntity;
+import com.aisino.core.entity.BaseInvoiceEntity;
 import com.aisino.core.entity.annotation.BaseEntityMapper;
 import org.apache.ibatis.type.Alias;
 
@@ -9,7 +9,7 @@ import org.apache.ibatis.type.Alias;
  */
 @Alias("EnInfo")
 @BaseEntityMapper(tableName = "invoice_eninfo")
-public class EnInfo extends BaseBusinessEntity {
+public class EnInfo extends BaseInvoiceEntity {
     /**
      * 税号
      */

@@ -7,6 +7,7 @@ import com.aisino.common.dto.jqgrid.JqgridFilters;
 import com.aisino.core.controller.BaseController;
 import com.aisino.core.dto.ResultDataDto;
 import com.aisino.core.mybatis.specification.PageAndSort;
+import com.aisino.core.security.util.SecurityUtil;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -75,6 +76,19 @@ public class EnInfoController extends BaseController<EnInfo> {
     @RequestMapping(value = "/add",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @AclResc(code = "add",name = "新增企业")
     public ResultDataDto add(@ModelAttribute("enInfo")EnInfo enInfo){
+        if(enInfoService.addEntity(enInfo)!=null)
+            return ResultDataDto.addAddSuccess();
+        return ResultDataDto.addOperationFailure("保存失败!");
+    }
+
+
+    /**
+     * 用户完善企业信息的方法.
+     */
+    @RequestMapping(value = "/addByCurrentUser",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @AclResc(code = "addByCurrentUser",name = "新增企业")
+    public ResultDataDto addByCurrentUser(@ModelAttribute("enInfo")EnInfo enInfo){
+        enInfo.setUsrno(SecurityUtil.getCurrentUserName());
         if(enInfoService.addEntity(enInfo)!=null)
             return ResultDataDto.addAddSuccess();
         return ResultDataDto.addOperationFailure("保存失败!");

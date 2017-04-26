@@ -3,6 +3,7 @@ package com.aisino.core.service;
 import com.aisino.core.dao.BaseMapper;
 import com.aisino.core.entity.BaseBusinessEntity;
 import com.aisino.core.entity.BaseEntity;
+import com.aisino.core.entity.BaseInvoiceEntity;
 import com.aisino.core.entity.annotation.BaseEntityMapper;
 import com.aisino.core.mybatis.specification.PageAndSort;
 import com.aisino.core.util.GenericeClassUtils;
@@ -30,13 +31,6 @@ public class BaseServiceImpl<T extends BaseEntity,M extends BaseMapper<T>> imple
     @Resource(name="sqlSessionTemplate")
     private SqlSession sqlSession;
 
-//    @Autowired
-//    private INaturalIdGeneratorFactory naturalIdGeneratorFactory;
-
-//    public BaseServiceImpl(){
-//
-//    }
-
     protected M getMapper() {
         return (M) sqlSession.getMapper(mapperClass);
     }
@@ -59,50 +53,9 @@ public class BaseServiceImpl<T extends BaseEntity,M extends BaseMapper<T>> imple
     @Override
     public T getEntityNextById(Integer id) {
         T entity = getMapper().getEntityNextById(new Specification<T>(entityClass, id));
-//        setEntityManyToOne(entity);
         return entity;
     }
 
-//    @Override
-//    public T findEntityByNaturalId(String naturalId) {
-//        NaturalIdHeader naturalIdHeader = entityClass.getAnnotation(NaturalIdHeader.class);
-//        if (null == naturalIdHeader) {
-//            throw new RuntimeException(entityClass.getSimpleName() + "不存在单号生成器注解：NaturalIdHeader");
-//        }
-//        CriteriaDto<T> criteriaDto = new CriteriaDto<T>(entityClass, naturalId);
-//        criteriaDto.setPrimaryKey(naturalIdHeader.ognl());
-//        T entity = getMapper().findEntityByNaturalId(criteriaDto);
-//        setEntityManyToOne(entity);
-//        return entity;
-//    }
-
-//    private void setEntityManyToOne(T entity) {
-//        @SuppressWarnings("unchecked")
-//        List<Pair<String, Class>> list = EntityColumnUtil.generateEntityManyToOne(entityClass);
-//        for (@SuppressWarnings("unchecked")Pair<String, Class> pair : list) {
-//            CriteriaDto<T> criteriaDto = new CriteriaDto<T>(pair.getRight());
-//            ManyToOne manyToOne = (ManyToOne) EntityColumnUtil.getEntityPropertyAnnotation(entityClass, pair.getLeft(), ManyToOne.class);
-//            if (null == manyToOne || ValidateUtil.isEmpty(manyToOne.name(), entity)) {
-//                continue;
-//            }
-//            criteriaDto.addQueryLike(new QueryLike(manyToOne.refname(), LikeMode.Eq, ValidateUtil.format(manyToOne.name(), entity)));
-//            criteriaDto.setFlexiPageDto(new FlexiPageDto(1, 1, "id"));
-//            criteriaDto.getFlexiPageDto().setRowCount(10L);
-//            String packageName = pair.getRight().getPackage().getName();
-//            packageName = packageName.substring(0, packageName.lastIndexOf("."));
-//            Class<?> serviceClass = null;
-//            try {
-//                serviceClass = Class.forName(packageName+".service.impl."+pair.getRight().getSimpleName()+"ResourceServiceImpl");
-//            } catch (ClassNotFoundException e) {
-//                throw new RuntimeException(this.getClass().getSimpleName()+" , 无法定位 BaseEntityMapper");
-//            }
-//            List<T> entitys = getMapper(serviceClass).findByPage(criteriaDto);
-//            if (entitys.isEmpty()) {
-//                continue;
-//            }
-//            EntityColumnUtil.setEntityProperty(entity, pair.getLeft(), entitys.get(0));
-//        }
-//    }
 
     @Override
     public Integer addEntity(T entity) {
@@ -110,33 +63,6 @@ public class BaseServiceImpl<T extends BaseEntity,M extends BaseMapper<T>> imple
         getMapper().addEntity(entity);
         return entity.getId();
     }
-
-//    /**
-//     * 设置单号
-//     */
-//    protected void setNaturalId(T entity) {
-//        NaturalIdHeader naturalIdHeader = entityClass.getAnnotation(NaturalIdHeader.class);
-//        String naturalId = generateNaturalId(entity);
-//        if (null == naturalId) {
-//            return;
-//        }
-//        if(ValidateUtil.isEmpty(naturalIdHeader.ognl(), entity)) {
-//            EntityColumnUtil.setEntityProperty(entity, naturalIdHeader.ognl(), naturalId);
-//        }
-//    }
-
-//    /**
-//     * 生成单号
-//     */
-//    protected String generateNaturalId(T entity) {
-//        NaturalIdHeader naturalIdHeader = entity.getClass().getAnnotation(NaturalIdHeader.class);
-//        if (null == naturalIdHeader) {
-//            return null;
-//        }
-//        INaturalIdGenerator naturalIdGenerator = naturalIdGeneratorFactory.getNaturalIdGenerator(naturalIdHeader.generatorFactoryClass());
-//        Object naturalId = naturalIdGenerator.generateNaturalId(entity);
-//        return naturalId.toString();
-//    }
 
     /**
      * 子类可以重写新增验证方法
@@ -152,11 +78,20 @@ public class BaseServiceImpl<T extends BaseEntity,M extends BaseMapper<T>> imple
         getMapper().updateEntity(entity);
     }
 
+    /**
+     * 子类可以重写更新验证方法
+     */
+    protected void validateUpdateEntity(T entity) {
+        ConstraintUtil.setDefaultValue(entity);
+//        entity.setVersion(this.findEntityById(entity.getId()).getVersion()+1);
+        ConstraintUtil.isNotNullConstraint(entity);
+    }
+
     @Override
     public void updateEntityEffective(Integer entityId) {
-        BaseBusinessEntity entity;
+        BaseInvoiceEntity entity;
         try {
-            entity = (BaseBusinessEntity) entityClass.newInstance();
+            entity = (BaseInvoiceEntity) entityClass.newInstance();
         } catch (Exception e) {
             throw new RuntimeException("更新状态失败，类型异常。");
         }
@@ -167,9 +102,9 @@ public class BaseServiceImpl<T extends BaseEntity,M extends BaseMapper<T>> imple
 
     @Override
     public void updateEntityInvalid(Integer entityId) {
-        BaseBusinessEntity entity;
+        BaseInvoiceEntity entity;
         try {
-            entity = (BaseBusinessEntity) entityClass.newInstance();
+            entity = (BaseInvoiceEntity) entityClass.newInstance();
         } catch (Exception e) {
             throw new RuntimeException("更新状态失败，类型异常。");
         }
@@ -178,13 +113,21 @@ public class BaseServiceImpl<T extends BaseEntity,M extends BaseMapper<T>> imple
         getMapper().updateEntityInvalid(entity);
     }
 
-    /**
-     * 子类可以重写更新验证方法
-     */
-    protected void validateUpdateEntity(T entity) {
-        ConstraintUtil.setDefaultValue(entity);
-//        entity.setVersion(this.findEntityById(entity.getId()).getVersion()+1);
-        ConstraintUtil.isNotNullConstraint(entity);
+    @Override
+    public void updateEntityStatus(String entityId, String status) {
+        validateUpdateEntityStatus(entityId, status);
+        BaseBusinessEntity entity;
+        try {
+            entity = (BaseBusinessEntity) entityClass.newInstance();
+        } catch (Exception e) {
+            throw new RuntimeException("更新状态失败，类型异常。");
+        }
+        entity.setId(Integer.parseInt(entityId));
+        entity.setStatus(status);
+    }
+
+    protected void validateUpdateEntityStatus(String entityId, String status) {
+
     }
 
     @Override

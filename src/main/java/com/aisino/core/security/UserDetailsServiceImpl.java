@@ -68,14 +68,15 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 throw new UsernameNotFoundException("用户名错误!");
             }
         }
-
-        AclUserRole aclUserRole = aclUserRoleService.getByUserId(entity.getId());
-        AclRole aclRole = aclRoleService.findEntityById(aclUserRole.getRoleId());
         List<String> preAuths = new ArrayList<>();//用户权限集合
-
-        List<String> roleAuthTem = aclAuthService.findCodeByRoleId(aclRole.getId());
-        if (!roleAuthTem.isEmpty()) {
-            preAuths.addAll(roleAuthTem);
+        AclUserRole aclUserRole = aclUserRoleService.getByUserId(entity.getId());
+        if(aclUserRole != null){
+            AclRole aclRole = aclRoleService.findEntityById(aclUserRole.getRoleId());
+            List<String> roleAuthTem = aclAuthService.findCodeByRoleId(aclRole.getId());
+            if (!roleAuthTem.isEmpty()) {
+                preAuths.addAll(roleAuthTem);
+            }
+            auths.add(new SimpleGrantedAuthority(aclRole.getCode().toUpperCase()));
         }
 
         List<String> userAuthTem = aclAuthService.findCodeByUserId(entity.getId());
@@ -86,7 +87,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         for (String authStr : preAuths) {
             auths.add(new SimpleGrantedAuthority(authStr.toUpperCase()));
         }
-        auths.add(new SimpleGrantedAuthority(aclRole.getCode().toUpperCase()));
+
 //        auths.add(new SimpleGrantedAuthority(AuthenticatedVoter.IS_AUTHENTICATED_FULLY));
 
 

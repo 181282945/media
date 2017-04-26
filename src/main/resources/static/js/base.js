@@ -35,3 +35,19 @@ function commonCompleteMsg(data){
             scrollbar: false
         });
 }
+
+
+function layerAlertMsg(message){
+        layer.open({
+            content: message,
+            scrollbar: false
+        });
+}
+
+
+
+
+
+
+
+

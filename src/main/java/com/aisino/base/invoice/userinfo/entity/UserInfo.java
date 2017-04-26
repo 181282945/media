@@ -1,6 +1,6 @@
 package com.aisino.base.invoice.userinfo.entity;
 
-import com.aisino.core.entity.BaseBusinessEntity;
+import com.aisino.core.entity.BaseInvoiceEntity;
 import com.aisino.core.entity.annotation.BaseEntityMapper;
 import com.aisino.core.entity.annotation.IsNotNull;
 import com.aisino.core.entity.annotation.Transient;
@@ -11,7 +11,7 @@ import org.apache.ibatis.type.Alias;
  */
 @Alias("UserInfo")
 @BaseEntityMapper(tableName = "invoice_userinfo")
-public class UserInfo extends BaseBusinessEntity {
+public class UserInfo extends BaseInvoiceEntity {
     /**
      * 账号
      */
@@ -20,6 +20,7 @@ public class UserInfo extends BaseBusinessEntity {
     /**
      * 用户名
      */
+    @IsNotNull
     private String usrname;
     /**
      * 密码

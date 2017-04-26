@@ -69,97 +69,111 @@
 
 
 
-    <link href="css/base.css" type="text/css" rel="stylesheet"/>
+    <link href="/css/base.css" type="text/css" rel="stylesheet"/>
 
 
 </head>
 <body class="no-skin">
-<div class="main-container ace-save-state" id="main-container">
-    <div class="tabbable"  id="logindiv" th:style="${userName}!=null? 'display: none':'' ">
-            <div id="profile4" class="tab-pane">
-                <form id="regForm" method="post" th:action="@{/base/invoice/userinfo/add}">
-                    <fieldset>
-                        <label class="block clearfix">
-														<span class="block input-icon input-icon-right">
-                                                            <input type="text" name="usrno" class="form-control" style="height:25px;" placeholder="用户账号"/>
-															<i class="ace-icon fa fa-user"></i>
-														</span>
-                        </label>
+<div class="main-container">
+    <div class="main-content">
+        <div class="row">
+            <div class="col-sm-10 col-sm-offset-1">
+                <div class="login-container">
+                    <div class="center">
+                        <h1>请完善企业信息</h1>
+                    </div>
+                    <form id="addForm" method="post" th:action="@{/base/invoice/eninfo/addByCurrentUser}">
+                        <fieldset>
+                            <label class="block clearfix">
 
-                        <label class="block clearfix">
+                            <span class="block input-icon input-icon-right">
+														<input type="text" name="taxno" class="form-control"  placeholder="企业税号"/>
+															<i class="ace-icon fa glyphicon-asterisk red"></i>
+														</span>
+                            </label>
+
+                            <label class="block clearfix">
+                              <span class="block input-icon input-icon-right">
+														<input type="text" name="taxname" class="form-control"  placeholder="企业名称"/>
+															<i class="ace-icon fa glyphicon-asterisk red"></i>
+														</span>
+                            </label>
+
+                            <label class="block clearfix">
+
+                            <span class="block input-icon input-icon-right">
+														<input type="text" name="bankaccount" class="form-control"  placeholder="银行账号"/>
+															<i class="ace-icon fa glyphicon-asterisk red"></i>
+														</span>
+                            </label>
+
+                            <label class="block clearfix">
+                              <span class="block input-icon input-icon-right">
+														<input type="text" name="taxaddr" class="form-control"  placeholder="企业地址"/>
+															<i class="ace-icon fa glyphicon-asterisk red"></i>
+														</span>
+                            </label>
+
+                            <label class="block clearfix">
+                            <span class="block input-icon input-icon-right">
+														<input type="text" name="taxtel" class="form-control"  placeholder="企业电话"/>
+															<i class="ace-icon fa glyphicon-asterisk red"></i>
+														</span>
+                            </label>
+
+                            <label class="block clearfix">
+
+                                 <span class="block input-icon input-icon-right">
+														<input type="text" name="drawer" class="form-control"  placeholder="开票人"/>
+															<i class="ace-icon fa glyphicon-asterisk red"></i>
+														</span>
+                            </label>
+
+                            <label class="block clearfix">
+
+                             <span class="block">
+														<input type="text" name="payee" class="form-control"  placeholder="收款人"/>
+														</span>
+                            </label>
+
+                            <label class="block clearfix">
 														<span class="block">
-															<input type="text" name="usrname" class="form-control" style="height:25px;" placeholder="昵称"/>
+															<input type="text" name="reviewer" class="form-control"  placeholder="复核人"/>
 														</span>
-                        </label>
+                            </label>
+                            <!--<label class="block clearfix">-->
+                            <!--<span class="block">-->
+                            <!--<input type="text" name="telephone" class="form-control"  placeholder="固定电话"/>-->
+                            <!--</span>-->
+                            <!--</label>-->
 
-                        <label class="block clearfix">
-														<span class="block input-icon input-icon-right">
-															<input type="password" name="password" class="form-control" style="height:25px;" placeholder="密码"/>
-															<i class="ace-icon fa fa-lock"></i>
-														</span>
-                        </label>
+                            <!--<label class="block clearfix">-->
+                            <!--<span class="block input-icon input-icon-right">-->
+                            <!--<input type="email" name="email" class="form-control"  placeholder="邮箱"/>-->
+                            <!--<i class="ace-icon fa fa-envelope"></i>-->
+                            <!--</span>-->
+                            <!--</label>-->
 
-                        <label class="block clearfix">
-														<span class="block input-icon input-icon-right">
-															<input type="password" name="repeatPassword" class="form-control" style="height:25px;" placeholder="再次输入密码"/>
-															<i class="ace-icon fa fa-retweet"></i>
-														</span>
-                        </label>
+                            <!--<div class="space-24"></div>-->
 
-                        <label class="block clearfix">
-														<span class="block">
-															<input type="text" name="mobilePhone" class="form-control" style="height:25px;" placeholder="手机号码"/>
-														</span>
-                        </label>
+                            <div class="clearfix">
+                                <button type="reset" class="width-30 pull-left btn btn-sm">
+                                    <i class="ace-icon fa fa-refresh"></i>
+                                    <span class="bigger-110">重置</span>
+                                </button>
 
-                        <label class="block clearfix">
-														<span class="block input-icon input-icon-right">
-															<input type="text" name="verification_code" style="height:25px;" placeholder="验证码">
-															<i class="ace-icon fa fa-key"></i>
-														</span>
-                        </label>
-
-                        <!--<label class="block clearfix">-->
-                        <!--<span class="block">-->
-                        <!--<input type="text" name="telephone" class="form-control" style="height:25px;" placeholder="固定电话"/>-->
-                        <!--</span>-->
-                        <!--</label>-->
-
-                        <!--<label class="block clearfix">-->
-                        <!--<span class="block input-icon input-icon-right">-->
-                        <!--<input type="email" name="email" class="form-control" style="height:25px;" placeholder="邮箱"/>-->
-                        <!--<i class="ace-icon fa fa-envelope"></i>-->
-                        <!--</span>-->
-                        <!--</label>-->
-
-
-                        <label class="block">
-                            <input type="checkbox" class="ace"/>
-                            <span class="lbl">
-															I accept the
-															<a href="#">User Agreement</a>
-														</span>
-                        </label>
-
-                        <!--<div class="space-24"></div>-->
-
-                        <div class="clearfix">
-                            <button type="reset" class="width-30 pull-left btn btn-sm">
-                                <i class="ace-icon fa fa-refresh"></i>
-                                <span class="bigger-110">重置</span>
-                            </button>
-
-                            <button type="button" id="BtnRegSubmit" class="width-65 pull-right btn btn-sm btn-success">
-                                <span class="bigger-110">注册</span>
-
-                                <i class="ace-icon fa fa-arrow-right icon-on-right"></i>
-                            </button>
-                        </div>
-                    </fieldset>
-                </form>
-            </div>
-    </div>
-</div>
+                                <button type="submit" name="btnAjaxSubmit" id="btnAjaxSubmit" class="width-65 pull-right btn btn-sm btn-success">
+                                    <span class="bigger-110">提交</span>
+                                    <i class="ace-icon fa fa-arrow-right icon-on-right"></i>
+                                </button>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.main-content -->
+</div><!-- /.main-container -->
 
 <!-- basic scripts -->
 
@@ -216,37 +230,96 @@
 
 <!-- 自定义JS -->
 
-<script src="js/jquery.form.min.js"></script>
-<script src="js/layer/layer.js"></script>
-<script src="js/base.js"></script>
+<script src="/js/jquery.form.min.js"></script>
+<script src="/js/jquery.validate.min.js"></script>
+<script src="/js/jquery.validate.extend.js"></script>
+<script src="/js/layer/layer.js"></script>
+<script src="/js/base.js"></script>
 
 <!-- inline scripts related to this page -->
 <script type="text/javascript">
 
 
-    //提交登录信息
-    $(document).ready(function () {
 
-        $("#base").addClass("")
-
-
-        var options = {
-            success: function (json) {
-                if(json.successMessage){
-                    if(json.operateCode == "F"){
-                        alert(json.message);
-                    }else if(json.operateCode == "S"){
-                        location.href = json.datas;
-                    }
-                }
+    //让当前表单调用validate方法，实现表单验证功能
+    $("#addForm").validate({
+//            debug:true, //调试模式，即使验证成功也不会跳转到目标页面
+        rules:{ //配置验证规则，key就是被验证的dom对象，value就是调用验证的方法(也是json格式)
+            taxno:{
+                required:true, //必填。如果验证方法不需要参数，则配置为true
+            },
+            taxname:{
+                required:true, //必填。如果验证方法不需要参数，则配置为true
+            },
+            bankaccount:{
+                required:true,
+            },
+            taxaddr:{
+                required:true,
+            },
+            taxtel:{
+                required:true,
+            },
+            drawer:{
+                required:true,
             }
-        };
+        },
+        messages:{
+            taxno:{
+                required:"必填",
+            },
+            taxname:{
+                required:"必填",
+            },
+            bankaccount:{
+                required:"必填",
+            },
+            taxaddr:{
+                required:"必填",
+            },
+            taxtel:{
+                required:"必填",
+            },
+            drawer:{
+                required:"必填",
+            }
 
-        // ajaxSubmit
-        $("#btnAjaxSubmit").click(function () {
-            $("#loginForm").ajaxSubmit(options);
-        });
+        },
+        submitHandler: function(form) {
+            jQuery(form).ajaxSubmit(function(data){
+                if(data.operateCode == "F"){
+                    layerAlertMsg(data.message);
+                }else if(data.operateCode == "S"){
+                    location.href = "/index"
+                }
+            });
+        }
     });
+    //
+    //    //提交登录信息
+    //    $(document).ready(function () {
+    //
+    //        $("#base").addClass("")
+    //
+    ////        var options = {
+    ////            success: function (json) {
+    ////                if(json.successMessage){
+    ////                    if(json.operateCode == "F"){
+    ////                        alert(json.message);
+    ////                    }else if(json.operateCode == "S"){
+    ////                        location.href = json.datas;
+    ////                    }
+    ////                }
+    ////            }
+    ////        };
+    //
+    //        // ajaxSubmit
+    //        $("#btnAjaxSubmit").click(function () {
+    //            $("#addForm").ajaxSubmit(function(data){
+    //                commonCompleteMsg(data)
+    //            });
+    //        });
+    //    });
 </script>
 
 <!-- the following scripts are used in demo only for onpage help and you don't need them -->

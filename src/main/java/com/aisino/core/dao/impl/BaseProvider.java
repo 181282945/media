@@ -138,6 +138,13 @@ public class BaseProvider<T extends BaseEntity> {
     }
 
     /**
+     * 更新实体状态
+     */
+    public <S extends BaseBusinessEntity> String updateEntityStatus(S entity) {
+        return "update " + getTableNameThrowException(entity.getClass()) + " set status = '" + entity.getStatus() + "' where id = " + entity.getId();
+    }
+
+    /**
      * 更新实体为失效
      */
     public <S extends BaseBusinessEntity> String updateEntityInvalid(S entity) {

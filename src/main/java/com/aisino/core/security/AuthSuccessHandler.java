@@ -1,5 +1,6 @@
 package com.aisino.core.security;
 
+import com.aisino.base.invoice.eninfo.service.EnInfoService;
 import com.aisino.core.security.util.SecurityUtil;
 import com.aisino.base.sysmgr.aclmenu.service.AclMenuService;
 import com.aisino.base.sysmgr.acluser.entity.AclUser;
@@ -23,9 +24,18 @@ public class AuthSuccessHandler extends BaseController<AclUser> {
     @Resource
     private AclMenuService aclMenuService;
 
+    @Resource
+    private EnInfoService enInfoService;
+
 
     @RequestMapping(value = "/loginSuccess",method = RequestMethod.GET)
     public ResultDataDto loginSuccess(){
+        //如果不是管理员,并且没有完善企业信息
+//        if(!SecurityUtil.isAdmin())
+//            if(!enInfoService.isCompleteByUsrno(SecurityUtil.getCurrentUserName()))
+//                return ResultDataDto.addOperationSuccess().setDatas(null);
+
+
         return ResultDataDto.addOperationSuccess().setDatas("/toIndex");
     }
 
@@ -37,6 +47,9 @@ public class AuthSuccessHandler extends BaseController<AclUser> {
         if(!SecurityUtil.isAdmin()){
             ModelAndView mav = new ModelAndView("index");
             mav.addObject("userName",userName);
+
+            if(!enInfoService.isCompleteByUsrno(SecurityUtil.getCurrentUserName()))
+                mav.addObject("completeEnInfo",false);
             return mav;
         }
 

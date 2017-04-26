@@ -87,7 +87,6 @@
 
 
     <style>
-        label{color: red}
         #main{ width:970px; height: auto; margin:0 auto; color:#FFF;}
         #top{ width:100%; height: auto; margin:0 auto; color:#FFF;}
         #content{ width:100%; height: 370px; margin:0 auto; color:#FFF;}
@@ -95,16 +94,6 @@
         #nav{ width:100%; height:100px;}
         /*#centre{ width:1200px; height: 500px; margin:0 auto; color: #000033;}*/
         .news{ width:454px; height: 222px; margin:0 auto; color:#FFF;}
-        .navimg{visibility: hidden}
-        .newsMouseOver{ background:inherit;
-            background-color:rgba(255, 255, 255, 1);
-            border:none;
-            border-radius:0px;
-            -moz-box-shadow:1px 1px 3px rgba(0, 0, 0, 0.349019607843137);
-            -webkit-box-shadow:1px 1px 3px rgba(0, 0, 0, 0.349019607843137);
-            box-shadow:1px 1px 3px rgba(0, 0, 0, 0.349019607843137);
-            font-size:12px;
-        }
     </style>
 </head>
 <body class="no-skin">
@@ -112,27 +101,27 @@
     <!-- 头部导航 -->
 
     <div id="top">
-        <div id="logo" style="text-align:right;"><div th:style="${userName}!=null? '':'display: none'" ><span style="position:relative;right: 3px;bottom:3px;font-size: small">XXXXX</span><img src="images/u963.png"><span style="position:relative;left:3px;bottom:3px;font-size: small">退出登录</span></div></div>
+        <div id="logo" style="text-align:right;"><span style="position:relative;right: 3px;bottom:3px;font-size: small">XXXXX</span><img src="images/u963.png"><span style="position:relative;left:3px;bottom:3px;font-size: small">退出登录</span></div>
         <div id="nav" style="vertical-align:bottom;display:inline;">
             <img class="inline" style="width: 167px;height: 39px;" src="images/u73.png"><img src="images/u83.png"><span class="inline" style="font-family: 微软雅黑;font-weight: bold;color: black;font-size: larger">云开票</span>
             <div class="inline" style="float:right;margin-right:50px;position: relative;">
-                <img src="images/u75.png"  class="navimg"  id="memberCentre" >
+                <img src="images/u75.png" >
                 <div style="position: absolute;left: 15px;top: 10px;color: black">
-                    <span style="font-family: 微软雅黑;font-weight: bold;font-size: medium;" onmouseout="mouseOutBgImg('memberCentre')" onmouseover="mouseOverBgImg('memberCentre')" >个人中心</span>
+                    <span style="font-family: 微软雅黑;font-weight: bold;font-size: medium;">个人中心</span>
                 </div>
             </div>
 
             <div class="inline" style="float:right;margin-right:50px;position: relative;">
-                <img src="images/u75.png" class="navimg" id="invoiceMgr" >
+                <img src="images/u75.png" >
                 <div style="position: absolute;left: 15px;top: 10px;color: black">
-                    <span style="font-family: 微软雅黑;font-weight: bold;font-size: medium;" onmouseout="mouseOutBgImg('invoiceMgr')" onmouseover="mouseOverBgImg('invoiceMgr')" >发票管理</span>
+                    <span style="font-family: 微软雅黑;font-weight: bold;font-size: medium;">发票管理</span>
                 </div>
             </div>
 
             <div class="inline" style="float:right;margin-right:50px;position: relative;">
-                <img src="images/u75.png" class="navimg" id="order" >
+                <img src="images/u75.png" >
                 <div style="position: absolute;left: 15px;top: 10px;color: black">
-                    <span style="font-family: 微软雅黑;font-weight: bold;font-size: medium;" onmouseout="mouseOutBgImg('order')" onmouseover="mouseOverBgImg('order')" >订单仓库</span>
+                    <span style="font-family: 微软雅黑;font-weight: bold;font-size: medium;">订单仓库</span>
                 </div>
             </div>
 
@@ -144,7 +133,7 @@
             </div>
         </div>
     </div>
-    <hr width="100%" style="margin-top: 0px; "/>
+    <hr width="100%"/>
 
     <!-- 头部导航 -->
 
@@ -166,7 +155,7 @@
                 </ul>
 
                 <div class="tab-content">
-                    <div id="home4" class="tab-pane in active" style="height: 270px;width: 271px;">
+                    <div id="home4" class="tab-pane in active" style="height: 270px;">
                         <form  id="loginForm" action="/checkLogin" method="post">
                             <fieldset>
                                 <label class="block clearfix" for="name_key">
@@ -184,10 +173,10 @@
                                 </label>
 
                                 <label class="block clearfix" for="verification_code">
-										<span class="block input-icon input-icon-right">
+										<span class="block input-icon input-icon-right text-left">
                                             <!--<input    class="col-xs-1" type="text" id="form-field-5" placeholder="验证码" >-->
-											<input id="verification_code" name="verification_code" class="form-control" style="position: relative" type="text" placeholder="验证码">
-                                              <img style="width:40%;height: 35px;" src="/images/kaptcha.jpg" id="verification_code_img" title="点击更换" onclick="javascript:refreshCaptcha(this.id);"/>
+											<input id="verification_code" name="verification_code" class=" col-xs-10 col-sm-8" type="text" placeholder="验证码">
+                                              <img style="width:40%;height: 35px" src="/images/kaptcha.jpg" id="verification_code_img" title="点击更换" onclick="javascript:refreshCaptcha(this.id);"/>
                                             <!--<input type="text" class="form-control" placeholder="验证码" />-->
 											<i class="ace-icon fa fa-key"></i>
 										</span>
@@ -197,10 +186,10 @@
                                 <div class="space"></div>
 
                                 <div class="clearfix">
-                                    <!--<label class="inline">-->
-                                    <!--<input type="checkbox" class="ace"/>-->
-                                    <!--<span class="lbl" style="color: black"> 记住我</span>-->
-                                    <!--</label>-->
+                                    <label class="inline">
+                                        <input type="checkbox" class="ace"/>
+                                        <span class="lbl" style="color: black"> 记住我</span>
+                                    </label>
                                     <button id="btnAjaxSubmit" name="btnAjaxSubmit" type="submit" class="width-35 pull-right btn btn-sm btn-primary">
                                         <i class="ace-icon fa fa-key"></i>
                                         <span class="bigger-110">登录</span>
@@ -216,63 +205,48 @@
                         <form id="regForm" method="post" action="/base/invoice/userinfo/add">
                             <fieldset>
                                 <label class="block clearfix "  for="usrno">
-														<span class="block input-icon input-icon-right">
-                                                            <input type="text" name="usrno" id="usrno" class=" form-control" placeholder="用户账号"/>
-															<i class="ace-icon fa glyphicon-asterisk red"></i>
+														<span class="block input-icon input-icon-left">
+                                                            <input type="text" name="usrno" id="usrno" class=" col-xs-10 col-sm-8" placeholder="用户账号"/>
+															<i class="ace-icon fa fa-user"></i>
 														</span>
                                 </label>
 
                                 <label class="block clearfix "  for="usrname">
-														<span class="block input-icon input-icon-right">
-															<input type="text" name="usrname" id="usrname" class="form-control" placeholder="昵称"/>
-                                                            <i class="ace-icon fa glyphicon-asterisk red"></i>
+														<span class="block input-icon input-icon-left">
+															<input type="text" name="usrname" id="usrname" class="col-xs-10 col-sm-8" placeholder="昵称"/>
+                                                            	<i class="ace-icon fa fa-tag"></i>
 														</span>
                                 </label>
 
                                 <label class="block clearfix " for="password">
-														<span class="block input-icon input-icon-right">
-															<input type="password" name="password" id="password" class="form-control" placeholder="密码"/>
-															<i class="ace-icon fa glyphicon-asterisk red"></i>
+														<span class="block input-icon input-icon-left">
+															<input type="password" name="password" id="password" class="col-xs-10 col-sm-8" placeholder="密码"/>
+															<i class="ace-icon fa fa-lock"></i>
 														</span>
                                 </label>
 
                                 <label class="block clearfix" for="repeatPassword">
-														<span class="block input-icon input-icon-right">
-															<input type="password" name="repeatPassword" id="repeatPassword" class="form-control" placeholder="再次输入密码"/>
-															<i class="ace-icon fa glyphicon-asterisk red"></i>
+														<span class="block input-icon input-icon-left">
+															<input type="password" name="repeatPassword" id="repeatPassword" class="col-xs-10 col-sm-8" placeholder="再次输入密码"/>
+															<i class="ace-icon fa fa-retweet"></i>
 														</span>
                                 </label>
 
                                 <label class="block clearfix" for="mobilePhone">
-														<span class="block input-icon input-icon-right">
-															<input type="text" name="mobilePhone" id="mobilePhone" class="form-control" placeholder="手机号码"/>
-                                                            <i class="ace-icon fa glyphicon-asterisk red"></i>
+														<span class="block input-icon input-icon-left">
+															<input type="text" name="mobilePhone" id="mobilePhone" class="col-xs-10 col-sm-8" placeholder="手机号码"/>
+                                                            <i class="ace-icon fa fa-mobile-phone"></i>
 														</span>
                                 </label>
 
                                 <label class="block clearfix" for="verification_code2">
-														<span class="block input-icon input-icon-right">
-                                                                	<input type="text" name="verification_code" id="verification_code2" class="form-control" placeholder="验证码">
+														<span class="block input-icon input-icon-left text-left">
+                                                                	<input type="text" name="verification_code" id="verification_code2" class=" col-xs-10 col-sm-8" placeholder="验证码">
                                                             <img style="width:40%;height: 35px" src="/images/kaptcha.jpg" id="verification_code_img2" title="点击更换" onclick="javascript:refreshCaptcha(this.id);"/>
-															<i class="ace-icon fa glyphicon-asterisk red"></i>
+															<i class="ace-icon fa fa-key"></i>
 														</span>
 
                                 </label>
-
-                                <label class="block clearfix" for="telephone">
-														<span class="block input-icon input-icon-right">
-															<input type="text" name="telephone" id="telephone" class="form-control" placeholder="固定电话"/>
-                                                            <i class="ace-icon fa fa-phone-square"></i>
-														</span>
-                                </label>
-
-                                <label class="block clearfix" for="email">
-														<span class="block input-icon input-icon-right">
-															<input type="text" name="email" id="email" class="form-control" placeholder="邮箱"/>
-                                                            <i class="ace-icon fa fa-envelope"></i>
-														</span>
-                                </label>
-
 
                                 <label class="block">
                                     <input type="checkbox" onclick="onClickHander(this)" class="ace"/>
@@ -291,7 +265,7 @@
                                         <span class="bigger-110">重置</span>
                                     </button>
 
-                                    <button type="button" id="BtnRegSubmit" name="BtnRegSubmit" class="width-50 pull-right btn btn-sm btn-success btn disabled" style="margin-right: 5px">
+                                    <button type="submit" id="BtnRegSubmit" name="BtnRegSubmit" class="width-50 pull-right btn btn-sm btn-success btn disabled" style="margin-right: 5px">
                                         <span class="bigger-110">注册</span>
 
                                         <i class="ace-icon fa fa-arrow-right icon-on-right"></i>
@@ -302,18 +276,18 @@
                     </div>
                 </div>
             </div>
-            <div class="tabbable" id="userdiv" th:style="${userName}!=null? 'width: 271px;height: 180px;':'display: none'">
+            <div class="tabbable" id="userdiv" th:style="${userName}!=null? '':'display: none'">
                 <div class="col-sm-20">
                     <div class="widget-box">
                         <div class="widget-header">
-                            <h4 class="smaller" style="color: black">
+                            <h4 class="smaller">
                                 提示
                                 <!--<small>different directions and colors</small>-->
                             </h4>
                         </div>
 
                         <div class="widget-body">
-                            <div class="widget-main" style="color: black;height: 300px;text-align: center">
+                            <div class="widget-main">
                                 <p><h4 th:text="${userName}!=null? ${userName}:''">尊敬的XXXX</h4></p>
                                 <p><h4>欢迎使用云开票！</h4></p>
                                 <br /><br />
@@ -321,10 +295,12 @@
                                 <br /><br />
                                 <hr>
 
+
+
                                 <!-- #section:elements.tooltip -->
                                 <p>
                                     <span class="btn btn-sm" data-rel="tooltip"><a href="/logout"> 退出登录</a></span>
-                                    <span class="btn btn-info btn-sm tooltip-info" style="right: 0px" >去开票</span>
+                                    <span class="btn btn-info btn-sm tooltip-info" >去开票</span>
                                 </p>
 
                                 <!-- /section:elements.tooltip -->
@@ -370,6 +346,7 @@
             <img style="margin-left: 10px;margin-top: 10px " src="images/u99.png">
             <span style="position: relative;top: 6px;left: 10px;color: black;font-family: 微软雅黑;font-weight: 600;font-size: medium">政策动态</span>
         </div>
+
 
 
         <ul class="list-unstyled spaced" style="position:absolute;left: 30px;top: 50px">
@@ -519,7 +496,11 @@
 <script src="/js/base.js"></script>
 
 <!-- inline scripts related to this page -->
-<script th:inline="javascript">
+<script type="text/javascript">
+
+    $("#base").addClass("");
+
+
 
     var options = {
         success: function (json) {
@@ -528,18 +509,7 @@
                     refreshCaptcha('verification_code_img');
                     layerAlertMsg(json.message);
                 }else if(json.operateCode == "S"){
-//                    if(json.datas != null)
                     location.href = json.datas;
-//                    layer.open({
-//                        type: 2,
-//                        title: '完善企业信息',
-//                        shadeClose: true,
-//                        shade: false,
-//                        maxmin: true, //开启最大化最小化按钮
-//                        area: ['893px', '600px'],
-//                        content: '/base/invoice/eninfo/addEnfo'
-//                    });
-
                 }
             }
         }
@@ -547,9 +517,9 @@
 
     function onClickHander(obj) {
         if (obj.checked) {
-            $("#BtnRegSubmit").removeClass("btn disabled").attr("type","submit");
+            $("#BtnRegSubmit").removeClass("btn disabled");
         }else {
-            $("#BtnRegSubmit").addClass("btn disabled").attr("type","button")
+            $("#BtnRegSubmit").addClass("btn disabled");
         }
     }
 
@@ -596,13 +566,7 @@
         rules:{ //配置验证规则，key就是被验证的dom对象，value就是调用验证的方法(也是json格式)
             usrno:{
                 required:true, //必填。如果验证方法不需要参数，则配置为true
-                username:true,
                 rangelength:[8,20],
-            },
-            usrname:{
-                required:true, //必填。如果验证方法不需要参数，则配置为true
-                username:true,
-                rangelength:[3,10]
             },
             password:{
                 required:true,
@@ -624,14 +588,6 @@
             verification_code:{
                 required:true
 //                    email:true
-            },
-            telephone:{
-                required:false,
-                isTel:true
-            },
-            email:{
-                required:false,
-                email:true
             }
         },
         messages:{
@@ -641,7 +597,7 @@
             },
             usrname:{
                 required:"必填",
-                rangelength:"长度3-10"
+                rangelength:"长度5-10"
             },
             password:{
                 required: "不能为空",
@@ -657,9 +613,6 @@
             verification_code:{
                 required:"不能为空"
 //                    email:true
-            },
-            email:{
-                email:"邮箱格式不正确"
             }
         },
         submitHandler: function(form) {
@@ -668,58 +621,30 @@
                     refreshCaptcha('verification_code_img2');
                     layerAlertMsg(data.message);
                 }else if(data.operateCode == "S"){
-                    layer.alert('<h5 style="color: red"><b>恭喜您注册成功,请前往登录,并完善企业信息!</b></h5>', {
-                        icon: 1,
-                        skin: 'layer-ext-moon'
+                    //询问框
+                    layer.confirm('<h4 style="color: red"><b>恭喜您注册成功!</b></h4><br />为方便您后续可以直接进行开票操作,建议立即前往完善企业信息.', {
+                        btn: ['完善信息','取消'] //按钮
+                    }, function(){
+                        layer.open({
+                            type: 2,
+                            title: '完善企业信息',
+                            shadeClose: true,
+                            shade: false,
+                            maxmin: true, //开启最大化最小化按钮
+                            area: ['893px', '600px'],
+                            content: '/base/invoice/eninfo/addEnfo'
+                        });
                     });
-                    $('#logindiv a:first').tab('show')
                 }
             });
         }
     });
 
 
-    //更换验证码
+
     function refreshCaptcha(objId) {
         $('#'+objId).attr("src","/images/kaptcha.jpg?t=" + Math.random());
     }
-
-    function mouseOverBgImg(objId){
-        $('#'+objId).removeClass("navimg");
-    }
-
-    function mouseOutBgImg(objId){
-        $('#'+objId).addClass("navimg");
-    }
-
-    $("ul.list-unstyled li").each(function(){
-        $(this).hover(function(){
-            $(this).addClass("newsMouseOver");
-        },function(){
-            $(this).removeClass("newsMouseOver");
-        });
-    })
-
-
-    $(function(){
-
-
-        /*<![CDATA[*/
-        var completeEnInfo =  /*[[${completeEnInfo}]]*/;
-        /*]]>*/
-
-        if(completeEnInfo != null && !completeEnInfo){
-            layer.open({
-                type: 2,
-                title: '完善企业信息',
-                shadeClose: true,
-                shade: false,
-                maxmin: true, //开启最大化最小化按钮
-                area: ['893px', '600px'],
-                content: '/base/invoice/eninfo/addEnfo'
-            });
-        }
-    });
 
 
 </script>

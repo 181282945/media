@@ -4,6 +4,7 @@ import com.aisino.core.dto.ResultDataDto;
 import com.aisino.core.entity.BaseEntity;
 import com.google.gson.Gson;
 import com.aisino.common.dto.jqgrid.JqgridFilters;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -19,6 +20,11 @@ import java.io.IOException;
  * Created by ZhenWeiLai on 2017/4/1.
  */
 public abstract class BaseController<T extends BaseEntity> {
+
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
+    }
 
     @InitBinder("pageAndSort")
     public void initBinderPageAndSort(WebDataBinder binder) {

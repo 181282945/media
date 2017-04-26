@@ -3,6 +3,7 @@ package com.aisino.core.dao;
 import com.aisino.core.entity.BaseBusinessEntity;
 import com.aisino.core.entity.BaseEntity;
 import com.aisino.core.dao.impl.BaseProvider;
+import com.aisino.core.entity.BaseInvoiceEntity;
 import com.aisino.core.mybatis.specification.Specification;
 import org.apache.ibatis.annotations.*;
 
@@ -32,17 +33,23 @@ public interface BaseMapper<T extends BaseEntity> {
     void updateEntity(T entity);
 
     /**
+     * 更新状态
+     */
+    @UpdateProvider(type = BaseProvider.class, method = "updateEntityStatus")
+    <S extends BaseBusinessEntity> void updateEntityStatus(S entity);
+
+    /**
      * 更新状态为失效
      */
     @UpdateProvider(type = BaseProvider.class, method = "updateEntityInvalid")
-    <S extends BaseBusinessEntity> void updateEntityInvalid(S entity);
+    <S extends BaseInvoiceEntity> void updateEntityInvalid(S entity);
 
 
     /**
      * 更新状态为有效
      */
     @UpdateProvider(type = BaseProvider.class, method = "updateEntityEffective")
-    <S extends BaseBusinessEntity> void updateEntityEffective(S entity);
+    <S extends BaseInvoiceEntity> void updateEntityEffective(S entity);
 
     /**
      * 根据Id删除实体

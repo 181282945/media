@@ -26,13 +26,13 @@ public class SecurityUtil {
 
 
     /**
-     *  判断是否管理员
+     *  判断是否后台用户
      */
-    public static boolean isAdmin(){
+    public static boolean isAclUser(){
         Collection<? extends GrantedAuthority> authorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
         for(GrantedAuthority ga : authorities){
             String gaAuth = ga.getAuthority().toUpperCase();
-            if(gaAuth.equals(SecurityUtil.ADMIN))
+            if(gaAuth.equals(AclUser.class.getSimpleName().toUpperCase()))
                 return true;
         }
         return false;
@@ -86,7 +86,7 @@ public class SecurityUtil {
      * @return
      */
     public static UserInfo getCurrentUserInfo(){
-        if(authenticationTrustResolver.isAnonymous(SecurityContextHolder.getContext().getAuthentication())||isAdmin())
+        if(authenticationTrustResolver.isAnonymous(SecurityContextHolder.getContext().getAuthentication())||isAclUser())
             return null;
         String usrno = ((User)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
         return  getUserInfoService().getUserByUsrno(usrno);

@@ -30,30 +30,24 @@ public class AuthSuccessHandler extends BaseController<AclUser> {
 
     @RequestMapping(value = "/loginSuccess",method = RequestMethod.GET)
     public ResultDataDto loginSuccess(){
-        //如果不是管理员,并且没有完善企业信息
-//        if(!SecurityUtil.isAdmin())
-//            if(!enInfoService.isCompleteByUsrno(SecurityUtil.getCurrentUserName()))
-//                return ResultDataDto.addOperationSuccess().setDatas(null);
-
-
         return ResultDataDto.addOperationSuccess().setDatas("/toIndex");
     }
 
     @RequestMapping(value = "/toIndex",method = RequestMethod.GET)
     public ModelAndView toIndex(){
         String userName = SecurityUtil.getCurrentUserName();
-        if(StringUtils.isBlank(userName))
+        if(StringUtils.isBlank(userName))//如果没有登录
             return new ModelAndView("index");
-        if(!SecurityUtil.isAdmin()){
+        if(!SecurityUtil.isAclUser()){//如果是前台用户
             ModelAndView mav = new ModelAndView("index");
             mav.addObject("userName",userName);
 
-            if(!enInfoService.isCompleteByUsrno(SecurityUtil.getCurrentUserName()))
+            if(!enInfoService.isCompleteByUsrno(SecurityUtil.getCurrentUserName()))//如果没有完善企业信息,展开完善企业信息视图
                 mav.addObject("completeEnInfo",false);
             return mav;
         }
 
-        ModelAndView mav = new ModelAndView("main");
+        ModelAndView mav = new ModelAndView("main");//如果是后台用户,那么跳转到后台页面
         mav.addObject("userName",userName);
         mav.addObject("menus",aclMenuService.getAclUserMenus());
         return mav;

@@ -58,7 +58,7 @@ public class AclRoleController extends BaseController<AclRole> {
         mav.addObject("UPDATE_URL",UPDATE_URL);
         mav.addObject("ADD_URL",ADD_URL);
         mav.addObject("DELETE_URL",DELETE_URL);
-        mav.addObject("SEARCH_MODULE_URL",SEARCH_URL);
+        mav.addObject("SEARCH_URL",SEARCH_URL);
         mav.addObject("aclResrouceTypeParams", ParamUtil.JqgridSelectVal(AclResourceType.getParams()));
         return mav;
     }

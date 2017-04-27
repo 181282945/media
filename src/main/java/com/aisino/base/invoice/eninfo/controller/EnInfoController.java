@@ -56,9 +56,9 @@ public class EnInfoController extends BaseController<EnInfo> {
     }
 
 
-    @RequestMapping(value = "/addEnfo",method = RequestMethod.GET,produces = MediaType.TEXT_HTML_VALUE)
+    @RequestMapping(value = "/addEnInfoMav",method = RequestMethod.GET,produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView addEnfo(){
-        ModelAndView mav = new ModelAndView(PATH + "/add_enfo");
+        ModelAndView mav = new ModelAndView(PATH + "/add_enifo");
         return mav;
     }
 

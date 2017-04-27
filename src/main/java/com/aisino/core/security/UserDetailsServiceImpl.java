@@ -96,9 +96,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
              * 加入用户数据源
              */
             routingDataSource.addCuzDataSource(userInfo);
+            //权限集加入类名,为区分前后台用户
+            auths.add(new SimpleGrantedAuthority(UserInfo.class.getSimpleName()));
             user = new User(userInfo.getUsrno(), userInfo.getPassword(), !userInfo.getDelflags(), true, true, true, auths);
 
         }else if (entity instanceof AclUser){
+            //权限集加入类名,为区分前后台用户
+            auths.add(new SimpleGrantedAuthority(AclUser.class.getSimpleName()));
             user = new User(aclUser.getUserName(), aclUser.getPassword(), aclUser.getEnabled(), aclUser.getAccountNonExpired(), aclUser.getCredentialsNonExpired(), aclUser.getAccountNonLocked(), auths);
         }
 

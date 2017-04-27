@@ -305,7 +305,7 @@
 //                jQuery("#"+moduleSubgrid).jqGrid('navGrid',"#"+pager_id,{edit:false,add:false,del:false});
             },
 
-            url:[[${SEARCH_MODULE_URL}]],
+            url:[[${SEARCH_URL}]],
             datatype: "json",
             jsonReader: {
                 root:"datas",
@@ -490,7 +490,7 @@
             },
             //search
             {
-                url: [[${SEARCH_MODULE_URL}]],
+                url: [[${SEARCH_URL}]],
                 //search form
                 recreateForm: true,
                 afterShowSearch: function(e){

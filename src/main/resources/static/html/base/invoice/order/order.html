@@ -1,0 +1,232 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <title></title>
+
+
+
+    <!-- bootstrap & fontawesome -->
+    <link rel="stylesheet" href="/assets/css/bootstrap.css"/>
+    <link rel="stylesheet" href="/components/font-awesome/css/font-awesome.css"/>
+
+    <!-- page specific plugin styles -->
+    <link rel="stylesheet" href="/components/_mod/jquery-ui.custom/jquery-ui.custom.css"/>
+    <link rel="stylesheet" href="/components/jquery.gritter/css/jquery.gritter.css"/>
+
+    <!-- text fonts -->
+    <link rel="stylesheet" href="/assets/css/ace-fonts.css"/>
+
+    <!-- ace styles -->
+    <link rel="stylesheet" href="/assets/css/ace.css" class="ace-main-stylesheet" id="main-ace-style"/>
+
+    <!--[if lte IE 9]>
+    <link rel="stylesheet" href="/assets/css/ace-part2.css" class="ace-main-stylesheet"/>
+    <![endif]-->
+    <link rel="stylesheet" href="/assets/css/ace-skins.css"/>
+    <link rel="stylesheet" href="/assets/css/ace-rtl.css"/>
+
+    <!--[if lte IE 9]>
+    <link rel="stylesheet" href="/assets/css/ace-ie.css"/>
+    <![endif]-->
+
+    <!-- inline styles related to this page -->
+    <style>
+        /* some elements used in demo only */
+        .spinner-preview {
+            width: 100px;
+            height: 100px;
+            text-align: center;
+            margin-top: 60px;
+        }
+
+        .dropdown-preview {
+            margin: 0 5px;
+            display: inline-block;
+        }
+
+        .dropdown-preview > .dropdown-menu {
+            display: block;
+            position: static;
+            margin-bottom: 5px;
+        }
+        .u0_div {
+            /*position:absolute;*/
+            left:0px;
+            top:0px;
+            width:454px;
+            height:222px;
+            background:inherit;
+            background-color:rgba(255, 255, 255, 0);
+            box-sizing:border-box;
+            border-width:1px;
+            border-style:solid;
+            border-color:rgba(228, 228, 228, 1);
+            border-radius:8px;
+            -moz-box-shadow:none;
+            -webkit-box-shadow:none;
+            box-shadow:none;
+        }
+
+    </style>
+
+    <!-- ace settings handler -->
+    <script src="/assets/js/ace-extra.js"></script>
+
+    <!-- HTML5shiv and Respond.js for IE8 to support HTML5 elements and media queries -->
+
+    <!--[if lte IE 8]>
+    <script src="/components/html5shiv/dist/html5shiv.min.js"></script>
+    <script src="/components/respond/dest/respond.min.js"></script>
+    <![endif]-->
+
+
+
+    <link href="/css/base.css" type="text/css" rel="stylesheet"/>
+
+
+    <style>
+        label{color: red}
+        #main{ width:970px; height: auto; margin:0 auto; color:#FFF;}
+        #top{ width:100%; height: auto; margin:0 auto; color:#FFF;}
+        #content{ width:100%; height: 370px; margin:0 auto; color:#FFF;}
+        #logo{ width:100%; height:30px; color: black }
+        #nav{ width:100%; height:100px;}
+        .news{ width:454px; height: 222px; margin:0 auto; color:#FFF;}
+        .navimg{visibility: hidden}
+        .newsMouseOver{ background:inherit;
+            background-color:rgba(255, 255, 255, 1);
+            border:none;
+            border-radius:0px;
+            -moz-box-shadow:1px 1px 3px rgba(0, 0, 0, 0.349019607843137);
+            -webkit-box-shadow:1px 1px 3px rgba(0, 0, 0, 0.349019607843137);
+            box-shadow:1px 1px 3px rgba(0, 0, 0, 0.349019607843137);
+            font-size:12px;
+        }
+    </style>
+</head>
+<body class="no-skin">
+<div id="main" style="background: white">
+    <!-- 头部导航 -->
+
+    <div id="top">
+        <div style="height: 5px"></div>
+        <div id="logo" style="text-align:right;"><div th:style="${userName}!=null? '':'display: none'" ><span th:text="${userName}" style="position:relative;right: 3px;bottom:3px;font-size: small">XXXXX</span><img src="images/u963.png" style="margin-bottom: 5px"><span style="position:relative;left:3px;bottom:3px;font-size: small;margin-right: 10px">退出登录</span></div></div>
+        <div id="nav" style="vertical-align:bottom;display:inline;">
+            <img class="inline" style="width: 167px;height: 39px;" src="images/u73.png"><img src="images/u83.png"><span class="inline" style="font-family: 微软雅黑;font-weight: bold;color: black;font-size: larger">云开票</span>
+            <div class="inline" style="float:right;margin-right:50px;position: relative;">
+                <img src="images/u75.png"  class="navimg"  id="memberCentre" >
+                <div style="position: absolute;left: 15px;top: 10px;color: black">
+                    <span style="font-family: 微软雅黑;font-weight: bold;font-size: medium;" onmouseout="mouseOutBgImg('memberCentre')" onmouseover="mouseOverBgImg('memberCentre')" >个人中心</span>
+                </div>
+            </div>
+
+            <div class="inline" style="float:right;margin-right:50px;position: relative;">
+                <img src="images/u75.png" class="navimg" id="invoiceMgr" >
+                <div style="position: absolute;left: 15px;top: 10px;color: black">
+                    <span style="font-family: 微软雅黑;font-weight: bold;font-size: medium;" onmouseout="mouseOutBgImg('invoiceMgr')" onmouseover="mouseOverBgImg('invoiceMgr')" >发票管理</span>
+                </div>
+            </div>
+
+            <div class="inline" style="float:right;margin-right:50px;position: relative;">
+                <img src="images/u75.png" class="navimg" id="order" >
+                <div style="position: absolute;left: 15px;top: 10px;color: black">
+                    <span style="font-family: 微软雅黑;font-weight: bold;font-size: medium;" onmouseout="mouseOutBgImg('order')" onmouseover="mouseOverBgImg('order')" >订单仓库</span>
+                </div>
+            </div>
+
+            <div class="inline" style="float:right;margin-right:50px;position: relative;">
+                <img src="images/u75.png" >
+                <div style="position: absolute;left: 30px;top: 10px;color: black">
+                    <span style="font-family: 微软雅黑;font-weight: bold;font-size: medium;">首  页</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr width="100%" style="margin-top: 0px; "/>
+
+    <!-- 头部导航 -->
+</div>
+
+
+
+
+
+<!-- basic scripts -->
+
+<!--[if !IE]> -->
+<script src="/components/jquery/dist/jquery.js"></script>
+
+<!-- <![endif]-->
+
+<!--[if IE]>
+<script src="/components/jquery.1x/dist/jquery.js"></script>
+<![endif]-->
+<script type="text/javascript">
+    if ('ontouchstart' in document.documentElement) document.write("<script src='/components/_mod/jquery.mobile.custom/jquery.mobile.custom.js'>" + "<" + "/script>");
+</script>
+<script src="/components/bootstrap/dist/js/bootstrap.js"></script>
+
+<!-- page specific plugin scripts -->
+
+<!--[if lte IE 8]>
+<script src="/components/ExplorerCanvas/excanvas.js"></script>
+<![endif]-->
+<script src="/components/_mod/jquery-ui.custom/jquery-ui.custom.js"></script>
+<script src="/components/jqueryui-touch-punch/jquery.ui.touch-punch.js"></script>
+<script src="/components/bootbox.js/bootbox.js"></script>
+<script src="/components/_mod/easypiechart/jquery.easypiechart.js"></script>
+<script src="/components/jquery.gritter/js/jquery.gritter.js"></script>
+<script src="/components/spin.js/spin.js"></script>
+
+<!-- ace scripts -->
+<script src="/assets/js/src/elements.scroller.js"></script>
+<script src="/assets/js/src/elements.colorpicker.js"></script>
+<script src="/assets/js/src/elements.fileinput.js"></script>
+<script src="/assets/js/src/elements.typeahead.js"></script>
+<script src="/assets/js/src/elements.wysiwyg.js"></script>
+<script src="/assets/js/src/elements.spinner.js"></script>
+<script src="/assets/js/src/elements.treeview.js"></script>
+<script src="/assets/js/src/elements.wizard.js"></script>
+<script src="/assets/js/src/elements.aside.js"></script>
+<script src="/assets/js/src/ace.js"></script>
+<script src="/assets/js/src/ace.basics.js"></script>
+<script src="/assets/js/src/ace.scrolltop.js"></script>
+<script src="/assets/js/src/ace.ajax-content.js"></script>
+<script src="/assets/js/src/ace.touch-drag.js"></script>
+<script src="/assets/js/src/ace.sidebar.js"></script>
+<script src="/assets/js/src/ace.sidebar-scroll-1.js"></script>
+<script src="/assets/js/src/ace.submenu-hover.js"></script>
+<script src="/assets/js/src/ace.widget-box.js"></script>
+<script src="/assets/js/src/ace.settings.js"></script>
+<script src="/assets/js/src/ace.settings-rtl.js"></script>
+<script src="/assets/js/src/ace.settings-skin.js"></script>
+<script src="/assets/js/src/ace.widget-on-reload.js"></script>
+<script src="/assets/js/src/ace.searchbox-autocomplete.js"></script>
+
+
+<!-- 自定义JS -->
+
+<script src="/js/jquery.form.min.js"></script>
+<script src="/js/jquery.validate.min.js"></script>
+<script src="/js/jquery.validate.extend.js"></script>
+<script src="/js/layer/layer.js"></script>
+<script src="/js/base.js"></script>
+
+<!-- the following scripts are used in demo only for onpage help and you don't need them -->
+<link rel="stylesheet" href="/assets/css/ace.onpage-help.css"/>
+<link rel="stylesheet" href="/docs/assets/js/themes/sunburst.css"/>
+
+<script type="text/javascript"> ace.vars['base'] = '..'; </script>
+<script src="/assets/js/src/elements.onpage-help.js"></script>
+<script src="/assets/js/src/ace.onpage-help.js"></script>
+<script src="/docs/assets/js/rainbow.js"></script>
+<script src="/docs/assets/js/language/generic.js"></script>
+<script src="/docs/assets/js/language/html.js"></script>
+<script src="/docs/assets/js/language/css.js"></script>
+<script src="/docs/assets/js/language/javascript.js"></script>
+
+
+</body>
+</html>

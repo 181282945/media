@@ -34,13 +34,14 @@ public class AclResource extends BaseEntity implements Comparable<AclResource> {
      * @param homePage
      * @param identify
      */
-    public AclResource(String code, String name, String path, String type, String homePage, String identify) {
+    public AclResource(String code, String name, String path, String type, String homePage, String identify,String target) {
         this.code = code;
         this.name = name;
         this.path = path;
         this.type = type;
         this.homePage = homePage;
         this.identify = identify;
+        this.target = target;
     }
 
     /**
@@ -116,6 +117,11 @@ public class AclResource extends BaseEntity implements Comparable<AclResource> {
      * 简单类名的hashCode
      */
     private String identify;
+
+    /**
+     * 资源目标是前台用户还是后台用户
+     */
+    private String target;
 
     //-------------------------------------getter and setter-----------------------------------------------
 
@@ -199,6 +205,14 @@ public class AclResource extends BaseEntity implements Comparable<AclResource> {
 
     public void setAuth(Boolean auth) {
         isAuth = auth;
+    }
+
+    public String getTarget() {
+        return target;
+    }
+
+    public void setTarget(String target) {
+        this.target = target;
     }
 
     /**

@@ -99,7 +99,7 @@ public class StartupListener implements ApplicationListener<ContextRefreshedEven
                     throw new RuntimeException("使用:"+AclResc.class.getName()+" 注解类时,请配置 homePage ");
                 Class<?> aclResourceClass = map.get(info).getBeanType();
                 RequestMapping moduleMapping = aclResourceClass.getAnnotation(RequestMapping.class);
-                AclResource moduleResc = new AclResource(moduleAclResc.code(),moduleAclResc.name(),Arrays.toString(moduleMapping.value()), AclResourceType.MODULE.getCode(),moduleAclResc.homePage(),aclResourceClass.getSimpleName().toUpperCase());
+                AclResource moduleResc = new AclResource(moduleAclResc.code(),moduleAclResc.name(),Arrays.toString(moduleMapping.value()), AclResourceType.MODULE.getCode(),moduleAclResc.homePage(),aclResourceClass.getSimpleName().toUpperCase(),moduleAclResc.target().getCode());
                 if (moduleMapping != null) {
                     List<AclResource> resources;
                     AclResource methodResc;
@@ -136,7 +136,7 @@ public class StartupListener implements ApplicationListener<ContextRefreshedEven
             AclResource resultResc = aclResourceService.findByIdentify(identify);
             //如果模块是新模块,那么新增到数据库
             if (resultResc == null) {
-                AclResource newAclResource = new AclResource(item.getKey().getCode(), item.getKey().getName(), item.getKey().getPath(), item.getKey().getType(), item.getKey().getHomePage(), identify);
+                AclResource newAclResource = new AclResource(item.getKey().getCode(), item.getKey().getName(), item.getKey().getPath(), item.getKey().getType(), item.getKey().getHomePage(), identify,item.getKey().getTarget());
                 Integer rescId = aclResourceService.addEntity(newAclResource);
                 item.getKey().setId(rescId);
                 item.getKey().setMenuId(aclResourceService.findEntityById(rescId).getMenuId());

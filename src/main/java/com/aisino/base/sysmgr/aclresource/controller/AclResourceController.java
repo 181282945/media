@@ -1,5 +1,6 @@
 package com.aisino.base.sysmgr.aclresource.controller;
 
+import com.aisino.base.sysmgr.aclresource.common.AclResourceTarget;
 import com.aisino.base.sysmgr.aclresource.entity.AclResource;
 import com.aisino.base.sysmgr.aclresource.service.AclResourceService;
 import com.aisino.core.mybatis.specification.PageAndSort;
@@ -24,7 +25,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = AclResourceController.PATH)
-@AclResc(code = "aclResource", name = AclResourceController.MODULE_NAME,homePage = AclResourceController.PATH + AclResourceController.HOME_PAGE)
+@AclResc(code = "aclResource", name = AclResourceController.MODULE_NAME,homePage = AclResourceController.PATH + AclResourceController.HOME_PAGE,target = AclResourceTarget.ACLUSER)
 public class AclResourceController extends BaseController<AclResource> {
     final static String PATH = "/base/sysmgr/aclresource";
     final static String HOME_PAGE = PATH + "/tolist";
@@ -76,10 +77,10 @@ public class AclResourceController extends BaseController<AclResource> {
     }
 
     /**
-     * 根据用户给ID查询,返回该用户是否拥有权限
+     * 根据用户ID查询,返回该用户是否拥有权限
      */
     @RequestMapping(value = "/listModuleAuthByUserId",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @AclResc(code = "listModuleAuthByUserId",name = "用户给模块权限查询")
+    @AclResc(code = "listModuleAuthByUserId",name = "用户模块权限查询")
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public ResultDataDto listModuleAuthByUserId(@RequestParam("userId")Integer userId){
         List<AclResource> aclResources = aclResourceService.findAllModule();

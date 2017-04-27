@@ -2,6 +2,7 @@ package com.aisino.base.sysmgr.aclmenu.controller;
 
 import com.aisino.base.sysmgr.aclmenu.domain.entity.AclMenu;
 import com.aisino.base.sysmgr.aclmenu.service.AclMenuService;
+import com.aisino.base.sysmgr.aclresource.common.AclResourceTarget;
 import com.aisino.core.dto.ResultDataDto;
 import com.aisino.core.mybatis.specification.PageAndSort;
 import com.aisino.base.sysmgr.aclresource.annotation.AclResc;
@@ -21,7 +22,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = AclMenuController.PATH)
-@AclResc(code = "aclmenu", name = AclMenuController.MODULE_NAME,homePage = AclMenuController.PATH + AclMenuController.HOME_PAGE)
+@AclResc(code = "aclmenu", name = AclMenuController.MODULE_NAME,homePage = AclMenuController.PATH + AclMenuController.HOME_PAGE,target = AclResourceTarget.ACLUSER)
 public class AclMenuController extends BaseController<AclMenu> {
 
 

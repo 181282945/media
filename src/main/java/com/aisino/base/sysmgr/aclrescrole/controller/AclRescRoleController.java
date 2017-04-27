@@ -1,5 +1,6 @@
 package com.aisino.base.sysmgr.aclrescrole.controller;
 
+import com.aisino.base.sysmgr.aclresource.common.AclResourceTarget;
 import com.aisino.core.mybatis.specification.PageAndSort;
 import com.aisino.base.sysmgr.aclrescrole.entity.AclRescRole;
 import com.aisino.base.sysmgr.aclrescrole.service.AclRescRoleService;
@@ -19,7 +20,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = AclRescRoleController.PATH)
-@AclResc(code = "aclRescRole", name = AclRescRoleController.MODULE_NAME,homePage = AclRescRoleController.PATH + AclRescRoleController.HOME_PAGE)
+@AclResc(code = "aclRescRole", name = AclRescRoleController.MODULE_NAME,homePage = AclRescRoleController.PATH + AclRescRoleController.HOME_PAGE,target = AclResourceTarget.ACLUSER)
 public class AclRescRoleController extends BaseController<AclRescRole> {
     final static String PATH = "/base/sysmgr/aclrescrole";
     final static String HOME_PAGE = PATH + "/tolist";

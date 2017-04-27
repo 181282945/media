@@ -3,6 +3,7 @@ package com.aisino.base.sysmgr.aclrescuser.controller;
 import com.aisino.base.sysmgr.aclrescrole.entity.AclRescRole;
 import com.aisino.base.sysmgr.aclrescuser.entity.AclRescUser;
 import com.aisino.base.sysmgr.aclrescuser.service.AclRescUserService;
+import com.aisino.base.sysmgr.aclresource.common.AclResourceTarget;
 import com.aisino.core.dto.ResultDataDto;
 import com.aisino.core.mybatis.specification.PageAndSort;
 import com.aisino.base.sysmgr.aclresource.annotation.AclResc;
@@ -20,7 +21,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = AclRescUserController.PATH)
-@AclResc(code = "aclRescUser", name = AclRescUserController.MODULE_NAME,homePage = AclRescUserController.PATH + AclRescUserController.HOME_PAGE)
+@AclResc(code = "aclRescUser", name = AclRescUserController.MODULE_NAME,homePage = AclRescUserController.PATH + AclRescUserController.HOME_PAGE,target = AclResourceTarget.ACLUSER)
 public class AclRescUserController extends BaseController<AclRescUser> {
     final static String PATH = "/base/sysmgr/aclrescuser";
     final static String HOME_PAGE = PATH + "/tolist";

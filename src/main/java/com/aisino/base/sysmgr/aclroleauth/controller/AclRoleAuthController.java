@@ -1,5 +1,6 @@
 package com.aisino.base.sysmgr.aclroleauth.controller;
 
+import com.aisino.base.sysmgr.aclresource.common.AclResourceTarget;
 import com.aisino.core.mybatis.specification.PageAndSort;
 import com.aisino.base.sysmgr.aclresource.annotation.AclResc;
 import com.aisino.base.sysmgr.aclroleauth.entity.AclRoleAuth;
@@ -21,7 +22,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = AclRoleAuthController.PATH)
-@AclResc(code = "aclroleauth", name = AclRoleAuthController.MODULE_NAME,homePage = AclRoleAuthController.PATH + AclRoleAuthController.HOME_PAGE)
+@AclResc(code = "aclroleauth", name = AclRoleAuthController.MODULE_NAME,homePage = AclRoleAuthController.PATH + AclRoleAuthController.HOME_PAGE,target = AclResourceTarget.ACLUSER)
 public class AclRoleAuthController extends BaseController<AclRoleAuth> {
     final static String PATH = "/base/sysmgr/aclroleauth";
     final static String HOME_PAGE = PATH + "/tolist";

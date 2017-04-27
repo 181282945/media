@@ -1,6 +1,7 @@
 package com.aisino.base.sysmgr.aclrole.controller;
 
 import com.aisino.base.sysmgr.aclresource.annotation.AclResc;
+import com.aisino.base.sysmgr.aclresource.common.AclResourceTarget;
 import com.aisino.base.sysmgr.aclresource.common.AclResourceType;
 import com.aisino.base.sysmgr.aclrole.entity.AclRole;
 import com.aisino.base.sysmgr.aclrole.service.AclRoleService;
@@ -26,7 +27,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = AclRoleController.PATH)
-@AclResc(code = "aclRole", name = AclRoleController.MODULE_NAME,homePage = AclRoleController.PATH + AclRoleController.HOME_PAGE)
+@AclResc(code = "aclRole", name = AclRoleController.MODULE_NAME,homePage = AclRoleController.PATH + AclRoleController.HOME_PAGE,target = AclResourceTarget.ACLUSER)
 public class AclRoleController extends BaseController<AclRole> {
     final static String PATH = "/base/sysmgr/aclrole";
     final static String HOME_PAGE = PATH + "/tolist";

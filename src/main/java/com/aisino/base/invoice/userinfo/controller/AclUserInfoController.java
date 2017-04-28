@@ -3,6 +3,7 @@ package com.aisino.base.invoice.userinfo.controller;
 import com.aisino.base.invoice.userinfo.entity.UserInfo;
 import com.aisino.base.invoice.userinfo.service.UserInfoService;
 import com.aisino.base.sysmgr.aclresource.annotation.AclResc;
+import com.aisino.base.sysmgr.aclresource.common.AclResourceTarget;
 import com.aisino.common.dto.jqgrid.JqgridFilters;
 import com.aisino.core.controller.BaseController;
 import com.aisino.core.dto.ResultDataDto;
@@ -18,10 +19,10 @@ import java.util.List;
  * Created by 为 on 2017-4-24.
  */
 @RestController
-@RequestMapping(value = UserInfoController.PATH)
-@AclResc(code = "userInfo", name = UserInfoController.MODULE_NAME,homePage = UserInfoController.PATH + UserInfoController.HOME_PAGE)
-public class UserInfoController extends BaseController<UserInfo> {
-    final static String PATH = "/base/invoice/userinfo";
+@RequestMapping(value = AclUserInfoController.PATH)
+@AclResc(code = "aclUserInfo", name = AclUserInfoController.MODULE_NAME,homePage = AclUserInfoController.HOME_PAGE,target = AclResourceTarget.ACLUSER)
+public class AclUserInfoController extends BaseController<UserInfo> {
+    final static String PATH = "/base/invoice/acluserinfo";
     final static String HOME_PAGE = PATH + "/tolist";
 
     final static String MODULE_NAME = "用户管理";
@@ -43,7 +44,7 @@ public class UserInfoController extends BaseController<UserInfo> {
     private static final String SEARCH_URL = PATH + "/list";
 
 
-    @RequestMapping(value = UserInfoController.HOME_PAGE,method = RequestMethod.GET,produces = MediaType.TEXT_HTML_VALUE)
+    @RequestMapping(value = AclUserInfoController.HOME_PAGE,method = RequestMethod.GET,produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView toList(){
         ModelAndView mav = new ModelAndView(PATH + VIEW_NAME);
         mav.addObject("MODULE_NAME",MODULE_NAME);
@@ -98,7 +99,7 @@ public class UserInfoController extends BaseController<UserInfo> {
      * 失效
      */
     @RequestMapping(value = "/invalid",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @AclResc(code = "invalid",name = "用户生效")
+    @AclResc(code = "invalid",name = "用户失效")
     public ResultDataDto invalid(@RequestParam("id") Integer id){
         userInfoService.updateEntityInvalid(id);
         return ResultDataDto.addOperationSuccess();

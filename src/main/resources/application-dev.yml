@@ -1,7 +1,7 @@
 spring:
     datasource:
-      readSize: 1
-      name: writeDataSource
+#      readSize: 1
+#      name: writeDataSource
       type: com.alibaba.druid.pool.DruidDataSource
       write:
         url: jdbc:mysql://localhost:3306/springboot_demo?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&useSSL=true
@@ -28,29 +28,41 @@ security:
   ignored: /**
 
 
-##验证码工具
-#kaptcha:
-#  session:
-#    key: kaptcha.code
-#  #border: no
-#  #渲染效果：水纹：WaterRipple；鱼眼：FishEyeGimpy；阴影：ShadowGimpy
-#  obscurificator:
-#    impl: com.google.code.kaptcha.impl.WaterRipple
-#  #不要噪点
-#  noise:
-#    impl: com.google.code.kaptcha.impl.NoNoise
-#  image:
-#    width: 90
-#    height: 33
-#  textproducer:
-#    font:
-#      size: 25
-#      color: black
-#    char:
-#      length: 4
-#      space: 5
-#  #和登录框背景颜色一致
-#  background:
-#    clear:
-#      from: 247,247,247
-#      to: 247,247,247
+
+
+
+#参数
+SystemParameter:
+  #自动创建数据库,库名前缀
+  dbNamePrefix: Db
+  #数据库IP
+  dbaddr: localhost
+  dbport: 3306
+#  dbUrl: jdbc:mysql://localhost:3306/
+  username: root
+  password: 123
+  orderinfoSql: CREATE TABLE `invoice_orderinfo` (
+        `id` int(11) NOT NULL AUTO_INCREMENT,
+        `taxno` varchar(20) NOT NULL,
+        `dkflags` tinyint(4) DEFAULT NULL,
+        `tickerCode` varchar(10) DEFAULT NULL,
+        `majorItems` varchar(255) DEFAULT NULL,
+        `buyerName` varchar(200) DEFAULT NULL,
+        `buyerTaxno` varchar(20) DEFAULT NULL,
+        `buyerAddr` varchar(200) DEFAULT NULL,
+        `buyerProvince` varchar(20) DEFAULT NULL,
+        `buyerTele` varchar(15) DEFAULT NULL,
+        `buyerMobile` varchar(30) DEFAULT NULL,
+        `buyerEmail` varchar(100) DEFAULT NULL,
+        `buyerType` varchar(10) DEFAULT NULL,
+        `buyerBankAcc` varchar(100) DEFAULT NULL,
+        `induCode` varchar(50) DEFAULT NULL,
+        `induName` varchar(50) DEFAULT NULL,
+        `remarks` varchar(200) DEFAULT NULL,
+        `orderNo` varchar(20) DEFAULT NULL,
+        `status` tinyint(4) DEFAULT NULL,
+        `usrno` varchar(50) DEFAULT NULL,
+        `insertDate` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+        `delflags` tinyint(4) DEFAULT NULL,
+        PRIMARY KEY (`id`)
+      ) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;

@@ -98,7 +98,7 @@
 </script>
 <script src="/js/layer/layer.js"></script>
 <script src="/js/base.js"></script>
-<script src="/js/base/sysmgr/aclrole/list_aclrole.js"></script>
+<script src="/js/base/invoice/userinfo/list_userinfo.js"></script>
 <script src="/components/bootstrap/dist/js/bootstrap.js"></script>
 
 <!-- page specific plugin scripts -->
@@ -188,7 +188,7 @@
                 openicon : "ace-icon fa fa-chevron-right center orange"
             },
             //for this example we are using local data
-            subGridRowExpanded: function (subgridDivId, roleId) {
+            subGridRowExpanded: function (subgridDivId, userId) {
                 var moduleSubgrid = subgridDivId + "_t";
                 var pager_id = "p_"+moduleSubgrid;
                 $("#" + subgridDivId).html("<table id='" + moduleSubgrid + "' ></table><div id='" + pager_id + "'></div>");
@@ -208,7 +208,7 @@
                         $("#" + methodSubgrid).jqGrid({
 //                            shrinkToFit:false,
 //                            autoScroll: true,
-                            url:'/base/sysmgr/aclresource/listMethodAuthByRoleId?roleId=' + roleId + '&moduleId=' +rowId,
+                            url:'/base/sysmgr/aclresource/listMethodAuthByUserId?userId=' + userId + '&moduleId=' +rowId,
                             datatype: 'json',
                             colNames:['id','编码','名称','类型', '映射URL','精确权限'],
                             colModel:[
@@ -217,7 +217,7 @@
                                 {name:'name',index:'name', editable: false},
                                 {name: 'type', index: 'type', editable: false,edittype: "select",editoptions: {value: [[${aclResrouceTypeParams}]]},formatter: 'select'},
                                 {name:'path',index:'path', editable: false},
-                                {name:'auth',index:'auth',formatter: methodSwitch,formatoptions:{value: roleId,subgridTableId:methodSubgrid}},
+                                {name:'auth',index:'auth',formatter: methodSwitch,formatoptions:{value: userId,subgridTableId:methodSubgrid}},
                             ],
                             jsonReader: {
                                 root:"datas",
@@ -256,7 +256,7 @@
                         });
 //                        jQuery("#"+methodSubgrid).jqGrid('navGrid',"#"+pager_id,{edit:false,add:false,del:false});
                     },
-                    url:'/base/sysmgr/aclresource/listModuleAuthByRoleId?roleId=' + roleId,
+                    url:'/base/sysmgr/aclresource/listModuleAuthByUserId?userId=' + userId,
                     datatype: 'json',
                     colNames:['id','编码','名称','类型', '映射URL','模块首页','权限'],
                     colModel:[
@@ -266,7 +266,7 @@
                         {name: 'type', index: 'type',editable: false,edittype: "select",editoptions: {value: [[${aclResrouceTypeParams}]]},formatter: 'select'},
                         {name:'path',index:'path',width:300, editable: false},
                         {name:'homePage',index:'homePage',width:300, editable: false},
-                        {name:'auth',index:'auth',formatter: moduleSwitch,formatoptions:{value: roleId,subgridTableId:moduleSubgrid}},
+                        {name:'auth',index:'auth',formatter: moduleSwitch,formatoptions:{value: userId,subgridTableId:moduleSubgrid}},
                     ],
                     jsonReader: {
                         root:"datas",

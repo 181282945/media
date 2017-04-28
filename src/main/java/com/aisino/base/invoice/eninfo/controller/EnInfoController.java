@@ -20,7 +20,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = EnInfoController.PATH)
-@AclResc(code = "eninfo", name = EnInfoController.MODULE_NAME,homePage = EnInfoController.PATH + EnInfoController.HOME_PAGE)
+@AclResc(code = "eninfo", name = EnInfoController.MODULE_NAME,homePage = EnInfoController.HOME_PAGE)
 public class EnInfoController extends BaseController<EnInfo> {
     final static String PATH = "/base/invoice/eninfo";
     final static String HOME_PAGE = PATH + "/tolist";
@@ -56,11 +56,7 @@ public class EnInfoController extends BaseController<EnInfo> {
     }
 
 
-    @RequestMapping(value = "/addEnInfoMav",method = RequestMethod.GET,produces = MediaType.TEXT_HTML_VALUE)
-    public ModelAndView addEnfo(){
-        ModelAndView mav = new ModelAndView(PATH + "/add_enifo");
-        return mav;
-    }
+
 
     @RequestMapping(value = "/list",method = RequestMethod.GET)
     @AclResc(code = "list",name = "企业列表")
@@ -81,18 +77,6 @@ public class EnInfoController extends BaseController<EnInfo> {
         return ResultDataDto.addOperationFailure("保存失败!");
     }
 
-
-    /**
-     * 用户完善企业信息的方法.
-     */
-    @RequestMapping(value = "/addByCurrentUser",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @AclResc(code = "addByCurrentUser",name = "新增企业")
-    public ResultDataDto addByCurrentUser(@ModelAttribute("enInfo")EnInfo enInfo){
-        enInfo.setUsrno(SecurityUtil.getCurrentUserName());
-        if(enInfoService.addEntity(enInfo)!=null)
-            return ResultDataDto.addAddSuccess();
-        return ResultDataDto.addOperationFailure("保存失败!");
-    }
 
     /**
      * 更新

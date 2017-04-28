@@ -256,7 +256,7 @@
                         });
 //                        jQuery("#"+methodSubgrid).jqGrid('navGrid',"#"+pager_id,{edit:false,add:false,del:false});
                     },
-                    url:'/base/sysmgr/aclresource/listModuleAuthByUserId?roleId=' + userId,
+                    url:'/base/sysmgr/aclresource/listModuleAuthByAclUserId?aclUserId=' + userId,
                     datatype: 'json',
                     colNames:['id','编码','名称','类型', '映射URL','模块首页','权限'],
                     colModel:[

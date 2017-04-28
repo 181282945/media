@@ -21,7 +21,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = AclRescUserController.PATH)
-@AclResc(code = "aclRescUser", name = AclRescUserController.MODULE_NAME,homePage = AclRescUserController.PATH + AclRescUserController.HOME_PAGE,target = AclResourceTarget.ACLUSER)
+@AclResc(code = "aclRescUser", name = AclRescUserController.MODULE_NAME,homePage = AclRescUserController.HOME_PAGE,target = AclResourceTarget.ACLUSER)
 public class AclRescUserController extends BaseController<AclRescUser> {
     final static String PATH = "/base/sysmgr/aclrescuser";
     final static String HOME_PAGE = PATH + "/tolist";
@@ -47,7 +47,7 @@ public class AclRescUserController extends BaseController<AclRescUser> {
     /**
      * @return
      */
-    @RequestMapping(value = AclRescUserController.HOME_PAGE,method = RequestMethod.GET,produces = MediaType.TEXT_HTML_VALUE)
+    @RequestMapping(value = "/tolist",method = RequestMethod.GET,produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView toList(){
         ModelAndView mav = new ModelAndView(PATH + VIEW_NAME);
         mav.addObject("MODULE_NAME",MODULE_NAME);

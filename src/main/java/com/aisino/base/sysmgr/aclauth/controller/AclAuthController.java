@@ -25,7 +25,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = AclAuthController.PATH)
-@AclResc(code = "aclAuth", name = AclAuthController.MODULE_NAME,homePage = AclAuthController.PATH + AclAuthController.HOME_PAGE,target = AclResourceTarget.ACLUSER)
+@AclResc(code = "aclAuth", name = AclAuthController.MODULE_NAME,homePage = AclAuthController.HOME_PAGE,target = AclResourceTarget.ACLUSER)
 public class AclAuthController extends BaseController<AclAuth> {
     final static String PATH = "/base/sysmgr/aclauth";
     final static String HOME_PAGE = PATH + "/tolist";
@@ -53,7 +53,7 @@ public class AclAuthController extends BaseController<AclAuth> {
     /**
      * @return
      */
-    @RequestMapping(value = AclAuthController.HOME_PAGE,method = RequestMethod.GET,produces = MediaType.TEXT_HTML_VALUE)
+    @RequestMapping(value = "/tolist",method = RequestMethod.GET,produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView toList(){
         ModelAndView mav = new ModelAndView(PATH + VIEW_NAME);
         mav.addObject("MODULE_NAME",MODULE_NAME);

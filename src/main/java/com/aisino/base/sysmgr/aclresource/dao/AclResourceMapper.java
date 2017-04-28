@@ -22,6 +22,14 @@ public interface AclResourceMapper extends BaseMapper<AclResource> {
     List<AclResource> findAllModule();
 
 
+    @Select("SELECT * FROM acl_resource WHERE type = 'module' AND target = 'A' ")
+    List<AclResource> findAllAclModule();
+
+
+    @Select("SELECT * FROM acl_resource WHERE type = 'module' AND target = 'U' ")
+    List<AclResource> findAllUserModule();
+
+
     /**
      * 查询已经配置了精确权限的方法资源  数量
      */

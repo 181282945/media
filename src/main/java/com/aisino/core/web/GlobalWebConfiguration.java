@@ -25,8 +25,6 @@ public class GlobalWebConfiguration extends WebMvcConfigurerAdapter {
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/login").setViewName("login");
-        registry.addViewController("/index").setViewName("index");
-        registry.addViewController("/tem").setViewName("tem");
         super.addViewControllers(registry);
     }
 
@@ -44,6 +42,7 @@ public class GlobalWebConfiguration extends WebMvcConfigurerAdapter {
         servlet.addInitParameter("kaptcha.textproducer.font.names", "楷体");
         servlet.addInitParameter("kaptcha.noise.color", "black");
         servlet.addInitParameter("kaptcha.textproducer.char.space", "3"); //和登录框背景颜色一致
+        servlet.addInitParameter("kaptcha.noise.impl", "com.google.code.kaptcha.impl.NoNoise");//去掉干扰线
         servlet.addInitParameter("kaptcha.obscurificator.impl", "com.google.code.kaptcha.impl.ShadowGimpy");
         return servlet;
     }

@@ -16,6 +16,7 @@ import com.aisino.core.mybatis.specification.QueryLike;
 import com.aisino.core.mybatis.specification.Specification;
 import com.aisino.core.service.BaseServiceImpl;
 import com.aisino.core.util.ConstraintUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -52,6 +53,17 @@ public class AclResourceServiceImpl extends BaseServiceImpl<AclResource, AclReso
     @Override
     public List<AclResource> findAllModule() {
         return getMapper().findAllModule();
+    }
+
+
+    @Override
+    public List<AclResource> findAllAclModule() {
+        return getMapper().findAllAclModule();
+    }
+
+    @Override
+    public List<AclResource> findAllUserModule() {
+        return getMapper().findAllUserModule();
     }
 
     @Override
@@ -150,8 +162,7 @@ public class AclResourceServiceImpl extends BaseServiceImpl<AclResource, AclReso
 
     @Override
     protected void validateUpdateEntity(AclResource entity) {
-        ConstraintUtil.setDefaultValue(entity);
-        ConstraintUtil.isNotNullConstraint(entity);
+        if (!StringUtils.isBlank(entity.getCode()))
         entity.setCode(entity.getCode().toUpperCase());
     }
 }

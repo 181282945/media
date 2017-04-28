@@ -30,18 +30,18 @@ public class MyAccessDecisionManager extends AffirmativeBased {
         int deny = 0;
         Iterator var5 = this.getDecisionVoters().iterator();
 
-        for(GrantedAuthority ga :authentication.getAuthorities()){
-            ga.getAuthority().equals(SecurityUtil.ADMIN);
-            return;
+        for (GrantedAuthority ga : authentication.getAuthorities()) {
+            if (ga.getAuthority().equals(SecurityUtil.ADMIN))
+                return;
         }
-        while(var5.hasNext()) {
-            AccessDecisionVoter voter = (AccessDecisionVoter)var5.next();
+        while (var5.hasNext()) {
+            AccessDecisionVoter voter = (AccessDecisionVoter) var5.next();
             int result = voter.vote(authentication, object, configAttributes);
-            if(this.logger.isDebugEnabled()) {
+            if (this.logger.isDebugEnabled()) {
                 this.logger.debug("Voter: " + voter + ", returned: " + result);
             }
 
-            switch(result) {
+            switch (result) {
                 case -1:
                     ++deny;
                     break;
@@ -50,7 +50,7 @@ public class MyAccessDecisionManager extends AffirmativeBased {
             }
         }
 
-        if(deny > 0) {
+        if (deny > 0) {
             throw new AccessDeniedException(this.messages.getMessage("AbstractAccessDecisionManager.accessDenied", "Access is denied"));
         } else {
             this.checkAllowIfAllAbstainDecisions();

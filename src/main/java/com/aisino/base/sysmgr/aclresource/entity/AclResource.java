@@ -2,6 +2,7 @@ package com.aisino.base.sysmgr.aclresource.entity;
 
 import com.aisino.core.entity.annotation.BaseEntityMapper;
 import com.aisino.core.entity.BaseEntity;
+import com.aisino.core.entity.annotation.IsNotNull;
 import com.aisino.core.entity.annotation.Transient;
 import org.apache.ibatis.type.Alias;
 
@@ -82,13 +83,16 @@ public class AclResource extends BaseEntity implements Comparable<AclResource> {
     }
 
     //资源编码
+    @IsNotNull
     private String code;
     /**
      * 资源类型,可以是模块
      * 或者是特殊的精细控制
      */
+    @IsNotNull
     private String type;
     //请求地址
+    @IsNotNull
     private String path;
 
     /**
@@ -98,6 +102,7 @@ public class AclResource extends BaseEntity implements Comparable<AclResource> {
     //序号
     private Integer seq;
     //资源名称
+    @IsNotNull
     private String name;
     //模块ID
     private Integer moduleId;
@@ -116,6 +121,7 @@ public class AclResource extends BaseEntity implements Comparable<AclResource> {
      * 唯一标识,因为在反射模块的时候并没有ID
      * 简单类名的hashCode
      */
+    @IsNotNull
     private String identify;
 
     /**

@@ -25,7 +25,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = AclResourceController.PATH)
-@AclResc(code = "aclResource", name = AclResourceController.MODULE_NAME,homePage = AclResourceController.PATH + AclResourceController.HOME_PAGE,target = AclResourceTarget.ACLUSER)
+@AclResc(code = "aclResource", name = AclResourceController.MODULE_NAME,homePage = AclResourceController.HOME_PAGE,target = AclResourceTarget.ACLUSER)
 public class AclResourceController extends BaseController<AclResource> {
     final static String PATH = "/base/sysmgr/aclresource";
     final static String HOME_PAGE = PATH + "/tolist";
@@ -51,7 +51,7 @@ public class AclResourceController extends BaseController<AclResource> {
     /**
      * @return
      */
-    @RequestMapping(value = AclResourceController.HOME_PAGE,method = RequestMethod.GET,produces = MediaType.TEXT_HTML_VALUE)
+    @RequestMapping(value = "/tolist",method = RequestMethod.GET,produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView toList(){
         ModelAndView mav = new ModelAndView(PATH + VIEW_NAME);
         mav.addObject("MODULE_NAME",MODULE_NAME);
@@ -77,16 +77,31 @@ public class AclResourceController extends BaseController<AclResource> {
     }
 
     /**
-     * 根据用户ID查询,返回该用户是否拥有权限
+     * 根据后台用户ID查询,返回该用户是否拥有权限
+     */
+    @RequestMapping(value = "/listModuleAuthByAclUserId",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @AclResc(code = "listModuleAuthByAclUserId",name = "后台用户模块权限查询")
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    public ResultDataDto listModuleAuthByAclUserId(@RequestParam("aclUserId")Integer aclUserId){
+        List<AclResource> aclResources = aclResourceService.findAllModule();
+        aclResourceService.fillIsAuthByRescUser(aclResources,aclUserId);
+        return new ResultDataDto(aclResources);
+    }
+
+    /**
+     * 根据前台用户ID查询,返回该用户是否拥有权限
      */
     @RequestMapping(value = "/listModuleAuthByUserId",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @AclResc(code = "listModuleAuthByUserId",name = "用户模块权限查询")
+    @AclResc(code = "listModuleAuthByUserId",name = "后台用户模块权限查询")
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public ResultDataDto listModuleAuthByUserId(@RequestParam("userId")Integer userId){
-        List<AclResource> aclResources = aclResourceService.findAllModule();
+        List<AclResource> aclResources = aclResourceService.findAllUserModule();
         aclResourceService.fillIsAuthByRescUser(aclResources,userId);
         return new ResultDataDto(aclResources);
     }
+
+
+
 
     /**
      * 根据角色ID查询,返回该角色是否拥有权限

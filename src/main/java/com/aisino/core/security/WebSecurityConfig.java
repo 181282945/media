@@ -14,8 +14,6 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.web.access.AccessDeniedHandler;
-import org.springframework.security.web.access.AccessDeniedHandlerImpl;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
@@ -52,6 +50,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         web.ignoring().antMatchers("/font/**");
         web.ignoring().antMatchers("/ace/**");
         web.ignoring().antMatchers("/favicon.ico");
+
+        //注册地址不拦截
+        web.ignoring().antMatchers("/base/invoice/useruserinfo/reg");
+
+
 //        web.ignoring().antMatchers("/**");
     }
 
@@ -69,9 +72,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 fsi.setAuthenticationManager(authenticationManagerBean());
                 return fsi;
             }
-        }).and().exceptionHandling().authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/index")).and().logout().logoutUrl("/logout").logoutSuccessUrl("/index").permitAll();
-        // 自定义accessDecisionManager访问控制器
-        http.exceptionHandling().accessDeniedHandler(accessDeniedHandler());
+        }).and().exceptionHandling().authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/index")).and().logout().logoutUrl("/logout").logoutSuccessUrl("/index").permitAll().and().exceptionHandling().accessDeniedPage("/accessDenied");
+
         // 关闭csrf
         http.csrf().disable();
 
@@ -105,13 +107,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         myUsernamePasswordAuthenticationFilter.setAuthenticationFailureHandler(simpleUrlAuthenticationFailureHandler());
         myUsernamePasswordAuthenticationFilter.setAuthenticationSuccessHandler(authenticationSuccessHandler());
         return myUsernamePasswordAuthenticationFilter;
-    }
-
-    AccessDeniedHandler accessDeniedHandler() {
-        AccessDeniedHandlerImpl accessDeniedHandler = new AccessDeniedHandlerImpl();
-        accessDeniedHandler.setErrorPage("/accessDenied");
-//        accessDeniedHandler.setErrorPage("/securityException/accessDenied");
-        return accessDeniedHandler;
     }
 
     @Bean

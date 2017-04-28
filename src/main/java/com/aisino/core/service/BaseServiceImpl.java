@@ -82,9 +82,6 @@ public class BaseServiceImpl<T extends BaseEntity,M extends BaseMapper<T>> imple
      * 子类可以重写更新验证方法
      */
     protected void validateUpdateEntity(T entity) {
-        ConstraintUtil.setDefaultValue(entity);
-//        entity.setVersion(this.findEntityById(entity.getId()).getVersion()+1);
-        ConstraintUtil.isNotNullConstraint(entity);
     }
 
     @Override

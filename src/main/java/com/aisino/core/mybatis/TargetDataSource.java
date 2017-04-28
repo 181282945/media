@@ -6,7 +6,7 @@ package com.aisino.core.mybatis;
  */
 public enum TargetDataSource {
 
-    WRITE("write","主库"), READ("read","从库");
+    WRITE("write","主库"), READ("read","从库"), CREATE("create","建库");
 
     final private String code;
 

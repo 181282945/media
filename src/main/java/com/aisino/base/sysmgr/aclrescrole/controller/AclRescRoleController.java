@@ -20,7 +20,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = AclRescRoleController.PATH)
-@AclResc(code = "aclRescRole", name = AclRescRoleController.MODULE_NAME,homePage = AclRescRoleController.PATH + AclRescRoleController.HOME_PAGE,target = AclResourceTarget.ACLUSER)
+@AclResc(code = "aclRescRole", name = AclRescRoleController.MODULE_NAME,homePage = AclRescRoleController.HOME_PAGE,target = AclResourceTarget.ACLUSER)
 public class AclRescRoleController extends BaseController<AclRescRole> {
     final static String PATH = "/base/sysmgr/aclrescrole";
     final static String HOME_PAGE = PATH + "/tolist";
@@ -46,7 +46,7 @@ public class AclRescRoleController extends BaseController<AclRescRole> {
     /**
      * @return
      */
-    @RequestMapping(value = AclRescRoleController.HOME_PAGE,method = RequestMethod.GET,produces = MediaType.TEXT_HTML_VALUE)
+    @RequestMapping(value = "/tolist",method = RequestMethod.GET,produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView toList(){
         ModelAndView mav = new ModelAndView(PATH + VIEW_NAME);
         mav.addObject("MODULE_NAME",MODULE_NAME);

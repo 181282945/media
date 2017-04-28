@@ -22,7 +22,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = AclMenuController.PATH)
-@AclResc(code = "aclmenu", name = AclMenuController.MODULE_NAME,homePage = AclMenuController.PATH + AclMenuController.HOME_PAGE,target = AclResourceTarget.ACLUSER)
+@AclResc(code = "aclmenu", name = AclMenuController.MODULE_NAME,homePage = AclMenuController.HOME_PAGE,target = AclResourceTarget.ACLUSER)
 public class AclMenuController extends BaseController<AclMenu> {
 
 
@@ -50,7 +50,7 @@ public class AclMenuController extends BaseController<AclMenu> {
     /**
      * @return
      */
-    @RequestMapping(value = AclMenuController.HOME_PAGE,method = RequestMethod.GET,produces = MediaType.TEXT_HTML_VALUE)
+    @RequestMapping(value = "/tolist",method = RequestMethod.GET,produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView toList(){
         ModelAndView mav = new ModelAndView(PATH + VIEW_NAME);
         mav.addObject("MODULE_NAME",MODULE_NAME);

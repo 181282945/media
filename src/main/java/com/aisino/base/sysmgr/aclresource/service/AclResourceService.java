@@ -15,7 +15,21 @@ public interface AclResourceService extends BaseService<AclResource,AclResourceM
 
     AclResource findByIdentify(String identify);
 
+    /**
+     * 查询所有模块
+     * @return
+     */
     List<AclResource> findAllModule();
+
+    /**
+     *  查询所有目标为后台用户的模块
+     */
+    List<AclResource> findAllAclModule();
+
+    /**
+     *  查询所有目标为前台用户的模块
+     */
+    List<AclResource> findAllUserModule();
 
     List<AclResource> findModuleByFilters(JqgridFilters jqgridFilters, PageAndSort pageAndSort);
 

@@ -1,8 +1,11 @@
 package com.aisino.core.mybatis;
 
-import com.aisino.core.entity.BaseEntity;
+import com.aisino.base.invoice.userinfo.entity.UserInfo;
+import com.aisino.base.sysmgr.dbinfo.entity.DbInfo;
+import com.aisino.base.sysmgr.dbinfo.service.DbInfoService;
+import com.aisino.core.util.SpringUtils;
 import com.alibaba.druid.pool.DruidDataSource;
-import com.aisino.base.sysmgr.acluser.entity.AclUser;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 
 import javax.sql.DataSource;
@@ -39,7 +42,10 @@ public class MyRoutingDataSource extends AbstractRoutingDataSource {
     /**
      * 根据用户创建数据源
      */
-    public void addCuzDataSource(BaseEntity entity){
+    public void addCuzDataSource(UserInfo userInfo){
+        if(StringUtils.isBlank(userInfo.getTaxNo()))
+            return;
+        DbInfo dbInfo = getDbInfoService().getDbInfoByTaxNo(userInfo.getTaxNo());
         try {
             Field targetDataSources =  AbstractRoutingDataSource.class.getDeclaredField("targetDataSources");
             Field resolvedDataSources =  AbstractRoutingDataSource.class.getDeclaredField("resolvedDataSources");
@@ -48,15 +54,23 @@ public class MyRoutingDataSource extends AbstractRoutingDataSource {
             Map<Object, Object> dataSources = (Map<Object, Object>) targetDataSources.get(this);
             Map<Object, DataSource> dataSources2 = (Map<Object, DataSource>) resolvedDataSources.get(this);
             DruidDataSource dds = new DruidDataSource();
-            dds.setUsername("root");
-            dds.setUrl("jdbc:mysql://localhost:3306/springboot_demo_slave?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&useSSL=true");
-            dds.setPassword("123");
-            dataSources.put(entity.getId().toString(),dds);
-            dataSources2.put(entity.getId().toString(),dds);
+            dds.setUrl("jdbc:mysql://"+ dbInfo.getDbaddr() +
+                    ":"+dbInfo.getDbport()+"/"+dbInfo.getDbname()+"?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&useSSL=true");
+            dds.setUsername(dbInfo.getDbusr());
+            dds.setPassword(dbInfo.getDbpwd());
+            dataSources.put(userInfo.getId().toString(),dds);
+            dataSources2.put(userInfo.getId().toString(),dds);
         } catch (NoSuchFieldException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * 从容器中获取Service
+     */
+    private DbInfoService getDbInfoService(){
+        return (DbInfoService)SpringUtils.getBean("dbInfoService");
     }
 }

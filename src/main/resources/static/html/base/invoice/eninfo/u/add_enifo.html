@@ -82,7 +82,7 @@
                     <div class="center">
                         <h1>请完善企业信息</h1>
                     </div>
-                    <form id="addForm" method="post" th:action="@{/base/invoice/eninfo/addByCurrentUser}">
+                    <form id="addForm" method="post" th:action="@{/base/invoice/eninfo/u/addByCurrentUser}">
                         <fieldset>
                             <label class="block clearfix">
 
@@ -290,7 +290,7 @@
                 if(data.operateCode == "F"){
                     layerAlertMsg(data.message);
                 }else if(data.operateCode == "S"){
-                    location.href = "/index"
+                    parent.location.href = "/index"
                 }
             });
         }

@@ -1,0 +1,711 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <title></title>
+
+
+
+    <!-- bootstrap & fontawesome -->
+    <link rel="stylesheet" href="/assets/css/bootstrap.css"/>
+    <link rel="stylesheet" href="/components/font-awesome/css/font-awesome.css"/>
+
+    <!-- page specific plugin styles -->
+    <link rel="stylesheet" href="/components/_mod/jquery-ui/jquery-ui.css"/>
+    <link rel="stylesheet" href="/components/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css"/>
+    <link rel="stylesheet" href="/components/_mod/jqgrid/ui.jqgrid.css"/>
+
+    <!-- page specific plugin styles -->
+    <link rel="stylesheet" href="/components/_mod/jquery-ui.custom/jquery-ui.custom.css"/>
+    <link rel="stylesheet" href="/components/jquery.gritter/css/jquery.gritter.css"/>
+
+    <!-- text fonts -->
+    <link rel="stylesheet" href="/assets/css/ace-fonts.css"/>
+
+    <!-- ace styles -->
+    <link rel="stylesheet" href="/assets/css/ace.css" class="ace-main-stylesheet" id="main-ace-style"/>
+
+    <!--[if lte IE 9]>
+    <link rel="stylesheet" href="/assets/css/ace-part2.css" class="ace-main-stylesheet"/>
+    <![endif]-->
+    <link rel="stylesheet" href="/assets/css/ace-skins.css"/>
+    <link rel="stylesheet" href="/assets/css/ace-rtl.css"/>
+
+    <!--[if lte IE 9]>
+    <link rel="stylesheet" href="/assets/css/ace-ie.css"/>
+    <![endif]-->
+
+    <!-- inline styles related to this page -->
+    <style>
+        /* some elements used in demo only */
+        .spinner-preview {
+            width: 100px;
+            height: 100px;
+            text-align: center;
+            margin-top: 60px;
+        }
+
+        .dropdown-preview {
+            margin: 0 5px;
+            display: inline-block;
+        }
+
+        .dropdown-preview > .dropdown-menu {
+            display: block;
+            position: static;
+            margin-bottom: 5px;
+        }
+        .u0_div {
+            /*position:absolute;*/
+            left:0px;
+            top:0px;
+            width:454px;
+            height:222px;
+            background:inherit;
+            background-color:rgba(255, 255, 255, 0);
+            box-sizing:border-box;
+            border-width:1px;
+            border-style:solid;
+            border-color:rgba(228, 228, 228, 1);
+            border-radius:8px;
+            -moz-box-shadow:none;
+            -webkit-box-shadow:none;
+            box-shadow:none;
+        }
+
+    </style>
+
+    <!-- ace settings handler -->
+    <script src="/assets/js/ace-extra.js"></script>
+
+    <!-- HTML5shiv and Respond.js for IE8 to support HTML5 elements and media queries -->
+
+    <!--[if lte IE 8]>
+    <script src="/components/html5shiv/dist/html5shiv.min.js"></script>
+    <script src="/components/respond/dest/respond.min.js"></script>
+    <![endif]-->
+
+
+
+    <link href="/css/base.css" type="text/css" rel="stylesheet"/>
+
+
+    <style>
+        label{color: red}
+        #main{ width:970px; height: auto; margin:0 auto; color:#FFF;}
+        #top{ width:100%; height: auto; margin:0 auto; color:#FFF;}
+        #content{ width:100%; height: 370px; margin:0 auto; color:#FFF;}
+        #logo{ width:100%; height:30px; color: black }
+        #nav{ width:100%; height:100px;}
+        .news{ width:454px; height: 222px; margin:0 auto; color:#FFF;}
+        .navimg{visibility: hidden}
+        .newsMouseOver{ background:inherit;
+            background-color:rgba(255, 255, 255, 1);
+            border:none;
+            border-radius:0px;
+            -moz-box-shadow:1px 1px 3px rgba(0, 0, 0, 0.349019607843137);
+            -webkit-box-shadow:1px 1px 3px rgba(0, 0, 0, 0.349019607843137);
+            box-shadow:1px 1px 3px rgba(0, 0, 0, 0.349019607843137);
+            font-size:12px;
+        }
+    </style>
+</head>
+<body class="no-skin">
+<div id="main" style="background: white">
+    <!-- 头部导航 -->
+
+    <div id="top">
+        <div style="height: 5px"></div>
+        <div id="logo" style="text-align:right;"><div th:style="${userName}!=null? '':'display: none'" ><span th:text="${userName}" style="position:relative;right: 3px;bottom:3px;font-size: small">XXXXX</span><img src="/images/u963.png" style="margin-bottom: 5px"><span style="position:relative;left:3px;bottom:3px;font-size: small;margin-right: 10px">退出登录</span></div></div>
+        <div id="nav" style="vertical-align:bottom;display:inline;">
+            <img class="inline" style="width: 167px;height: 39px;" src="/images/u73.png"><img src="/images/u83.png"><span class="inline" style="font-family: 微软雅黑;font-weight: bold;color: black;font-size: larger">云开票</span>
+            <div class="inline" style="float:right;margin-right:50px;position: relative;">
+                <img src="/images/u75.png"  class="navimg"  id="memberCentre" >
+                <div style="position: absolute;left: 15px;top: 10px;color: black">
+                    <span style="font-family: 微软雅黑;font-weight: bold;font-size: medium;" onmouseout="mouseOutBgImg('memberCentre')" onmouseover="mouseOverBgImg('memberCentre')" >个人中心</span>
+                </div>
+            </div>
+
+            <div class="inline" style="float:right;margin-right:50px;position: relative;">
+                <img src="/images/u75.png" class="navimg" id="invoiceMgr" >
+                <div style="position: absolute;left: 15px;top: 10px;color: black">
+                    <span style="font-family: 微软雅黑;font-weight: bold;font-size: medium;" onmouseout="mouseOutBgImg('invoiceMgr')" onmouseover="mouseOverBgImg('invoiceMgr')" >发票管理</span>
+                </div>
+            </div>
+
+            <div class="inline" style="float:right;margin-right:50px;position: relative;">
+                <img src="/images/u75.png" id="order" >
+                <div style="position: absolute;left: 15px;top: 10px;color: black">
+                    <span style="font-family: 微软雅黑;font-weight: bold;font-size: medium;" >订单仓库</span>
+                </div>
+            </div>
+
+            <div class="inline" style="float:right;margin-right:50px;position: relative;">
+                <img src="/images/u75.png" class="navimg" id="index" >
+                <div style="position: absolute;left: 30px;top: 10px;color: black">
+                    <span style="font-family: 微软雅黑;font-weight: bold;font-size: medium;"  onmouseout="mouseOutBgImg('index')" onmouseover="mouseOverBgImg('index')"  >首  页</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr width="100%" style="margin-top: 0px; "/>
+
+    <!-- 头部导航 -->
+
+    <div id="content" style="margin-top: 20px;color: black">
+        <!-- /section:basics/navbar.layout -->
+        <!--<div class="main-container ace-save-state" id="main-container">-->
+        <!--<script type="text/javascript">-->
+        <!--try{ace.settings.loadState('main-container')}catch(e){}-->
+        <!--</script>-->
+
+
+        <!-- /section:basics/sidebar -->
+        <div class="main-content">
+            <div class="main-content-inner">
+
+                <!-- /section:basics/content.breadcrumbs -->
+                <div class="page-content">
+
+
+                    <div class="row">
+                        <div class="col-xs-12">
+
+                            <table id="grid-table"></table>
+
+                            <div id="grid-pager"></div>
+
+                            <!-- PAGE CONTENT ENDS -->
+                        </div><!-- /.col -->
+                    </div><!-- /.row -->
+                </div><!-- /.page-content -->
+            </div>
+        </div><!-- /.main-content -->
+
+
+        <a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+            <i class="ace-icon fa fa-angle-double-up icon-only bigger-110"></i>
+        </a>
+        <!--</div>&lt;!&ndash; /.main-container &ndash;&gt;-->
+    </div>
+</div>
+
+
+
+
+
+<!-- basic scripts -->
+
+<!--[if !IE]> -->
+<script src="/components/jquery/dist/jquery.js"></script>
+
+<!-- <![endif]-->
+
+<!--[if IE]>
+<script src="/components/jquery.1x/dist/jquery.js"></script>
+<![endif]-->
+<script type="text/javascript">
+    if ('ontouchstart' in document.documentElement) document.write("<script src='/components/_mod/jquery.mobile.custom/jquery.mobile.custom.js'>" + "<" + "/script>");
+</script>
+<script src="/components/bootstrap/dist/js/bootstrap.js"></script>
+
+<!-- page specific plugin scripts -->
+
+<!--[if lte IE 8]>
+<script src="/components/ExplorerCanvas/excanvas.js"></script>
+<![endif]-->
+<script src="/components/_mod/jquery-ui.custom/jquery-ui.custom.js"></script>
+<script src="/components/jqueryui-touch-punch/jquery.ui.touch-punch.js"></script>
+<script src="/components/bootbox.js/bootbox.js"></script>
+<script src="/components/_mod/easypiechart/jquery.easypiechart.js"></script>
+<script src="/components/jquery.gritter/js/jquery.gritter.js"></script>
+<script src="/components/spin.js/spin.js"></script>
+
+<!-- ace scripts -->
+<script src="/assets/js/src/elements.scroller.js"></script>
+<script src="/assets/js/src/elements.colorpicker.js"></script>
+<script src="/assets/js/src/elements.fileinput.js"></script>
+<script src="/assets/js/src/elements.typeahead.js"></script>
+<script src="/assets/js/src/elements.wysiwyg.js"></script>
+<script src="/assets/js/src/elements.spinner.js"></script>
+<script src="/assets/js/src/elements.treeview.js"></script>
+<script src="/assets/js/src/elements.wizard.js"></script>
+<script src="/assets/js/src/elements.aside.js"></script>
+<script src="/assets/js/src/ace.js"></script>
+<script src="/assets/js/src/ace.basics.js"></script>
+<script src="/assets/js/src/ace.scrolltop.js"></script>
+<script src="/assets/js/src/ace.ajax-content.js"></script>
+<script src="/assets/js/src/ace.touch-drag.js"></script>
+<script src="/assets/js/src/ace.sidebar.js"></script>
+<script src="/assets/js/src/ace.sidebar-scroll-1.js"></script>
+<script src="/assets/js/src/ace.submenu-hover.js"></script>
+<script src="/assets/js/src/ace.widget-box.js"></script>
+<script src="/assets/js/src/ace.settings.js"></script>
+<script src="/assets/js/src/ace.settings-rtl.js"></script>
+<script src="/assets/js/src/ace.settings-skin.js"></script>
+<script src="/assets/js/src/ace.widget-on-reload.js"></script>
+<script src="/assets/js/src/ace.searchbox-autocomplete.js"></script>
+
+
+<!-- 自定义JS -->
+
+<script src="/js/jquery.form.min.js"></script>
+<script src="/js/jquery.validate.min.js"></script>
+<script src="/js/jquery.validate.extend.js"></script>
+<script src="/js/layer/layer.js"></script>
+<script src="/js/base.js"></script>
+
+
+<!-- page specific plugin scripts -->
+<script src="/components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js"></script>
+<script src="/components/jqGrid/js/jquery.jqGrid.js"></script>
+<script src="/components/jqGrid/js/i18n/grid.locale-cn.js"></script>
+
+<script th:inline="javascript">
+
+
+    jQuery(function ($) {
+        var grid_selector = "#grid-table";
+        var pager_selector = "#grid-pager";
+
+        var parent_column = $(grid_selector).closest('[class*="col-"]');
+        //resize to fit page size
+        $(window).on('resize.jqGrid', function () {
+            $(grid_selector).jqGrid('setGridWidth', parent_column.width());
+        })
+
+        //resize on sidebar collapse/expand
+        $(document).on('settings.ace.jqGrid', function (ev, event_name, collapsed) {
+            if (event_name === 'sidebar_collapsed' || event_name === 'main_container_fixed') {
+                //setTimeout is for webkit only to give time for DOM changes and then redraw!!!
+                setTimeout(function () {
+                    $(grid_selector).jqGrid('setGridWidth', parent_column.width());
+                }, 20);
+            }
+        })
+
+        //if your grid is inside another element, for example a tab pane, you should use its parent's width:
+        /**
+         $(window).on('resize.jqGrid', function () {
+					var parent_width = $(grid_selector).closest('.tab-pane').width();
+					$(grid_selector).jqGrid( 'setGridWidth', parent_width );
+				})
+         //and also set width when tab pane becomes visible
+         $('#myTab a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+				  if($(e.target).attr('href') == '#mygrid') {
+					var parent_width = $(grid_selector).closest('.tab-pane').width();
+					$(grid_selector).jqGrid( 'setGridWidth', parent_width );
+				  }
+				})
+         */
+
+
+
+
+
+        jQuery(grid_selector).jqGrid({
+            shrinkToFit:false,
+            autoScroll: true,
+            url: [[${SEARCH_URL}]],
+            datatype: "json",
+            jsonReader: {
+                root: "datas",
+                page: "pageAndSort.page",
+                total: "pageAndSort.totalPage",
+                records: "pageAndSort.rowCount",
+                repeatitems: false
+            },
+            prmNames: {
+                page: "pageAndSort.page",    // 表示请求页码的参数名称
+                rows: "pageAndSort.rp",    // 表示请求行数的参数名称
+                sort: "pageAndSort.sortName", // 表示用于排序的列名的参数名称
+                order: "pageAndSort.sortOrder", // 表示采用的排序方式的参数名称
+                search: "_search", // 表示是否是搜索请求的参数名称
+//                nd:"nd", // 表示已经发送请求的次数的参数名称
+                id: "id", // 表示当在编辑数据模块中发送数据时，使用的id的名称
+                oper: "oper",    // operation参数名称（我暂时还没用到）
+                editoper: "edit", // 当在edit模式中提交数据时，操作的名称
+                addoper: "add", // 当在add模式中提交数据时，操作的名称
+                deloper: "del", // 当在delete模式中提交数据时，操作的名称
+                subgridid: "id", // 当点击以载入数据到子表时，传递的数据名称
+                npage: null,
+//                totalrows:"rowCount" // 表示需从Server得到总共多少行数据的参数名称，参见jqGrid选项中的rowTotal
+            },
+            height: 400,
+//            '用户昵称','购方类型',
+            colNames: [' ', 'id', '订单号', '订单状态','企业税','票样代码','商品名称','购方税号','购方名称','购方地址','购方省份','购方固定电话','购方手机',
+                '购方邮箱','购方账号','行业代码','行业名称','备注'],
+            colModel: [
+                {
+                    name: 'myac', index: '', width: 80, fixed: true, sortable: false, resize: false,
+                    formatter: 'actions',
+                    formatoptions: {
+                        keys: true,
+                        editbutton: true,
+                        delbutton: false,
+                        delbutton : true,
+                        delOptions:{
+                            url:[[${DELETE_URL}]],
+                            recreateForm: true,
+                            beforeShowForm:beforeDeleteCallback,
+                            afterComplete:afterCompleteCallback
+                        },onSuccess : afterCompleteMsg
+                    }
+                },
+
+                {name: 'id', index: 'id', editable: false, search: true, hidden: true},
+                {name: 'orderNo', index: 'orderNo', editable: false},
+                {name: 'status', index: 'status', editable: false},
+
+
+
+                {name: 'taxno', index: 'taxno', editable: false},
+                {name: 'ticketCode', index: 'ticketCode', editable: false},
+                {name: 'majorItems', index: 'majorItems', editable: false},
+                {name: 'buyerTaxno', index: 'buyerTaxno', editable: false},
+                {name: 'buyerName', index: 'buyerName', editable: false},
+                {name: 'buyerAddr', index: 'buyerAddr', editable: false},
+                {name: 'buyerProvince', index: 'buyerProvince', editable: false},
+                {name: 'buyerTele', index: 'buyerTele', editable: false},
+                {name: 'buyerMobile', index: 'buyerMobile', editable: false},
+                {name: 'buyerEmail', index: 'buyerEmail', editable: false},
+                {name: 'buyerBankAcc', index: 'buyerBankAcc', editable: false},
+
+                {name: 'induCode', index: 'induCode', editable: false},
+                {name: 'induName', index: 'induName', editable: false},
+                {name: 'remarks', index: 'remarks', editable: false},
+
+
+
+
+
+
+
+
+
+
+
+//                {name: 'insertDate', index: 'insertDate', editable: false,formatter:'date',formatter:'date', formatoptions: {srcformat: 'u', newformat:'Y-m-d H:i'}},
+            ],
+
+            viewrecords: true,
+            rowNum: 10,
+            rowList: [10, 20, 30],
+            pager: pager_selector,
+            altRows: true,
+            //toppager: true,
+
+            multiselect: false,
+            //multikey: "ctrlKey",
+            multiboxonly: false,
+
+            loadComplete: function () {
+                var table = this;
+                setTimeout(function () {
+                    styleCheckbox(table);
+                    updateActionIcons(table);
+                    updatePagerIcons(table);
+                    enableTooltips(table);
+                }, 0);
+            },
+
+            editurl: [[${UPDATE_URL}]],
+
+            /*<![CDATA[*/
+            caption: /*[[${MODULE_NAME}]]*/
+            /*]]>*/
+
+            //,autowidth: true,
+
+
+            /**
+             ,
+             grouping:true,
+             groupingView : {
+						 groupField : ['name'],
+						 groupDataSorted : true,
+						 plusicon : 'fa fa-chevron-down bigger-110',
+						 minusicon : 'fa fa-chevron-up bigger-110'
+					},
+             caption: "Grouping"
+             */
+
+        });
+        $(window).triggerHandler('resize.jqGrid');//trigger window resize to make the grid get the correct size
+
+
+        //enable search/filter toolbar
+        //jQuery(grid_selector).jqGrid('filterToolbar',{defaultSearch:true,stringResult:true})
+        //jQuery(grid_selector).filterToolbar({});
+
+
+        //switch element when editing inline
+        function aceSwitch(cellvalue, options, cell) {
+            setTimeout(function () {
+                $(cell).find('input[type=checkbox]')
+                    .addClass('ace ace-switch ace-switch-5')
+                    .after('<span class="lbl"></span>');
+            }, 0);
+        }
+
+        //enable datepicker
+        function pickDate(cellvalue, options, cell) {
+            setTimeout(function () {
+                $(cell).find('input[type=text]')
+                    .datepicker({format: 'yyyy-mm-dd', autoclose: true});
+            }, 0);
+        }
+
+
+        //navButtons
+        jQuery(grid_selector).jqGrid('navGrid', pager_selector,
+            { 	//navbar options
+                edit: true,
+                editicon: 'ace-icon fa fa-pencil blue',
+                add: true,
+                addicon: 'ace-icon fa fa-plus-circle purple',
+                del: true,
+                delicon: 'ace-icon fa fa-trash-o red',
+                search: true,
+                searchicon: 'ace-icon fa fa-search orange',
+                refresh: true,
+                refreshicon: 'ace-icon fa fa-refresh green',
+                view: true,
+                viewicon: 'ace-icon fa fa-search-plus grey',
+            },
+            {
+                url: [[${UPDATE_URL}]],
+                //edit record form
+                //closeAfterEdit: true,
+                //width: 700,
+                recreateForm: true,
+                beforeShowForm: function (e) {
+                    var form = $(e[0]);
+                    form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
+                    style_edit_form(form);
+                },
+                afterComplete: afterCompleteCallback
+            },
+            //add options
+            {
+                url: [[${ADD_URL}]],
+                //new record form
+                //width: 700,
+                closeAfterAdd: true,
+                recreateForm: true,
+                viewPagerButtons: false,
+                beforeShowForm: function (e) {
+                    var form = $(e[0]);
+                    form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar')
+                        .wrapInner('<div class="widget-header" />')
+                    style_edit_form(form);
+                },
+                afterComplete: afterCompleteCallback
+            },
+            //delete options
+            {
+                url: [[${DELETE_URL}]],
+                //delete record form
+                recreateForm: true,
+                beforeShowForm: function (e) {
+                    var form = $(e[0]);
+                    if (form.data('styled')) return false;
+
+                    form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
+                    style_delete_form(form);
+
+                    form.data('styled', true);
+                },
+                afterComplete: afterCompleteCallback,
+                onClick: function (e) {
+//                    alert(1);
+                }
+            },
+            //search
+            {
+                url: [[${SEARCH_URL}]],
+                //search form
+                recreateForm: true,
+                afterShowSearch: function (e) {
+                    var form = $(e[0]);
+                    form.closest('.ui-jqdialog').find('.ui-jqdialog-title').wrap('<div class="widget-header" />')
+                    style_search_form(form);
+                },
+                afterRedraw: function () {
+                    style_search_filters($(this));
+                },
+                multipleSearch: true,
+//                multipleGroup:true,
+//                showQuery: true
+                /**
+                 multipleGroup:true,
+                 showQuery: true
+                 */
+            }
+        )
+
+
+        function style_edit_form(form) {
+            //enable datepicker on "sdate" field and switches for "stock" field
+            form.find('input[name=sdate]').datepicker({format: 'yyyy-mm-dd', autoclose: true})
+
+            form.find('input[name=stock]').addClass('ace ace-switch ace-switch-5').after('<span class="lbl"></span>');
+            //don't wrap inside a label element, the checkbox value won't be submitted (POST'ed)
+            //.addClass('ace ace-switch ace-switch-5').wrap('<label class="inline" />').after('<span class="lbl"></span>');
+
+
+            //update buttons classes
+            var buttons = form.next().find('.EditButton .fm-button');
+            buttons.addClass('btn btn-sm').find('[class*="-icon"]').hide();//ui-icon, s-icon
+            buttons.eq(0).addClass('btn-primary').prepend('<i class="ace-icon fa fa-check"></i>');
+            buttons.eq(1).prepend('<i class="ace-icon fa fa-times"></i>')
+
+            buttons = form.next().find('.navButton a');
+            buttons.find('.ui-icon').hide();
+            buttons.eq(0).append('<i class="ace-icon fa fa-chevron-left"></i>');
+            buttons.eq(1).append('<i class="ace-icon fa fa-chevron-right"></i>');
+        }
+
+        function style_delete_form(form) {
+            var buttons = form.next().find('.EditButton .fm-button');
+            buttons.addClass('btn btn-sm btn-white btn-round').find('[class*="-icon"]').hide();//ui-icon, s-icon
+            buttons.eq(0).addClass('btn-danger').prepend('<i class="ace-icon fa fa-trash-o"></i>');
+            buttons.eq(1).addClass('btn-default').prepend('<i class="ace-icon fa fa-times"></i>')
+        }
+
+        function style_search_filters(form) {
+            form.find('.delete-rule').val('X');
+            form.find('.add-rule').addClass('btn btn-xs btn-primary');
+            form.find('.add-group').addClass('btn btn-xs btn-success');
+            form.find('.delete-group').addClass('btn btn-xs btn-danger');
+        }
+
+        function style_search_form(form) {
+            var dialog = form.closest('.ui-jqdialog');
+            var buttons = dialog.find('.EditTable')
+            buttons.find('.EditButton a[id*="_reset"]').addClass('btn btn-sm btn-info').find('.ui-icon').attr('class', 'ace-icon fa fa-retweet');
+            buttons.find('.EditButton a[id*="_query"]').addClass('btn btn-sm btn-inverse').find('.ui-icon').attr('class', 'ace-icon fa fa-comment-o');
+            buttons.find('.EditButton a[id*="_search"]').addClass('btn btn-sm btn-purple').find('.ui-icon').attr('class', 'ace-icon fa fa-search');
+        }
+
+        function beforeDeleteCallback(e) {
+            var form = $(e[0]);
+            if (form.data('styled')) return false;
+
+            form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
+            style_delete_form(form);
+
+            form.data('styled', true);
+        }
+
+        function beforeEditCallback(e) {
+            var form = $(e[0]);
+            form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
+            style_edit_form(form);
+        }
+
+
+        //it causes some flicker when reloading or navigating grid
+        //it may be possible to have some custom formatter to do this as the grid is being created to prevent this
+        //or go back to default browser checkbox styles for the grid
+        function styleCheckbox(table) {
+            /**
+             $(table).find('input:checkbox').addClass('ace')
+             .wrap('<label />')
+             .after('<span class="lbl align-top" />')
+
+
+             $('.ui-jqgrid-labels th[id*="_cb"]:first-child')
+             .find('input.cbox[type=checkbox]').addClass('ace')
+             .wrap('<label />').after('<span class="lbl align-top" />');
+             */
+        }
+
+
+        //unlike navButtons icons, action icons in rows seem to be hard-coded
+        //you can change them like this in here if you want
+        function updateActionIcons(table) {
+            /**
+             var replacement =
+             {
+                 'ui-ace-icon fa fa-pencil' : 'ace-icon fa fa-pencil blue',
+                 'ui-ace-icon fa fa-trash-o' : 'ace-icon fa fa-trash-o red',
+                 'ui-icon-disk' : 'ace-icon fa fa-check green',
+                 'ui-icon-cancel' : 'ace-icon fa fa-times red'
+             };
+             $(table).find('.ui-pg-div span.ui-icon').each(function(){
+						var icon = $(this);
+						var $class = $.trim(icon.attr('class').replace('ui-icon', ''));
+						if($class in replacement) icon.attr('class', 'ui-icon '+replacement[$class]);
+					})
+             */
+        }
+
+        //replace icons with FontAwesome icons like above
+        function updatePagerIcons(table) {
+            var replacement =
+                {
+                    'ui-icon-seek-first': 'ace-icon fa fa-angle-double-left bigger-140',
+                    'ui-icon-seek-prev': 'ace-icon fa fa-angle-left bigger-140',
+                    'ui-icon-seek-next': 'ace-icon fa fa-angle-right bigger-140',
+                    'ui-icon-seek-end': 'ace-icon fa fa-angle-double-right bigger-140'
+                };
+            $('.ui-pg-table:not(.navtable) > tbody > tr > .ui-pg-button > .ui-icon').each(function () {
+                var icon = $(this);
+                var $class = $.trim(icon.attr('class').replace('ui-icon', ''));
+
+                if ($class in replacement) icon.attr('class', 'ui-icon ' + replacement[$class]);
+            })
+        }
+
+        function enableTooltips(table) {
+            $('.navtable .ui-pg-button').tooltip({container: 'body'});
+            $(table).find('.ui-pg-div').tooltip({container: 'body'});
+        }
+
+
+        /**
+         * 自定义请求完成后处理事件
+         * @param data
+         */
+        function afterCompleteCallback(data) {
+            afterCompleteMsg(data)
+        }
+
+        //var selr = jQuery(grid_selector).jqGrid('getGridParam','selrow');
+
+        $(document).one('ajaxloadstart.page', function (e) {
+            $.jgrid.gridDestroy(grid_selector);
+            $('.ui-jqdialog').remove();
+        });
+
+        $(grid_selector).closest(".ui-jqgrid-bdiv").css({'overflow-x': 'scroll'});
+    });
+
+
+    function mouseOverBgImg(objId){
+        $('#'+objId).removeClass("navimg");
+    }
+
+    function mouseOutBgImg(objId){
+        $('#'+objId).addClass("navimg");
+    }
+</script>
+
+<!-- the following scripts are used in demo only for onpage help and you don't need them -->
+<link rel="stylesheet" href="/assets/css/ace.onpage-help.css"/>
+<link rel="stylesheet" href="/docs/assets/js/themes/sunburst.css"/>
+
+<script type="text/javascript"> ace.vars['base'] = '..'; </script>
+<script src="/assets/js/src/elements.onpage-help.js"></script>
+<script src="/assets/js/src/ace.onpage-help.js"></script>
+<script src="/docs/assets/js/rainbow.js"></script>
+<script src="/docs/assets/js/language/generic.js"></script>
+<script src="/docs/assets/js/language/html.js"></script>
+<script src="/docs/assets/js/language/css.js"></script>
+<script src="/docs/assets/js/language/javascript.js"></script>
+
+
+</body>
+</html>

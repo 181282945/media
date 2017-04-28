@@ -2,6 +2,7 @@ package com.aisino.base.invoice.eninfo.entity;
 
 import com.aisino.core.entity.BaseInvoiceEntity;
 import com.aisino.core.entity.annotation.BaseEntityMapper;
+import com.aisino.core.entity.annotation.IsNotNull;
 import org.apache.ibatis.type.Alias;
 
 /**
@@ -13,26 +14,32 @@ public class EnInfo extends BaseInvoiceEntity {
     /**
      * 税号
      */
+    @IsNotNull(description = "税号")
     private String taxno;
     /**
      * 企业名称
      */
+    @IsNotNull(description = "企业名称")
     private String taxname;
     /**
      * 银行账户
      */
+    @IsNotNull(description = "银行账户")
     private String bankaccount;
     /**
      * 企业地址
      */
+    @IsNotNull(description = "企业地址")
     private String taxaddr;
     /**
      * 企业电话
      */
+    @IsNotNull(description = "企业电话")
     private String taxtel;
     /**
      * 开票人
      */
+    @IsNotNull(description = "开票人")
     private String drawer;
     /**
      * 收款人
@@ -45,6 +52,7 @@ public class EnInfo extends BaseInvoiceEntity {
     /**
      * 用户账号
      */
+    @IsNotNull(description = "用户账号")
     private String usrno;
 
 

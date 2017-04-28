@@ -33,9 +33,19 @@ public class SystemParameter {
     private String password;
 
     /**
-     * 订单表建库语句
+     * 订单建表语句
      */
     private String orderinfoSql;
+
+    /**
+     * 订单明细建表语句
+     */
+    private String orderdetailSql;
+
+    /**
+     * 发票表建表语句
+     */
+    private String invoiceinfoSql;
 
 
     //-----------------------------getter and setter-------------------------------------------------
@@ -87,5 +97,21 @@ public class SystemParameter {
 
     public void setOrderinfoSql(String orderinfoSql) {
         this.orderinfoSql = orderinfoSql;
+    }
+
+    public String getOrderdetailSql() {
+        return orderdetailSql;
+    }
+
+    public void setOrderdetailSql(String orderdetailSql) {
+        this.orderdetailSql = orderdetailSql;
+    }
+
+    public String getInvoiceinfoSql() {
+        return invoiceinfoSql;
+    }
+
+    public void setInvoiceinfoSql(String invoiceinfoSql) {
+        this.invoiceinfoSql = invoiceinfoSql;
     }
 }

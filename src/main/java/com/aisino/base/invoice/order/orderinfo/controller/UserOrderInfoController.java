@@ -2,24 +2,29 @@ package com.aisino.base.invoice.order.orderinfo.controller;
 
 import com.aisino.base.invoice.order.orderinfo.entity.OrderInfo;
 import com.aisino.base.invoice.order.orderinfo.service.OrderInfoService;
-import com.aisino.base.invoice.userinfo.entity.UserInfo;
 import com.aisino.base.sysmgr.aclresource.annotation.AclResc;
 import com.aisino.base.sysmgr.aclresource.common.AclResourceTarget;
 import com.aisino.common.annotation.CuzDataSource;
+import com.aisino.common.controller.IndexController;
 import com.aisino.common.dto.jqgrid.JqgridFilters;
 import com.aisino.core.controller.BaseController;
 import com.aisino.core.dto.ResultDataDto;
-import com.aisino.core.mybatis.DataSourceContextHolder;
 import com.aisino.core.mybatis.specification.PageAndSort;
-import com.aisino.core.mybatis.specification.QueryLike;
 import com.aisino.core.security.util.SecurityUtil;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ModelAndView;
 
+
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -35,7 +40,7 @@ public class UserOrderInfoController extends BaseController<OrderInfo> {
 
     public final static String HOME_PAGE = PATH + "/tolist";
 
-    final static String MODULE_NAME = "订单信息";
+    final static String MODULE_NAME = "订单仓库";
 
 
     //页面模板路径
@@ -56,6 +61,9 @@ public class UserOrderInfoController extends BaseController<OrderInfo> {
     @RequestMapping(value = "/tolist",method = RequestMethod.GET,produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView toList(){
         ModelAndView mav = new ModelAndView(PATH + VIEW_NAME);
+        mav.addObject("userName", SecurityUtil.getCurrentUserName());
+        mav.addObject("INDEX_HOME_PAGE", IndexController.HOME_PAGE);
+        mav.addObject("USERORDERINFO_HOME_PAGE", UserOrderInfoController.HOME_PAGE);
         mav.addObject("MODULE_NAME",MODULE_NAME);
         mav.addObject("UPDATE_URL",UPDATE_URL);
         mav.addObject("ADD_URL",ADD_URL);
@@ -71,7 +79,7 @@ public class UserOrderInfoController extends BaseController<OrderInfo> {
     @CuzDataSource
     @RequestMapping(value = "/list",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @AclResc(code = "list",name = "查询列表")
-//    @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public ResultDataDto list(JqgridFilters jqgridFilters, @ModelAttribute("pageAndSort")PageAndSort pageAndSort){
         List<OrderInfo> orderInfos = orderInfoService.findByJqgridFilters(jqgridFilters,pageAndSort);
         return new ResultDataDto(orderInfos,pageAndSort);
@@ -106,6 +114,42 @@ public class UserOrderInfoController extends BaseController<OrderInfo> {
     @AclResc(code = "update",name = "更新资源")
     public ResultDataDto update(@ModelAttribute("orderInfo")OrderInfo orderInfo){
         orderInfoService.updateEntity(orderInfo);
+        return ResultDataDto.addUpdateSuccess();
+    }
+
+    /**
+     * 上传导入订单
+     */
+    @RequestMapping(value = "/upload",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @AclResc(code = "upload",name = "更新资源")
+    public ResultDataDto upload(HttpServletRequest request){
+        CommonsMultipartResolver multipartResolver=new CommonsMultipartResolver(
+                request.getSession().getServletContext());
+        //检查form中是否有enctype="multipart/form-data"
+        if(multipartResolver.isMultipart(request))
+        {
+            //将request变成多部分request
+            MultipartHttpServletRequest multiRequest=(MultipartHttpServletRequest)request;
+            //获取multiRequest 中所有的文件名
+            Iterator iter=multiRequest.getFileNames();
+
+            while(iter.hasNext())
+            {
+                //一次遍历所有文件
+                MultipartFile file=multiRequest.getFile(iter.next().toString());
+                if(file!=null)
+                {
+                    try {
+                        orderInfoService.importOrderInfo(file.getInputStream(),file.getOriginalFilename());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+
+        }
+//        orderInfoService.updateEntity(orderInfo);
         return ResultDataDto.addUpdateSuccess();
     }
 

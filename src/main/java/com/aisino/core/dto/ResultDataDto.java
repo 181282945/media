@@ -179,6 +179,7 @@ public class ResultDataDto {
 	 */
 	public<T extends BaseEntity> ResultDataDto(List<T> list, PageAndSort pageAndSort) {
 		super();
+		this.operateCode = CODE_OPERATE_SUCCESS;
 		this.code = CODE_SUCCESS;
 		this.datas = list;
 		this.pageAndSort = pageAndSort;

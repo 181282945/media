@@ -1,0 +1,144 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <title></title>
+
+
+
+    <!-- bootstrap & fontawesome -->
+    <link rel="stylesheet" href="/assets/css/bootstrap.css"/>
+    <link rel="stylesheet" href="/components/font-awesome/css/font-awesome.css"/>
+
+    <!-- page specific plugin styles -->
+    <link rel="stylesheet" href="/components/_mod/jquery-ui/jquery-ui.css"/>
+    <link rel="stylesheet" href="/components/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css"/>
+    <link rel="stylesheet" href="/components/_mod/jqgrid/ui.jqgrid.css"/>
+
+    <!-- page specific plugin styles -->
+    <link rel="stylesheet" href="/components/_mod/jquery-ui.custom/jquery-ui.custom.css"/>
+    <link rel="stylesheet" href="/components/jquery.gritter/css/jquery.gritter.css"/>
+
+    <!-- text fonts -->
+    <link rel="stylesheet" href="/assets/css/ace-fonts.css"/>
+
+    <!-- ace styles -->
+    <link rel="stylesheet" href="/assets/css/ace.css" class="ace-main-stylesheet" id="main-ace-style"/>
+
+    <!--[if lte IE 9]>
+    <link rel="stylesheet" href="/assets/css/ace-part2.css" class="ace-main-stylesheet"/>
+    <![endif]-->
+    <link rel="stylesheet" href="/assets/css/ace-skins.css"/>
+    <link rel="stylesheet" href="/assets/css/ace-rtl.css"/>
+
+    <!--[if lte IE 9]>
+    <link rel="stylesheet" href="/assets/css/ace-ie.css"/>
+    <![endif]-->
+
+    <!-- inline styles related to this page -->
+    <style>
+        /* some elements used in demo only */
+        .spinner-preview {
+            width: 100px;
+            height: 100px;
+            text-align: center;
+            margin-top: 60px;
+        }
+
+        .dropdown-preview {
+            margin: 0 5px;
+            display: inline-block;
+        }
+
+        .dropdown-preview > .dropdown-menu {
+            display: block;
+            position: static;
+            margin-bottom: 5px;
+        }
+        .u0_div {
+            /*position:absolute;*/
+            left:0px;
+            top:0px;
+            width:454px;
+            height:222px;
+            background:inherit;
+            background-color:rgba(255, 255, 255, 0);
+            box-sizing:border-box;
+            border-width:1px;
+            border-style:solid;
+            border-color:rgba(228, 228, 228, 1);
+            border-radius:8px;
+            -moz-box-shadow:none;
+            -webkit-box-shadow:none;
+            box-shadow:none;
+        }
+
+    </style>
+
+    <!-- ace settings handler -->
+    <script src="/assets/js/ace-extra.js"></script>
+
+    <!-- HTML5shiv and Respond.js for IE8 to support HTML5 elements and media queries -->
+
+    <!--[if lte IE 8]>
+    <script src="/components/html5shiv/dist/html5shiv.min.js"></script>
+    <script src="/components/respond/dest/respond.min.js"></script>
+    <![endif]-->
+
+
+
+    <link href="/css/base.css" type="text/css" rel="stylesheet"/>
+
+    <link type="text/css"rel="stylesheet"href="/css/bootstrap/fileinput.min.css" />
+    <script type="text/javascript" src="/js/bootstrap/fileinput.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap/fileinput_locale_zh.js"></script>
+
+</head>
+<body>
+<input type="file" name="image" class="projectfile" />
+
+
+
+
+<!-- basic scripts -->
+
+<!--[if !IE]> -->
+<script src="/components/jquery/dist/jquery.js"></script>
+
+<!-- <![endif]-->
+
+<!--[if IE]>
+<script src="/components/jquery.1x/dist/jquery.js"></script>
+<![endif]-->
+<script type="text/javascript">
+    if ('ontouchstart' in document.documentElement) document.write("<script src='/components/_mod/jquery.mobile.custom/jquery.mobile.custom.js'>" + "<" + "/script>");
+</script>
+<script src="/components/bootstrap/dist/js/bootstrap.js"></script>
+
+<!-- page specific plugin scripts -->
+
+<!--[if lte IE 8]>
+<script src="/components/ExplorerCanvas/excanvas.js"></script>
+<![endif]-->
+<script src="/components/_mod/jquery-ui.custom/jquery-ui.custom.js"></script>
+<script src="/components/jqueryui-touch-punch/jquery.ui.touch-punch.js"></script>
+<script src="/components/bootbox.js/bootbox.js"></script>
+<script src="/components/_mod/easypiechart/jquery.easypiechart.js"></script>
+<script src="/components/jquery.gritter/js/jquery.gritter.js"></script>
+<script src="/components/spin.js/spin.js"></script>
+
+<script type="text/javascript">
+    control.fileinput({
+        language: 'zh', //设置语言
+        uploadUrl: uploadUrl, //上传的地址
+        allowedFileExtensions : ['jpg', 'png','gif'],//接收的文件后缀
+        showUpload: false, //是否显示上传按钮
+        showCaption: false,//是否显示标题
+        browseClass: "btn btn-primary", //按钮样式
+        previewFileIcon: "<i class='glyphicon glyphicon-king'></i>",
+    });
+</script>
+
+</body>
+</html>

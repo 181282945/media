@@ -7,7 +7,6 @@ import com.aisino.common.params.SystemParameter;
 import com.aisino.core.mybatis.specification.QueryLike;
 import com.aisino.core.mybatis.specification.Specification;
 import com.aisino.core.service.BaseServiceImpl;
-import com.aisino.core.util.ConstraintUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -65,6 +64,10 @@ public class DbInfoServiceImpl extends BaseServiceImpl<DbInfo,DbInfoMapper> impl
 
         String orderinfoSql = systemParameter.getOrderinfoSql();
 
+        String orderdetailSql = systemParameter.getOrderdetailSql();
+
+        String invoiceinfoSql = systemParameter.getInvoiceinfoSql();
+
         Connection conn = null;
         Connection newConn = null;
 
@@ -95,9 +98,20 @@ public class DbInfoServiceImpl extends BaseServiceImpl<DbInfo,DbInfoMapper> impl
                     System.out.println("已经连接到新创建的数据库：" + dbname);
 
                     Statement newSmt = newConn.createStatement();
+
                     int i = newSmt.executeUpdate(orderinfoSql);//DDL语句返回值为0;
                     if (i == 0) {
                         System.out.println("orderinfoSql 表已经创建成功!");
+                    }
+
+                    int j = newSmt.executeUpdate(orderdetailSql);//DDL语句返回值为0;
+                    if (j == 0) {
+                        System.out.println("orderdetailSql 表已经创建成功!");
+                    }
+
+                    int k = newSmt.executeUpdate(invoiceinfoSql);//DDL语句返回值为0;
+                    if (k == 0) {
+                        System.out.println("invoiceinfoSql 表已经创建成功!");
                     }
 
                     return dbInfo;
@@ -109,6 +123,7 @@ public class DbInfoServiceImpl extends BaseServiceImpl<DbInfo,DbInfoMapper> impl
             e1.printStackTrace();
         }finally {
             try {
+
                 conn.close();
                 newConn.close();
             } catch (SQLException e) {

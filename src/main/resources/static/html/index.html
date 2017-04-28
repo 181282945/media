@@ -112,7 +112,7 @@
 
     <div id="top">
         <div style="height: 5px"></div>
-        <div id="logo" style="text-align:right;"><div th:style="${userName}!=null? '':'display: none'" ><span th:text="${userName}" style="position:relative;right: 3px;bottom:3px;font-size: small">XXXXX</span><img src="images/u963.png" style="margin-bottom: 5px"><a href="/logout"><span style="position:relative;left:3px;bottom:3px;font-size: small;margin-right: 10px">退出登录</span></a></div></div>
+        <div id="logo" style="text-align:right;"><div th:style="${userName}!=null? '':'display: none'" ><span th:text="${userName}" style="position:relative;right: 3px;bottom:3px;font-size: small">XXXXX</span><img src="/images/u963.png" style="margin-bottom: 5px"><a href="/logout"><span style="position:relative;left:3px;bottom:3px;font-size: small;margin-right: 10px">退出登录</span></a></div></div>
         <div id="nav" style="vertical-align:bottom;display:inline;">
             <img class="inline" style="width: 167px;height: 39px;" src="images/u73.png"><img src="images/u83.png"><span class="inline" style="font-family: 微软雅黑;font-weight: bold;color: black;font-size: larger">云开票</span>
             <div class="inline" style="float:right;margin-right:50px;position: relative;">
@@ -129,19 +129,22 @@
                 </div>
             </div>
 
-            <a th:href="${USERORDERINFO_HOME_PAGE}"><div class="inline" style="float:right;margin-right:50px;position: relative;">
-                <img src="images/u75.png" class="navimg" id="order" >
-                <div style="position: absolute;left: 15px;top: 10px;color: black">
-                    <span style="font-family: 微软雅黑;font-weight: bold;font-size: medium;" onmouseout="mouseOutBgImg('order')" onmouseover="mouseOverBgImg('order')" >订单仓库</span>
+            <a th:href="${USERORDERINFO_HOME_PAGE}">
+                <div class="inline" style="float:right;margin-right:50px;position: relative;">
+                    <img src="images/u75.png" class="navimg" id="order" >
+                    <div style="position: absolute;left: 15px;top: 10px;color: black">
+                        <span style="font-family: 微软雅黑;font-weight: bold;font-size: medium;" onmouseout="mouseOutBgImg('order')" onmouseover="mouseOverBgImg('order')" >订单仓库</span>
+                    </div>
                 </div>
-            </div>
             </a>
-            <div class="inline" style="float:right;margin-right:50px;position: relative;">
-                <img src="images/u75.png" >
-                <div style="position: absolute;left: 30px;top: 10px;color: black">
-                    <span style="font-family: 微软雅黑;font-weight: bold;font-size: medium;">首  页</span>
+            <a th:href="${INDEX_HOME_PAGE}">
+                <div class="inline" style="float:right;margin-right:50px;position: relative;">
+                    <img src="images/u75.png" >
+                    <div style="position: absolute;left: 30px;top: 10px;color: black">
+                        <span style="font-family: 微软雅黑;font-weight: bold;font-size: medium;">首  页</span>
+                    </div>
                 </div>
-            </div>
+            </a>
         </div>
     </div>
     <hr width="100%" style="margin-top: 0px; "/>

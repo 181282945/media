@@ -117,7 +117,7 @@
 
     <div id="top">
         <div style="height: 5px"></div>
-        <div id="logo" style="text-align:right;"><div th:style="${userName}!=null? '':'display: none'" ><span th:text="${userName}" style="position:relative;right: 3px;bottom:3px;font-size: small">XXXXX</span><img src="/images/u963.png" style="margin-bottom: 5px"><span style="position:relative;left:3px;bottom:3px;font-size: small;margin-right: 10px">退出登录</span></div></div>
+        <div id="logo" style="text-align:right;"><div th:style="${userName}!=null? '':'display: none'" ><span th:text="${userName}" style="position:relative;right: 3px;bottom:3px;font-size: small">XXXXX</span><img src="/images/u963.png" style="margin-bottom: 5px"><a href="/logout"><span style="position:relative;left:3px;bottom:3px;font-size: small;margin-right: 10px">退出登录</span></a></div></div>
         <div id="nav" style="vertical-align:bottom;display:inline;">
             <img class="inline" style="width: 167px;height: 39px;" src="/images/u73.png"><img src="/images/u83.png"><span class="inline" style="font-family: 微软雅黑;font-weight: bold;color: black;font-size: larger">云开票</span>
             <div class="inline" style="float:right;margin-right:50px;position: relative;">
@@ -133,20 +133,22 @@
                     <span style="font-family: 微软雅黑;font-weight: bold;font-size: medium;" onmouseout="mouseOutBgImg('invoiceMgr')" onmouseover="mouseOverBgImg('invoiceMgr')" >发票管理</span>
                 </div>
             </div>
-
-            <div class="inline" style="float:right;margin-right:50px;position: relative;">
-                <img src="/images/u75.png" id="order" >
-                <div style="position: absolute;left: 15px;top: 10px;color: black">
-                    <span style="font-family: 微软雅黑;font-weight: bold;font-size: medium;" >订单仓库</span>
+            <a th:href="${USERORDERINFO_HOME_PAGE}">
+                <div class="inline" style="float:right;margin-right:50px;position: relative;">
+                    <img src="/images/u75.png" id="order" >
+                    <div style="position: absolute;left: 15px;top: 10px;color: black">
+                        <span style="font-family: 微软雅黑;font-weight: bold;font-size: medium;" >订单仓库</span>
+                    </div>
                 </div>
-            </div>
-
-            <div class="inline" style="float:right;margin-right:50px;position: relative;">
-                <img src="/images/u75.png" class="navimg" id="index" >
-                <div style="position: absolute;left: 30px;top: 10px;color: black">
-                    <span style="font-family: 微软雅黑;font-weight: bold;font-size: medium;"  onmouseout="mouseOutBgImg('index')" onmouseover="mouseOverBgImg('index')"  >首  页</span>
+            </a>
+            <a th:href="${INDEX_HOME_PAGE}">
+                <div class="inline" style="float:right;margin-right:50px;position: relative;">
+                    <img src="/images/u75.png" class="navimg" id="index" >
+                    <div style="position: absolute;left: 30px;top: 10px;color: black">
+                        <span style="font-family: 微软雅黑;font-weight: bold;font-size: medium;"  onmouseout="mouseOutBgImg('index')" onmouseover="mouseOverBgImg('index')"  >首  页</span>
+                    </div>
                 </div>
-            </div>
+            </a>
         </div>
     </div>
     <hr width="100%" style="margin-top: 0px; "/>
@@ -159,10 +161,38 @@
         <!--<script type="text/javascript">-->
         <!--try{ace.settings.loadState('main-container')}catch(e){}-->
         <!--</script>-->
-
+        <div class="container">
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="row">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-10">当前位置：<span th:text="${MODULE_NAME}"></span></div>
+                    </div>
+                </div>
+                <div class="col-md-2 ">
+                    <div class="row">
+                        <div class="col-md-4 "><button class="btn btn-minier btn-white">全部</button></div>
+                        <div class="col-md-4 "><button class="btn btn-minier btn-white">已开票</button></div>
+                        <div class="col-md-4 "><button class="btn btn-minier btn-white">未开票</button></div>
+                    </div>
+                </div>
+                <div class="col-md-2 "></div>
+                <div class="col-md-5 ">
+                    <div class="row">
+                        <div class="col-md-2 "><button class="btn btn-xs btn-info">查询</button></div>
+                        <div class="col-md-2 "><button class="btn btn-xs btn-info">开票</button></div>
+                        <div class="col-md-2 "><button class="btn btn-xs btn-info">修改</button></div>
+                        <div class="col-md-2 "><button class="btn btn-xs btn-info">删除</button></div>
+                        <div class="col-md-2 "><button class="btn btn-xs btn-info"  data-toggle="modal" data-target="#myModal">导入</button></div>
+                        <div class="col-md-2 "></div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <!-- /section:basics/sidebar -->
         <div class="main-content">
+
             <div class="main-content-inner">
 
                 <!-- /section:basics/content.breadcrumbs -->
@@ -193,6 +223,39 @@
 
 
 
+
+<!-- 按钮触发模态框 -->
+<!--<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">-->
+<!--开始演示模态框-->
+<!--</button>-->
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    订单导入
+                </h4>
+            </div>
+            <div class="modal-body">
+                <form enctype="multipart/form-data">
+                    <a href="" class="form-control" style="border:none;">下载导入模板</a>
+                    <input type="file" name="txt_file" id="txt_file" class="file-loading" />
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                </button>
+                <!--<button type="button" class="btn btn-primary">-->
+                    <!--上传-->
+                <!--</button>-->
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
 
 
 <!-- basic scripts -->
@@ -249,7 +312,9 @@
 
 
 <!-- 自定义JS -->
-
+<link type="text/css"rel="stylesheet"href="/css/bootstrap/fileinput.min.css" />
+<script type="text/javascript" src="/js/bootstrap/fileinput.min.js"></script>
+<script type="text/javascript" src="/js/bootstrap/fileinput_locale_zh.js"></script>
 <script src="/js/jquery.form.min.js"></script>
 <script src="/js/jquery.validate.min.js"></script>
 <script src="/js/jquery.validate.extend.js"></script>
@@ -691,6 +756,51 @@
     function mouseOutBgImg(objId){
         $('#'+objId).addClass("navimg");
     }
+
+
+    $(function () {
+        //0.初始化fileinput
+        var oFileInput = new FileInput();
+        oFileInput.Init("txt_file", "/base/invoice/order/orderinfo/u/upload");
+    });
+
+    //初始化fileinput
+    var FileInput = function () {
+        var oFile = new Object();
+
+        //初始化fileinput控件（第一次初始化）
+        oFile.Init = function(ctrlName, uploadUrl) {
+            var control = $('#' + ctrlName);
+
+            //初始化上传控件的样式
+            control.fileinput({
+                language: 'zh', //设置语言
+                uploadUrl: uploadUrl, //上传的地址
+                allowedFileExtensions : ['xls', 'xlsx'],//接收的文件后缀
+                showUpload: true, //是否显示上传按钮
+                showCaption: true,//是否显示标题
+                showPreview: false,
+                browseClass: "btn btn-primary", //按钮样式
+                previewFileIcon: "<i class='glyphicon glyphicon-king'></i>",
+            });
+
+            //导入文件上传完成之后的事件
+            $("#txt_file").on("fileuploaded", function (event, data, previewId, index) {
+//                $("#myModal").modal("hide");
+//                var data = data.response.lstOrderImport;
+//                if (data == undefined) {
+//                    toastr.error('文件格式类型不正确');
+//                    return;
+//                }
+//                //1.初始化表格
+//                var oTable = new TableInit();
+//                oTable.Init(data);
+//                $("#div_startimport").show();
+            });
+        }
+        return oFile;
+    };
+
 </script>
 
 <!-- the following scripts are used in demo only for onpage help and you don't need them -->

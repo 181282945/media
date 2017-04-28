@@ -28,10 +28,14 @@ public class IndexController extends BaseController<BaseEntity> {
     @Resource
     private EnInfoService enInfoService;
 
+    public final static String HOME_PAGE = "/index";
+
+
     @RequestMapping(value = "/index",method = RequestMethod.GET,produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView toIndex(){
 
         ModelAndView mav = new ModelAndView("index");
+        mav.addObject("INDEX_HOME_PAGE", IndexController.HOME_PAGE);
         mav.addObject("USERORDERINFO_HOME_PAGE", UserOrderInfoController.HOME_PAGE);
 
         String userName = SecurityUtil.getCurrentUserName();

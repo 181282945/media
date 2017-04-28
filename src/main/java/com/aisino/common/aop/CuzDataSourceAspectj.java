@@ -2,10 +2,9 @@ package com.aisino.common.aop;
 
 import com.aisino.core.mybatis.DataSourceContextHolder;
 import com.aisino.core.security.util.SecurityUtil;
-import org.aspectj.lang.annotation.After;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
-import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.*;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 /**
@@ -13,20 +12,24 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Aspect
+@Order(0)
 public class CuzDataSourceAspectj {
 
     //定义切点
     @Pointcut("@annotation(com.aisino.common.annotation.CuzDataSource)")
     public void cuzDataSource(){}
 
-    @Before("cuzDataSource()")
-    public void doBefore(){
+    @Around("cuzDataSource()")
+    public Object aroundCuzDataSource(ProceedingJoinPoint joinPoint){
         Integer userId = SecurityUtil.getCurrentUserInfo().getId();
         DataSourceContextHolder.setTargetDataSource(userId.toString());
+        try {
+            return joinPoint.proceed();
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+        }finally {
+            DataSourceContextHolder.write();
+        }
+        return null;
     }
-
-//    @After("cuzDataSource()")
-//    public void doAfter(){
-//        DataSourceContextHolder.write();
-//    }
 }

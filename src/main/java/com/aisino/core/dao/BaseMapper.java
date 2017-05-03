@@ -26,6 +26,13 @@ public interface BaseMapper<T extends BaseEntity> {
     @InsertProvider(type = BaseProvider.class, method = "addEntity")
     @Options(useGeneratedKeys = true)
     void addEntity(T entity);
+
+    /**
+     * 新增实体
+     */
+    @InsertProvider(type = BaseProvider.class, method = "addBatchEntity")
+    @Options(useGeneratedKeys = true)
+    void addBatchEntity(T entity);
     /**
      * 更新实体
      */

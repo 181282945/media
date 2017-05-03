@@ -45,7 +45,7 @@ SystemParameter:
         `id` int(11) NOT NULL AUTO_INCREMENT,
         `taxno` varchar(20) NOT NULL,
         `dkflags` tinyint(4) DEFAULT NULL,
-        `tickerCode` varchar(10) DEFAULT NULL,
+        `ticketCode` varchar(10) DEFAULT NULL,
         `majorItems` varchar(255) DEFAULT NULL,
         `buyerName` varchar(200) DEFAULT NULL,
         `buyerTaxno` varchar(20) DEFAULT NULL,
@@ -68,18 +68,20 @@ SystemParameter:
       ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
   orderdetailSql: CREATE TABLE `invoice_orderdetail` (
-        `id` int(11) NOT NULL AUTO_INCREMENT,
-        `orderNo` varchar(20) DEFAULT NULL,
-        `itemName` varchar(200) DEFAULT NULL,
-        `itemUnit` varchar(10) DEFAULT NULL,
-        `itemNum` varchar(30) DEFAULT NULL,
-        `specMode` varchar(30) DEFAULT NULL,
-        `itemPrice` decimal(10,0) DEFAULT NULL,
-        `invoiceNature` tinyint(4) DEFAULT NULL,
-        `itemTaxCode` varchar(50) DEFAULT NULL,
-        `taxRate` decimal(10,0) DEFAULT NULL,
-        PRIMARY KEY (`id`)
-      ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+                    `id` int(11) NOT NULL AUTO_INCREMENT,
+                    `orderNo` varchar(50) DEFAULT NULL,
+                    `itemName` varchar(200) DEFAULT NULL,
+                    `itemUnit` varchar(10) DEFAULT NULL,
+                    `itemNum` varchar(30) DEFAULT NULL,
+                    `specMode` varchar(30) DEFAULT NULL,
+                    `itemPrice` decimal(10,0) DEFAULT NULL,
+                    `invoiceNature` tinyint(4) DEFAULT NULL,
+                    `itemTaxCode` varchar(50) DEFAULT NULL,
+                    `taxRate` decimal(10,0) DEFAULT NULL,
+                    `insertDate` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+                    `delflags` tinyint(4) DEFAULT NULL,
+                    PRIMARY KEY (`id`)
+                  ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
   invoiceinfoSql: CREATE TABLE `invoice_invoiceinfo` (
         `id` int(11) NOT NULL AUTO_INCREMENT,

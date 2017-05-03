@@ -3,7 +3,11 @@ package com.aisino.base.invoice.order.orderinfo.service;
 import com.aisino.base.invoice.order.orderinfo.dao.OrderInfoMapper;
 import com.aisino.base.invoice.order.orderinfo.entity.OrderInfo;
 import com.aisino.core.service.BaseService;
+import org.apache.poi.openxml4j.exceptions.OpenXML4JException;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
 import java.io.InputStream;
 
 /**
@@ -12,9 +16,7 @@ import java.io.InputStream;
 public interface OrderInfoService extends BaseService<OrderInfo,OrderInfoMapper> {
 
     /**
-     * 导入订单
-     * @param fis
-     * @param fileName
+     *  从excel读取数据
      */
-    void importOrderInfo(InputStream fis, String fileName);
+    void importExcel(InputStream inputStream) throws IOException, OpenXML4JException,ParserConfigurationException, SAXException;
 }

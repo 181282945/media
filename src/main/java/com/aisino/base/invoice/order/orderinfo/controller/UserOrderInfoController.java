@@ -11,6 +11,7 @@ import com.aisino.core.controller.BaseController;
 import com.aisino.core.dto.ResultDataDto;
 import com.aisino.core.mybatis.specification.PageAndSort;
 import com.aisino.core.security.util.SecurityUtil;
+import org.apache.poi.openxml4j.exceptions.OpenXML4JException;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,10 +20,12 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ModelAndView;
+import org.xml.sax.SAXException;
 
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
@@ -120,8 +123,10 @@ public class UserOrderInfoController extends BaseController<OrderInfo> {
     /**
      * 上传导入订单
      */
+    @CuzDataSource
     @RequestMapping(value = "/upload",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @AclResc(code = "upload",name = "更新资源")
+    @AclResc(code = "upload",name = "上传资源")
+    @Transactional(propagation = Propagation.SUPPORTS)
     public ResultDataDto upload(HttpServletRequest request){
         CommonsMultipartResolver multipartResolver=new CommonsMultipartResolver(
                 request.getSession().getServletContext());
@@ -140,17 +145,20 @@ public class UserOrderInfoController extends BaseController<OrderInfo> {
                 if(file!=null)
                 {
                     try {
-                        orderInfoService.importOrderInfo(file.getInputStream(),file.getOriginalFilename());
+                        orderInfoService.importExcel(file.getInputStream());
                     } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (OpenXML4JException e) {
+                        e.printStackTrace();
+                    } catch (ParserConfigurationException e) {
+                        e.printStackTrace();
+                    } catch (SAXException e) {
                         e.printStackTrace();
                     }
                 }
-
             }
-
         }
-//        orderInfoService.updateEntity(orderInfo);
-        return ResultDataDto.addUpdateSuccess();
+        return ResultDataDto.addOperationSuccess();
     }
 
 

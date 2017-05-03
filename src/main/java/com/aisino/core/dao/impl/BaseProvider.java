@@ -107,6 +107,56 @@ public class BaseProvider<T extends BaseEntity> {
     }
 
     /**
+     * 新增实体
+     */
+    public String addBatchEntity(List<T> entitys) {
+
+        List<QueryLike> queryLikes = EntityColumnUtil.generateEntityQueryLike(entitys.get(0));
+
+        StringBuilder sql = new StringBuilder();
+        sql.append(" insert into " + getTableNameThrowException(entitys.get(0).getClass()) + " (");
+        int index = 1;
+        for (QueryLike queryLike : queryLikes) {
+            if (queryLike.getIsTransient()) {
+                continue;
+            }
+            sql.append(queryLike.getColumnName());
+            if (index < queryLikes.size()) {
+                sql.append(" , ");
+            }
+            index++;
+        }
+        if (sql.toString().lastIndexOf(" , ") == sql.toString().length()-3) {
+            sql = new StringBuilder(sql.toString().substring(0, sql.toString().lastIndexOf(" , ")));
+        }
+
+
+        for(T entity : entitys){
+            index = 1;
+            sql.append(") values (");
+            entity.setInsertDate(new Date());
+            List<QueryLike> subQueryLikes = EntityColumnUtil.generateEntityQueryLike(entity);
+            for (QueryLike queryLike : subQueryLikes) {
+                if (queryLike.getIsTransient()) {
+                    continue;
+                }
+                sql.append(isNumber(queryLike.getColumnType()) ? queryLike.getValue().replaceAll("'","\\\\\'") : "'" + queryLike.getValue().replaceAll("'","\\\\\'") + "'");
+                if (index < queryLikes.size()) {
+                    sql.append(" , ");
+                }
+                index++;
+            }
+        }
+
+
+        if (sql.toString().lastIndexOf(" , ") == sql.toString().length()-3) {
+            sql = new StringBuilder(sql.toString().substring(0, sql.toString().lastIndexOf(" , ")));
+        }
+        sql.append("); ");
+        return sql.toString();
+    }
+
+    /**
      * 更新实体
      */
     public String updateEntity(T entity) {

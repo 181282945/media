@@ -15,8 +15,8 @@ $.validator.addMethod("isMobile", function(value, element) {
     return this.optional(element) || (length == 11 && mobile.test(value));
 }, "手机号码格式错误");
 
-
+//固话
 $.validator.addMethod("isTel", function(value, element) {
-    var tel = /^d{3,4}-?d{7,9}$/; //电话号码格式010-12345678
+    var tel = /^0?(13[0-9]|15[012356789]|17[013678]|18[0-9]|14[57])[0-9]{8}$/; //电话号码格式010-12345678
     return this.optional(element) || (tel.test(value));
 }, "请正确填写电话号码");

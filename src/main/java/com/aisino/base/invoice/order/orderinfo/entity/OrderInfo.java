@@ -1,6 +1,7 @@
 package com.aisino.base.invoice.order.orderinfo.entity;
 
-import com.aisino.core.entity.BaseBusinessEntity;
+import com.aisino.common.dto.param.ParamDto;
+import com.aisino.core.entity.BaseInvoiceEntity;
 import com.aisino.core.entity.annotation.BaseEntityMapper;
 import org.apache.ibatis.type.Alias;
 
@@ -9,7 +10,10 @@ import org.apache.ibatis.type.Alias;
  */
 @Alias("OrderInfo")
 @BaseEntityMapper(tableName = "invoice_orderinfo")
-public class OrderInfo extends BaseBusinessEntity {
+public class OrderInfo extends BaseInvoiceEntity {
+
+
+
     /**
      * 企业税号
      */
@@ -82,6 +86,188 @@ public class OrderInfo extends BaseBusinessEntity {
      * 用户账号
      */
     private String usrno;
+
+    //--------------------------------枚举----------------------------------------------
+
+    /**
+     * 代开标识
+     */
+    public enum DkflagsType{
+        SELF(0,"自开"),PROXY(1,"代开");
+
+        //状态代码
+        private Integer code;
+        //状态名称
+        private String name;
+
+
+        //构造方法
+        DkflagsType(Integer code, String name){
+            this.code = code;
+            this.name = name;
+        }
+
+        //根据code获取状态名称
+        public static String getNameByCode(Integer code){
+            for(DkflagsType item : DkflagsType.values()){
+                if(item.getCode().equals(code)){
+                    return item.getName();
+                }
+            }
+            return "";
+        }
+
+        public static ParamDto[] getParams(){
+            ParamDto[] dkflagsTypeParams = new ParamDto[DkflagsType.values().length];
+
+            for(int i=0;i<dkflagsTypeParams.length;i++){
+                dkflagsTypeParams[i] = new ParamDto(DkflagsType.values()[i].getCode().toString(),DkflagsType.values()[i].getName());
+            }
+            return  dkflagsTypeParams;
+        }
+
+
+
+
+        //-----------------------------------getter and setter---------------------------------------------------------
+
+
+        public Integer getCode() {
+            return code;
+        }
+
+        public void setCode(Integer code) {
+            this.code = code;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+    }
+
+    /**
+     * 买方类型
+     */
+    public enum BuyerType {
+        ENTERPRISE("01", "企业"), INSTITUTIONS("02", "机关事业单位"), INDIVIDUAL("03", "个人"), OTHER("04", "其他");
+
+        //状态代码
+        private String code;
+        //状态名称
+        private String name;
+
+
+        //构造方法
+        BuyerType(String code, String name) {
+            this.code = code;
+            this.name = name;
+        }
+
+        //根据code获取状态名称
+        public static String getNameByCode(String code) {
+            for (BuyerType item : BuyerType.values()) {
+                if (item.getCode().equals(code)) {
+                    return item.getName();
+                }
+            }
+            return "";
+        }
+
+        public static ParamDto[] getParams() {
+            ParamDto[] buyerTypeParams = new ParamDto[BuyerType.values().length];
+
+            for (int i = 0; i < buyerTypeParams.length; i++) {
+                buyerTypeParams[i] = new ParamDto(BuyerType.values()[i].getCode(), BuyerType.values()[i].getName());
+            }
+            return buyerTypeParams;
+        }
+
+        //-----------------------------------getter and setter---------------------------------------------------------
+
+
+        public String getCode() {
+            return code;
+        }
+
+        public void setCode(String code) {
+            this.code = code;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+    }
+
+
+        /**
+         * 订单状态
+         */
+        public enum StatusType{
+            NOTYET(0,"未开"),ALREADY (1,"已开");
+
+            //状态代码
+            private Integer code;
+            //状态名称
+            private String name;
+
+
+            //构造方法
+            StatusType(Integer code, String name){
+                this.code = code;
+                this.name = name;
+            }
+
+            //根据code获取状态名称
+            public static String getNameByCode(Integer code){
+                for(StatusType item : StatusType.values()){
+                    if(item.getCode().equals(code)){
+                        return item.getName();
+                    }
+                }
+                return "";
+            }
+
+            public static ParamDto[] getParams(){
+                ParamDto[] statusTypeParams = new ParamDto[StatusType.values().length];
+
+                for(int i=0;i<statusTypeParams.length;i++){
+                    statusTypeParams[i] = new ParamDto(StatusType.values()[i].getCode().toString(), StatusType.values()[i].getName());
+                }
+                return  statusTypeParams;
+            }
+
+
+        //-----------------------------------getter and setter---------------------------------------------------------
+
+
+        public Integer getCode() {
+            return code;
+        }
+
+        public void setCode(Integer code) {
+            this.code = code;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+    }
+
+
+
 
 
     //---------------------------------getter and setter ------------------------------------------------

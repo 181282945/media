@@ -120,12 +120,14 @@
         <div id="logo" style="text-align:right;"><div th:style="${userName}!=null? '':'display: none'" ><span th:text="${userName}" style="position:relative;right: 3px;bottom:3px;font-size: small">XXXXX</span><img src="/images/u963.png" style="margin-bottom: 5px"><a href="/logout"><span style="position:relative;left:3px;bottom:3px;font-size: small;margin-right: 10px">退出登录</span></a></div></div>
         <div id="nav" style="vertical-align:bottom;display:inline;">
             <img class="inline" style="width: 167px;height: 39px;" src="/images/u73.png"><img src="/images/u83.png"><span class="inline" style="font-family: 微软雅黑;font-weight: bold;color: black;font-size: larger">云开票</span>
+            <a href="/center">
             <div class="inline" style="float:right;margin-right:50px;position: relative;">
                 <img src="/images/u75.png"  class="navimg"  id="memberCentre" >
                 <div style="position: absolute;left: 15px;top: 10px;color: black">
                     <span style="font-family: 微软雅黑;font-weight: bold;font-size: medium;" onmouseout="mouseOutBgImg('memberCentre')" onmouseover="mouseOverBgImg('memberCentre')" >个人中心</span>
                 </div>
             </div>
+            </a>
 
             <div class="inline" style="float:right;margin-right:50px;position: relative;">
                 <img src="/images/u75.png" class="navimg" id="invoiceMgr" >
@@ -133,7 +135,7 @@
                     <span style="font-family: 微软雅黑;font-weight: bold;font-size: medium;" onmouseout="mouseOutBgImg('invoiceMgr')" onmouseover="mouseOverBgImg('invoiceMgr')" >发票管理</span>
                 </div>
             </div>
-            <a th:href="${USERORDERINFO_HOME_PAGE}">
+            <a href="/base/invoice/order/orderinfo/u/tolist">
                 <div class="inline" style="float:right;margin-right:50px;position: relative;">
                     <img src="/images/u75.png" id="order" >
                     <div style="position: absolute;left: 15px;top: 10px;color: black">
@@ -141,7 +143,7 @@
                     </div>
                 </div>
             </a>
-            <a th:href="${INDEX_HOME_PAGE}">
+            <a href="/index">
                 <div class="inline" style="float:right;margin-right:50px;position: relative;">
                     <img src="/images/u75.png" class="navimg" id="index" >
                     <div style="position: absolute;left: 30px;top: 10px;color: black">
@@ -250,7 +252,7 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭
                 </button>
                 <!--<button type="button" class="btn btn-primary">-->
-                    <!--上传-->
+                <!--上传-->
                 <!--</button>-->
             </div>
         </div><!-- /.modal-content -->
@@ -372,6 +374,100 @@
         jQuery(grid_selector).jqGrid({
             shrinkToFit:false,
             autoScroll: true,
+            subGrid : true,
+//            subGridModel: [{
+////                name : ['No','Item Name','Qty'], width : [55,200,80]
+//                params : ['id'],
+//            }],
+            //datatype: "xml",
+            subGridOptions: {
+                plusicon: "ace-icon fa fa-plus center bigger-110 blue",
+                minusicon: "ace-icon fa fa-minus center bigger-110 blue",
+                openicon: "ace-icon fa fa-chevron-right center orange"
+            },
+            //for this example we are using local data
+            subGridRowExpanded: function (subgridDivId, rowId) {
+                var subgridTableId = subgridDivId + "_t";
+                var pager_id = "p_"+subgridTableId;
+                $("#" + subgridDivId).html("<table id='" + subgridTableId + "'></table><div id='" + pager_id + "'></div>");
+                $("#" + subgridTableId).jqGrid({
+                    url: "/base/invoice/order/orderdetail/u/listByOrderInfoId?orderInfoId=" + rowId,
+                    editurl: [[${UPDATE_URL}]],
+                    datatype: 'json',
+//                    data: subgrid_data,
+                    colNames: [' ', 'id', '订单号', '商品名', '单位', '数量', '规格型号', '含税单价','发票行性质','税控分类编码','税率'],
+                    colModel: [
+                        {
+                            name: 'myac', index: '', width: 80, fixed: true, sortable: false, resize: false,
+                            formatter: 'actions',
+                            formatoptions: {
+                                keys: true,
+                                editbutton: true,
+                                delbutton: false,
+//                        delOptions:{
+//                            url:[[${DELETE_URL}]],
+//                            recreateForm: true,
+//                            beforeShowForm:beforeDeleteCallback,
+//                            afterComplete:afterCompleteCallback
+//                        },onSuccess : afterCompleteMsg
+                            }
+                        },
+                        {name: 'id', index: 'id', width: 50, editable: false, search: true, hidden: true},
+                        {name: 'orderNo', index: 'orderNo', editable: false},
+                        {name: 'itemName', index: 'itemName', editable: false,},
+                        {name: 'itemUnit', index: 'itemUnit', editable: false},
+                        {name: 'itemNum', index: 'itemNum', editable: false},
+                        {name: 'specMode', index: 'specMode', editable: false,},
+                        {name: 'itemPrice', index: 'itemPrice', editable: false,},
+                        {name: 'invoiceNature', index: 'invoiceNature', editable: false,},
+                        {name: 'itemTaxCode', index: 'itemTaxCode', editable: false,},
+                        {name: 'taxRate', index: 'taxRate', editable: false,},
+
+                    ],
+                    jsonReader: {
+                        root:"datas",
+                        page: "pageAndSort.page",
+                        total: "pageAndSort.totalPage",
+                        records: "pageAndSort.rowCount",
+                        repeatitems : false
+                    },
+                    prmNames : {
+                        page:"pageAndSort.page",    // 表示请求页码的参数名称
+                        rows:"pageAndSort.rp",    // 表示请求行数的参数名称
+                        sort: "pageAndSort.sortName", // 表示用于排序的列名的参数名称
+                        order: "pageAndSort.sortOrder", // 表示采用的排序方式的参数名称
+                        search:"_search", // 表示是否是搜索请求的参数名称
+//                nd:"nd", // 表示已经发送请求的次数的参数名称
+                        id:"id", // 表示当在编辑数据模块中发送数据时，使用的id的名称
+                        oper:"oper",    // operation参数名称（我暂时还没用到）
+                        editoper:"edit", // 当在edit模式中提交数据时，操作的名称
+                        addoper:"add", // 当在add模式中提交数据时，操作的名称
+                        deloper:"del", // 当在delete模式中提交数据时，操作的名称
+                        subgridid:"id", // 当点击以载入数据到子表时，传递的数据名称
+                        npage: null,
+//                totalrows:"rowCount" // 表示需从Server得到总共多少行数据的参数名称，参见jqGrid选项中的rowTotal
+                    },
+
+                    viewrecords : true,
+                    rowNum:10,
+                    rowList:[10,20,30],
+                    pager : pager_id,
+                    height: '100%', //自动适应行高
+                    width: '100%',
+//                            altRows: true,
+                    loadComplete : function() {
+                        $("#gbox_"+subgridTableId).removeClass("ui-jqgrid").height(350).css("cssText","position: relative;");
+                        var table = this;
+                        setTimeout(function () {
+                            styleCheckbox(table);
+                            updateActionIcons(table);
+                            updatePagerIcons(table);
+                            enableTooltips(table);
+                        }, 0);
+
+                    },
+                });
+            },
             url: [[${SEARCH_URL}]],
             datatype: "json",
             jsonReader: {
@@ -422,36 +518,20 @@
                 {name: 'id', index: 'id', editable: false, search: true, hidden: true},
                 {name: 'orderNo', index: 'orderNo', editable: false},
                 {name: 'status', index: 'status', editable: false},
-
-
-
-                {name: 'taxno', index: 'taxno', editable: false},
-                {name: 'ticketCode', index: 'ticketCode', editable: false},
-                {name: 'majorItems', index: 'majorItems', editable: false},
-                {name: 'buyerTaxno', index: 'buyerTaxno', editable: false},
-                {name: 'buyerName', index: 'buyerName', editable: false},
-                {name: 'buyerAddr', index: 'buyerAddr', editable: false},
-                {name: 'buyerProvince', index: 'buyerProvince', editable: false},
-                {name: 'buyerTele', index: 'buyerTele', editable: false},
-                {name: 'buyerMobile', index: 'buyerMobile', editable: false},
-                {name: 'buyerEmail', index: 'buyerEmail', editable: false},
-                {name: 'buyerBankAcc', index: 'buyerBankAcc', editable: false},
-
-                {name: 'induCode', index: 'induCode', editable: false},
-                {name: 'induName', index: 'induName', editable: false},
-                {name: 'remarks', index: 'remarks', editable: false},
-
-
-
-
-
-
-
-
-
-
-
-//                {name: 'insertDate', index: 'insertDate', editable: false,formatter:'date',formatter:'date', formatoptions: {srcformat: 'u', newformat:'Y-m-d H:i'}},
+                {name: 'taxno', index: 'taxno', editable: true},
+                {name: 'ticketCode', index: 'ticketCode', editable: true},
+                {name: 'majorItems', index: 'majorItems', editable: true},
+                {name: 'buyerTaxno', index: 'buyerTaxno', editable: true},
+                {name: 'buyerName', index: 'buyerName', editable: true},
+                {name: 'buyerAddr', index: 'buyerAddr', editable: true},
+                {name: 'buyerProvince', index: 'buyerProvince', editable: true},
+                {name: 'buyerTele', index: 'buyerTele', editable: true},
+                {name: 'buyerMobile', index: 'buyerMobile', editable: true},
+                {name: 'buyerEmail', index: 'buyerEmail', editable: true},
+                {name: 'buyerBankAcc', index: 'buyerBankAcc', editable: true},
+                {name: 'induCode', index: 'induCode', editable: true},
+                {name: 'induName', index: 'induName', editable: true},
+                {name: 'remarks', index: 'remarks', editable: true},
             ],
 
             viewrecords: true,

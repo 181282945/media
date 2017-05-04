@@ -44,6 +44,8 @@ public class UserEnInfoController extends BaseController<EnInfo> {
     @RequestMapping(value = "/addEnInfoMav",method = RequestMethod.GET,produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView addEnfo(){
         ModelAndView mav = new ModelAndView(PATH + "/add_enifo");
+        EnInfo currentEnInfo = SecurityUtil.getCurrentEnInfo();
+        mav.addObject("currentEnInfo",currentEnInfo);
         return mav;
     }
 
@@ -52,19 +54,25 @@ public class UserEnInfoController extends BaseController<EnInfo> {
     /**
      * 用户完善企业信息的方法.
      */
-    @RequestMapping(value = "/addByCurrentUser",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @AclResc(code = "addByCurrentUser",name = "新增企业")
+    @RequestMapping(value = "/addOrUpdateByCurrentUser",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @AclResc(code = "addOrUpdateByCurrentUser",name = "新增企业")
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public ResultDataDto addByCurrentUser(@ModelAttribute("enInfo")EnInfo enInfo){
+    public ResultDataDto addOrUpdateByCurrentUser(@ModelAttribute("enInfo")EnInfo enInfo){
         UserInfo userInfo = SecurityUtil.getCurrentUserInfo();
         enInfo.setUsrno(userInfo.getUsrno());
         userInfo.setTaxNo(enInfo.getTaxno());
-        if(enInfoService.addEntity(enInfo)!=null){
-            userInfoService.updateEntity(userInfo);//更新用户税号
-            if(dbInfoService.addByTaxNo(enInfo.getTaxno()) != null)
-                return ResultDataDto.addAddSuccess();
-            return ResultDataDto.addOperationFailure("保存失败!原因:建库失败");
+        if(enInfo.getId()==null){
+            if(enInfoService.addEntity(enInfo)!=null){
+                userInfoService.updateEntity(userInfo);//更新用户税号
+                if(dbInfoService.addByTaxNo(enInfo.getTaxno()) != null)
+                    return ResultDataDto.addAddSuccess();
+                return ResultDataDto.addOperationFailure("保存失败!原因:建库失败");
+            }
+        }else{
+            enInfoService.updateEntity(enInfo);
+            return ResultDataDto.addUpdateSuccess();
         }
+
         return ResultDataDto.addOperationFailure("保存失败!");
     }
 }

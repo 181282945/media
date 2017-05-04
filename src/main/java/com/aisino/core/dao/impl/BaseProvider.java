@@ -2,6 +2,7 @@ package com.aisino.core.dao.impl;
 
 import com.aisino.core.entity.BaseBusinessEntity;
 import com.aisino.core.entity.BaseEntity;
+import com.aisino.core.entity.BaseInvoiceEntity;
 import com.aisino.core.entity.annotation.BaseEntityMapper;
 import com.aisino.core.mybatis.specification.PageAndSort;
 import com.aisino.core.util.EntityColumnUtil;
@@ -197,14 +198,14 @@ public class BaseProvider<T extends BaseEntity> {
     /**
      * 更新实体为失效
      */
-    public <S extends BaseBusinessEntity> String updateEntityInvalid(S entity) {
+    public <S extends BaseInvoiceEntity> String updateEntityInvalid(S entity) {
         return "update " + getTableNameThrowException(entity.getClass()) + " set delflags = true where id = " + entity.getId();
     }
 
     /**
      * 更新实体为生效
      */
-    public <S extends BaseBusinessEntity> String updateEntityEffective(S entity) {
+    public <S extends BaseInvoiceEntity> String updateEntityEffective(S entity) {
         return "update " + getTableNameThrowException(entity.getClass()) + " set delflags = false where id = " + entity.getId();
     }
 

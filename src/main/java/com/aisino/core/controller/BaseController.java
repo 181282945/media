@@ -40,7 +40,7 @@ public abstract class BaseController<T extends BaseEntity> {
     public JqgridFilters populateModel(@RequestParam(value = "filters",required = false) String filters) {
         Gson gson = new Gson();
         JqgridFilters jqgridFilters = gson.fromJson(filters, JqgridFilters.class);
-        return jqgridFilters;
+        return jqgridFilters == null ? new JqgridFilters():jqgridFilters;
     }
 
     // 异常信息拦截，返回

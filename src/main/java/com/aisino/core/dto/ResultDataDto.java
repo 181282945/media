@@ -118,6 +118,10 @@ public class ResultDataDto {
 		return new ResultDataDto(CODE_SUCCESS,CODE_OPERATE_SUCCESS,"操作成功");
 	}
 
+	public static ResultDataDto addOperationSuccess(String message) {
+		return new ResultDataDto(CODE_SUCCESS,CODE_OPERATE_SUCCESS,message);
+	}
+
 	public static ResultDataDto addOperationFailure() {
 		return new ResultDataDto(CODE_SUCCESS,CODE_OPERATE_FAILURE,"操作失败");
 	}

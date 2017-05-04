@@ -15,11 +15,9 @@ import org.springframework.stereotype.Service;
 @Service("enInfoService")
 public class EnInfoServiceImpl extends BaseServiceImpl<EnInfo,EnInfoMapper> implements EnInfoService {
 
-
+    @Override
     public boolean isCompleteByUsrno(String usrno){
-        Specification<EnInfo> specification = new Specification<>(EnInfo.class);
-        specification.addQueryLike(new QueryLike("usrno", QueryLike.LikeMode.Like.Eq,usrno));
-        EnInfo enInfo = this.getOne(specification);
+        EnInfo enInfo = this.getByUsrno(usrno);
 
         if (enInfo == null)
             return false;
@@ -33,6 +31,13 @@ public class EnInfoServiceImpl extends BaseServiceImpl<EnInfo,EnInfoMapper> impl
                 ||StringUtils.isBlank(enInfo.getUsrno()))
             return false;
         return true ;
+    }
+
+    @Override
+    public EnInfo getByUsrno(String usrno){
+        Specification<EnInfo> specification = new Specification<>(EnInfo.class);
+        specification.addQueryLike(new QueryLike("usrno", QueryLike.LikeMode.Like.Eq,usrno));
+        return this.getOne(specification);
     }
 
 }

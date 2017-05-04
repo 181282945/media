@@ -115,12 +115,14 @@
         <div id="logo" style="text-align:right;"><div th:style="${userName}!=null? '':'display: none'" ><span th:text="${userName}" style="position:relative;right: 3px;bottom:3px;font-size: small">XXXXX</span><img src="/images/u963.png" style="margin-bottom: 5px"><a href="/logout"><span style="position:relative;left:3px;bottom:3px;font-size: small;margin-right: 10px">退出登录</span></a></div></div>
         <div id="nav" style="vertical-align:bottom;display:inline;">
             <img class="inline" style="width: 167px;height: 39px;" src="images/u73.png"><img src="images/u83.png"><span class="inline" style="font-family: 微软雅黑;font-weight: bold;color: black;font-size: larger">云开票</span>
-            <div class="inline" style="float:right;margin-right:50px;position: relative;">
-                <img src="images/u75.png"  class="navimg"  id="memberCentre" >
-                <div style="position: absolute;left: 15px;top: 10px;color: black">
-                    <span style="font-family: 微软雅黑;font-weight: bold;font-size: medium;" onmouseout="mouseOutBgImg('memberCentre')" onmouseover="mouseOverBgImg('memberCentre')" >个人中心</span>
+            <a href="/center">
+                <div class="inline" style="float:right;margin-right:50px;position: relative;">
+                    <img src="images/u75.png"  class="navimg"  id="memberCentre" >
+                    <div style="position: absolute;left: 15px;top: 10px;color: black">
+                        <span style="font-family: 微软雅黑;font-weight: bold;font-size: medium;" onmouseout="mouseOutBgImg('memberCentre')" onmouseover="mouseOverBgImg('memberCentre')" >个人中心</span>
+                    </div>
                 </div>
-            </div>
+            </a>
 
             <div class="inline" style="float:right;margin-right:50px;position: relative;">
                 <img src="images/u75.png" class="navimg" id="invoiceMgr" >
@@ -129,7 +131,7 @@
                 </div>
             </div>
 
-            <a th:href="${USERORDERINFO_HOME_PAGE}">
+            <a href="/base/invoice/order/orderinfo/u/tolist">
                 <div class="inline" style="float:right;margin-right:50px;position: relative;">
                     <img src="images/u75.png" class="navimg" id="order" >
                     <div style="position: absolute;left: 15px;top: 10px;color: black">
@@ -137,7 +139,7 @@
                     </div>
                 </div>
             </a>
-            <a th:href="${INDEX_HOME_PAGE}">
+            <a href="/index">
                 <div class="inline" style="float:right;margin-right:50px;position: relative;">
                     <img src="images/u75.png" >
                     <div style="position: absolute;left: 30px;top: 10px;color: black">
@@ -186,16 +188,26 @@
 										</span>
                                 </label>
 
-                                <label class="block clearfix" for="verification_code">
-										<span class="block input-icon input-icon-right">
-                                            <!--<input    class="col-xs-1" type="text" id="form-field-5" placeholder="验证码" >-->
-											<input id="verification_code" name="verification_code" class="form-control" style="position: relative" type="text" placeholder="验证码">
-                                              <img style="width:40%;height: 35px;" src="/images/kaptcha.jpg" id="verification_code_img" title="点击更换" onclick="javascript:refreshCaptcha(this.id);"/>
-                                            <!--<input type="text" class="form-control" placeholder="验证码" />-->
-											<i class="ace-icon fa fa-key"></i>
-										</span>
 
-                                </label>
+                                <div class="form-group">
+                                            <span class="block input-icon input-icon-right">
+											<input id="verification_code" name="verification_code" class="form-control inline" style="width: 130px" type="text" placeholder="验证码">
+                                                 <img style="width:80px;height: 34px" src="/images/kaptcha.jpg" id="verification_code_img" title="点击更换" onclick="javascript:refreshCaptcha(this.id);"/>
+                                                   <i class="ace-icon fa fa-key"></i>
+										    </span>
+                                </div>
+
+
+
+                                <!--<div class="form-group">-->
+                                <!--<label class="form-label">验&ensp;证&ensp;码&ensp;:&ensp;</label>-->
+                                <!--<input type="text" class="form-control" style="width: 80px" name="verificationCode">-->
+
+                                <!--<label class="form-label" style="">-->
+                                <!--<img style="width:80px;height: 35px;" src="/images/kaptcha.jpg" id="verification_code_img2" title="点击更换" onclick="javascript:refreshCaptcha(this.id);"/>-->
+                                <!--</label>-->
+                                <!--</div>-->
+
 
                                 <div class="space"></div>
 
@@ -216,7 +228,7 @@
                     </div>
 
                     <div id="profile4" class="tab-pane "  style="overflow:auto;width: 271px;height: 270px;" >
-                        <form id="regForm" method="post" action="/base/invoice/useruserinfo/reg">
+                        <form id="regForm" method="post" action="/base/invoice/userinfo/u/reg">
                             <fieldset>
                                 <label class="block clearfix "  for="usrno">
 														<span class="block input-icon input-icon-right">
@@ -253,14 +265,26 @@
 														</span>
                                 </label>
 
-                                <label class="block clearfix" for="verification_code2">
+                                <div class="form-group">
 														<span class="block input-icon input-icon-right">
-                                                                	<input type="text" name="verification_code" id="verification_code2" class="form-control" placeholder="验证码">
-                                                            <img style="width:40%;height: 35px" src="/images/kaptcha.jpg" id="verification_code_img2" title="点击更换" onclick="javascript:refreshCaptcha(this.id);"/>
+                                                                	<input type="text" name="verification_code" id="verification_code2" class="form-control inline" style="width: 130px"  placeholder="验证码">
+                                                            <img style="width:80px;height: 34px"  src="/images/kaptcha.jpg" id="verification_code_img2" title="点击更换" onclick="javascript:refreshCaptcha(this.id);"/>
 															<i class="ace-icon fa glyphicon-asterisk red"></i>
 														</span>
 
-                                </label>
+                                </div>
+
+
+
+                                <!--<div class="form-group">-->
+                                <!--<span class="block input-icon input-icon-right">-->
+                                <!--<input id="verification_code" name="verification_code" class="form-control inline" style="width: 130px" type="text" placeholder="验证码">-->
+                                <!--<img style="width:80px;height: 34px" src="/images/kaptcha.jpg" id="verification_code_img" title="点击更换" onclick="javascript:refreshCaptcha(this.id);"/>-->
+                                <!--<i class="ace-icon fa fa-key"></i>-->
+                                <!--</span>-->
+                                <!--</div>-->
+
+
 
                                 <label class="block clearfix" for="telephone">
 														<span class="block input-icon input-icon-right">
@@ -526,24 +550,12 @@
 
     var options = {
         success: function (json) {
-            console.log(json);
             if(json.successMessage){
                 if(json.operateCode == "F"){
                     refreshCaptcha('verification_code_img');
                     layerAlertMsg(json.message);
                 }else if(json.operateCode == "S"){
-//                    if(json.datas != null)
                     location.href = json.datas;
-//                    layer.open({
-//                        type: 2,
-//                        title: '完善企业信息',
-//                        shadeClose: true,
-//                        shade: false,
-//                        maxmin: true, //开启最大化最小化按钮
-//                        area: ['893px', '600px'],
-//                        content: '/base/invoice/eninfo/addEnfo'
-//                    });
-
                 }
             }
         }
@@ -610,10 +622,6 @@
             },
             password:{
                 required:true,
-                rangelength:[5,10]
-            },
-            password:{
-                required:true,
                 password:true,
                 rangelength:[8,16],
             },
@@ -669,7 +677,6 @@
         submitHandler: function(form) {
             jQuery(form).ajaxSubmit(function(data){
                 if(data.operateCode == "F"){
-                    refreshCaptcha('verification_code_img2');
                     layerAlertMsg(data.message);
                 }else if(data.operateCode == "S"){
                     layer.alert('<h5 style="color: red"><b>恭喜您注册成功,请前往登录,并完善企业信息!</b></h5>', {
@@ -678,6 +685,7 @@
                     });
                     $('#logindiv a:first').tab('show')
                 }
+                refreshCaptcha('verification_code_img2');
             });
         }
     });

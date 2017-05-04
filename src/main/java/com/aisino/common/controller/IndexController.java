@@ -35,9 +35,6 @@ public class IndexController extends BaseController<BaseEntity> {
     public ModelAndView toIndex(){
 
         ModelAndView mav = new ModelAndView("index");
-        mav.addObject("INDEX_HOME_PAGE", IndexController.HOME_PAGE);
-        mav.addObject("USERORDERINFO_HOME_PAGE", UserOrderInfoController.HOME_PAGE);
-
         String userName = SecurityUtil.getCurrentUserName();
         if(StringUtils.isBlank(userName))//如果没有登录
             return mav;

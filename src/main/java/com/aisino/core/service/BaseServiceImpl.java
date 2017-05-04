@@ -90,10 +90,9 @@ public class BaseServiceImpl<T extends BaseEntity,M extends BaseMapper<T>> imple
         try {
             entity = (BaseInvoiceEntity) entityClass.newInstance();
         } catch (Exception e) {
-            throw new RuntimeException("更新状态失败，类型异常。");
+            throw new RuntimeException("生效失败，类型异常。");
         }
         entity.setId(entityId);
-        entity.setDelflags(false);
         getMapper().updateEntityEffective(entity);
     }
 
@@ -103,10 +102,9 @@ public class BaseServiceImpl<T extends BaseEntity,M extends BaseMapper<T>> imple
         try {
             entity = (BaseInvoiceEntity) entityClass.newInstance();
         } catch (Exception e) {
-            throw new RuntimeException("更新状态失败，类型异常。");
+            throw new RuntimeException("失效失败，类型异常。");
         }
         entity.setId(entityId);
-        entity.setDelflags(true);
         getMapper().updateEntityInvalid(entity);
     }
 
@@ -121,6 +119,7 @@ public class BaseServiceImpl<T extends BaseEntity,M extends BaseMapper<T>> imple
         }
         entity.setId(Integer.parseInt(entityId));
         entity.setStatus(status);
+        getMapper().updateEntityStatus(entity);
     }
 
     protected void validateUpdateEntityStatus(String entityId, String status) {

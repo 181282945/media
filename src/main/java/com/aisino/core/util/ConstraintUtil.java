@@ -29,7 +29,7 @@ public class ConstraintUtil {
         }
     }
 
-    //判断非空属性是否有值,没有的话抛出异常
+    //设置默认值
     public static void setDefaultValue(Object obj){
         for(Class<?> clazz = obj.getClass();clazz != Object.class;clazz = clazz.getSuperclass()){
             for(Field field : clazz.getDeclaredFields()){
@@ -43,6 +43,8 @@ public class ConstraintUtil {
                             field.set(obj, Integer.parseInt(defaultValue.value()));
                         }else if(field.getType().toString().equals("class java.lang.Double")){
                             field.set(obj, Double.parseDouble(defaultValue.value()));
+                        }else if(field.getType().toString().equals("class java.lang.Boolean")){
+                            field.set(obj,Boolean.valueOf(defaultValue.value()));
                         }
                     }
                 } catch (IllegalArgumentException e) {

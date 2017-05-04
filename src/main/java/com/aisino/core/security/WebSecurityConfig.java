@@ -52,7 +52,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         web.ignoring().antMatchers("/favicon.ico");
 
         //注册地址不拦截
-        web.ignoring().antMatchers("/base/invoice/useruserinfo/reg");
+        web.ignoring().antMatchers("/base/invoice/userinfo/u/reg");
 
 
 //        web.ignoring().antMatchers("/**");

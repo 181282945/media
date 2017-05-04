@@ -6,9 +6,6 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
     <meta name="apple-mobile-web-app-capable" content="yes"/>
 
-    <!--上面是产品原型图生成的莫名其妙的东西-->
-
-
     <!-- bootstrap & fontawesome -->
     <link rel="stylesheet" href="/assets/css/bootstrap.css"/>
     <link rel="stylesheet" href="/components/font-awesome/css/font-awesome.css"/>
@@ -80,72 +77,37 @@
             <div class="col-sm-10 col-sm-offset-1">
                 <div class="login-container">
                     <div class="center">
-                        <h1>企业信息</h1>
+                        <h1>用户信息</h1>
                     </div>
-                    <form id="addForm" method="post"  class="form-inline" role="form" action="/base/invoice/eninfo/u/addOrUpdateByCurrentUser">
+                    <form id="addForm" method="post"  class="form-inline" role="form"  action="/base/invoice/userinfo/u/update">
                         <fieldset>
-                            <input type="text" name="id" class="form-control hidden" th:value="${currentEnInfo}? ${currentEnInfo.id}" />
-
+                            <input type="text" name="id" class="form-control hidden"  th:value="${currentUserInfo}? ${currentUserInfo.id}" />
 
                             <div class="form-group" style="margin-bottom: 5px">
-                                <label class="form-label">企业名称&ensp;:&ensp;</label>
-                                <input type="text" name="taxname" class="form-control"  placeholder="企业名称" th:value="${currentEnInfo}? ${currentEnInfo.taxname}"/>
+                                <label class="form-label">昵&emsp;&emsp;称&ensp;:&ensp;</label>
+                                <input type="text" name="usrname" class="form-control"  placeholder="昵称" th:value="${currentUserInfo}? ${currentUserInfo.usrname}" />
                                 <i class="ace-icon fa glyphicon-asterisk red"></i>
                             </div>
 
-                            <div class="form-group" style="margin-bottom: 5px">
-                                <label class="form-label">银行账号&ensp;:&ensp;</label>
-                                <input type="text" name="bankaccount" class="form-control"  placeholder="银行账号" th:value="${currentEnInfo}? ${currentEnInfo.bankaccount}"/>
-                                <i class="ace-icon fa glyphicon-asterisk red"></i>
-                            </div>
 
                             <div class="form-group" style="margin-bottom: 5px">
-                                <label class="form-label">企业地址&ensp;:&ensp;</label>
-                                <input type="text" name="taxaddr" class="form-control"  placeholder="企业地址" th:value="${currentEnInfo}? ${currentEnInfo.taxaddr}"/>
+                                <label class="form-label">手&emsp;&emsp;机&ensp;:&ensp;</label>
+                                <input type="text" name="mobilePhone" class="form-control"  placeholder="手机" th:value="${currentUserInfo}? ${currentUserInfo.mobilePhone}"/>
                                 <i class="ace-icon fa glyphicon-asterisk red"></i>
                             </div>
 
 
 
                             <div class="form-group" style="margin-bottom: 5px">
-                                <label class="form-label">企业电话&ensp;:&ensp;</label>
-                                <input type="text" name="taxtel" class="form-control"  placeholder="企业电话" th:value="${currentEnInfo}? ${currentEnInfo.taxtel}"/>
-                                <i class="ace-icon fa glyphicon-asterisk red"></i>
+                                <label class="form-label">固&emsp;&emsp;话&ensp;:&ensp;</label>
+                                <input type="text" name="telephone" class="form-control"  placeholder="固话" th:value="${currentUserInfo}? ${currentUserInfo.telephone}"/>
                             </div>
 
 
                             <div class="form-group" style="margin-bottom: 5px">
-                                <label class="form-label">开&ensp;票&ensp;人&ensp;:&ensp;</label>
-                                <input type="text" name="drawer" class="form-control"  placeholder="开票人" th:value="${currentEnInfo}? ${currentEnInfo.drawer}"/>
-                                <i class="ace-icon fa glyphicon-asterisk red"></i>
+                                <label class="form-label">邮&emsp;&emsp;箱&ensp;:&ensp;</label>
+                                <input type="text" name="email" class="form-control"  placeholder="邮箱" th:value="${currentUserInfo}? ${currentUserInfo.email}"/>
                             </div>
-
-                            <div class="form-group" style="margin-bottom: 5px">
-                                <label class="form-label">收&ensp;款&ensp;人&ensp;:&ensp;</label>
-                                <input type="text" name="payee" class="form-control"  placeholder="收款人"th:value="${currentEnInfo}? ${currentEnInfo.payee}"/>
-                                <i class="ace-icon fa glyphicon-asterisk red"></i>
-                            </div>
-
-
-                            <div class="form-group" style="margin-bottom: 5px">
-                                <label class="form-label">复&ensp;核&ensp;人&ensp;:&ensp;</label>
-                                <input type="text" name="reviewer" class="form-control"  placeholder="复核人" th:value="${currentEnInfo}? ${currentEnInfo.reviewer}"/>
-                                <i class="ace-icon fa glyphicon-asterisk red"></i>
-                            </div>
-                            <!--<label class="block clearfix">-->
-                            <!--<span class="block">-->
-                            <!--<input type="text" name="telephone" class="form-control"  placeholder="固定电话"/>-->
-                            <!--</span>-->
-                            <!--</label>-->
-
-                            <!--<label class="block clearfix">-->
-                            <!--<span class="block input-icon input-icon-right">-->
-                            <!--<input type="email" name="email" class="form-control"  placeholder="邮箱"/>-->
-                            <!--<i class="ace-icon fa fa-envelope"></i>-->
-                            <!--</span>-->
-                            <!--</label>-->
-
-                            <!--<div class="space-24"></div>-->
 
                             <div>
                                 <button type="reset" class="width-30 pull-left btn btn-sm">
@@ -236,45 +198,31 @@
     $("#addForm").validate({
 //            debug:true, //调试模式，即使验证成功也不会跳转到目标页面
         rules:{ //配置验证规则，key就是被验证的dom对象，value就是调用验证的方法(也是json格式)
-            taxno:{
+            usrname:{
                 required:true, //必填。如果验证方法不需要参数，则配置为true
+                username:true,
+                rangelength:[3,10]
             },
-            taxname:{
-                required:true, //必填。如果验证方法不需要参数，则配置为true
+            telephone:{
+                required:false,
+                isTel:true
             },
-            bankaccount:{
-                required:true,
-            },
-            taxaddr:{
-                required:true,
-            },
-            taxtel:{
-                required:true,
-            },
-            drawer:{
-                required:true,
+            email:{
+                required:false,
+                email:true
             }
         },
         messages:{
-            taxno:{
+            usrname:{
                 required:"必填",
+                rangelength:"长度3-10"
             },
-            taxname:{
-                required:"必填",
+            mobilePhone:{
+                required:"必填"
             },
-            bankaccount:{
-                required:"必填",
-            },
-            taxaddr:{
-                required:"必填",
-            },
-            taxtel:{
-                required:"必填",
-            },
-            drawer:{
-                required:"必填",
+            email:{
+                email:"邮箱格式不正确"
             }
-
         },
         submitHandler: function(form) {
             jQuery(form).ajaxSubmit(function(data){

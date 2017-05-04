@@ -10,8 +10,11 @@ import com.aisino.core.service.BaseService;
 public interface EnInfoService extends BaseService<EnInfo,EnInfoMapper> {
     /**
      * 判断是否完善信息
-     * @param usrno
-     * @return
      */
     boolean isCompleteByUsrno(String usrno);
+
+    /**
+     * 根据用户账户查询企业信息
+     */
+    EnInfo getByUsrno(String usrno);
 }

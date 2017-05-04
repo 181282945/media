@@ -29,12 +29,6 @@ public class UserInfo extends BaseInvoiceEntity {
     private String password;
 
     /**
-     * 第二次输入密码
-     */
-    @Transient
-    private String repeatPassword;
-
-    /**
      * 税号
      */
     private String taxNo;
@@ -109,14 +103,5 @@ public class UserInfo extends BaseInvoiceEntity {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-
-    public String getRepeatPassword() {
-        return repeatPassword;
-    }
-
-    public void setRepeatPassword(String repeatPassword) {
-        this.repeatPassword = repeatPassword;
     }
 }

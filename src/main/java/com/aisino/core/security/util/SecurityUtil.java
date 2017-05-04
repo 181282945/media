@@ -1,5 +1,7 @@
 package com.aisino.core.security.util;
 
+import com.aisino.base.invoice.eninfo.entity.EnInfo;
+import com.aisino.base.invoice.eninfo.service.EnInfoService;
 import com.aisino.base.invoice.userinfo.entity.UserInfo;
 import com.aisino.base.invoice.userinfo.service.UserInfoService;
 import com.aisino.base.sysmgr.acluser.entity.AclUser;
@@ -39,6 +41,13 @@ public class SecurityUtil {
     }
 
     /**
+     *  判断是否匿名用户
+     */
+    public static boolean isAnonymous(){
+        return authenticationTrustResolver.isAnonymous(SecurityContextHolder.getContext().getAuthentication());
+    }
+
+    /**
      *
      * @param auth
      * @return
@@ -74,7 +83,7 @@ public class SecurityUtil {
      * @return
      */
     public static String getCurrentUserName(){
-        if(authenticationTrustResolver.isAnonymous(SecurityContextHolder.getContext().getAuthentication()))
+        if(isAnonymous())
             return null;
         String userName = ((User)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
         return userName;
@@ -86,10 +95,21 @@ public class SecurityUtil {
      * @return
      */
     public static UserInfo getCurrentUserInfo(){
-        if(authenticationTrustResolver.isAnonymous(SecurityContextHolder.getContext().getAuthentication())||isAclUser())
+        if(isAnonymous()||isAclUser())
             return null;
         String usrno = ((User)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
         return  getUserInfoService().getUserByUsrno(usrno);
+    }
+
+    /**
+     * 获取当前用户
+     * @return
+     */
+    public static EnInfo getCurrentEnInfo(){
+        if(isAnonymous()||isAclUser())
+            return null;
+        String usrno = ((User)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
+        return  getEnInfoService().getByUsrno(usrno);
     }
 
 
@@ -101,6 +121,10 @@ public class SecurityUtil {
 
     private static UserInfoService getUserInfoService(){
         return (UserInfoService)SpringUtils.getBean("userInfoService");
+    }
+
+    private static EnInfoService getEnInfoService(){
+        return (EnInfoService)SpringUtils.getBean("enInfoService");
     }
 
 }

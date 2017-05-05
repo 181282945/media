@@ -6,7 +6,6 @@
     <title></title>
 
 
-
     <!-- bootstrap & fontawesome -->
     <link rel="stylesheet" href="/assets/css/bootstrap.css"/>
     <link rel="stylesheet" href="/components/font-awesome/css/font-awesome.css"/>
@@ -51,22 +50,23 @@
             position: static;
             margin-bottom: 5px;
         }
+
         .u0_div {
             /*position:absolute;*/
-            left:0px;
-            top:0px;
-            width:454px;
-            height:222px;
-            background:inherit;
-            background-color:rgba(255, 255, 255, 0);
-            box-sizing:border-box;
-            border-width:1px;
-            border-style:solid;
-            border-color:rgba(228, 228, 228, 1);
-            border-radius:8px;
-            -moz-box-shadow:none;
-            -webkit-box-shadow:none;
-            box-shadow:none;
+            left: 0px;
+            top: 0px;
+            width: 454px;
+            height: 222px;
+            background: inherit;
+            background-color: rgba(255, 255, 255, 0);
+            box-sizing: border-box;
+            border-width: 1px;
+            border-style: solid;
+            border-color: rgba(228, 228, 228, 1);
+            border-radius: 8px;
+            -moz-box-shadow: none;
+            -webkit-box-shadow: none;
+            box-shadow: none;
         }
 
     </style>
@@ -82,27 +82,66 @@
     <![endif]-->
 
 
-
     <link href="/css/base.css" type="text/css" rel="stylesheet"/>
 
 
     <style>
-        label{color: red}
-        #main{ width:970px; height: auto; margin:0 auto; color:#FFF;}
-        #top{ width:100%; height: auto; margin:0 auto; color:#FFF;}
-        #content{ width:100%; height: 370px; margin:0 auto; color:#FFF;}
-        #logo{ width:100%; height:30px; color: black }
-        #nav{ width:100%; height:100px;}
-        .news{ width:454px; height: 222px; margin:0 auto; color:#FFF;}
-        .navimg{visibility: hidden}
-        .newsMouseOver{ background:inherit;
-            background-color:rgba(255, 255, 255, 1);
-            border:none;
-            border-radius:0px;
-            -moz-box-shadow:1px 1px 3px rgba(0, 0, 0, 0.349019607843137);
-            -webkit-box-shadow:1px 1px 3px rgba(0, 0, 0, 0.349019607843137);
-            box-shadow:1px 1px 3px rgba(0, 0, 0, 0.349019607843137);
-            font-size:12px;
+        label {
+            color: red
+        }
+
+        #main {
+            width: 970px;
+            height: auto;
+            margin: 0 auto;
+            color: #FFF;
+        }
+
+        #top {
+            width: 100%;
+            height: auto;
+            margin: 0 auto;
+            color: #FFF;
+        }
+
+        #content {
+            width: 100%;
+            height: 370px;
+            margin: 0 auto;
+            color: #FFF;
+        }
+
+        #logo {
+            width: 100%;
+            height: 30px;
+            color: black
+        }
+
+        #nav {
+            width: 100%;
+            height: 100px;
+        }
+
+        .news {
+            width: 454px;
+            height: 222px;
+            margin: 0 auto;
+            color: #FFF;
+        }
+
+        .navimg {
+            visibility: hidden
+        }
+
+        .newsMouseOver {
+            background: inherit;
+            background-color: rgba(255, 255, 255, 1);
+            border: none;
+            border-radius: 0px;
+            -moz-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.349019607843137);
+            -webkit-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.349019607843137);
+            box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.349019607843137);
+            font-size: 12px;
         }
     </style>
 </head>
@@ -112,36 +151,47 @@
 
     <div id="top">
         <div style="height: 5px"></div>
-        <div id="logo" style="text-align:right;"><div th:style="${userName}!=null? '':'display: none'" ><span th:text="${userName}" style="position:relative;right: 3px;bottom:3px;font-size: small">XXXXX</span><img src="/images/u963.png" style="margin-bottom: 5px"><a href="/logout"><span style="position:relative;left:3px;bottom:3px;font-size: small;margin-right: 10px">退出登录</span></a></div></div>
+        <div id="logo" style="text-align:right;">
+            <div th:style="${userName}!=null? '':'display: none'"><span th:text="${userName}"
+                                                                        style="position:relative;right: 3px;bottom:3px;font-size: small">XXXXX</span><img
+                    src="/images/u963.png" style="margin-bottom: 5px"><a href="/logout"><span
+                    style="position:relative;left:3px;bottom:3px;font-size: small;margin-right: 10px">退出登录</span></a>
+            </div>
+        </div>
         <div id="nav" style="vertical-align:bottom;display:inline;">
-            <img class="inline" style="width: 167px;height: 39px;" src="images/u73.png"><img src="images/u83.png"><span class="inline" style="font-family: 微软雅黑;font-weight: bold;color: black;font-size: larger">云开票</span>
+            <img class="inline" style="width: 167px;height: 39px;" src="images/u73.png"><img src="images/u83.png"><span
+                class="inline" style="font-family: 微软雅黑;font-weight: bold;color: black;font-size: larger">云开票</span>
             <a href="/center">
                 <div class="inline" style="float:right;margin-right:50px;position: relative;">
-                    <img src="images/u75.png"  class="navimg"  id="memberCentre" >
+                    <img src="images/u75.png" class="navimg" id="memberCentre">
                     <div style="position: absolute;left: 15px;top: 10px;color: black">
-                        <span style="font-family: 微软雅黑;font-weight: bold;font-size: medium;" onmouseout="mouseOutBgImg('memberCentre')" onmouseover="mouseOverBgImg('memberCentre')" >个人中心</span>
+                        <span style="font-family: 微软雅黑;font-weight: bold;font-size: medium;"
+                              onmouseout="mouseOutBgImg('memberCentre')" onmouseover="mouseOverBgImg('memberCentre')">个人中心</span>
                     </div>
                 </div>
             </a>
-
-            <div class="inline" style="float:right;margin-right:50px;position: relative;">
-                <img src="images/u75.png" class="navimg" id="invoiceMgr" >
-                <div style="position: absolute;left: 15px;top: 10px;color: black">
-                    <span style="font-family: 微软雅黑;font-weight: bold;font-size: medium;" onmouseout="mouseOutBgImg('invoiceMgr')" onmouseover="mouseOverBgImg('invoiceMgr')" >发票管理</span>
+            <a href="/base/invoice/invoiceinfo/u/tolist">
+                <div class="inline" style="float:right;margin-right:50px;position: relative;">
+                    <img src="images/u75.png" class="navimg" id="invoiceMgr">
+                    <div style="position: absolute;left: 15px;top: 10px;color: black">
+                        <span style="font-family: 微软雅黑;font-weight: bold;font-size: medium;"
+                              onmouseout="mouseOutBgImg('invoiceMgr')"
+                              onmouseover="mouseOverBgImg('invoiceMgr')">发票管理</span>
+                    </div>
                 </div>
-            </div>
-
+            </a>
             <a href="/base/invoice/order/orderinfo/u/tolist">
                 <div class="inline" style="float:right;margin-right:50px;position: relative;">
-                    <img src="images/u75.png" class="navimg" id="order" >
+                    <img src="images/u75.png" class="navimg" id="order">
                     <div style="position: absolute;left: 15px;top: 10px;color: black">
-                        <span style="font-family: 微软雅黑;font-weight: bold;font-size: medium;" onmouseout="mouseOutBgImg('order')" onmouseover="mouseOverBgImg('order')" >订单仓库</span>
+                        <span style="font-family: 微软雅黑;font-weight: bold;font-size: medium;"
+                              onmouseout="mouseOutBgImg('order')" onmouseover="mouseOverBgImg('order')">订单仓库</span>
                     </div>
                 </div>
             </a>
             <a href="/index">
                 <div class="inline" style="float:right;margin-right:50px;position: relative;">
-                    <img src="images/u75.png" >
+                    <img src="images/u75.png">
                     <div style="position: absolute;left: 30px;top: 10px;color: black">
                         <span style="font-family: 微软雅黑;font-weight: bold;font-size: medium;">首  页</span>
                     </div>
@@ -159,7 +209,7 @@
         </div>
 
         <div class="inline" style="float:left;margin-left: 10px;height: 346px;overflow:hidden">
-            <div class="tabbable"  id="logindiv"    th:style="${userName}!=null? 'display: none':'' ">
+            <div class="tabbable" id="logindiv" th:style="${userName}!=null? 'display: none':'' ">
                 <ul class="nav nav-tabs padding-12 tab-color-blue background-blue" id="myTab4">
                     <li class="active" style="width: 50%;text-align: center">
                         <a data-toggle="tab" href="#home4">登录</a>
@@ -172,18 +222,20 @@
 
                 <div class="tab-content">
                     <div id="home4" class="tab-pane in active" style="height: 270px;width: 271px;">
-                        <form  id="loginForm" action="/checkLogin" method="post">
+                        <form id="loginForm" action="/checkLogin" method="post">
                             <fieldset>
                                 <label class="block clearfix" for="name_key">
 										<span class="block input-icon input-icon-right">
-											<input id="name_key" name="name_key" type="text" class="form-control"  placeholder="用户名"/>
+											<input id="name_key" name="name_key" type="text" class="form-control"
+                                                   placeholder="用户名"/>
 											<i class="ace-icon fa fa-user"></i>
 										</span>
                                 </label>
 
                                 <label class="block clearfix" for="pwd_key">
 										<span class="block input-icon input-icon-right">
-											<input id="pwd_key" name="pwd_key" type="password" class="form-control" placeholder="密码"/>
+											<input id="pwd_key" name="pwd_key" type="password" class="form-control"
+                                                   placeholder="密码"/>
 											<i class="ace-icon fa fa-lock"></i>
 										</span>
                                 </label>
@@ -191,12 +243,15 @@
 
                                 <div class="form-group">
                                             <span class="block input-icon input-icon-right">
-											<input id="verification_code" name="verification_code" class="form-control inline" style="width: 130px" type="text" placeholder="验证码">
-                                                 <img style="width:80px;height: 34px" src="/images/kaptcha.jpg" id="verification_code_img" title="点击更换" onclick="javascript:refreshCaptcha(this.id);"/>
+											<input id="verification_code" name="verification_code"
+                                                   class="form-control inline" style="width: 130px" type="text"
+                                                   placeholder="验证码">
+                                                 <img style="width:80px;height: 34px" src="/images/kaptcha.jpg"
+                                                      id="verification_code_img" title="点击更换"
+                                                      onclick="javascript:refreshCaptcha(this.id);"/>
                                                    <i class="ace-icon fa fa-key"></i>
 										    </span>
                                 </div>
-
 
 
                                 <!--<div class="form-group">-->
@@ -216,7 +271,8 @@
                                     <!--<input type="checkbox" class="ace"/>-->
                                     <!--<span class="lbl" style="color: black"> 记住我</span>-->
                                     <!--</label>-->
-                                    <button id="btnAjaxSubmit" name="btnAjaxSubmit" type="submit" class="width-35 pull-right btn btn-sm btn-primary">
+                                    <button id="btnAjaxSubmit" name="btnAjaxSubmit" type="submit"
+                                            class="width-35 pull-right btn btn-sm btn-primary">
                                         <i class="ace-icon fa fa-key"></i>
                                         <span class="bigger-110">登录</span>
                                     </button>
@@ -227,53 +283,64 @@
                         </form>
                     </div>
 
-                    <div id="profile4" class="tab-pane "  style="overflow:auto;width: 271px;height: 270px;" >
+                    <div id="profile4" class="tab-pane " style="overflow:auto;width: 271px;height: 270px;">
                         <form id="regForm" method="post" action="/base/invoice/userinfo/u/reg">
                             <fieldset>
-                                <label class="block clearfix "  for="usrno">
+                                <label class="block clearfix " for="usrno">
 														<span class="block input-icon input-icon-right">
-                                                            <input type="text" name="usrno" id="usrno" class=" form-control" placeholder="用户账号"/>
+                                                            <input type="text" name="usrno" id="usrno"
+                                                                   class=" form-control" placeholder="用户账号"/>
 															<i class="ace-icon fa glyphicon-asterisk red"></i>
 														</span>
                                 </label>
 
-                                <label class="block clearfix "  for="usrname">
+                                <label class="block clearfix " for="usrname">
 														<span class="block input-icon input-icon-right">
-															<input type="text" name="usrname" id="usrname" class="form-control" placeholder="昵称"/>
+															<input type="text" name="usrname" id="usrname"
+                                                                   class="form-control" placeholder="昵称"/>
                                                             <i class="ace-icon fa glyphicon-asterisk red"></i>
 														</span>
                                 </label>
 
                                 <label class="block clearfix " for="password">
 														<span class="block input-icon input-icon-right">
-															<input type="password" name="password" id="password" class="form-control" placeholder="密码"/>
+															<input type="password" name="password" id="password"
+                                                                   class="form-control" placeholder="密码"/>
 															<i class="ace-icon fa glyphicon-asterisk red"></i>
 														</span>
                                 </label>
 
                                 <label class="block clearfix" for="repeatPassword">
 														<span class="block input-icon input-icon-right">
-															<input type="password" name="repeatPassword" id="repeatPassword" class="form-control" placeholder="再次输入密码"/>
+															<input type="password" name="repeatPassword"
+                                                                   id="repeatPassword" class="form-control"
+                                                                   placeholder="再次输入密码"/>
 															<i class="ace-icon fa glyphicon-asterisk red"></i>
 														</span>
                                 </label>
 
                                 <label class="block clearfix" for="mobilePhone">
 														<span class="block input-icon input-icon-right">
-															<input type="text" name="mobilePhone" id="mobilePhone" class="form-control" placeholder="手机号码"/>
+															<input type="text" name="mobilePhone" id="mobilePhone"
+                                                                   class="form-control" placeholder="手机号码"/>
                                                             <i class="ace-icon fa glyphicon-asterisk red"></i>
 														</span>
                                 </label>
 
                                 <div class="form-group">
 														<span class="block input-icon input-icon-right">
-                                                                	<input type="text" name="verification_code" id="verification_code2" class="form-control inline" style="width: 130px"  placeholder="验证码">
-                                                            <img style="width:80px;height: 34px"  src="/images/kaptcha.jpg" id="verification_code_img2" title="点击更换" onclick="javascript:refreshCaptcha(this.id);"/>
+                                                                	<input type="text" name="verification_code"
+                                                                           id="verification_code2"
+                                                                           class="form-control inline"
+                                                                           style="width: 130px" placeholder="验证码">
+                                                            <img style="width:80px;height: 34px"
+                                                                 src="/images/kaptcha.jpg" id="verification_code_img2"
+                                                                 title="点击更换"
+                                                                 onclick="javascript:refreshCaptcha(this.id);"/>
 															<i class="ace-icon fa glyphicon-asterisk red"></i>
 														</span>
 
                                 </div>
-
 
 
                                 <!--<div class="form-group">-->
@@ -285,17 +352,18 @@
                                 <!--</div>-->
 
 
-
                                 <label class="block clearfix" for="telephone">
 														<span class="block input-icon input-icon-right">
-															<input type="text" name="telephone" id="telephone" class="form-control" placeholder="固定电话"/>
+															<input type="text" name="telephone" id="telephone"
+                                                                   class="form-control" placeholder="固定电话"/>
                                                             <i class="ace-icon fa fa-phone-square"></i>
 														</span>
                                 </label>
 
                                 <label class="block clearfix" for="email">
 														<span class="block input-icon input-icon-right">
-															<input type="text" name="email" id="email" class="form-control" placeholder="邮箱"/>
+															<input type="text" name="email" id="email"
+                                                                   class="form-control" placeholder="邮箱"/>
                                                             <i class="ace-icon fa fa-envelope"></i>
 														</span>
                                 </label>
@@ -318,7 +386,9 @@
                                         <span class="bigger-110">重置</span>
                                     </button>
 
-                                    <button type="button" id="BtnRegSubmit" name="BtnRegSubmit" class="width-50 pull-right btn btn-sm btn-success btn disabled" style="margin-right: 5px">
+                                    <button type="button" id="BtnRegSubmit" name="BtnRegSubmit"
+                                            class="width-50 pull-right btn btn-sm btn-success btn disabled"
+                                            style="margin-right: 5px">
                                         <span class="bigger-110">注册</span>
 
                                         <i class="ace-icon fa fa-arrow-right icon-on-right"></i>
@@ -329,7 +399,8 @@
                     </div>
                 </div>
             </div>
-            <div class="tabbable" id="userdiv" th:style="${userName}!=null? 'width: 271px;height: 180px;':'display: none'">
+            <div class="tabbable" id="userdiv"
+                 th:style="${userName}!=null? 'width: 271px;height: 180px;':'display: none'">
                 <div class="col-sm-20">
                     <div class="widget-box">
                         <div class="widget-header">
@@ -343,15 +414,15 @@
                             <div class="widget-main" style="color: black;height: 300px;text-align: center">
                                 <p><h4 th:text="${userName}!=null? ${userName}:''">尊敬的XXXX</h4></p>
                                 <p><h4>欢迎使用云开票！</h4></p>
-                                <br /><br />
+                                <br/><br/>
                                 <p><h5>我们致力于提供电子发票的云开票服务，成为您贴心的税务管家。</h5></p>
-                                <br /><br />
+                                <br/><br/>
                                 <hr>
 
                                 <!-- #section:elements.tooltip -->
                                 <p>
                                     <span class="btn btn-sm" data-rel="tooltip"><a href="/logout"> 退出登录</a></span>
-                                    <span class="btn btn-info btn-sm tooltip-info" style="right: 0px" >去开票</span>
+                                    <span class="btn btn-info btn-sm tooltip-info" style="right: 0px">去开票</span>
                                 </p>
 
                                 <!-- /section:elements.tooltip -->
@@ -366,10 +437,6 @@
     </div>
 
 
-
-
-
-
     <div class="news inline" style="position:relative;margin-left: 8px;color: black;">
         <div class=" u0_div inline">
             <img style="margin-left: 10px;margin-top: 10px " src="images/u99.png">
@@ -377,17 +444,16 @@
         </div>
 
 
-
         <ul class="list-unstyled spaced" style="position:absolute;left: 30px;top: 50px">
-            <li>深圳航信成功签约深港驾校电子发票项目  new</li>
+            <li>深圳航信成功签约深港驾校电子发票项目 new</li>
 
-            <li>深圳航信协助龙华区国家税务局开出 ---- 深圳第一张增值税卷式发票  new</li>
+            <li>深圳航信协助龙华区国家税务局开出 ---- 深圳第一张增值税卷式发票 new</li>
 
-            <li>汇聚青春力量，共建美丽梅林  new</li>
+            <li>汇聚青春力量，共建美丽梅林 new</li>
 
-            <li>人民日报┃身份证也能自助办理，航天信息科技改变生活  new</li>
+            <li>人民日报┃身份证也能自助办理，航天信息科技改变生活 new</li>
 
-            <li>迎接挑战促转型 开拓创新谋发展   new</li>
+            <li>迎接挑战促转型 开拓创新谋发展 new</li>
         </ul>
     </div>
 
@@ -400,19 +466,17 @@
 
 
         <ul class="list-unstyled spaced" style="position:absolute;left: 30px;top: 50px">
-            <li>深圳航信成功签约深港驾校电子发票项目  new</li>
+            <li>深圳航信成功签约深港驾校电子发票项目 new</li>
 
-            <li>深圳航信协助龙华区国家税务局开出 ---- 深圳第一张增值税卷式发票  new</li>
+            <li>深圳航信协助龙华区国家税务局开出 ---- 深圳第一张增值税卷式发票 new</li>
 
-            <li>汇聚青春力量，共建美丽梅林  new</li>
+            <li>汇聚青春力量，共建美丽梅林 new</li>
 
-            <li>人民日报┃身份证也能自助办理，航天信息科技改变生活  new</li>
+            <li>人民日报┃身份证也能自助办理，航天信息科技改变生活 new</li>
 
-            <li>迎接挑战促转型 开拓创新谋发展   new</li>
+            <li>迎接挑战促转型 开拓创新谋发展 new</li>
         </ul>
     </div>
-
-
 
 
     <!--&lt;!&ndash;&#45;&#45;&#45;&#45;&#45;&#45;头部&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&ndash;&gt;-->
@@ -421,7 +485,8 @@
     <!--<div id="centreRight" style="display: inline">内容右</div>-->
     <!--</div>-->
     <!--------中间------------->
-    <div id="bottom" style="position:relative;background-color: rgba(107, 107, 107, 1);  height:277px; margin-top: 50px ">
+    <div id="bottom"
+         style="position:relative;background-color: rgba(107, 107, 107, 1);  height:277px; margin-top: 50px ">
         <div class="inline" style="float: left;height: 100%;width: 210px;">
             <div style=" position:absolute; left:50px;  top:50px;  width:128px;  height:128px;">
                 <img style=" position:absolute; width:128px;  height:128px;" src="images/u109.jpg">
@@ -446,7 +511,7 @@
                 <span>地址：深圳市福田区梅林街道下梅林北环大道7018号701航天信息</span>
             </div>
 
-            <hr width="100%" style="margin-top: 50px;margin-bottom: 0px" />
+            <hr width="100%" style="margin-top: 50px;margin-bottom: 0px"/>
 
             <div style="width:100%;text-align: center;margin-top: 0px">
                 <span style="font-size: x-small">701, Aisino, No. 7018, Beihuan Avenue, Xiameilin, Meilin sub-district，Futian District, Shenzhen</span>
@@ -470,7 +535,9 @@
                 <span style="font-size: 13px">Fax: 0755-32993339-8200</span>
             </div>
             <div style="margin-top: 10px;margin-left: 20px;">
-                <span style="font-size: 13px;font-weight: bold">法律声明</span><img style="margin-left: 5px;margin-bottom: 2px" src="images/u123.png"><span style="margin-left: 5px;font-size: 13px;font-weight: bold">联系我们</span>
+                <span style="font-size: 13px;font-weight: bold">法律声明</span><img
+                    style="margin-left: 5px;margin-bottom: 2px" src="images/u123.png"><span
+                    style="margin-left: 5px;font-size: 13px;font-weight: bold">联系我们</span>
             </div>
 
         </div>
@@ -479,9 +546,6 @@
     </div>
     <!-----------底部---------------->
 </div>
-
-
-
 
 
 <!-- basic scripts -->
@@ -550,11 +614,11 @@
 
     var options = {
         success: function (json) {
-            if(json.successMessage){
-                if(json.operateCode == "F"){
+            if (json.successMessage) {
+                if (json.operateCode == "F") {
                     refreshCaptcha('verification_code_img');
                     layerAlertMsg(json.message);
-                }else if(json.operateCode == "S"){
+                } else if (json.operateCode == "S") {
                     location.href = json.datas;
                 }
             }
@@ -563,122 +627,120 @@
 
     function onClickHander(obj) {
         if (obj.checked) {
-            $("#BtnRegSubmit").removeClass("btn disabled").attr("type","submit");
-        }else {
-            $("#BtnRegSubmit").addClass("btn disabled").attr("type","button")
+            $("#BtnRegSubmit").removeClass("btn disabled").attr("type", "submit");
+        } else {
+            $("#BtnRegSubmit").addClass("btn disabled").attr("type", "button")
         }
     }
 
     //登录JS验证
     $("#loginForm").validate({
 //            debug:true, //调试模式，即使验证成功也不会跳转到目标页面
-        rules:{ //配置验证规则，key就是被验证的dom对象，value就是调用验证的方法(也是json格式)
-            name_key:{
-                required:true, //必填。如果验证方法不需要参数，则配置为true
-                rangelength:[8,20]
+        rules: { //配置验证规则，key就是被验证的dom对象，value就是调用验证的方法(也是json格式)
+            name_key: {
+                required: true, //必填。如果验证方法不需要参数，则配置为true
+                rangelength: [8, 20]
             },
-            pwd_key:{
+            pwd_key: {
                 required: true,
-                rangelength:[8,20]
+                rangelength: [8, 20]
             },
-            verification_code:{
-                required:true
+            verification_code: {
+                required: true
             }
         },
-        messages:{
-            name_key:{
-                required:"必填",
-                rangelength:"长度8-20"
+        messages: {
+            name_key: {
+                required: "必填",
+                rangelength: "长度8-20"
             },
-            pwd_key:{
+            pwd_key: {
                 required: "不能为空",
-                rangelength:"长度8-20"
+                rangelength: "长度8-20"
             },
-            verification_code:{
-                required:"不能为空"
+            verification_code: {
+                required: "不能为空"
             }
         },
-        submitHandler: function(form) {
+        submitHandler: function (form) {
             jQuery(form).ajaxSubmit(options);
         }
     });
 
 
-
-
     //让当前表单调用validate方法，实现表单验证功能
     $("#regForm").validate({
 //            debug:true, //调试模式，即使验证成功也不会跳转到目标页面
-        rules:{ //配置验证规则，key就是被验证的dom对象，value就是调用验证的方法(也是json格式)
-            usrno:{
-                required:true, //必填。如果验证方法不需要参数，则配置为true
-                username:true,
-                rangelength:[8,20],
+        rules: { //配置验证规则，key就是被验证的dom对象，value就是调用验证的方法(也是json格式)
+            usrno: {
+                required: true, //必填。如果验证方法不需要参数，则配置为true
+                username: true,
+                rangelength: [8, 20],
             },
-            usrname:{
-                required:true, //必填。如果验证方法不需要参数，则配置为true
-                username:true,
-                rangelength:[3,10]
+            usrname: {
+                required: true, //必填。如果验证方法不需要参数，则配置为true
+                username: true,
+                rangelength: [3, 10]
             },
-            password:{
-                required:true,
-                password:true,
-                rangelength:[8,16],
+            password: {
+                required: true,
+                password: true,
+                rangelength: [8, 16],
             },
-            repeatPassword:{
-                required:true,
-                equalTo:'#password' //表示和id="spass"的值相同
+            repeatPassword: {
+                required: true,
+                equalTo: '#password' //表示和id="spass"的值相同
             },
-            mobilePhone:{
-                required:true,
-                isMobile:true
+            mobilePhone: {
+                required: true,
+                isMobile: true
             },
-            verification_code:{
-                required:true
+            verification_code: {
+                required: true
 //                    email:true
             },
-            telephone:{
-                required:false,
-                isTel:true
+            telephone: {
+                required: false,
+                isTel: true
             },
-            email:{
-                required:false,
-                email:true
+            email: {
+                required: false,
+                email: true
             }
         },
-        messages:{
-            usrno:{
-                required:"必填",
-                rangelength:"长度8-20"
+        messages: {
+            usrno: {
+                required: "必填",
+                rangelength: "长度8-20"
             },
-            usrname:{
-                required:"必填",
-                rangelength:"长度3-10"
+            usrname: {
+                required: "必填",
+                rangelength: "长度3-10"
             },
-            password:{
+            password: {
                 required: "不能为空",
-                rangelength:"长度8-16"
+                rangelength: "长度8-16"
             },
-            repeatPassword:{
-                required:"不能为空",
-                equalTo:"密码输入不一致"
+            repeatPassword: {
+                required: "不能为空",
+                equalTo: "密码输入不一致"
             },
-            mobilePhone:{
-                required:"必填"
+            mobilePhone: {
+                required: "必填"
             },
-            verification_code:{
-                required:"不能为空"
+            verification_code: {
+                required: "不能为空"
 //                    email:true
             },
-            email:{
-                email:"邮箱格式不正确"
+            email: {
+                email: "邮箱格式不正确"
             }
         },
-        submitHandler: function(form) {
-            jQuery(form).ajaxSubmit(function(data){
-                if(data.operateCode == "F"){
+        submitHandler: function (form) {
+            jQuery(form).ajaxSubmit(function (data) {
+                if (data.operateCode == "F") {
                     layerAlertMsg(data.message);
-                }else if(data.operateCode == "S"){
+                } else if (data.operateCode == "S") {
                     layer.alert('<h5 style="color: red"><b>恭喜您注册成功,请前往登录,并完善企业信息!</b></h5>', {
                         icon: 1,
                         skin: 'layer-ext-moon'
@@ -693,34 +755,34 @@
 
     //更换验证码
     function refreshCaptcha(objId) {
-        $('#'+objId).attr("src","/images/kaptcha.jpg?t=" + Math.random());
+        $('#' + objId).attr("src", "/images/kaptcha.jpg?t=" + Math.random());
     }
 
-    function mouseOverBgImg(objId){
-        $('#'+objId).removeClass("navimg");
+    function mouseOverBgImg(objId) {
+        $('#' + objId).removeClass("navimg");
     }
 
-    function mouseOutBgImg(objId){
-        $('#'+objId).addClass("navimg");
+    function mouseOutBgImg(objId) {
+        $('#' + objId).addClass("navimg");
     }
 
-    $("ul.list-unstyled li").each(function(){
-        $(this).hover(function(){
+    $("ul.list-unstyled li").each(function () {
+        $(this).hover(function () {
             $(this).addClass("newsMouseOver");
-        },function(){
+        }, function () {
             $(this).removeClass("newsMouseOver");
         });
     })
 
 
-    $(function(){
+    $(function () {
 
 
         /*<![CDATA[*/
         var completeEnInfo =  /*[[${completeEnInfo}]]*/;
         /*]]>*/
 
-        if(completeEnInfo != null && !completeEnInfo){
+        if (completeEnInfo != null && !completeEnInfo) {
             layer.open({
                 type: 2,
                 title: '完善企业信息',

@@ -102,7 +102,8 @@
         </div>
         <div id="nav" style="vertical-align:bottom;display:inline;">
             <img class="inline" style="width: 167px;height: 39px;" src="/images/u73.png"><img
-                src="/images/u83.png"><span class="inline" style="font-family: 微软雅黑;font-weight: bold;color: black;font-size: larger">云开票</span>
+                src="/images/u83.png"><span class="inline"
+                                            style="font-family: 微软雅黑;font-weight: bold;color: black;font-size: larger">云开票</span>
             <a href="/center">
                 <div class="inline" style="float:right;margin-right:50px;position: relative;">
                     <img src="/images/u75.png" id="memberCentre">
@@ -111,20 +112,22 @@
                     </div>
                 </div>
             </a>
-
-            <div class="inline" style="float:right;margin-right:50px;position: relative;">
-                <img src="/images/u75.png" class="navimg" id="invoiceMgr">
-                <div style="position: absolute;left: 15px;top: 10px;color: black">
+            <a href="/base/invoice/invoiceinfo/u/tolist">
+                <div class="inline" style="float:right;margin-right:50px;position: relative;">
+                    <img src="/images/u75.png" class="navimg" id="invoiceMgr">
+                    <div style="position: absolute;left: 15px;top: 10px;color: black">
                     <span style="font-family: 微软雅黑;font-weight: bold;font-size: medium;"
                           onmouseout="mouseOutBgImg('invoiceMgr')"
                           onmouseover="mouseOverBgImg('invoiceMgr')">发票管理</span>
+                    </div>
                 </div>
-            </div>
+            </a>
             <a href="/base/invoice/order/orderinfo/u/tolist">
                 <div class="inline" style="float:right;margin-right:50px;position: relative;">
                     <img src="/images/u75.png" class="navimg" id="order">
                     <div style="position: absolute;left: 15px;top: 10px;color: black">
-                        <span style="font-family: 微软雅黑;font-weight: bold;font-size: medium;" onmouseout="mouseOutBgImg('order')" onmouseover="mouseOverBgImg('order')">订单仓库</span>
+                        <span style="font-family: 微软雅黑;font-weight: bold;font-size: medium;"
+                              onmouseout="mouseOutBgImg('order')" onmouseover="mouseOverBgImg('order')">订单仓库</span>
                     </div>
                 </div>
             </a>
@@ -132,7 +135,8 @@
                 <div class="inline" style="float:right;margin-right:50px;position: relative;">
                     <img src="/images/u75.png" class="navimg" id="index">
                     <div style="position: absolute;left: 30px;top: 10px;color: black">
-                        <span style="font-family: 微软雅黑;font-weight: bold;font-size: medium;" onmouseout="mouseOutBgImg('index')" onmouseover="mouseOverBgImg('index')">首  页</span>
+                        <span style="font-family: 微软雅黑;font-weight: bold;font-size: medium;"
+                              onmouseout="mouseOutBgImg('index')" onmouseover="mouseOverBgImg('index')">首  页</span>
                     </div>
                 </div>
             </a>
@@ -158,7 +162,7 @@
         <div class="tabbable tabs-left " style="margin-top: 5px;margin-left: 5%;margin-right: 5%;">
             <ul class="nav nav-tabs text-center" id="myTab3">
                 <li class="active ">
-                    <a data-toggle="tab" href="#home3" aria-expanded="true" >
+                    <a data-toggle="tab" href="#home3" aria-expanded="true">
                         <!--<i class="pink ace-icon fa fa-tachometer bigger-110"></i>-->
                         基本信息
                     </a>
@@ -208,11 +212,16 @@
                                 <!--<img src="images/u99.png"><span style="font-size: medium;margin-left: 2px;">个人基本信息</span>-->
                             </div>
                             <div class="col-md-4">
-                                <p><span>用户账号&ensp;:&ensp;</span><span th:text="${currentUserInfo.usrno}">XXXX</span></p>
-                                <p><span>昵&emsp;&emsp;称&ensp;:&ensp;</span><span th:text="${currentUserInfo.usrname}">XXXX</span></p>
-                                <p><span>手&emsp;&emsp;机&ensp;:&ensp;</span><span th:text="${currentUserInfo.mobilePhone}">XXXX</span></p>
-                                <p><span>固定电话&ensp;:&ensp;</span><span th:text="${currentUserInfo.telephone}">XXXX</span></p>
-                                <p><span>邮&emsp;&emsp;箱&ensp;:&ensp;</span><span th:text="${currentUserInfo.email}">XXXX</span></p>
+                                <p><span>用户账号&ensp;:&ensp;</span><span th:text="${currentUserInfo.usrno}">XXXX</span>
+                                </p>
+                                <p><span>昵&emsp;&emsp;称&ensp;:&ensp;</span><span th:text="${currentUserInfo.usrname}">XXXX</span>
+                                </p>
+                                <p><span>手&emsp;&emsp;机&ensp;:&ensp;</span><span
+                                        th:text="${currentUserInfo.mobilePhone}">XXXX</span></p>
+                                <p><span>固定电话&ensp;:&ensp;</span><span
+                                        th:text="${currentUserInfo.telephone}">XXXX</span></p>
+                                <p><span>邮&emsp;&emsp;箱&ensp;:&ensp;</span><span
+                                        th:text="${currentUserInfo.email}">XXXX</span></p>
                             </div>
                             <div class="col-md-4 ">
                                 <!--<button type="button" class="btn btn-white pull-right">修改</button>-->
@@ -243,13 +252,19 @@
                             </div>
                             <div class="col-md-4">
                                 <p><span>企业税号&ensp;:&ensp;</span><span th:text="${currentEnInfo.taxno}">XXXX</span></p>
-                                <p><span>企业名称&ensp;:&ensp;</span><span th:text="${currentEnInfo.taxname}">XXXX</span></p>
-                                <p><span>银行账号&ensp;:&ensp;</span><span th:text="${currentEnInfo.bankaccount}">XXXX</span></p>
-                                <p><span>企业地址&ensp;:&ensp;</span><span th:text="${currentEnInfo.taxaddr}">XXXX</span></p>
-                                <p><span>收&ensp;款&ensp;人&ensp;:&ensp;</span><span th:text="${currentEnInfo.payee}">XXXX</span></p>
-                                <p><span>开&ensp;票&ensp;人&ensp;:&ensp;</span><span th:text="${currentEnInfo.drawer}">XXXX</span></p>
+                                <p><span>企业名称&ensp;:&ensp;</span><span th:text="${currentEnInfo.taxname}">XXXX</span>
+                                </p>
+                                <p><span>银行账号&ensp;:&ensp;</span><span
+                                        th:text="${currentEnInfo.bankaccount}">XXXX</span></p>
+                                <p><span>企业地址&ensp;:&ensp;</span><span th:text="${currentEnInfo.taxaddr}">XXXX</span>
+                                </p>
+                                <p><span>收&ensp;款&ensp;人&ensp;:&ensp;</span><span
+                                        th:text="${currentEnInfo.payee}">XXXX</span></p>
+                                <p><span>开&ensp;票&ensp;人&ensp;:&ensp;</span><span
+                                        th:text="${currentEnInfo.drawer}">XXXX</span></p>
                                 <p><span>企业电话&ensp;:&ensp;</span><span th:text="${currentEnInfo.taxtel}">XXXX</span></p>
-                                <p><span>复&ensp;核&ensp;人&ensp;:&ensp;</span><span th:text="${currentEnInfo.reviewer}">XXXX</span></p>
+                                <p><span>复&ensp;核&ensp;人&ensp;:&ensp;</span><span th:text="${currentEnInfo.reviewer}">XXXX</span>
+                                </p>
                             </div>
                             <div class="col-md-4 ">
                                 <!--<button type="button" class="btn btn-white pull-right">修改</button>-->
@@ -273,7 +288,8 @@
                                 <!--<img src="images/u99.png"><span style="font-size: medium;margin-left: 2px;">个人基本信息</span>-->
                             </div>
                             <div class="col-md-6">
-                                <form id="pwdFrom" method="post" class="form-inline" role="form" action="/base/invoice/userinfo/u/editPwdByCurrentUser">
+                                <form id="pwdFrom" method="post" class="form-inline" role="form"
+                                      action="/base/invoice/userinfo/u/editPwdByCurrentUser">
                                     <fieldset>
                                         <div class="form-group">
                                             <label class="form-label">原&ensp;密&ensp;码&ensp;:&ensp;</label>
@@ -292,10 +308,13 @@
                                         <div class="space"></div>
                                         <div class="form-group">
                                             <label class="form-label">验&ensp;证&ensp;码&ensp;:&ensp;</label>
-                                            <input type="text" class="form-control" style="width: 80px" name="verificationCode">
+                                            <input type="text" class="form-control" style="width: 80px"
+                                                   name="verificationCode">
 
                                             <label class="form-label" style="">
-                                                <img style="width:80px;height: 35px;" src="/images/kaptcha.jpg" id="verification_code_img2" title="点击更换" onclick="javascript:refreshCaptcha(this.id);"/>
+                                                <img style="width:80px;height: 35px;" src="/images/kaptcha.jpg"
+                                                     id="verification_code_img2" title="点击更换"
+                                                     onclick="javascript:refreshCaptcha(this.id);"/>
                                             </label>
 
 
@@ -444,7 +463,7 @@
     }
 
 
-    $("#editEninfo").click(function(){
+    $("#editEninfo").click(function () {
         layer.open({
             type: 2,
             title: '修改企业信息',
@@ -456,7 +475,7 @@
         });
     });
 
-    $("#editUserInfoBtn").click(function(){
+    $("#editUserInfoBtn").click(function () {
         layer.open({
             type: 2,
             title: '用户信息修改',
@@ -470,54 +489,54 @@
 
     //更换验证码
     function refreshCaptcha(objId) {
-        $('#'+objId).attr("src","/images/kaptcha.jpg?t=" + Math.random());
+        $('#' + objId).attr("src", "/images/kaptcha.jpg?t=" + Math.random());
     }
 
 
     //让当前表单调用validate方法，实现表单验证功能
     $("#pwdFrom").validate({
 //            debug:true, //调试模式，即使验证成功也不会跳转到目标页面
-        rules:{ //配置验证规则，key就是被验证的dom对象，value就是调用验证的方法(也是json格式)
-            originalPassword:{
-                required:true,
-                password:true,
-                rangelength:[8,16],
+        rules: { //配置验证规则，key就是被验证的dom对象，value就是调用验证的方法(也是json格式)
+            originalPassword: {
+                required: true,
+                password: true,
+                rangelength: [8, 16],
             },
-            password:{
-                required:true,
-                password:true,
-                rangelength:[8,16],
+            password: {
+                required: true,
+                password: true,
+                rangelength: [8, 16],
             },
-            repeatPassword:{
-                required:true,
-                equalTo:'#password' //表示和id="spass"的值相同
+            repeatPassword: {
+                required: true,
+                equalTo: '#password' //表示和id="spass"的值相同
             }
         },
-        messages:{
-            originalPassword:{
-                required:"不能为空",
-                rangelength:"长度8-16"
-            },
-            password:{
+        messages: {
+            originalPassword: {
                 required: "不能为空",
-                rangelength:"长度8-16"
+                rangelength: "长度8-16"
             },
-            repeatPassword:{
-                required:"不能为空",
-                equalTo:"密码输入不一致"
+            password: {
+                required: "不能为空",
+                rangelength: "长度8-16"
+            },
+            repeatPassword: {
+                required: "不能为空",
+                equalTo: "密码输入不一致"
             }
         },
-        submitHandler: function(form) {
-            jQuery(form).ajaxSubmit(function(data){
-                if(data.operateCode == "F"){
+        submitHandler: function (form) {
+            jQuery(form).ajaxSubmit(function (data) {
+                if (data.operateCode == "F") {
                     layerAlertMsg(data.message);
                     refreshCaptcha('verification_code_img2');
-                }else if(data.operateCode == "S"){
+                } else if (data.operateCode == "S") {
                     layer.alert(data.message, {
                         icon: 1,
                         skin: 'layer-ext-moon',
                         closeBtn: 0
-                    }, function(){
+                    }, function () {
                         location.href = "/logout";
                     });
 

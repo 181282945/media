@@ -109,7 +109,7 @@ public class UserOrderInfoController extends BaseController<OrderInfo> {
      */
     @CuzDataSource
     @RequestMapping(value = "/view",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @AclResc(code = "view",name = "明细")
+    @AclResc(code = "view",name = "查看")
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public ResultDataDto view(@RequestParam("id")Integer id){
         return new ResultDataDto(orderInfoService.findEntityById(id));
@@ -120,7 +120,7 @@ public class UserOrderInfoController extends BaseController<OrderInfo> {
      */
     @CuzDataSource
     @RequestMapping(value = "/update",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @AclResc(code = "update",name = "更新资源")
+    @AclResc(code = "update",name = "更新订单")
     public ResultDataDto update(@ModelAttribute("orderInfo")OrderInfo orderInfo){
         orderInfoService.updateEntity(orderInfo);
         return ResultDataDto.addUpdateSuccess();
@@ -131,7 +131,7 @@ public class UserOrderInfoController extends BaseController<OrderInfo> {
      */
     @CuzDataSource
     @RequestMapping(value = "/upload",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @AclResc(code = "upload",name = "上传资源")
+    @AclResc(code = "upload",name = "上传订单")
     @Transactional(propagation = Propagation.SUPPORTS)
     public ResultDataDto upload(HttpServletRequest request){
         CommonsMultipartResolver multipartResolver=new CommonsMultipartResolver(

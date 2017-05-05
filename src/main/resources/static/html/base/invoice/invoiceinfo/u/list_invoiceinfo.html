@@ -117,7 +117,7 @@
             </a>
             <a href="/base/invoice/invoiceinfo/u/tolist">
                 <div class="inline" style="float:right;margin-right:50px;position: relative;">
-                    <img src="/images/u75.png" class="navimg" id="invoiceMgr">
+                    <img src="/images/u75.png">
                     <div style="position: absolute;left: 15px;top: 10px;color: black">
                     <span style="font-family: 微软雅黑;font-weight: bold;font-size: medium;"
                           onmouseout="mouseOutBgImg('invoiceMgr')"
@@ -127,9 +127,10 @@
             </a>
             <a href="/base/invoice/order/orderinfo/u/tolist">
                 <div class="inline" style="float:right;margin-right:50px;position: relative;">
-                    <img src="/images/u75.png" id="order">
+                    <img src="/images/u75.png" class="navimg" id="order">
                     <div style="position: absolute;left: 15px;top: 10px;color: black">
-                        <span style="font-family: 微软雅黑;font-weight: bold;font-size: medium;">订单仓库</span>
+                        <span style="font-family: 微软雅黑;font-weight: bold;font-size: medium;"
+                              onmouseout="mouseOutBgImg('order')" onmouseover="mouseOverBgImg('order')">订单仓库</span>
                     </div>
                 </div>
             </a>
@@ -162,37 +163,38 @@
                         <div class="col-md-10">当前位置：<span th:text="${MODULE_NAME}"></span></div>
                     </div>
                 </div>
-                <div class="col-md-2 ">
+                <!--<div class="col-md-2 ">-->
+                <!--<div class="row">-->
+                <!--<div class="col-md-4 ">-->
+                <!--<button id="ALL" class="btn btn-minier btn-white">全部</button>-->
+                <!--</div>-->
+                <!--<div class="col-md-4 ">-->
+                <!--<button id="ALREADY" class="btn btn-minier btn-white">已开票</button>-->
+                <!--</div>-->
+                <!--<div class="col-md-4 ">-->
+                <!--<button id="NOTYET" class="btn btn-minier btn-white">未开票</button>-->
+                <!--</div>-->
+                <!--</div>-->
+                <!--</div>-->
+                <!--<div class="col-md-2 "></div>-->
+                <div class="col-md-5 col-md-offset-3">
                     <div class="row">
-                        <div class="col-md-4 ">
-                            <button id="ALL" class="btn btn-minier btn-white">全部</button>
-                        </div>
-                        <div class="col-md-4 ">
-                            <button id="ALREADY" class="btn btn-minier btn-white">已开票</button>
-                        </div>
-                        <div class="col-md-4 ">
-                            <button id="NOTYET" class="btn btn-minier btn-white">未开票</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-2 "></div>
-                <div class="col-md-5 ">
-                    <div class="row">
-                        <div class="col-md-2 ">
-                            <button class="btn btn-xs btn-info" data-toggle="modal" data-target="#queryModal">查询
-                            </button>
+                        <!--<div class="col-md-2 ">-->
+                        <!--<button class="btn btn-xs btn-info" data-toggle="modal" data-target="#queryModal">查询-->
+                        <!--</button>-->
+                        <!--</div>-->
+                        <!--<div class="col-md-2 ">-->
+                        <!--<button class="btn btn-xs btn-info">开票</button>-->
+                        <!--</div>-->
+                        <div class="col-md-2 col-md-offset-4">
+                            <button class="btn btn-xs btn-info" data-toggle="modal" data-target="#queryModal">查询</button>
+                            <!--<button class="btn btn-xs btn-info" id="editBtn">查询</button>-->
                         </div>
                         <div class="col-md-2 ">
-                            <button class="btn btn-xs btn-info">开票</button>
+                            <button class="btn btn-xs btn-info">红冲</button>
                         </div>
                         <div class="col-md-2 ">
-                            <button class="btn btn-xs btn-info" id="editBtn">修改</button>
-                        </div>
-                        <div class="col-md-2 ">
-                            <button class="btn btn-xs btn-info" id="delBtn">删除</button>
-                        </div>
-                        <div class="col-md-2 ">
-                            <button class="btn btn-xs btn-info" data-toggle="modal" data-target="#myModal">导入</button>
+                            <button class="btn btn-xs btn-info">下载</button>
                         </div>
                         <div class="col-md-2 "></div>
                     </div>
@@ -305,35 +307,6 @@
     </div><!-- /.modal -->
 </div>
 
-<!-- 模态框（Modal） -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                    &times;
-                </button>
-                <h4 class="modal-title" id="myModalLabel">
-                    订单导入
-                </h4>
-            </div>
-            <div class="modal-body">
-                <form enctype="multipart/form-data">
-                    <a href="" class="form-control" style="border:none;">下载导入模板</a>
-                    <input type="file" name="txt_file" id="txt_file" class="file-loading"/>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">关闭
-                </button>
-                <!--<button type="button" class="btn btn-primary">-->
-                <!--上传-->
-                <!--</button>-->
-            </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal -->
-</div>
-
 <!-- basic scripts -->
 
 <!--[if !IE]> -->
@@ -388,9 +361,6 @@
 
 
 <!-- 自定义JS -->
-<link type="text/css" rel="stylesheet" href="/css/bootstrap/fileinput.min.css"/>
-<script type="text/javascript" src="/js/bootstrap/fileinput.min.js"></script>
-<script type="text/javascript" src="/js/bootstrap/fileinput_locale_zh.js"></script>
 <script src="/js/jquery.form.min.js"></script>
 <script src="/js/jquery.validate.min.js"></script>
 <script src="/js/jquery.validate.extend.js"></script>
@@ -468,107 +438,9 @@
 				})
          */
 
-
-
-
-
         jQuery(grid_selector).jqGrid({
             shrinkToFit: false,
             autoScroll: true,
-            subGrid: true,
-//            subGridModel: [{
-////                name : ['No','Item Name','Qty'], width : [55,200,80]
-//                params : ['id'],
-//            }],
-            //datatype: "xml",
-            subGridOptions: {
-                plusicon: "ace-icon fa fa-plus center bigger-110 blue",
-                minusicon: "ace-icon fa fa-minus center bigger-110 blue",
-                openicon: "ace-icon fa fa-chevron-right center orange"
-            },
-            //for this example we are using local data
-            subGridRowExpanded: function (subgridDivId, rowId) {
-                var subgridTableId = subgridDivId + "_t";
-                var pager_id = "p_" + subgridTableId;
-                $("#" + subgridDivId).html("<table id='" + subgridTableId + "'></table><div id='" + pager_id + "'></div>");
-                $("#" + subgridTableId).jqGrid({
-                    url: "/base/invoice/order/orderdetail/u/listByOrderInfoId?orderInfoId=" + rowId,
-                    editurl: [[${UPDATE_URL}]],
-                    datatype: 'json',
-//                    data: subgrid_data,
-                    colNames: [' ', 'id', '订单号', '商品名', '单位', '数量', '规格型号', '含税单价', '发票行性质', '税控分类编码', '税率'],
-                    colModel: [
-                        {
-                            name: 'myac', index: '', width: 80, fixed: true, sortable: false, resize: false,
-                            formatter: 'actions',
-                            formatoptions: {
-                                keys: true,
-                                editbutton: true,
-                                delbutton: false,
-//                        delOptions:{
-//                            url:[[${DELETE_URL}]],
-//                            recreateForm: true,
-//                            beforeShowForm:beforeDeleteCallback,
-//                            afterComplete:afterCompleteCallback
-//                        },onSuccess : afterCompleteMsg
-                            }
-                        },
-                        {name: 'id', index: 'id', width: 50, editable: false, search: true, hidden: true},
-                        {name: 'orderNo', index: 'orderNo', editable: false},
-                        {name: 'itemName', index: 'itemName', editable: false,},
-                        {name: 'itemUnit', index: 'itemUnit', editable: false},
-                        {name: 'itemNum', index: 'itemNum', editable: false},
-                        {name: 'specMode', index: 'specMode', editable: false,},
-                        {name: 'itemPrice', index: 'itemPrice', editable: false,},
-                        {name: 'invoiceNature', index: 'invoiceNature', editable: false,},
-                        {name: 'itemTaxCode', index: 'itemTaxCode', editable: false,},
-                        {name: 'taxRate', index: 'taxRate', editable: false,},
-
-                    ],
-                    jsonReader: {
-                        root: "datas",
-                        page: "pageAndSort.page",
-                        total: "pageAndSort.totalPage",
-                        records: "pageAndSort.rowCount",
-                        repeatitems: false
-                    },
-                    prmNames: {
-                        page: "pageAndSort.page",    // 表示请求页码的参数名称
-                        rows: "pageAndSort.rp",    // 表示请求行数的参数名称
-                        sort: "pageAndSort.sortName", // 表示用于排序的列名的参数名称
-                        order: "pageAndSort.sortOrder", // 表示采用的排序方式的参数名称
-                        search: "_search", // 表示是否是搜索请求的参数名称
-//                nd:"nd", // 表示已经发送请求的次数的参数名称
-                        id: "id", // 表示当在编辑数据模块中发送数据时，使用的id的名称
-                        oper: "oper",    // operation参数名称（我暂时还没用到）
-                        editoper: "edit", // 当在edit模式中提交数据时，操作的名称
-                        addoper: "add", // 当在add模式中提交数据时，操作的名称
-                        deloper: "del", // 当在delete模式中提交数据时，操作的名称
-                        subgridid: "id", // 当点击以载入数据到子表时，传递的数据名称
-                        npage: null,
-//                totalrows:"rowCount" // 表示需从Server得到总共多少行数据的参数名称，参见jqGrid选项中的rowTotal
-                    },
-
-                    viewrecords: true,
-                    rowNum: 10,
-                    rowList: [10, 20, 30],
-                    pager: pager_id,
-                    height: '100%', //自动适应行高
-                    width: '100%',
-//                            altRows: true,
-                    loadComplete: function () {
-                        $("#gbox_" + subgridTableId).removeClass("ui-jqgrid").height(350).css("cssText", "position: relative;");
-                        var table = this;
-                        setTimeout(function () {
-                            styleCheckbox(table);
-                            updateActionIcons(table);
-                            updatePagerIcons(table);
-                            enableTooltips(table);
-                        }, 0);
-
-                    },
-                });
-            },
             url: [[${SEARCH_URL}]],
             datatype: "json",
             jsonReader: {
@@ -596,43 +468,22 @@
             },
             height: 400,
 //            '用户昵称','购方类型',
-            colNames: [' ', 'id', '订单号', '订单状态', '企业税', '票样代码', '商品名称', '购方税号', '购方名称', '购方地址', '购方省份', '购方固定电话', '购方手机',
-                '购方邮箱', '购方账号', '行业代码', '行业名称', '备注'],
+            colNames: ['id', '流水号', '订单号', '商品名称', '税额合计', '不含税合计', '价税合计', '发票代码', '发票号码', '开票日期','PDF下载地址','发票类型','备注','用户账号'],
             colModel: [
-                {
-                    name: 'myac', index: '', width: 80, fixed: true, sortable: false, resize: false,
-                    formatter: 'actions',
-                    formatoptions: {
-                        keys: true,
-                        editbutton: true,
-                        delbutton: false,
-                        delbutton: true,
-                        delOptions: {
-                            url: [[${DELETE_URL}]],
-                            recreateForm: true,
-                            beforeShowForm: beforeDeleteCallback,
-                            afterComplete: afterCompleteCallback
-                        }, onSuccess: afterCompleteMsg
-                    }
-                },
-
-                {name: 'id', index: 'id', editable: false, search: true, hidden: true},
-                {name: 'orderNo', index: 'orderNo', editable: false},
-                {name: 'status', index: 'status', editable: false},
-                {name: 'taxno', index: 'taxno', editable: true},
-                {name: 'ticketCode', index: 'ticketCode', editable: true},
-                {name: 'majorItems', index: 'majorItems', editable: true},
-                {name: 'buyerTaxno', index: 'buyerTaxno', editable: true},
-                {name: 'buyerName', index: 'buyerName', editable: true},
-                {name: 'buyerAddr', index: 'buyerAddr', editable: true},
-                {name: 'buyerProvince', index: 'buyerProvince', editable: true},
-                {name: 'buyerTele', index: 'buyerTele', editable: true},
-                {name: 'buyerMobile', index: 'buyerMobile', editable: true},
-                {name: 'buyerEmail', index: 'buyerEmail', editable: true},
-                {name: 'buyerBankAcc', index: 'buyerBankAcc', editable: true},
-                {name: 'induCode', index: 'induCode', editable: true},
-                {name: 'induName', index: 'induName', editable: true},
-                {name: 'remarks', index: 'remarks', editable: true},
+                {name: 'id', index: 'id', width: 50, editable: false, search: true, hidden: true},
+                {name: 'serialNo', index: 'serialNo', editable: false},
+                {name: 'orderNo', index: 'orderNo', editable: false,},
+                {name: 'projectName', index: 'projectName', editable: false},
+                {name: 'taxTotal', index: 'taxTotal', editable: false},
+                {name: 'noTaxTotal', index: 'noTaxTotal', editable: false,},
+                {name: 'priceTotal', index: 'priceTotal', editable: false,},
+                {name: 'invoiceCode', index: 'invoiceCode', editable: false,},
+                {name: 'invoiceNum', index: 'invoiceNum', editable: false,},
+                {name: 'invoiceDate', index: 'invoiceDate', editable: false,},
+                {name: 'pdfUrl', index: 'pdfUrl', editable: false,},
+                {name: 'invoiceType', index: 'invoiceType', editable: false,},
+                {name: 'reMarks', index: 'reMarks', editable: false,},
+                {name: 'usrno', index: 'usrno', editable: false,}
             ],
 
             viewrecords: true,
@@ -656,7 +507,7 @@
                 }, 0);
             },
 
-            editurl: [[${UPDATE_URL}]],
+//            editurl: [[${UPDATE_URL}]],
 
             /*<![CDATA[*/
             caption: /*[[${MODULE_NAME}]]*/
@@ -707,66 +558,15 @@
         //navButtons
         jQuery(grid_selector).jqGrid('navGrid', pager_selector,
             { 	//navbar options
-                edit: true,
-                editicon: 'ace-icon fa fa-pencil blue',
-                add: true,
-                addicon: 'ace-icon fa fa-plus-circle purple',
-                del: true,
-                delicon: 'ace-icon fa fa-trash-o red',
+                edit:false,
+                del:false,
+                add:false,
                 search: true,
                 searchicon: 'ace-icon fa fa-search orange',
                 refresh: true,
                 refreshicon: 'ace-icon fa fa-refresh green',
                 view: true,
                 viewicon: 'ace-icon fa fa-search-plus grey',
-            },
-            {
-                url: [[${UPDATE_URL}]],
-                //edit record form
-                //closeAfterEdit: true,
-                //width: 700,
-                recreateForm: true,
-                beforeShowForm: function (e) {
-                    var form = $(e[0]);
-                    form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
-                    style_edit_form(form);
-                },
-                afterComplete: afterCompleteCallback
-            },
-            //add options
-            {
-                url: [[${ADD_URL}]],
-                //new record form
-                //width: 700,
-                closeAfterAdd: true,
-                recreateForm: true,
-                viewPagerButtons: false,
-                beforeShowForm: function (e) {
-                    var form = $(e[0]);
-                    form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar')
-                        .wrapInner('<div class="widget-header" />')
-                    style_edit_form(form);
-                },
-                afterComplete: afterCompleteCallback
-            },
-            //delete options
-            {
-                url: [[${DELETE_URL}]],
-                //delete record form
-                recreateForm: true,
-                beforeShowForm: function (e) {
-                    var form = $(e[0]);
-                    if (form.data('styled')) return false;
-
-                    form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
-                    style_delete_form(form);
-
-                    form.data('styled', true);
-                },
-                afterComplete: afterCompleteCallback,
-                onClick: function (e) {
-//                    alert(1);
-                }
             },
             //search
             {
@@ -939,82 +739,6 @@
     }
 
 
-    $(function () {
-        //0.初始化fileinput
-        var oFileInput = new FileInput();
-        oFileInput.Init("txt_file", "/base/invoice/order/orderinfo/u/upload");
-    });
-
-    //初始化fileinput
-    var FileInput = function () {
-        var oFile = new Object();
-
-        //初始化fileinput控件（第一次初始化）
-        oFile.Init = function (ctrlName, uploadUrl) {
-            var control = $('#' + ctrlName);
-
-            //初始化上传控件的样式
-            control.fileinput({
-                language: 'zh', //设置语言
-                uploadUrl: uploadUrl, //上传的地址
-                allowedFileExtensions: ['xls', 'xlsx'],//接收的文件后缀
-                showUpload: true, //是否显示上传按钮
-                showCaption: true,//是否显示标题
-                showPreview: false,
-                browseClass: "btn btn-primary", //按钮样式
-                previewFileIcon: "<i class='glyphicon glyphicon-king'></i>",
-            });
-
-            //导入文件上传完成之后的事件
-            $("#txt_file").on("fileuploaded", function (event, data, previewId, index) {
-//                $("#myModal").modal("hide");
-//                var data = data.response.lstOrderImport;
-//                if (data == undefined) {
-//                    toastr.error('文件格式类型不正确');
-//                    return;
-//                }
-//                //1.初始化表格
-//                var oTable = new TableInit();
-//                oTable.Init(data);
-//                $("#div_startimport").show();
-            });
-        }
-        return oFile;
-    };
-
-
-    /**
-     * 查询全部
-     */
-    $('#ALL').click(function () {
-        $("#grid-table").jqGrid('setGridParam', {search: true, postData: {filters: null}}).trigger("reloadGrid");
-    });
-
-    /**
-     * 查询所有未开票
-     */
-    $('#NOTYET').click(function () {
-        //串联好filtersStr字符串
-        var filtersStr = '{"groupOp":"AND","rules":[{"field":"status","op":"eq","data":"0"}]}';
-        var postData = $("#grid-table").jqGrid("getGridParam", "postData");
-        //将filters参数串加入postData选项
-        $.extend(postData, {filters: filtersStr});
-        $("#grid-table").jqGrid('setGridParam', {search: true}).trigger("reloadGrid");
-    });
-
-    /**
-     * 查询所有已开票
-     */
-    $('#ALREADY').click(function () {
-        //(7)串联好filtersStr字符串
-        var filtersStr = '{"groupOp":"AND","rules":[{"field":"status","op":"eq","data":"1"}]}';
-        var postData = $("#grid-table").jqGrid("getGridParam", "postData");
-        //(8)将filters参数串加入postData选项
-        $.extend(postData, {filters: filtersStr});
-        $("#grid-table").jqGrid('setGridParam', {search: true}).trigger("reloadGrid");
-    });
-
-
     $('#btnQuery').click(function () {
         var formData = $('#queryForm').serializeJSON();
         var rulesStr = '{"field":"insertDate","op":"gt","data":"' + formData.insertDate + '"},{"field":"insertDate","op":"lt","data":"' + formData.insertDateEnd + '"}';
@@ -1027,20 +751,6 @@
         $.extend(postData, {filters: filtersStr});
         $("#grid-table").jqGrid('setGridParam', {search: true}).trigger("reloadGrid");
         console.log(filtersStr)
-    });
-
-    /**
-     * 自定义的修改按钮
-     */
-    $('#editBtn').click(function () {
-        $('#edit_grid-table').click();
-    });
-
-    /**
-     * 自定义的删除按钮
-     */
-    $('#delBtn').click(function () {
-        $('#del_grid-table').click();
     });
 
 </script>

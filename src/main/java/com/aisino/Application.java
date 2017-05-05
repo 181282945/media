@@ -1,5 +1,6 @@
 package com.aisino;
 
+import com.aisino.common.listener.WebSessionListener;
 import com.aisino.common.params.SystemParameter;
 import com.aisino.core.listener.StartupListener;
 import org.springframework.boot.SpringApplication;
@@ -16,7 +17,7 @@ import org.springframework.boot.web.support.SpringBootServletInitializer;
  *	服务启动类
  */
 @SpringBootApplication
-@ServletComponentScan(basePackageClasses = {StartupListener.class})
+@ServletComponentScan(basePackageClasses = {StartupListener.class, WebSessionListener.class})
 @EnableConfigurationProperties({SystemParameter.class})
 public class Application extends SpringBootServletInitializer implements EmbeddedServletContainerCustomizer {
 	/**

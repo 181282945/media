@@ -196,6 +196,23 @@ public class QueryLike {
         Between("between", "between"),
         Custom("Custom", "");
 
+//jqgrid
+//        eq 等于( = )
+//        ne 不等于( <> )
+//        lt 小于( < )
+//        le 小于等于( <= )
+//        gt 大于( > )
+//        ge 大于等于( >= )
+//        bw 开始于 ( LIKE val% )
+//        bn 不开始于 ( not like val%)
+//        in 在内 ( in ())
+//        ni 不在内( not in ())
+//        ew 结束于 (LIKE %val )
+//        en 不结束于
+//        cn 包含 (LIKE %val% )
+//        nc 不包含
+
+
         // 编码，Custom自定义sql
         private String code;
 

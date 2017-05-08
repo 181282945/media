@@ -52,7 +52,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
      * @see org.springframework.security.core.userdetails.UserDetailsService#loadUserByUsername(java.lang.String)
      */
     @Override
-    @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         List<GrantedAuthority> auths = new ArrayList<>();//用户角色集合
         BaseEntity entity;
@@ -105,7 +105,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             auths.add(new SimpleGrantedAuthority(AclUser.class.getSimpleName()));
             user = new User(aclUser.getUserName(), aclUser.getPassword(), aclUser.getEnabled(), aclUser.getAccountNonExpired(), aclUser.getCredentialsNonExpired(), aclUser.getAccountNonLocked(), auths);
         }
-
 
         return user;
     }

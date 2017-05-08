@@ -4,7 +4,7 @@ import com.aisino.base.invoice.userinfo.dto.EditPasswordDto;
 import com.aisino.base.invoice.userinfo.entity.UserInfo;
 import com.aisino.base.invoice.userinfo.service.UserInfoService;
 import com.aisino.base.sysmgr.aclresource.annotation.AclResc;
-import com.aisino.base.sysmgr.aclresource.common.AclResourceTarget;
+import com.aisino.base.sysmgr.aclresource.entity.AclResource;
 import com.aisino.core.controller.BaseController;
 import com.aisino.core.dto.ResultDataDto;
 import com.aisino.core.security.util.SecurityUtil;
@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping(value = UserUserInfoController.PATH)
-@AclResc(code = "userUserInfo", name = UserUserInfoController.MODULE_NAME,homePage = UserUserInfoController.HOME_PAGE,target = AclResourceTarget.USERINFO)
+@AclResc(id = 10000,code = "userUserInfo", name = UserUserInfoController.MODULE_NAME,homePage = UserUserInfoController.HOME_PAGE,target = AclResource.Target.USERINFO)
 public class UserUserInfoController extends BaseController<UserInfo> {
     final static String PATH = "/base/invoice/userinfo/u";
 
@@ -49,7 +49,7 @@ public class UserUserInfoController extends BaseController<UserInfo> {
      * 新增
      */
     @RequestMapping(value = "/reg",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @AclResc(code = "reg",name = "注册")
+    @AclResc(id = 10001,code = "reg",name = "注册")
     public ResultDataDto reg(@ModelAttribute("userInfo")UserInfo userInfo,@ModelAttribute("repeatPassword")String repeatPassword, @ModelAttribute("verification_code")String verificationcode, HttpServletRequest request){
         return userInfoService.regByUser(userInfo,repeatPassword,verificationcode,request);
     }
@@ -58,7 +58,7 @@ public class UserUserInfoController extends BaseController<UserInfo> {
      * 修改
      */
     @RequestMapping(value = "/update",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @AclResc(code = "update",name = "修改资料")
+    @AclResc(id = 10002,code = "update",name = "修改资料")
     public ResultDataDto update(@ModelAttribute("userInfo")UserInfo userInfo){
         userInfoService.updateEntity(userInfo);
         return ResultDataDto.addUpdateSuccess();
@@ -68,7 +68,7 @@ public class UserUserInfoController extends BaseController<UserInfo> {
      * 根据当前用户,修改密码
      */
     @RequestMapping(value = "/editPwdByCurrentUser",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @AclResc(code = "editPwdByCurrentUser",name = "修改资料")
+    @AclResc(id = 10003,code = "editPwdByCurrentUser",name = "修改资料")
     public ResultDataDto editPwdByCurrentUser(@ModelAttribute("editPasswordDto")EditPasswordDto editPasswordDto,@ModelAttribute("verificationCode") String verificationCode, HttpServletRequest request){
         return userInfoService.editPwdByCurrentUser(editPasswordDto,verificationCode,request);
     }

@@ -1,6 +1,6 @@
 package com.aisino.base.sysmgr.aclrescrole.controller;
 
-import com.aisino.base.sysmgr.aclresource.common.AclResourceTarget;
+import com.aisino.base.sysmgr.aclresource.entity.AclResource;
 import com.aisino.core.mybatis.specification.PageAndSort;
 import com.aisino.base.sysmgr.aclrescrole.entity.AclRescRole;
 import com.aisino.base.sysmgr.aclrescrole.service.AclRescRoleService;
@@ -8,6 +8,7 @@ import com.aisino.base.sysmgr.aclresource.annotation.AclResc;
 import com.aisino.common.dto.jqgrid.JqgridFilters;
 import com.aisino.core.controller.BaseController;
 import com.aisino.core.dto.ResultDataDto;
+import com.aisino.core.security.MySecurityMetadataSource;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -20,7 +21,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = AclRescRoleController.PATH)
-@AclResc(code = "aclRescRole", name = AclRescRoleController.MODULE_NAME,homePage = AclRescRoleController.HOME_PAGE,target = AclResourceTarget.ACLUSER)
+@AclResc(id= 2000,code = "aclRescRole", name = AclRescRoleController.MODULE_NAME,homePage = AclRescRoleController.HOME_PAGE,target = AclResource.Target.ACLUSER,isMenu = false)
 public class AclRescRoleController extends BaseController<AclRescRole> {
     final static String PATH = "/base/sysmgr/aclrescrole";
     final static String HOME_PAGE = PATH + "/tolist";
@@ -29,6 +30,9 @@ public class AclRescRoleController extends BaseController<AclRescRole> {
 
     @Resource
     private AclRescRoleService aclRescRoleService;
+
+    @Resource
+    private MySecurityMetadataSource securityMetadataSource;
 
 
 
@@ -60,7 +64,7 @@ public class AclRescRoleController extends BaseController<AclRescRole> {
 
 
     @RequestMapping(value = "/list",method = RequestMethod.GET)
-    @AclResc(code = "list",name = "角色资源列表")
+    @AclResc(id= 2001,code = "list",name = "角色资源列表")
     public ResultDataDto list(JqgridFilters jqgridFilters, @ModelAttribute("pageAndSort")PageAndSort pageAndSort){
         List<AclRescRole> aclRescRoles = aclRescRoleService.findByJqgridFilters(jqgridFilters,pageAndSort);
         return new ResultDataDto(aclRescRoles,pageAndSort);
@@ -71,7 +75,7 @@ public class AclRescRoleController extends BaseController<AclRescRole> {
      * 新增
      */
     @RequestMapping(value = "/add",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @AclResc(code = "add",name = "新增角色资源")
+    @AclResc(id= 2002,code = "add",name = "新增角色资源")
     public ResultDataDto add(@ModelAttribute("aclRescRole")AclRescRole aclRescRole){
         if(aclRescRoleService.addEntity(aclRescRole)!=null)
             return ResultDataDto.addAddSuccess();
@@ -82,7 +86,7 @@ public class AclRescRoleController extends BaseController<AclRescRole> {
      * 更新
      */
     @RequestMapping(value = "/update",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @AclResc(code = "update",name = "更新角色资源")
+    @AclResc(id = 2003,code = "update",name = "更新角色资源")
     public ResultDataDto update(@ModelAttribute("aclRescRole")AclRescRole aclRescRole){
         aclRescRoleService.updateEntity(aclRescRole);
         return ResultDataDto.addUpdateSuccess();
@@ -92,7 +96,7 @@ public class AclRescRoleController extends BaseController<AclRescRole> {
      * 删除
      */
     @RequestMapping(value = "/delete",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @AclResc(code = "delete",name = "删除角色资源")
+    @AclResc(id = 2004,code = "delete",name = "删除角色资源")
     public ResultDataDto delete(@RequestParam("id") Integer id){
         aclRescRoleService.deleteById(id);
         return ResultDataDto.addDeleteSuccess();
@@ -104,10 +108,12 @@ public class AclRescRoleController extends BaseController<AclRescRole> {
      * @return
      */
     @RequestMapping(value = "/addByRescIdRoleId",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @AclResc(code = "addByRescIdRoleId",name = "根据资源角色新增")
+    @AclResc(id = 2005,code = "addByRescIdRoleId",name = "根据资源角色新增")
     public ResultDataDto addByRescIdRoleId(@ModelAttribute("aclRescRole")AclRescRole aclRescRole){
-        if(aclRescRoleService.addEntity(aclRescRole)!=null)
+        if(aclRescRoleService.addEntity(aclRescRole)!=null){
+            securityMetadataSource.doLoadResourceDefine();//刷新权限资源
             return ResultDataDto.addAddSuccess();
+        }
         return ResultDataDto.addOperationFailure("保存失败!");
     }
 
@@ -117,9 +123,10 @@ public class AclRescRoleController extends BaseController<AclRescRole> {
      * @return
      */
     @RequestMapping(value = "/deleteByRescIdRoleId",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @AclResc(code = "deleteByRescIdRoleId",name = "根据资源角色删除")
+    @AclResc(id = 2006,code = "deleteByRescIdRoleId",name = "根据资源角色删除")
     public ResultDataDto deleteByRescIdRoleId(@ModelAttribute("aclRescRole")AclRescRole aclRescRole){
         aclRescRoleService.deleteByRescIdRoleId(aclRescRole.getRoleId(),aclRescRole.getRescId());
+        securityMetadataSource.doLoadResourceDefine();//刷新权限资源
         return ResultDataDto.addDeleteSuccess();
     }
 

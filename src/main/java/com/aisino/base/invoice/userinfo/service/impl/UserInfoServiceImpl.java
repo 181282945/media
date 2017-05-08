@@ -4,19 +4,30 @@ import com.aisino.base.invoice.userinfo.dao.UserInfoMapper;
 import com.aisino.base.invoice.userinfo.dto.EditPasswordDto;
 import com.aisino.base.invoice.userinfo.entity.UserInfo;
 import com.aisino.base.invoice.userinfo.service.UserInfoService;
+import com.aisino.base.sysmgr.aclrole.entity.AclRole;
+import com.aisino.base.sysmgr.aclrole.service.AclRoleService;
+import com.aisino.base.sysmgr.acluserrole.entity.AclUserRole;
+import com.aisino.base.sysmgr.acluserrole.service.AclUserRoleService;
 import com.aisino.core.dto.ResultDataDto;
 import com.aisino.core.security.util.SecurityUtil;
 import com.aisino.core.service.BaseServiceImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * Created by 为 on 2017-4-24.
  */
 @Service("userInfoService")
 public class UserInfoServiceImpl extends BaseServiceImpl<UserInfo,UserInfoMapper> implements UserInfoService {
+
+
+    @Resource
+    private AclUserRoleService aclUserRoleService;
+
 
     @Override
     public UserInfo getUserByUsrno(String usrno) {
@@ -63,5 +74,14 @@ public class UserInfoServiceImpl extends BaseServiceImpl<UserInfo,UserInfoMapper
         if(this.addEntity(userInfo)!=null)
             return ResultDataDto.addOperationSuccess();
         return ResultDataDto.addOperationFailure("保存失败!");
+    }
+
+    @Override
+    public void fillRoleId(List<UserInfo> userInfos){
+        for (UserInfo userInfo : userInfos){
+            AclUserRole aclUserRole = aclUserRoleService.getByUserId(userInfo.getId());
+            if(aclUserRole!=null)
+                userInfo.setRoleId(aclUserRoleService.getByUserId(userInfo.getId()).getRoleId());
+        }
     }
 }

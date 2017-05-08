@@ -1,9 +1,8 @@
 package com.aisino.base.sysmgr.aclrescuser.controller;
 
-import com.aisino.base.sysmgr.aclrescrole.entity.AclRescRole;
 import com.aisino.base.sysmgr.aclrescuser.entity.AclRescUser;
 import com.aisino.base.sysmgr.aclrescuser.service.AclRescUserService;
-import com.aisino.base.sysmgr.aclresource.common.AclResourceTarget;
+import com.aisino.base.sysmgr.aclresource.entity.AclResource;
 import com.aisino.core.dto.ResultDataDto;
 import com.aisino.core.mybatis.specification.PageAndSort;
 import com.aisino.base.sysmgr.aclresource.annotation.AclResc;
@@ -21,7 +20,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = AclRescUserController.PATH)
-@AclResc(code = "aclRescUser", name = AclRescUserController.MODULE_NAME,homePage = AclRescUserController.HOME_PAGE,target = AclResourceTarget.ACLUSER)
+@AclResc(id = 5000,code = "aclRescUser", name = AclRescUserController.MODULE_NAME,homePage = AclRescUserController.HOME_PAGE,target = AclResource.Target.ACLUSER)
 public class AclRescUserController extends BaseController<AclRescUser> {
     final static String PATH = "/base/sysmgr/aclrescuser";
     final static String HOME_PAGE = PATH + "/tolist";
@@ -61,7 +60,7 @@ public class AclRescUserController extends BaseController<AclRescUser> {
 
 
     @RequestMapping(value = "/list",method = RequestMethod.GET)
-    @AclResc(code = "list",name = "用户资源列表")
+    @AclResc(id = 5001,code = "list",name = "用户资源列表")
     public ResultDataDto list(JqgridFilters jqgridFilters, @ModelAttribute("pageAndSort")PageAndSort pageAndSort){
         List<AclRescUser> aclRescUsers = aclRescUserService.findByJqgridFilters(jqgridFilters,pageAndSort);
         return new ResultDataDto(aclRescUsers,pageAndSort);
@@ -72,7 +71,7 @@ public class AclRescUserController extends BaseController<AclRescUser> {
      * 新增
      */
     @RequestMapping(value = "/add",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @AclResc(code = "add",name = "新增用户资源")
+    @AclResc(id = 5002,code = "add",name = "新增用户资源")
     public ResultDataDto add(@ModelAttribute("aclRescUser")AclRescUser aclRescUser){
         if(aclRescUserService.addEntity(aclRescUser)!=null)
             return ResultDataDto.addAddSuccess();
@@ -83,7 +82,7 @@ public class AclRescUserController extends BaseController<AclRescUser> {
      * 更新
      */
     @RequestMapping(value = "/update",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @AclResc(code = "update",name = "更新用户资源")
+    @AclResc(id = 5003,code = "update",name = "更新用户资源")
     public ResultDataDto update(@ModelAttribute("aclRescUser")AclRescUser aclRescUser){
         aclRescUserService.updateEntity(aclRescUser);
         return ResultDataDto.addUpdateSuccess();
@@ -93,7 +92,7 @@ public class AclRescUserController extends BaseController<AclRescUser> {
      * 删除
      */
     @RequestMapping(value = "/delete",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @AclResc(code = "delete",name = "删除用户资源")
+    @AclResc(id = 5004,code = "delete",name = "删除用户资源")
     public ResultDataDto delete(@RequestParam("id") Integer id){
         aclRescUserService.deleteById(id);
         return ResultDataDto.addDeleteSuccess();
@@ -103,7 +102,7 @@ public class AclRescUserController extends BaseController<AclRescUser> {
      * 根据资源角色新增
      */
     @RequestMapping(value = "/addByRescIdUserId",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @AclResc(code = "addByRescIdUserId",name = "根据资源角色新增")
+    @AclResc(id = 5005,code = "addByRescIdUserId",name = "根据资源角色新增")
     public ResultDataDto addByRescIdUserId(@ModelAttribute("aclRescUser")AclRescUser aclRescUser){
         if(aclRescUserService.addEntity(aclRescUser)!=null)
             return ResultDataDto.addAddSuccess();
@@ -114,7 +113,7 @@ public class AclRescUserController extends BaseController<AclRescUser> {
      * 根据资源角色删除
      */
     @RequestMapping(value = "/deleteByRescIdUserId",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @AclResc(code = "deleteByRescIdUserId",name = "根据资源用户删除")
+    @AclResc(id = 5006,code = "deleteByRescIdUserId",name = "根据资源用户删除")
     public ResultDataDto deleteByRescIdUserId(@ModelAttribute("aclRescUser")AclRescUser aclRescUser){
         aclRescUserService.deleteByRescIdUserId(aclRescUser.getUserId(),aclRescUser.getRescId());
         return ResultDataDto.addDeleteSuccess();

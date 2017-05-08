@@ -9,7 +9,6 @@ import com.aisino.base.sysmgr.aclroleauth.service.AclRoleAuthService;
 import com.aisino.base.sysmgr.acluserauth.service.AclUserAuthService;
 import com.aisino.core.mybatis.specification.PageAndSort;
 import com.aisino.base.sysmgr.aclauth.service.AclAuthService;
-import com.aisino.base.sysmgr.aclresource.common.AclResourceType;
 import com.aisino.base.sysmgr.aclresource.dao.AclResourceMapper;
 import com.aisino.common.dto.jqgrid.JqgridFilters;
 import com.aisino.core.mybatis.specification.QueryLike;
@@ -67,10 +66,19 @@ public class AclResourceServiceImpl extends BaseServiceImpl<AclResource, AclReso
     }
 
     @Override
+    public List<AclResource> findModuleByTargetA(){
+        Specification<AclResource> specification = new Specification<>(AclResource.class);
+        specification.addQueryLike(new QueryLike("target", QueryLike.LikeMode.Eq, AclResource.Target.ACLUSER.getCode()));
+        specification.addQueryLike(new QueryLike("type", QueryLike.LikeMode.Eq, AclResource.Type.MODULE.getCode()));
+        specification.addQueryLike(new QueryLike("isMenu", QueryLike.LikeMode.Eq, "1"));
+        return this.findByLike(specification);
+    }
+
+    @Override
     public List<AclResource> findModuleByFilters(JqgridFilters jqgridFilters, PageAndSort pageAndSort) {
         if (jqgridFilters == null)
             jqgridFilters = new JqgridFilters();
-        jqgridFilters.getRules().add(new JqgridFilters.Rule("type", QueryLike.LikeMode.Eq.getCode(), AclResourceType.MODULE.getCode()));
+        jqgridFilters.getRules().add(new JqgridFilters.Rule("type", QueryLike.LikeMode.Eq.getCode(), AclResource.Type.MODULE.getCode()));
         return findByJqgridFilters(jqgridFilters, pageAndSort);
     }
 

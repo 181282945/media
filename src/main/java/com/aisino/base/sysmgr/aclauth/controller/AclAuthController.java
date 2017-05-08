@@ -1,12 +1,10 @@
 package com.aisino.base.sysmgr.aclauth.controller;
 
 import com.aisino.base.sysmgr.aclauth.entity.AclAuth;
-import com.aisino.base.sysmgr.aclresource.common.AclResourceTarget;
 import com.aisino.base.sysmgr.aclresource.entity.AclResource;
 import com.aisino.core.mybatis.specification.PageAndSort;
 import com.aisino.base.sysmgr.aclauth.service.AclAuthService;
 import com.aisino.base.sysmgr.aclresource.annotation.AclResc;
-import com.aisino.base.sysmgr.aclresource.common.AclResourceType;
 import com.aisino.base.sysmgr.aclresource.service.AclResourceService;
 import com.aisino.common.dto.jqgrid.JqgridFilters;
 import com.aisino.core.controller.BaseController;
@@ -25,7 +23,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = AclAuthController.PATH)
-@AclResc(code = "aclAuth", name = AclAuthController.MODULE_NAME,homePage = AclAuthController.HOME_PAGE,target = AclResourceTarget.ACLUSER)
+@AclResc(id = 4000,code = "aclAuth", name = AclAuthController.MODULE_NAME,homePage = AclAuthController.HOME_PAGE,target = AclResource.Target.ACLUSER)
 public class AclAuthController extends BaseController<AclAuth> {
     final static String PATH = "/base/sysmgr/aclauth";
     final static String HOME_PAGE = PATH + "/tolist";
@@ -67,7 +65,7 @@ public class AclAuthController extends BaseController<AclAuth> {
 
 
     @RequestMapping(value = "/list",method = RequestMethod.GET)
-    @AclResc(code = "list",name = "权限列表")
+    @AclResc(id = 4001,code = "list",name = "权限列表")
     public ResultDataDto list(JqgridFilters jqgridFilters, @ModelAttribute("pageAndSort")PageAndSort pageAndSort){
         List<AclAuth> aclAuths = aclAuthService.findByJqgridFilters(jqgridFilters,pageAndSort);
         return new ResultDataDto(aclAuths,pageAndSort);
@@ -78,7 +76,7 @@ public class AclAuthController extends BaseController<AclAuth> {
      * 新增
      */
     @RequestMapping(value = "/add",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @AclResc(code = "add",name = "新增权限")
+    @AclResc(id = 4002,code = "add",name = "新增权限")
     public ResultDataDto add(@ModelAttribute("aclAuth")AclAuth aclAuth){
         if(aclAuthService.addEntity(aclAuth)!=null)
             return ResultDataDto.addAddSuccess();
@@ -89,7 +87,7 @@ public class AclAuthController extends BaseController<AclAuth> {
      * 更新
      */
     @RequestMapping(value = "/update",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @AclResc(code = "update",name = "更新权限")
+    @AclResc(id = 4003,code = "update",name = "更新权限")
     public ResultDataDto update(@ModelAttribute("aclAuth")AclAuth aclAuth){
         aclAuthService.updateEntity(aclAuth);
         return ResultDataDto.addUpdateSuccess();
@@ -99,7 +97,7 @@ public class AclAuthController extends BaseController<AclAuth> {
      * 删除
      */
     @RequestMapping(value = "/delete",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @AclResc(code = "delete",name = "删除权限")
+    @AclResc(id = 4004,code = "delete",name = "删除权限")
     public ResultDataDto delete(@RequestParam("id") Integer id){
         aclAuthService.deleteById(id);
         return ResultDataDto.addDeleteSuccess();
@@ -110,11 +108,11 @@ public class AclAuthController extends BaseController<AclAuth> {
      * 根据资源ID新增
      */
     @RequestMapping(value = "/addByRescId",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @AclResc(code = "addByRescId",name = "新增方法权限控制")
+    @AclResc(id = 4005,code = "addByRescId",name = "新增方法权限控制")
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public ResultDataDto addByRescId(@ModelAttribute("methodRescId")Integer methodRescId){
         AclResource aclResource = aclResourceService.findEntityById(methodRescId);
-        if(!AclResourceType.METHOD.getCode().equals(aclResource.getType()))
+        if(!AclResource.Type.METHOD.getCode().equals(aclResource.getType()))
             ResultDataDto.addOperationFailure("只有方法资源才能限定权限!");
         AclAuth aclAuth = new AclAuth();
         aclAuth.setCode(aclResource.getCode());
@@ -128,7 +126,7 @@ public class AclAuthController extends BaseController<AclAuth> {
      * 根据资源ID新增
      */
     @RequestMapping(value = "/deleteByRescId",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @AclResc(code = "deleteByRescId",name = "删除方法权限控制")
+    @AclResc(id = 4006,code = "deleteByRescId",name = "删除方法权限控制")
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public ResultDataDto deleteByRescId(@ModelAttribute("methodRescId")Integer methodRescId){
         AclResource aclResource = aclResourceService.findEntityById(methodRescId);

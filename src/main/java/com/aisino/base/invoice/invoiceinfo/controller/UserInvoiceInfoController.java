@@ -3,7 +3,7 @@ package com.aisino.base.invoice.invoiceinfo.controller;
 import com.aisino.base.invoice.invoiceinfo.entity.InvoiceInfo;
 import com.aisino.base.invoice.invoiceinfo.service.InvoiceInfoService;
 import com.aisino.base.sysmgr.aclresource.annotation.AclResc;
-import com.aisino.base.sysmgr.aclresource.common.AclResourceTarget;
+import com.aisino.base.sysmgr.aclresource.entity.AclResource;
 import com.aisino.common.annotation.CuzDataSource;
 import com.aisino.common.controller.IndexController;
 import com.aisino.common.dto.jqgrid.JqgridFilters;
@@ -25,7 +25,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = UserInvoiceInfoController.PATH)
-@AclResc(code = "userOrderInfo", name = UserInvoiceInfoController.MODULE_NAME,homePage = UserInvoiceInfoController.HOME_PAGE,target = AclResourceTarget.USERINFO)
+@AclResc(id = 30000,code = "userOrderInfo", name = UserInvoiceInfoController.MODULE_NAME,homePage = UserInvoiceInfoController.HOME_PAGE,target = AclResource.Target.USERINFO)
 public class UserInvoiceInfoController extends BaseController<InvoiceInfo> {
 
     final static String PATH = "/base/invoice/invoiceinfo/u";
@@ -70,7 +70,7 @@ public class UserInvoiceInfoController extends BaseController<InvoiceInfo> {
      */
     @CuzDataSource
     @RequestMapping(value = "/list",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @AclResc(code = "list",name = "查询列表")
+    @AclResc(id = 30001,code = "list",name = "查询列表")
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public ResultDataDto list(JqgridFilters jqgridFilters, @ModelAttribute("pageAndSort")PageAndSort pageAndSort){
         List<InvoiceInfo> invoiceInfos = invoiceInfoService.findByJqgridFilters(jqgridFilters,pageAndSort);

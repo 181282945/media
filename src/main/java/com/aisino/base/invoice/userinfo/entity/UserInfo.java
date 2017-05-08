@@ -46,6 +46,13 @@ public class UserInfo extends BaseInvoiceEntity {
      */
     private String email;
 
+
+    /**
+     * 角色瞬时,用于显示.
+     */
+    @Transient
+    private Integer roleId;
+
     //--------------------------------getter and setter------------------------
 
 
@@ -103,5 +110,13 @@ public class UserInfo extends BaseInvoiceEntity {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Integer getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(Integer roleId) {
+        this.roleId = roleId;
     }
 }

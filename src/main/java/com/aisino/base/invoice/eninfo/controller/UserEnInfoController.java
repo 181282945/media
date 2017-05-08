@@ -5,7 +5,7 @@ import com.aisino.base.invoice.eninfo.service.EnInfoService;
 import com.aisino.base.invoice.userinfo.entity.UserInfo;
 import com.aisino.base.invoice.userinfo.service.UserInfoService;
 import com.aisino.base.sysmgr.aclresource.annotation.AclResc;
-import com.aisino.base.sysmgr.aclresource.common.AclResourceTarget;
+import com.aisino.base.sysmgr.aclresource.entity.AclResource;
 import com.aisino.base.sysmgr.dbinfo.service.DbInfoService;
 import com.aisino.core.controller.BaseController;
 import com.aisino.core.dto.ResultDataDto;
@@ -26,7 +26,7 @@ import javax.annotation.Resource;
  */
 @RestController
 @RequestMapping(value = UserEnInfoController.PATH)
-@AclResc(code = "userEnInfo", name = UserEnInfoController.MODULE_NAME,homePage = UserEnInfoController.PATH,target = AclResourceTarget.USERINFO)
+@AclResc(id = 60000,code = "userEnInfo", name = UserEnInfoController.MODULE_NAME,homePage = UserEnInfoController.PATH,target = AclResource.Target.USERINFO)
 public class UserEnInfoController extends BaseController<EnInfo> {
     final static String PATH = "/base/invoice/eninfo/u";
     final static String MODULE_NAME = "企业信息";
@@ -55,7 +55,7 @@ public class UserEnInfoController extends BaseController<EnInfo> {
      * 用户完善企业信息的方法.
      */
     @RequestMapping(value = "/addOrUpdateByCurrentUser",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @AclResc(code = "addOrUpdateByCurrentUser",name = "新增企业")
+    @AclResc(id = 60001,code = "addOrUpdateByCurrentUser",name = "新增企业")
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public ResultDataDto addOrUpdateByCurrentUser(@ModelAttribute("enInfo")EnInfo enInfo){
         UserInfo userInfo = SecurityUtil.getCurrentUserInfo();

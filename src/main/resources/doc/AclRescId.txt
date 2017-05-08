@@ -1,0 +1,19 @@
+因特殊原因资源表不能使用自增ID,必须手写并且不重复.所以在此记录下每个资源的ID起始编号
+避免重复
+
+1000 = com.aisino.base.sysmgr.aclresource.controller.AclResourceController
+2000 = com.aisino.base.sysmgr.aclrescrole.controller.AclRescRoleController
+3000 = com.aisino.base.sysmgr.aclmenu.controller.AclMenuController
+4000 = com.aisino.base.sysmgr.aclauth.controller.AclAuthController
+5000 = com.aisino.base.sysmgr.aclrescuser.controller.AclRescUserController
+6000 = com.aisino.base.sysmgr.aclrole.controller.AclRoleController
+7000 = com.aisino.base.sysmgr.aclroleauth.controller.AclRoleAuthController
+8000 = com.aisino.base.sysmgr.acluserauth.controller.AclUserAuthController
+9000 = com.aisino.base.invoice.userinfo.controller.AclUserInfoController
+
+10000 = com.aisino.base.invoice.userinfo.controller.UserUserInfoController
+20000 = com.aisino.base.invoice.order.orderinfo.controller.UserOrderInfoController
+30000 = com.aisino.base.invoice.invoiceinfo.controller.UserInvoiceInfoController
+40000 = com.aisino.base.invoice.eninfo.controller.EnInfoController
+50000 = com.aisino.base.invoice.order.orderdetail.controller.UserOrderDetailController
+60000 = com.aisino.base.invoice.eninfo.controller.UserEnInfoController

@@ -258,15 +258,16 @@
                     },
                     url:'/base/sysmgr/aclresource/listModuleAuthByRoleId?roleId=' + roleId,
                     datatype: 'json',
-                    colNames:['id','编码','名称','类型', '映射URL','模块首页','权限'],
+                    colNames:['id','编码','名称','类型', '映射URL','模块首页','资源定位','权限'],
                     colModel:[
                         {name:'id',index:'id',width:0, editable: false,search:true,hidden:true},
                         {name:'code',index:'code', editable: false},
                         {name:'name',index:'name', editable: false},
-                        {name: 'type', index: 'type',editable: false,edittype: "select",editoptions: {value: [[${aclResrouceTypeParams}]]},formatter: 'select'},
+                        {name: 'type', index: 'type',width:50,editable: false,edittype: "select",editoptions: {value: [[${aclResrouceTypeParams}]]},formatter: 'select'},
                         {name:'path',index:'path',width:300, editable: false},
                         {name:'homePage',index:'homePage',width:300, editable: false},
-                        {name:'auth',index:'auth',formatter: moduleSwitch,formatoptions:{value: roleId,subgridTableId:moduleSubgrid}},
+                        {name:'target',index:'target',width:100, editable: false,edittype: "select",editoptions: {value: [[${aclResrouceTargetParams}]]},formatter: 'select'},
+                        {name:'auth',index:'auth',width:80,formatter: moduleSwitch,formatoptions:{value: roleId,subgridTableId:moduleSubgrid}},
                     ],
                     jsonReader: {
                         root:"datas",
@@ -331,7 +332,7 @@
 //                totalrows:"rowCount" // 表示需从Server得到总共多少行数据的参数名称，参见jqGrid选项中的rowTotal
             },
             height: 400,
-            colNames:[' ', 'id','编码','名称','创建时间'],
+            colNames:[' ', 'ID','编码','名称','角色分类','创建时间'],
             colModel:[
                 {name:'myac',index:'', width:80, fixed:true, sortable:false, resize:false,
                     formatter:'actions',
@@ -349,10 +350,11 @@
                     }
                 },
 
-                {name:'id',index:'id',width:50, editable: false,search:true,hidden:true},
+                {name:'id',index:'id',width:50, editable: true,search:true,hidden:true},
                 {name:'code',index:'code', editable: true},
                 {name:'name',index:'name', editable: true},
-                {name:'insertDate',index:'insertDate', editable: false,formatter:'date',formatter:'date', formatoptions: {srcformat: 'u', newformat:'Y-m-d H:i'}},
+                {name:'target',index:'target',width:100, editable: true,edittype: "select",editoptions: {value: [[${aclRoleTargetParams}]]},formatter: 'select'},
+                {name:'insertDate',index:'insertDate', editable: false,formatter:'date',formatter:'date', formatoptions: {srcformat: 'u', newformat:'Y-m-d H:i'}}
             ],
 
             viewrecords : true,

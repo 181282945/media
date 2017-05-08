@@ -3,7 +3,7 @@ package com.aisino.base.invoice.order.orderinfo.controller;
 import com.aisino.base.invoice.order.orderinfo.entity.OrderInfo;
 import com.aisino.base.invoice.order.orderinfo.service.OrderInfoService;
 import com.aisino.base.sysmgr.aclresource.annotation.AclResc;
-import com.aisino.base.sysmgr.aclresource.common.AclResourceTarget;
+import com.aisino.base.sysmgr.aclresource.entity.AclResource;
 import com.aisino.common.annotation.CuzDataSource;
 import com.aisino.common.controller.IndexController;
 import com.aisino.common.dto.jqgrid.JqgridFilters;
@@ -38,7 +38,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = UserOrderInfoController.PATH)
-@AclResc(code = "userOrderInfo", name = UserOrderInfoController.MODULE_NAME,homePage = UserOrderInfoController.HOME_PAGE,target = AclResourceTarget.USERINFO)
+@AclResc(id = 20000,code = "userOrderInfo", name = UserOrderInfoController.MODULE_NAME,homePage = UserOrderInfoController.HOME_PAGE,target = AclResource.Target.USERINFO)
 public class UserOrderInfoController extends BaseController<OrderInfo> {
 
     final static String PATH = "/base/invoice/order/orderinfo/u";
@@ -83,7 +83,7 @@ public class UserOrderInfoController extends BaseController<OrderInfo> {
      */
     @CuzDataSource
     @RequestMapping(value = "/list",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @AclResc(code = "list",name = "查询列表")
+    @AclResc(id = 20001,code = "list",name = "查询列表")
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public ResultDataDto list(JqgridFilters jqgridFilters, @ModelAttribute("pageAndSort")PageAndSort pageAndSort){
         jqgridFilters.getRules().add(new JqgridFilters.Rule("delflags", QueryLike.LikeMode.Eq.getCode(), BaseInvoiceEntity.DelflagsType.NORMAL.getCode()));
@@ -97,7 +97,7 @@ public class UserOrderInfoController extends BaseController<OrderInfo> {
      */
     @CuzDataSource
     @RequestMapping(value = "/add",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @AclResc(code = "add",name = "新增订单")
+    @AclResc(id = 20002,code = "add",name = "新增订单")
     public ResultDataDto add(@ModelAttribute("orderInfo")OrderInfo orderInfo){
         if(orderInfoService.addEntity(orderInfo)!=null)
             return ResultDataDto.addAddSuccess();
@@ -109,7 +109,7 @@ public class UserOrderInfoController extends BaseController<OrderInfo> {
      */
     @CuzDataSource
     @RequestMapping(value = "/view",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @AclResc(code = "view",name = "查看")
+    @AclResc(id = 20003,code = "view",name = "查看")
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public ResultDataDto view(@RequestParam("id")Integer id){
         return new ResultDataDto(orderInfoService.findEntityById(id));
@@ -120,7 +120,7 @@ public class UserOrderInfoController extends BaseController<OrderInfo> {
      */
     @CuzDataSource
     @RequestMapping(value = "/update",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @AclResc(code = "update",name = "更新订单")
+    @AclResc(id = 20004,code = "update",name = "更新订单")
     public ResultDataDto update(@ModelAttribute("orderInfo")OrderInfo orderInfo){
         orderInfoService.updateEntity(orderInfo);
         return ResultDataDto.addUpdateSuccess();
@@ -131,7 +131,7 @@ public class UserOrderInfoController extends BaseController<OrderInfo> {
      */
     @CuzDataSource
     @RequestMapping(value = "/upload",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @AclResc(code = "upload",name = "上传订单")
+    @AclResc(id = 20005,code = "upload",name = "上传订单")
     @Transactional(propagation = Propagation.SUPPORTS)
     public ResultDataDto upload(HttpServletRequest request){
         CommonsMultipartResolver multipartResolver=new CommonsMultipartResolver(
@@ -173,7 +173,7 @@ public class UserOrderInfoController extends BaseController<OrderInfo> {
      */
     @CuzDataSource
     @RequestMapping(value = "/effective",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @AclResc(code = "effective",name = "订单生效")
+    @AclResc(id = 20006,code = "effective",name = "订单生效")
     @Transactional(propagation = Propagation.SUPPORTS)
     public ResultDataDto effective(@RequestParam("id") Integer id){
         orderInfoService.updateEntityEffective(id);
@@ -185,7 +185,7 @@ public class UserOrderInfoController extends BaseController<OrderInfo> {
      */
     @CuzDataSource
     @RequestMapping(value = "/invalid",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @AclResc(code = "invalid",name = "订单失效")
+    @AclResc(id = 20007,code = "invalid",name = "订单失效")
     @Transactional(propagation = Propagation.SUPPORTS)
     public ResultDataDto invalid(@RequestParam("id") Integer id){
         orderInfoService.updateEntityInvalid(id);

@@ -1,6 +1,6 @@
 package com.aisino.base.sysmgr.aclroleauth.controller;
 
-import com.aisino.base.sysmgr.aclresource.common.AclResourceTarget;
+import com.aisino.base.sysmgr.aclresource.entity.AclResource;
 import com.aisino.core.mybatis.specification.PageAndSort;
 import com.aisino.base.sysmgr.aclresource.annotation.AclResc;
 import com.aisino.base.sysmgr.aclroleauth.entity.AclRoleAuth;
@@ -22,7 +22,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = AclRoleAuthController.PATH)
-@AclResc(code = "aclroleauth", name = AclRoleAuthController.MODULE_NAME,homePage = AclRoleAuthController.HOME_PAGE,target = AclResourceTarget.ACLUSER)
+@AclResc(id = 7000,code = "aclroleauth", name = AclRoleAuthController.MODULE_NAME,homePage = AclRoleAuthController.HOME_PAGE,target = AclResource.Target.ACLUSER)
 public class AclRoleAuthController extends BaseController<AclRoleAuth> {
     final static String PATH = "/base/sysmgr/aclroleauth";
     final static String HOME_PAGE = PATH + "/tolist";
@@ -62,7 +62,7 @@ public class AclRoleAuthController extends BaseController<AclRoleAuth> {
 
 
     @RequestMapping(value = "/list",method = RequestMethod.GET)
-    @AclResc(code = "list",name = "角色权限列表")
+    @AclResc(id = 7001,code = "list",name = "角色权限列表")
     public ResultDataDto list(JqgridFilters jqgridFilters, @ModelAttribute("pageAndSort")PageAndSort pageAndSort){
         List<AclRoleAuth> aclRoleAuths = aclRoleAuthService.findByJqgridFilters(jqgridFilters,pageAndSort);
         return new ResultDataDto(aclRoleAuths,pageAndSort);
@@ -75,7 +75,7 @@ public class AclRoleAuthController extends BaseController<AclRoleAuth> {
      * @return
      */
     @RequestMapping(value = "/add",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @AclResc(code = "add",name = "新增角色权限")
+    @AclResc(id = 7002,code = "add",name = "新增角色权限")
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public ResultDataDto add(@ModelAttribute("aclRoleAuth")AclRoleAuth aclRoleAuth){
         if(aclRoleAuthService.addEntity(aclRoleAuth)!=null)
@@ -91,7 +91,7 @@ public class AclRoleAuthController extends BaseController<AclRoleAuth> {
      * 更新
      */
     @RequestMapping(value = "/update",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @AclResc(code = "update",name = "更新角色权限")
+    @AclResc(id = 7003,code = "update",name = "更新角色权限")
     public ResultDataDto update(@ModelAttribute("aclRoleAuth")AclRoleAuth aclRoleAuth){
         aclRoleAuthService.updateEntity(aclRoleAuth);
         return ResultDataDto.addUpdateSuccess();
@@ -101,7 +101,7 @@ public class AclRoleAuthController extends BaseController<AclRoleAuth> {
      * 删除
      */
     @RequestMapping(value = "/delete",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @AclResc(code = "delete",name = "删除角色资源")
+    @AclResc(id = 7004,code = "delete",name = "删除角色资源")
     public ResultDataDto delete(@RequestParam("id") Integer id){
         aclRoleAuthService.deleteById(id);
         return ResultDataDto.addDeleteSuccess();
@@ -114,7 +114,7 @@ public class AclRoleAuthController extends BaseController<AclRoleAuth> {
      * 根据资源角色新增
      */
     @RequestMapping(value = "/addByRescIdRoleId",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @AclResc(code = "addByRescIdRoleId",name = "新增角色权限")
+    @AclResc(id = 7005,code = "addByRescIdRoleId",name = "新增角色权限")
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public ResultDataDto addByRescIdRoleId(@ModelAttribute("rescId")Integer rescId,@ModelAttribute("roleId")Integer roleId){
         if(aclRoleAuthService.addByRescIdRoleId(rescId, roleId)!=null)
@@ -128,7 +128,7 @@ public class AclRoleAuthController extends BaseController<AclRoleAuth> {
      * 根据资源角色删除
      */
     @RequestMapping(value = "/deleteByRescIdRoleId",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @AclResc(code = "deleteByRescIdRoleId",name = "根据资源角色新增")
+    @AclResc(id = 7006,code = "deleteByRescIdRoleId",name = "根据资源角色新增")
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public ResultDataDto deleteByRescIdRoleId(@ModelAttribute("rescId")Integer rescId,@ModelAttribute("roleId")Integer roleId){
         aclRoleAuthService.deleteByRescIdRoleId(rescId,roleId);

@@ -7,6 +7,7 @@ import com.aisino.core.dto.ResultDataDto;
 import com.aisino.core.service.BaseService;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * Created by 为 on 2017-4-24.
@@ -24,5 +25,11 @@ public interface UserInfoService extends BaseService<UserInfo,UserInfoMapper> {
      *  用户注册,检验规则,通过保存
      */
     ResultDataDto regByUser(UserInfo userInfo,String repeatPassword,String verificationcode, HttpServletRequest request);
+
+    /**
+     * 填充用户的角色ID
+     * @param userInfos
+     */
+    void fillRoleId(List<UserInfo> userInfos);
 
 }

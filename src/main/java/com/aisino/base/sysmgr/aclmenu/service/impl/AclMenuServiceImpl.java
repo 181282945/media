@@ -2,15 +2,16 @@ package com.aisino.base.sysmgr.aclmenu.service.impl;
 
 import com.aisino.base.sysmgr.aclmenu.dao.AclMenuMapper;
 import com.aisino.base.sysmgr.aclresource.entity.AclResource;
+import com.aisino.base.sysmgr.aclresource.service.AclResourceService;
+import com.aisino.core.security.MySecurityMetadataSource;
 import com.aisino.core.security.util.SecurityUtil;
-import com.aisino.base.sysmgr.aclcache.AclCache;
 import com.aisino.base.sysmgr.aclmenu.domain.entity.AclMenu;
 import com.aisino.base.sysmgr.aclmenu.service.AclMenuService;
 import com.aisino.core.service.BaseServiceImpl;
-import com.aisino.core.util.CloneUtils;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.*;
 
 /**
@@ -19,19 +20,23 @@ import java.util.*;
 @Service("aclMenuService")
 public class AclMenuServiceImpl extends BaseServiceImpl<AclMenu, AclMenuMapper> implements AclMenuService {
 
+    @Resource
+    private AclResourceService aclResourceService;
+
+    @Resource
+    private MySecurityMetadataSource securityMetadataSource;
+
 
     /**
-     *   不建议修改此方法
-     * 因为:此类关系到MAP 的可变对象引用以及对象复制问题.
-     * @return
+     * 根据用户权限构建菜单
      */
     @Override
     public Map<AclMenu, List<AclResource>> getAclUserMenus() {
 
         //创建完整的菜单,然后删除没有权限的菜单
-        Map<AclMenu, List<AclResource>> userMenuModuleMap = CloneUtils.clone((new LinkedHashMap<>(AclCache.aclMenuModuleMapCache)));
+        Map<AclMenu, List<AclResource>> userMenuModuleMap = findAclMenuModuleMap();
         //获取资源/权限集
-        Map<String, Collection<ConfigAttribute>> moduleMap = AclCache.moduleMapCache;
+        Map<String, Collection<ConfigAttribute>> moduleMap = securityMetadataSource.getModuleMap();
         for (String path : moduleMap.keySet()) {
                 //如果没有权限
                 if (!SecurityUtil.hastAnyAuth(moduleMap.get(path))) {
@@ -65,4 +70,53 @@ public class AclMenuServiceImpl extends BaseServiceImpl<AclMenu, AclMenuMapper> 
     public List<AclMenu> findParams() {
         return getMapper().findParams();
     }
+
+
+    /**
+     * 构建完整的菜单 - 模块
+     */
+    private Map<AclMenu, List<AclResource>> findAclMenuModuleMap() {
+        /**
+         * 菜单-List<模块> 的map
+         */
+        Map<AclMenu, List<AclResource>> aclMenuModuleMap = new LinkedHashMap<>();
+        //新加入一个未分类的key
+        AclMenu unclassified = new AclMenu("unclassified", "未分类", Integer.MAX_VALUE);
+        aclMenuModuleMap.put(unclassified, new ArrayList<AclResource>());
+
+        List<AclMenu> aclMenus = this.findAll();
+        Collections.sort(aclMenus);
+
+        List<AclResource> moduleTargetAList = aclResourceService.findModuleByTargetA();
+
+        for (AclMenu key : aclMenus) {
+            Iterator<AclResource> iterator = moduleTargetAList.iterator();
+
+            while (iterator.hasNext()) {
+                AclResource module = iterator.next();
+                if (module.getMenuId() != null) {
+                    if (module.getMenuId().equals(key.getId())) {
+                        List<AclResource> value = aclMenuModuleMap.get(key);
+                        if (value == null) {
+                            value = new ArrayList<>();
+                            value.add(module);
+                            aclMenuModuleMap.put(key, value);
+                        } else {
+                            value.add(module);
+                        }
+                        iterator.remove();
+                    }
+                }else {
+                    //未分类
+                    aclMenuModuleMap.get(unclassified).add(module);
+                    iterator.remove();
+                }
+            }
+            for (Map.Entry<AclMenu, List<AclResource>> entry : aclMenuModuleMap.entrySet()) {
+                Collections.sort(entry.getValue());
+            }
+        }
+        return aclMenuModuleMap;
+    }
+
 }

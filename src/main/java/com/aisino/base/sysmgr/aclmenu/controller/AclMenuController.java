@@ -2,7 +2,7 @@ package com.aisino.base.sysmgr.aclmenu.controller;
 
 import com.aisino.base.sysmgr.aclmenu.domain.entity.AclMenu;
 import com.aisino.base.sysmgr.aclmenu.service.AclMenuService;
-import com.aisino.base.sysmgr.aclresource.common.AclResourceTarget;
+import com.aisino.base.sysmgr.aclresource.entity.AclResource;
 import com.aisino.core.dto.ResultDataDto;
 import com.aisino.core.mybatis.specification.PageAndSort;
 import com.aisino.base.sysmgr.aclresource.annotation.AclResc;
@@ -22,7 +22,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = AclMenuController.PATH)
-@AclResc(code = "aclmenu", name = AclMenuController.MODULE_NAME,homePage = AclMenuController.HOME_PAGE,target = AclResourceTarget.ACLUSER)
+@AclResc(id = 3000,code = "aclmenu", name = AclMenuController.MODULE_NAME,homePage = AclMenuController.HOME_PAGE,target = AclResource.Target.ACLUSER)
 public class AclMenuController extends BaseController<AclMenu> {
 
 
@@ -63,7 +63,7 @@ public class AclMenuController extends BaseController<AclMenu> {
 
 
     @RequestMapping(value = "/list",method = RequestMethod.GET)
-    @AclResc(code = "list",name = "菜单列表")
+    @AclResc(id = 3001,code = "list",name = "菜单列表")
     public ResultDataDto list(JqgridFilters jqgridFilters, @ModelAttribute("pageAndSort")PageAndSort pageAndSort){
         List<AclMenu> aclMenus = aclMenuService.findByJqgridFilters(jqgridFilters,pageAndSort);
         return new ResultDataDto(aclMenus,pageAndSort);
@@ -73,7 +73,7 @@ public class AclMenuController extends BaseController<AclMenu> {
      * 新增
      */
     @RequestMapping(value = "/add",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @AclResc(code = "add",name = "新增菜单")
+    @AclResc(id = 3002,code = "add",name = "新增菜单")
     public ResultDataDto add(@ModelAttribute("aclMenu")AclMenu aclMenu){
         if(aclMenuService.addEntity(aclMenu)!=null)
             return ResultDataDto.addAddSuccess();
@@ -84,7 +84,7 @@ public class AclMenuController extends BaseController<AclMenu> {
      * 更新
      */
     @RequestMapping(value = "/update",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @AclResc(code = "update",name = "更新菜单")
+    @AclResc(id = 3003,code = "update",name = "更新菜单")
     public ResultDataDto update(@ModelAttribute("aclMenu")AclMenu aclMenu){
         aclMenuService.updateEntity(aclMenu);
         return ResultDataDto.addUpdateSuccess();
@@ -94,14 +94,14 @@ public class AclMenuController extends BaseController<AclMenu> {
      * 删除
      */
     @RequestMapping(value = "/delete",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @AclResc(code = "delete",name = "删除菜单")
+    @AclResc(id = 3004,code = "delete",name = "删除菜单")
     public ResultDataDto delete(@RequestParam("id") Integer id){
         aclMenuService.deleteById(id);
         return ResultDataDto.addDeleteSuccess();
     }
 
     @RequestMapping(value = "/getaclusermenus",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @AclResc(code = "getAclUserMenus",name = "获取菜单")
+    @AclResc(id = 3005,code = "getAclUserMenus",name = "获取菜单")
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public ResultDataDto getAclUserMenus(){
         return ResultDataDto.addSuccess().setDatas(aclMenuService.getAclUserMenus());

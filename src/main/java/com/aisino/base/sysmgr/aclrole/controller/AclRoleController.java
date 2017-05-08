@@ -1,8 +1,7 @@
 package com.aisino.base.sysmgr.aclrole.controller;
 
 import com.aisino.base.sysmgr.aclresource.annotation.AclResc;
-import com.aisino.base.sysmgr.aclresource.common.AclResourceTarget;
-import com.aisino.base.sysmgr.aclresource.common.AclResourceType;
+import com.aisino.base.sysmgr.aclresource.entity.AclResource;
 import com.aisino.base.sysmgr.aclrole.entity.AclRole;
 import com.aisino.base.sysmgr.aclrole.service.AclRoleService;
 import com.aisino.common.dto.jqgrid.JqgridFilters;
@@ -27,7 +26,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = AclRoleController.PATH)
-@AclResc(code = "aclRole", name = AclRoleController.MODULE_NAME,homePage = AclRoleController.HOME_PAGE,target = AclResourceTarget.ACLUSER)
+@AclResc(id = 6000,code = "aclRole", name = AclRoleController.MODULE_NAME,homePage = AclRoleController.HOME_PAGE,target = AclResource.Target.ACLUSER)
 public class AclRoleController extends BaseController<AclRole> {
     final static String PATH = "/base/sysmgr/aclrole";
     final static String HOME_PAGE = PATH + "/tolist";
@@ -59,7 +58,9 @@ public class AclRoleController extends BaseController<AclRole> {
         mav.addObject("ADD_URL",ADD_URL);
         mav.addObject("DELETE_URL",DELETE_URL);
         mav.addObject("SEARCH_URL",SEARCH_URL);
-        mav.addObject("aclResrouceTypeParams", ParamUtil.JqgridSelectVal(AclResourceType.getParams()));
+        mav.addObject("aclResrouceTypeParams", ParamUtil.JqgridSelectVal(AclResource.Type.getParams()));
+        mav.addObject("aclResrouceTargetParams", ParamUtil.JqgridSelectVal(AclResource.Target.getParams()));
+        mav.addObject("aclRoleTargetParams", ParamUtil.JqgridSelectVal(AclRole.Target.getParams()));
         return mav;
     }
 
@@ -71,11 +72,42 @@ public class AclRoleController extends BaseController<AclRole> {
      * @return
      */
     @RequestMapping(value = "/list",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @AclResc(code = "list",name = "查询列表")
+    @AclResc(id = 6001,code = "list",name = "查询列表")
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public ResultDataDto listModule(JqgridFilters jqgridFilters, @ModelAttribute("pageAndSort")PageAndSort pageAndSort){
         List<AclRole> aclRoles = aclRoleService.findByJqgridFilters(jqgridFilters,pageAndSort);
         return new ResultDataDto(aclRoles,pageAndSort);
+    }
+
+    /**
+     * 新增
+     */
+    @RequestMapping(value = "/add",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @AclResc(id = 6003,code = "add",name = "查询列表")
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    public ResultDataDto listModule(@ModelAttribute("aclRole")AclRole aclRole){
+        aclRoleService.addEntity(aclRole);
+        return ResultDataDto.addAddSuccess();
+    }
+
+    /**
+     * 修改
+     */
+    @RequestMapping(value = "/update",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @AclResc(id = 6004,code = "update",name = "修改角色")
+    public ResultDataDto update(@ModelAttribute("aclRole")AclRole aclRole){
+        aclRoleService.updateEntity(aclRole);
+        return ResultDataDto.addUpdateSuccess();
+    }
+
+    /**
+     * 删除
+     */
+    @RequestMapping(value = "/delete",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @AclResc(id = 6002,code = "delete",name = "删除角色")
+    public ResultDataDto delete(@ModelAttribute("id")Integer id){
+        aclRoleService.deleteById(id);
+        return ResultDataDto.addDeleteSuccess();
     }
 
 

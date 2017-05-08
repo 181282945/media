@@ -1,12 +1,11 @@
 package com.aisino.base.sysmgr.aclresource.entity;
 
+import com.aisino.common.dto.param.ParamDto;
 import com.aisino.core.entity.annotation.BaseEntityMapper;
 import com.aisino.core.entity.BaseEntity;
 import com.aisino.core.entity.annotation.IsNotNull;
 import com.aisino.core.entity.annotation.Transient;
 import org.apache.ibatis.type.Alias;
-
-import java.util.Objects;
 
 /**
  * Created by 为 on 2017-4-8.
@@ -18,11 +17,13 @@ public class AclResource extends BaseEntity implements Comparable<AclResource> {
     public AclResource() {
     }
 
-    public AclResource(String code, String name, String path, String type) {
+    public AclResource(Integer id,String code, String name, String path, String type,Boolean isMenu) {
+        this.setId(id);
         this.code = code;
         this.name = name;
         this.path = path;
         this.type = type;
+        this.isMenu = isMenu;
     }
 
     /**
@@ -33,54 +34,37 @@ public class AclResource extends BaseEntity implements Comparable<AclResource> {
      * @param path
      * @param type
      * @param homePage
-     * @param identify
      */
-    public AclResource(String code, String name, String path, String type, String homePage, String identify,String target) {
+    public AclResource(Integer id,String code, String name, String path, String type, String homePage,String target,Boolean isMenu) {
+        this.setId(id);
         this.code = code;
         this.name = name;
         this.path = path;
         this.type = type;
         this.homePage = homePage;
-        this.identify = identify;
         this.target = target;
+        this.isMenu = isMenu;
     }
 
-    /**
-     * 方法资源构造方法
-     *
-     * @param code
-     * @param name
-     * @param path
-     * @param type
-     * @param identify
-     */
-    public AclResource(String code, String name, String path, String type, String identify) {
-        this.code = code;
-        this.name = name;
-        this.path = path;
-        this.type = type;
-        this.identify = identify;
-    }
-
-    /**
-     * 重写equals 为了可以当做key使用
-     *
-     * @param o
-     * @return
-     */
-    public boolean equals(Object o) {
-        if (o == this) return true;
-        if (!(o instanceof AclResource))
-            return false;
-        AclResource x = (AclResource) o;
-        if (x.identify.equals(this.identify))
-            return true;
-        return false;
-    }
-
-    public int hashCode() {
-        return Objects.hash(identify);
-    }
+//    /**
+//     * 重写equals 为了可以当做key使用
+//     *
+//     * @param o
+//     * @return
+//     */
+//    public boolean equals(Object o) {
+//        if (o == this) return true;
+//        if (!(o instanceof AclResource))
+//            return false;
+//        AclResource x = (AclResource) o;
+//        if (x.identify.equals(this.identify))
+//            return true;
+//        return false;
+//    }
+//
+//    public int hashCode() {
+//        return Objects.hash(identify);
+//    }
 
     //资源编码
     @IsNotNull
@@ -115,19 +99,15 @@ public class AclResource extends BaseEntity implements Comparable<AclResource> {
     @Transient
     private Boolean isAuth;
 
-
-
-    /**
-     * 唯一标识,因为在反射模块的时候并没有ID
-     * 简单类名的hashCode
-     */
-    @IsNotNull
-    private String identify;
-
     /**
      * 资源目标是前台用户还是后台用户
      */
     private String target;
+
+    /**
+     * 是否显示于菜单项
+     */
+    private Boolean isMenu;
 
     //-------------------------------------getter and setter-----------------------------------------------
 
@@ -196,15 +176,6 @@ public class AclResource extends BaseEntity implements Comparable<AclResource> {
         this.homePage = homePage;
     }
 
-    public String getIdentify() {
-        return identify;
-    }
-
-    public void setIdentify(String identify) {
-        this.identify = identify;
-    }
-
-
     public Boolean isAuth() {
         return isAuth;
     }
@@ -219,6 +190,14 @@ public class AclResource extends BaseEntity implements Comparable<AclResource> {
 
     public void setTarget(String target) {
         this.target = target;
+    }
+
+    public Boolean getMenu() {
+        return isMenu;
+    }
+
+    public void setMenu(Boolean menu) {
+        isMenu = menu;
     }
 
     /**
@@ -236,4 +215,126 @@ public class AclResource extends BaseEntity implements Comparable<AclResource> {
             return -1;
         return this.seq.compareTo(o.seq);
     }
+
+
+    //---------------------------------------------------------枚举--------------
+
+
+    public enum Target {
+        USERINFO("U","前台用户"),ACLUSER("A","后台用户");
+
+        //状态代码
+        private String code;
+        //状态名称
+        private String name;
+
+
+        //构造方法
+        Target(String code, String name){
+            this.code = code;
+            this.name = name;
+        }
+
+        //根据code获取状态名称
+        public static String getNameByCode(String code){
+            for(Target item : Target.values()){
+                if(item.getCode().equals(code)){
+                    return item.getName();
+                }
+            }
+            return "";
+        }
+
+        public static ParamDto[] getParams(){
+            ParamDto[] targetParams = new ParamDto[Target.values().length];
+
+            for(int i=0;i<targetParams.length;i++){
+                targetParams[i] = new ParamDto(Target.values()[i].getCode(),Target.values()[i].getName());
+            }
+            return  targetParams;
+        }
+
+
+
+        //-----------------------------------getter and setter---------------------------------------------------------
+
+
+        public String getCode() {
+            return code;
+        }
+
+        public void setCode(String code) {
+            this.code = code;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+    }
+
+
+    /**
+     * Created by 为 on 2017-4-8.
+     */
+    public enum Type {
+        MODULE("module","模块"),METHOD("method","方法");
+
+        //状态代码
+        private String code;
+        //状态名称
+        private String name;
+
+
+        //构造方法
+        Type(String code, String name){
+            this.code = code;
+            this.name = name;
+        }
+
+        //根据code获取状态名称
+        public static String getNameByCode(String code){
+            for(Type item : Type.values()){
+                if(item.getCode().equals(code)){
+                    return item.getName();
+                }
+            }
+            return "";
+        }
+
+        public static ParamDto[] getParams(){
+            ParamDto[] typeParams = new ParamDto[Type.values().length];
+
+            for(int i=0;i<typeParams.length;i++){
+                typeParams[i] = new ParamDto(Type.values()[i].getCode(),Type.values()[i].getName());
+            }
+            return  typeParams;
+        }
+
+
+
+        //-----------------------------------getter and setter---------------------------------------------------------
+
+
+        public String getCode() {
+            return code;
+        }
+
+        public void setCode(String code) {
+            this.code = code;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+    }
+
+
 }

@@ -15,4 +15,6 @@ public class AclUserRoleServiceImpl extends BaseServiceImpl<AclUserRole,AclUserR
     public AclUserRole getByUserId(Integer userId) {
         return getMapper().getByUserId(userId);
     }
+
+
 }

@@ -5,7 +5,7 @@ import com.aisino.base.invoice.order.orderdetail.service.OrderDetailService;
 import com.aisino.base.invoice.order.orderinfo.entity.OrderInfo;
 import com.aisino.base.invoice.order.orderinfo.service.OrderInfoService;
 import com.aisino.base.sysmgr.aclresource.annotation.AclResc;
-import com.aisino.base.sysmgr.aclresource.common.AclResourceTarget;
+import com.aisino.base.sysmgr.aclresource.entity.AclResource;
 import com.aisino.common.annotation.CuzDataSource;
 import com.aisino.common.controller.IndexController;
 import com.aisino.common.dto.jqgrid.JqgridFilters;
@@ -29,14 +29,14 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = UserOrderDetailController.PATH)
-@AclResc(code = "userOrderDetail", name = UserOrderDetailController.MODULE_NAME,homePage = UserOrderDetailController.HOME_PAGE,target = AclResourceTarget.USERINFO)
+@AclResc(id = 50000,code = "userOrderDetail", name = UserOrderDetailController.MODULE_NAME,homePage = UserOrderDetailController.HOME_PAGE,target = AclResource.Target.USERINFO)
 public class UserOrderDetailController extends BaseController<OrderDetail> {
 
     final static String PATH = "/base/invoice/order/orderdetail/u";
 
     public final static String HOME_PAGE = PATH + "/tolist";
 
-    final static String MODULE_NAME = "订单仓库";
+    final static String MODULE_NAME = "订单明细";
 
 
     //页面模板路径
@@ -77,7 +77,7 @@ public class UserOrderDetailController extends BaseController<OrderDetail> {
      */
     @CuzDataSource
     @RequestMapping(value = "/list",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @AclResc(code = "list",name = "查询列表")
+    @AclResc(id = 50001,code = "list",name = "查询列表")
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public ResultDataDto list(JqgridFilters jqgridFilters, @ModelAttribute("pageAndSort")PageAndSort pageAndSort){
         jqgridFilters.getRules().add(new JqgridFilters.Rule("delflags", QueryLike.LikeMode.Eq.getCode(), BaseInvoiceEntity.DelflagsType.NORMAL.getCode()));
@@ -91,7 +91,7 @@ public class UserOrderDetailController extends BaseController<OrderDetail> {
      */
     @CuzDataSource
     @RequestMapping(value = "/add",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @AclResc(code = "add",name = "新增订单明细")
+    @AclResc(id = 50002,code = "add",name = "新增订单明细")
     public ResultDataDto add(@ModelAttribute("orderDetail")OrderDetail orderDetail){
         if(orderDetailService.addEntity(orderDetail)!=null)
             return ResultDataDto.addAddSuccess();
@@ -103,7 +103,7 @@ public class UserOrderDetailController extends BaseController<OrderDetail> {
      */
     @CuzDataSource
     @RequestMapping(value = "/view",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @AclResc(code = "view",name = "明细")
+    @AclResc(id = 50003,code = "view",name = "明细")
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public ResultDataDto view(@RequestParam("id")Integer id){
         return new ResultDataDto(orderDetailService.findEntityById(id));
@@ -114,7 +114,7 @@ public class UserOrderDetailController extends BaseController<OrderDetail> {
      */
     @CuzDataSource
     @RequestMapping(value = "/update",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @AclResc(code = "update",name = "更新订单明细")
+    @AclResc(id = 50004,code = "update",name = "更新订单明细")
     public ResultDataDto update(@ModelAttribute("orderDetail")OrderDetail orderDetail){
         orderDetailService.updateEntity(orderDetail);
         return ResultDataDto.addUpdateSuccess();
@@ -125,7 +125,7 @@ public class UserOrderDetailController extends BaseController<OrderDetail> {
      */
     @CuzDataSource
     @RequestMapping(value = "/listByOrderInfoId",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @AclResc(code = "listByOrderInfoId",name = "根据订单号查询")
+    @AclResc(id = 50005,code = "listByOrderInfoId",name = "根据订单号查询")
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public ResultDataDto listByOrderInfoId(@RequestParam("orderInfoId")Integer orderInfoId, @ModelAttribute PageAndSort pageAndSort){
         OrderInfo orderInfo = orderInfoService.findEntityById(orderInfoId);

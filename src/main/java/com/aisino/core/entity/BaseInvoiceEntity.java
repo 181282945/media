@@ -1,6 +1,5 @@
 package com.aisino.core.entity;
 
-import com.aisino.base.sysmgr.aclresource.common.AclResourceType;
 import com.aisino.common.dto.param.ParamDto;
 import com.aisino.core.entity.annotation.DefaultValue;
 

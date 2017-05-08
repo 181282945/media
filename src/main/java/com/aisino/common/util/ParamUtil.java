@@ -13,7 +13,7 @@ public class ParamUtil {
     }
 
     public static String JqgridSelectVal(ParamDto... paramDtos){
-        String value = "";
+        String value = "" + Delimiter.COLON.getDelimiter() + ""+Delimiter.SEMICOLON.getDelimiter();
         for(int i=0;i<paramDtos.length;i++){
             value += paramDtos[i].getValue() + Delimiter.COLON.getDelimiter() + paramDtos[i].getName() ;
             if(i<paramDtos.length-1)

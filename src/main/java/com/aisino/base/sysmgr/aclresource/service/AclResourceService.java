@@ -26,6 +26,13 @@ public interface AclResourceService extends BaseService<AclResource,AclResourceM
      */
     List<AclResource> findAllAclModule();
 
+
+    /**
+     * 查询后台用户的资源
+     * @return
+     */
+    List<AclResource> findModuleByTargetA();
+
     /**
      *  查询所有目标为前台用户的模块
      */

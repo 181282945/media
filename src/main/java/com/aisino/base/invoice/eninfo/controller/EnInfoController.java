@@ -20,7 +20,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = EnInfoController.PATH)
-@AclResc(code = "eninfo", name = EnInfoController.MODULE_NAME,homePage = EnInfoController.HOME_PAGE)
+@AclResc(id = 40000,code = "eninfo", name = EnInfoController.MODULE_NAME,homePage = EnInfoController.HOME_PAGE)
 public class EnInfoController extends BaseController<EnInfo> {
     final static String PATH = "/base/invoice/eninfo";
     final static String HOME_PAGE = PATH + "/tolist";
@@ -59,7 +59,7 @@ public class EnInfoController extends BaseController<EnInfo> {
 
 
     @RequestMapping(value = "/list",method = RequestMethod.GET)
-    @AclResc(code = "list",name = "企业列表")
+    @AclResc(id = 40001,code = "list",name = "企业列表")
     public ResultDataDto list(JqgridFilters jqgridFilters, @ModelAttribute("pageAndSort")PageAndSort pageAndSort){
         List<EnInfo> enInfos = enInfoService.findByJqgridFilters(jqgridFilters,pageAndSort);
         return new ResultDataDto(enInfos,pageAndSort);
@@ -70,7 +70,7 @@ public class EnInfoController extends BaseController<EnInfo> {
      * 新增
      */
     @RequestMapping(value = "/add",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @AclResc(code = "add",name = "新增企业")
+    @AclResc(id = 40002,code = "add",name = "新增企业")
     public ResultDataDto add(@ModelAttribute("enInfo")EnInfo enInfo){
         if(enInfoService.addEntity(enInfo)!=null)
             return ResultDataDto.addAddSuccess();
@@ -82,7 +82,7 @@ public class EnInfoController extends BaseController<EnInfo> {
      * 更新
      */
     @RequestMapping(value = "/update",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @AclResc(code = "update",name = "更新企业")
+    @AclResc(id = 40003,code = "update",name = "更新企业")
     public ResultDataDto update(@ModelAttribute("enInfo")EnInfo enInfo){
         enInfoService.updateEntity(enInfo);
         return ResultDataDto.addUpdateSuccess();
@@ -92,7 +92,7 @@ public class EnInfoController extends BaseController<EnInfo> {
      * 生效
      */
     @RequestMapping(value = "/effective",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @AclResc(code = "effective",name = "企业生效")
+    @AclResc(id = 40004,code = "effective",name = "企业生效")
     public ResultDataDto effective(@RequestParam("id") Integer id){
         enInfoService.updateEntityEffective(id);
         return ResultDataDto.addOperationSuccess();
@@ -102,7 +102,7 @@ public class EnInfoController extends BaseController<EnInfo> {
      * 失效
      */
     @RequestMapping(value = "/invalid",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @AclResc(code = "invalid",name = "企业生效")
+    @AclResc(id = 40005,code = "invalid",name = "企业生效")
     public ResultDataDto invalid(@RequestParam("id") Integer id){
         enInfoService.updateEntityInvalid(id);
         return ResultDataDto.addOperationSuccess();

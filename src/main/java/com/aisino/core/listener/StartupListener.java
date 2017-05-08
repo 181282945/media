@@ -4,7 +4,6 @@ import com.aisino.base.sysmgr.aclresource.annotation.AclResc;
 import com.aisino.base.sysmgr.aclresource.entity.AclResource;
 import com.aisino.base.sysmgr.aclresource.service.AclResourceService;
 import com.aisino.core.util.Delimiter;
-import com.aisino.core.util.SpringUtils;
 import com.aisino.base.sysmgr.aclauth.service.AclAuthService;
 import com.aisino.core.security.MySecurityMetadataSource;
 import org.apache.commons.lang3.StringUtils;
@@ -18,6 +17,7 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
+import javax.annotation.Resource;
 import java.lang.reflect.Method;
 import java.util.*;
 
@@ -27,21 +27,22 @@ import java.util.*;
  * 当Spring环境准备好以后,做些事情
  *
  */
-@Component
+@Component("startupListener")
 public class StartupListener implements ApplicationListener<ContextRefreshedEvent> {
 
+    @Resource
     private AclResourceService aclResourceService;
+    @Resource
     private AclAuthService aclAuthService;
+    @Resource
+    private MySecurityMetadataSource securityMetadataSource;
+
+    @Resource
+    private RequestMappingHandlerMapping requestMappingHandlerMapping;
 
     @Override
-    @Transactional(propagation = Propagation.SUPPORTS)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
-
-        aclResourceService = (AclResourceService) SpringUtils.getBean("aclResourceService");
-
-        aclAuthService = (AclAuthService)SpringUtils.getBean("aclAuthService");
-
-        MySecurityMetadataSource securityMetadataSource = (MySecurityMetadataSource)SpringUtils.getBean("securityMetadataSource");
         /**
          * 初始化资源,保存到数据库
          */
@@ -60,8 +61,7 @@ public class StartupListener implements ApplicationListener<ContextRefreshedEven
          * 模块 - 方法map
          */
         Map<AclResource, List<AclResource>> resourcesMap = new HashMap<>();
-        RequestMappingHandlerMapping rmhp = SpringUtils.getBean(RequestMappingHandlerMapping.class);
-        Map<RequestMappingInfo, HandlerMethod> map = rmhp.getHandlerMethods();
+        Map<RequestMappingInfo, HandlerMethod> map = requestMappingHandlerMapping.getHandlerMethods();
         for (RequestMappingInfo info : map.keySet()) {
             AclResc moduleAclResc = map.get(info).getBeanType().getAnnotation(AclResc.class);
             if (moduleAclResc != null) {

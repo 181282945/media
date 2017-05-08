@@ -1,6 +1,7 @@
 package com.aisino.base.invoice.order.orderinfo.entity;
 
 import com.aisino.common.dto.param.ParamDto;
+import com.aisino.core.entity.BaseBusinessEntity;
 import com.aisino.core.entity.BaseInvoiceEntity;
 import com.aisino.core.entity.annotation.BaseEntityMapper;
 import org.apache.ibatis.type.Alias;
@@ -10,7 +11,7 @@ import org.apache.ibatis.type.Alias;
  */
 @Alias("OrderInfo")
 @BaseEntityMapper(tableName = "invoice_orderinfo")
-public class OrderInfo extends BaseInvoiceEntity {
+public class OrderInfo extends BaseBusinessEntity {
 
 
 

@@ -3,6 +3,7 @@ package com.aisino;
 import com.aisino.common.listener.WebSessionListener;
 import com.aisino.common.params.SystemParameter;
 import com.aisino.core.listener.StartupListener;
+import com.aisino.core.util.SpringUtils;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -11,6 +12,9 @@ import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomi
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
+
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
 
 
 /**
@@ -25,9 +29,19 @@ public class Application extends SpringBootServletInitializer implements Embedde
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		SpringApplication springApplication = new SpringApplication(Application.class);
-		springApplication.addListeners(new StartupListener());
-		springApplication.run(args);
+		SpringApplication.run(Application.class, args);
+	}
+
+
+	/**
+	 * 添加监听器
+	 * @param servletContext
+	 * @throws ServletException
+	 */
+	@Override
+	public void onStartup(ServletContext servletContext) throws ServletException {
+		super.onStartup(servletContext);
+		servletContext.addListener((StartupListener)SpringUtils.getBean("startupListener"));
 	}
 
 

@@ -322,6 +322,27 @@
                     <a href="" class="form-control" style="border:none;">下载导入模板</a>
                     <input type="file" name="txt_file" id="txt_file" class="file-loading"/>
                 </form>
+                <div class="row">
+                    <div class="col-md-4"><span> 订单总数: </span><span id="orderTotal"></span></div>
+                    <div class="col-md-4"><span> 导入成功数: </span><span id="orderSuccessQty"></span></div>
+                    <div class="col-md-4"><span> 导入失败数: </span><span id="orderFaultQty"></span></div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4"><span> 明细总数: </span><span id="detailTotal"></span></div>
+                    <div class="col-md-4"><span> 导入成功数: </span><span id="detailSuccessQty"></span></div>
+                    <div class="col-md-4"><span> 导入失败数: </span><span id="detailFaultQty"></span></div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12"><span id="repeatOrderNoDesc"></span></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12"><span id="orderInfoDesc"></span></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12"><span id="detailDesc"></span></div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭
@@ -618,7 +639,7 @@
 
                 {name: 'id', index: 'id', editable: false, search: true, hidden: true},
                 {name: 'orderNo', index: 'orderNo', editable: false},
-                {name: 'status', index: 'status', editable: false},
+                {name: 'status', index: 'status', editable: false,edittype: "select",editoptions: {value: [[${orderInfoStatusParams}]]},formatter: 'select'},
                 {name: 'taxno', index: 'taxno', editable: true},
                 {name: 'ticketCode', index: 'ticketCode', editable: true},
                 {name: 'majorItems', index: 'majorItems', editable: true},
@@ -967,6 +988,28 @@
 
             //导入文件上传完成之后的事件
             $("#txt_file").on("fileuploaded", function (event, data, previewId, index) {
+                console.log(event);
+                console.log(data);
+                console.log(previewId);
+                console.log(index);
+
+                $("#orderTotal").html(data.response.datas.orderInfoTotal);
+
+                $("#orderSuccessQty").html(data.response.datas.orderInfoSuccessQty);
+                $("#orderFaultQty").html(data.response.datas.orderInfofaultQty);
+
+                $("#detailTotal").html(data.response.datas.detailTotal);
+
+                $("#detailSuccessQty").html(data.response.datas.detailSuccessQty);
+
+                $("#detailFaultQty").html(data.response.datas.detailFaultQty);
+
+                $("#repeatOrderNoDesc").html(data.response.datas.repeatOrderNoDesc);
+
+                $("#orderInfoDesc").html(data.response.datas.orderInfoDesc);
+
+                $("#detailDesc").html(data.response.datas.detailDesc);
+
 //                $("#myModal").modal("hide");
 //                var data = data.response.lstOrderImport;
 //                if (data == undefined) {

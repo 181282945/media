@@ -2,11 +2,13 @@ package com.aisino.base.invoice.order.orderinfo.controller;
 
 import com.aisino.base.invoice.order.orderinfo.entity.OrderInfo;
 import com.aisino.base.invoice.order.orderinfo.service.OrderInfoService;
+import com.aisino.base.invoice.order.orderinfo.service.impl.OrderInfoServiceImpl;
 import com.aisino.base.sysmgr.aclresource.annotation.AclResc;
 import com.aisino.base.sysmgr.aclresource.entity.AclResource;
 import com.aisino.common.annotation.CuzDataSource;
 import com.aisino.common.controller.IndexController;
 import com.aisino.common.dto.jqgrid.JqgridFilters;
+import com.aisino.common.util.ParamUtil;
 import com.aisino.core.controller.BaseController;
 import com.aisino.core.dto.ResultDataDto;
 import com.aisino.core.entity.BaseInvoiceEntity;
@@ -74,6 +76,7 @@ public class UserOrderInfoController extends BaseController<OrderInfo> {
         mav.addObject("ADD_URL",ADD_URL);
         mav.addObject("DELETE_URL",DELETE_URL);
         mav.addObject("SEARCH_URL",SEARCH_URL);
+        mav.addObject("orderInfoStatusParams", ParamUtil.JqgridSelectVal(OrderInfo.StatusType.getParams()));
         return mav;
     }
 
@@ -132,10 +135,11 @@ public class UserOrderInfoController extends BaseController<OrderInfo> {
     @CuzDataSource
     @RequestMapping(value = "/upload",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @AclResc(id = 20005,code = "upload",name = "上传订单")
-    @Transactional(propagation = Propagation.SUPPORTS)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public ResultDataDto upload(HttpServletRequest request){
         CommonsMultipartResolver multipartResolver=new CommonsMultipartResolver(
                 request.getSession().getServletContext());
+        OrderInfoServiceImpl.ImportResultDto importResultDto = null;
         //检查form中是否有enctype="multipart/form-data"
         if(multipartResolver.isMultipart(request))
         {
@@ -151,7 +155,7 @@ public class UserOrderInfoController extends BaseController<OrderInfo> {
                 if(file!=null)
                 {
                     try {
-                        orderInfoService.importExcel(file.getInputStream());
+                        importResultDto = orderInfoService.importExcel(file.getInputStream());
                     } catch (IOException e) {
                         e.printStackTrace();
                     } catch (OpenXML4JException e) {
@@ -164,7 +168,7 @@ public class UserOrderInfoController extends BaseController<OrderInfo> {
                 }
             }
         }
-        return ResultDataDto.addOperationSuccess();
+        return ResultDataDto.addOperationSuccess().setDatas(importResultDto);
     }
 
 

@@ -52,18 +52,14 @@ public class AclMenuController extends BaseController<AclMenu> {
      */
     @RequestMapping(value = "/tolist",method = RequestMethod.GET,produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView toList(){
-        ModelAndView mav = new ModelAndView(PATH + VIEW_NAME);
-        mav.addObject("MODULE_NAME",MODULE_NAME);
-        mav.addObject("UPDATE_URL",UPDATE_URL);
-        mav.addObject("ADD_URL",ADD_URL);
-        mav.addObject("DELETE_URL",DELETE_URL);
-        mav.addObject("SEARCH_URL",SEARCH_URL);
+        ModelAndView mav = generalMav(PATH,MODULE_NAME,VIEW_NAME,UPDATE_URL,ADD_URL,DELETE_URL,SEARCH_URL);
         return mav;
     }
 
 
     @RequestMapping(value = "/list",method = RequestMethod.GET)
     @AclResc(id = 3001,code = "list",name = "菜单列表")
+    @Transactional(readOnly = true)
     public ResultDataDto list(JqgridFilters jqgridFilters, @ModelAttribute("pageAndSort")PageAndSort pageAndSort){
         List<AclMenu> aclMenus = aclMenuService.findByJqgridFilters(jqgridFilters,pageAndSort);
         return new ResultDataDto(aclMenus,pageAndSort);
@@ -102,7 +98,7 @@ public class AclMenuController extends BaseController<AclMenu> {
 
     @RequestMapping(value = "/getaclusermenus",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @AclResc(id = 3005,code = "getAclUserMenus",name = "获取菜单")
-    @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    @Transactional(readOnly = true)
     public ResultDataDto getAclUserMenus(){
         return ResultDataDto.addSuccess().setDatas(aclMenuService.getAclUserMenus());
     }

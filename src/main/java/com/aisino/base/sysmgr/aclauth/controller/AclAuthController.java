@@ -53,12 +53,7 @@ public class AclAuthController extends BaseController<AclAuth> {
      */
     @RequestMapping(value = "/tolist",method = RequestMethod.GET,produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView toList(){
-        ModelAndView mav = new ModelAndView(PATH + VIEW_NAME);
-        mav.addObject("MODULE_NAME",MODULE_NAME);
-        mav.addObject("UPDATE_URL",UPDATE_URL);
-        mav.addObject("ADD_URL",ADD_URL);
-        mav.addObject("DELETE_URL",DELETE_URL);
-        mav.addObject("SEARCH_URL",SEARCH_URL);
+        ModelAndView mav = generalMav(PATH,MODULE_NAME,VIEW_NAME,UPDATE_URL,ADD_URL,DELETE_URL,SEARCH_URL);
         return mav;
     }
 

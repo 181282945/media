@@ -51,18 +51,14 @@ public class AclRoleAuthController extends BaseController<AclRoleAuth> {
      */
     @RequestMapping(value = "/tolist",method = RequestMethod.GET,produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView toList(){
-        ModelAndView mav = new ModelAndView(PATH + VIEW_NAME);
-        mav.addObject("MODULE_NAME",MODULE_NAME);
-        mav.addObject("UPDATE_URL",UPDATE_URL);
-        mav.addObject("ADD_URL",ADD_URL);
-        mav.addObject("DELETE_URL",DELETE_URL);
-        mav.addObject("SEARCH_URL",SEARCH_URL);
+        ModelAndView mav = generalMav(PATH,MODULE_NAME,VIEW_NAME,UPDATE_URL,ADD_URL,DELETE_URL,SEARCH_URL);
         return mav;
     }
 
 
     @RequestMapping(value = "/list",method = RequestMethod.GET)
     @AclResc(id = 7001,code = "list",name = "角色权限列表")
+    @Transactional(readOnly = true)
     public ResultDataDto list(JqgridFilters jqgridFilters, @ModelAttribute("pageAndSort")PageAndSort pageAndSort){
         List<AclRoleAuth> aclRoleAuths = aclRoleAuthService.findByJqgridFilters(jqgridFilters,pageAndSort);
         return new ResultDataDto(aclRoleAuths,pageAndSort);
@@ -76,7 +72,7 @@ public class AclRoleAuthController extends BaseController<AclRoleAuth> {
      */
     @RequestMapping(value = "/add",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @AclResc(id = 7002,code = "add",name = "新增角色权限")
-    @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public ResultDataDto add(@ModelAttribute("aclRoleAuth")AclRoleAuth aclRoleAuth){
         if(aclRoleAuthService.addEntity(aclRoleAuth)!=null)
             return ResultDataDto.addAddSuccess();
@@ -92,6 +88,7 @@ public class AclRoleAuthController extends BaseController<AclRoleAuth> {
      */
     @RequestMapping(value = "/update",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @AclResc(id = 7003,code = "update",name = "更新角色权限")
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public ResultDataDto update(@ModelAttribute("aclRoleAuth")AclRoleAuth aclRoleAuth){
         aclRoleAuthService.updateEntity(aclRoleAuth);
         return ResultDataDto.addUpdateSuccess();
@@ -102,6 +99,7 @@ public class AclRoleAuthController extends BaseController<AclRoleAuth> {
      */
     @RequestMapping(value = "/delete",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @AclResc(id = 7004,code = "delete",name = "删除角色资源")
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public ResultDataDto delete(@RequestParam("id") Integer id){
         aclRoleAuthService.deleteById(id);
         return ResultDataDto.addDeleteSuccess();
@@ -115,7 +113,7 @@ public class AclRoleAuthController extends BaseController<AclRoleAuth> {
      */
     @RequestMapping(value = "/addByRescIdRoleId",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @AclResc(id = 7005,code = "addByRescIdRoleId",name = "新增角色权限")
-    @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public ResultDataDto addByRescIdRoleId(@ModelAttribute("rescId")Integer rescId,@ModelAttribute("roleId")Integer roleId){
         if(aclRoleAuthService.addByRescIdRoleId(rescId, roleId)!=null)
             return ResultDataDto.addAddSuccess();
@@ -129,7 +127,7 @@ public class AclRoleAuthController extends BaseController<AclRoleAuth> {
      */
     @RequestMapping(value = "/deleteByRescIdRoleId",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @AclResc(id = 7006,code = "deleteByRescIdRoleId",name = "根据资源角色新增")
-    @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public ResultDataDto deleteByRescIdRoleId(@ModelAttribute("rescId")Integer rescId,@ModelAttribute("roleId")Integer roleId){
         aclRoleAuthService.deleteByRescIdRoleId(rescId,roleId);
         return ResultDataDto.addDeleteSuccess();

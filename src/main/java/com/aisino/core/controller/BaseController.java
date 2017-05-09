@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,6 +22,21 @@ import java.io.IOException;
  */
 public abstract class BaseController<T extends BaseEntity> {
 
+
+    protected ModelAndView generalMav(String PATH,String MODULE_NAME,String VIEW_NAME,String UPDATE_URL,String ADD_URL,String DELETE_URL,String SEARCH_URL){
+        ModelAndView mav = new ModelAndView(PATH + VIEW_NAME);
+        mav.addObject("MODULE_NAME",MODULE_NAME);
+        mav.addObject("UPDATE_URL",UPDATE_URL);
+        mav.addObject("ADD_URL",ADD_URL);
+        mav.addObject("DELETE_URL",DELETE_URL);
+        mav.addObject("SEARCH_URL",SEARCH_URL);
+        return mav;
+    }
+
+
+    /**
+     * 去空格,""转NULL
+     */
     @InitBinder
     public void initBinder(WebDataBinder binder) {
         binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));

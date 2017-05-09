@@ -17,3 +17,4 @@
 40000 = com.aisino.base.invoice.eninfo.controller.EnInfoController
 50000 = com.aisino.base.invoice.order.orderdetail.controller.UserOrderDetailController
 60000 = com.aisino.base.invoice.eninfo.controller.UserEnInfoController
+70000 = com.aisino.base.invoice.authcodeinfo.controller.AclAuthCodeInfoController

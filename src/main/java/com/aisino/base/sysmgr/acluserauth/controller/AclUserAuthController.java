@@ -29,7 +29,7 @@ public class AclUserAuthController extends BaseController<AclUserAuth> {
      */
     @RequestMapping(value = "/addByRescIdUserId",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @AclResc(id = 8001,code = "addByRescIdUserId",name = "新增用户权限")
-    @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public ResultDataDto addByRescIdRoleId(@ModelAttribute("rescId")Integer rescId,@ModelAttribute("userId")Integer userId){
         if(aclUserAuthService.addByRescIdUserId(rescId, userId)!=null)
             return ResultDataDto.addAddSuccess();
@@ -43,7 +43,7 @@ public class AclUserAuthController extends BaseController<AclUserAuth> {
      */
     @RequestMapping(value = "/deleteByRescIdUserId",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @AclResc(id = 8002,code = "deleteByRescIdUserId",name = "根据资源角色新增")
-    @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public ResultDataDto deleteByRescIdUserId(@ModelAttribute("rescId")Integer rescId,@ModelAttribute("userId")Integer userId){
         aclUserAuthService.deleteByAuthIdUserId(rescId,userId);
         return ResultDataDto.addDeleteSuccess();

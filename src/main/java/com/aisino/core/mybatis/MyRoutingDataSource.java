@@ -60,8 +60,8 @@ public class MyRoutingDataSource extends AbstractRoutingDataSource {
                     ":" + dbInfo.getDbport() + "/" + dbInfo.getDbname() + "?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&useSSL=true");
             dds.setUsername(dbInfo.getDbusr());
             dds.setPassword(dbInfo.getDbpwd());
-            dataSources.put(userInfo.getId().toString(), dds);
-            dataSources2.put(userInfo.getId().toString(), dds);
+            dataSources.put(userInfo.getUsrno(), dds);
+            dataSources2.put(userInfo.getUsrno(), dds);
         } catch (NoSuchFieldException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
@@ -71,7 +71,7 @@ public class MyRoutingDataSource extends AbstractRoutingDataSource {
 
 
     /**
-     * 根据用户创建数据源
+     * 根据用户删除数据源
      */
     public void removeCuzDataSource(UserInfo userInfo) {
         if (StringUtils.isBlank(userInfo.getTaxNo()))
@@ -82,10 +82,10 @@ public class MyRoutingDataSource extends AbstractRoutingDataSource {
             targetDataSources.setAccessible(true);
             resolvedDataSources.setAccessible(true);
             Map<Object, Object> dataSources = (Map<Object, Object>) targetDataSources.get(this);
-            if (dataSources.get(userInfo.getId().toString()) != null) {
+            if (dataSources.get(userInfo.getUsrno()) != null) {
                 Map<Object, DataSource> dataSources2 = (Map<Object, DataSource>) resolvedDataSources.get(this);
-                dataSources.remove(userInfo.getId().toString());
-                dataSources2.remove(userInfo.getId().toString());
+                dataSources.remove(userInfo.getUsrno());
+                dataSources2.remove(userInfo.getUsrno());
             }
         } catch (NoSuchFieldException e) {
             e.printStackTrace();

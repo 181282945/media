@@ -5,7 +5,6 @@ import com.aisino.base.invoice.eninfo.service.EnInfoService;
 import com.aisino.base.invoice.userinfo.entity.UserInfo;
 import com.aisino.base.invoice.userinfo.service.UserInfoService;
 import com.aisino.base.sysmgr.acluser.entity.AclUser;
-import com.aisino.base.sysmgr.acluser.service.AclUserService;
 import com.aisino.core.util.SpringUtils;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.authentication.AuthenticationTrustResolver;
@@ -112,12 +111,18 @@ public class SecurityUtil {
         return  getEnInfoService().getByUsrno(usrno);
     }
 
-
-
-
-    private static AclUserService getAclUserService(){
-        return (AclUserService)SpringUtils.getBean("aclUserService");
+    /**
+     * 获取当前用户账号
+     * @return
+     */
+    public static String getCurrentUserNo(){
+        if(isAnonymous()||isAclUser())
+            return null;
+        return  ((User)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
     }
+
+
+
 
     private static UserInfoService getUserInfoService(){
         return (UserInfoService)SpringUtils.getBean("userInfoService");

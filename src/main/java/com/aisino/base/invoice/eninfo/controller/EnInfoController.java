@@ -2,13 +2,17 @@ package com.aisino.base.invoice.eninfo.controller;
 
 import com.aisino.base.invoice.eninfo.entity.EnInfo;
 import com.aisino.base.invoice.eninfo.service.EnInfoService;
+import com.aisino.base.invoice.userinfo.entity.UserInfo;
+import com.aisino.base.invoice.userinfo.service.UserInfoService;
 import com.aisino.base.sysmgr.aclresource.annotation.AclResc;
+import com.aisino.base.sysmgr.aclresource.entity.AclResource;
 import com.aisino.common.dto.jqgrid.JqgridFilters;
 import com.aisino.core.controller.BaseController;
 import com.aisino.core.dto.ResultDataDto;
 import com.aisino.core.mybatis.specification.PageAndSort;
-import com.aisino.core.security.util.SecurityUtil;
 import org.springframework.http.MediaType;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -20,15 +24,18 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = EnInfoController.PATH)
-@AclResc(id = 40000,code = "eninfo", name = EnInfoController.MODULE_NAME,homePage = EnInfoController.HOME_PAGE)
+@AclResc(id = 40000,code = "eninfo", name = EnInfoController.MODULE_NAME,homePage = EnInfoController.HOME_PAGE,target = AclResource.Target.ACLUSER)
 public class EnInfoController extends BaseController<EnInfo> {
-    final static String PATH = "/base/invoice/eninfo";
+    final static String PATH = "/base/invoice/eninfo/a";
     final static String HOME_PAGE = PATH + "/tolist";
 
     final static String MODULE_NAME = "企业信息管理";
 
     @Resource
     private EnInfoService enInfoService;
+
+    @Resource
+    private UserInfoService userInfoService;
 
 
 
@@ -84,8 +91,12 @@ public class EnInfoController extends BaseController<EnInfo> {
      */
     @RequestMapping(value = "/update",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @AclResc(id = 40003,code = "update",name = "更新企业")
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public ResultDataDto update(@ModelAttribute("enInfo")EnInfo enInfo){
         enInfoService.updateEntity(enInfo);
+        UserInfo userInfo = userInfoService.getUserByUsrno(enInfo.getUsrno());
+        userInfo.setTaxNo(enInfo.getTaxno());
+        userInfoService.updateEntity(userInfo);
         return ResultDataDto.addUpdateSuccess();
     }
 

@@ -1,11 +1,9 @@
 package com.aisino.common.model.xml;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.List;
 
 /**
  * Created by 为 on 2017-5-8.
@@ -734,10 +732,37 @@ public class KpRequestyl {
         private String className = "FPKJXX_XMXX;";
 
         @XmlAttribute(name = "size")
-        private String size = "1;";
+        private String size;
+
 
         @XmlElement(name = "FPKJXX_XMXX",type = FpkjxxXmxx.class)
-        private FpkjxxXmxx fpkjxxXmxx;
+        private List<FpkjxxXmxx> fpkjxxXmxxList;
+
+
+
+        public static class Builder {
+
+            private String size;
+
+            private List<FpkjxxXmxx> fpkjxxXmxxList;
+
+            public Builder setSize(String size) {
+                this.size = size;
+                return this;
+            }
+
+            public Builder setFpkjxxXmxxList(List<FpkjxxXmxx> fpkjxxXmxxList) {
+                this.fpkjxxXmxxList = fpkjxxXmxxList;
+                return this;
+            }
+
+            public FpkjxxXmxxs build() {
+                FpkjxxXmxxs fpkjxxXmxxs = new FpkjxxXmxxs();
+                fpkjxxXmxxs.size = size;
+                fpkjxxXmxxs.fpkjxxXmxxList = fpkjxxXmxxList;
+                return fpkjxxXmxxs;
+            }
+        }
 
     }
 
@@ -826,6 +851,179 @@ public class KpRequestyl {
         @XmlElement(name = "BYZD5")
         private String byzd5;
 
+
+
+        public static class Builder {
+            //项目名称
+            private String xmmc;
+            //项目单位
+            private String xmdw;
+            //规格型号
+            private String ggxh;
+            //项目数量
+            private String xmsl;
+            //含税标志
+            private String hsbz;
+            //项目单价
+            private String xmdj;
+            //发票行性质
+            private String fphxz;
+            //商品编码
+            private String spbm;
+            //自行编码
+            private String zxbm;
+            //优惠政策标识
+            private String yhzcbs;
+            //零税率标识
+            private String lslbs;
+            //增值税特殊管理
+            private String zzstsgl;
+            //项目金额
+            private String xmje;
+            //税率
+            private String sl;
+            //税额
+            private String se;
+            //备用字段
+            private String byzd1;
+            //备用字段2
+            private String byzd2;
+            //备用字段3
+            private String byzd3;
+            //备用字段4
+            private String byzd4;
+            //备用字段5
+            private String byzd5;
+
+
+            public Builder setXmmc(String xmmc) {
+                this.xmmc = xmmc;
+                return this;
+            }
+
+            public Builder setXmdw(String xmdw) {
+                this.xmdw = xmdw;
+                return this;
+            }
+
+            public Builder setGgxh(String ggxh) {
+                this.ggxh = ggxh;
+                return this;
+            }
+
+            public Builder setXmsl(String xmsl) {
+                this.xmsl = xmsl;
+                return this;
+            }
+
+            public Builder setHsbz(String hsbz) {
+                this.hsbz = hsbz;
+                return this;
+            }
+
+            public Builder setXmdj(String xmdj) {
+                this.xmdj = xmdj;
+                return this;
+            }
+
+            public Builder setFphxz(String fphxz) {
+                this.fphxz = fphxz;
+                return this;
+            }
+
+            public Builder setSpbm(String spbm) {
+                this.spbm = spbm;
+                return this;
+            }
+
+            public Builder setZxbm(String zxbm) {
+                this.zxbm = zxbm;
+                return this;
+            }
+
+            public Builder setYhzcbs(String yhzcbs) {
+                this.yhzcbs = yhzcbs;
+                return this;
+            }
+
+            public Builder setLslbs(String lslbs) {
+                this.lslbs = lslbs;
+                return this;
+            }
+
+            public Builder setZzstsgl(String zzstsgl) {
+                this.zzstsgl = zzstsgl;
+                return this;
+            }
+
+            public Builder setXmje(String xmje) {
+                this.xmje = xmje;
+                return this;
+            }
+
+            public Builder setSl(String sl) {
+                this.sl = sl;
+                return this;
+            }
+
+            public Builder setSe(String se) {
+                this.se = se;
+                return this;
+            }
+
+            public Builder setByzd1(String byzd1) {
+                this.byzd1 = byzd1;
+                return this;
+            }
+
+            public Builder setByzd2(String byzd2) {
+                this.byzd2 = byzd2;
+                return this;
+            }
+
+            public Builder setByzd3(String byzd3) {
+                this.byzd3 = byzd3;
+                return this;
+            }
+
+            public Builder setByzd4(String byzd4) {
+                this.byzd4 = byzd4;
+                return this;
+            }
+
+            public Builder setByzd5(String byzd5) {
+                this.byzd5 = byzd5;
+                return this;
+            }
+
+            public FpkjxxXmxx build() {
+                FpkjxxXmxx fpkjxxXmxx = new FpkjxxXmxx();
+                fpkjxxXmxx.xmmc = xmmc;
+                fpkjxxXmxx.xmdw = xmdw;
+                fpkjxxXmxx.ggxh = ggxh;
+                fpkjxxXmxx.xmsl = xmsl;
+                fpkjxxXmxx.hsbz = hsbz;
+                fpkjxxXmxx.xmdj = xmdj;
+                fpkjxxXmxx.fphxz = fphxz;
+                fpkjxxXmxx.spbm = spbm;
+                fpkjxxXmxx.zxbm = zxbm;
+                fpkjxxXmxx.yhzcbs = yhzcbs;
+                fpkjxxXmxx.lslbs = lslbs;
+                fpkjxxXmxx.zzstsgl = zzstsgl;
+                fpkjxxXmxx.xmje = xmje;
+                fpkjxxXmxx.sl = sl;
+                fpkjxxXmxx.se = se;
+                fpkjxxXmxx.byzd1 = byzd1;
+                fpkjxxXmxx.byzd2 = byzd2;
+                fpkjxxXmxx.byzd3 = byzd3;
+                fpkjxxXmxx.byzd4 = byzd4;
+                fpkjxxXmxx.byzd5 = byzd5;
+
+                return fpkjxxXmxx;
+            }
+
+        }
+
     }
 
     @XmlRootElement(name = "FPKJXX_DDXX")
@@ -847,7 +1045,36 @@ public class KpRequestyl {
 
 
 
+        public static class Builder {
+            //订单号
+            private String ddh;
 
+            //退货单号
+            private String thdh;
+
+            //订单时间
+            private String dddate;
+
+            public void setDdh(String ddh) {
+                this.ddh = ddh;
+            }
+
+            public void setThdh(String thdh) {
+                this.thdh = thdh;
+            }
+
+            public void setDddate(String dddate) {
+                this.dddate = dddate;
+            }
+
+            public FpkjxxDdxx build() {
+                FpkjxxDdxx fpkjxxDdxx = new FpkjxxDdxx();
+                fpkjxxDdxx.ddh = ddh;
+                fpkjxxDdxx.thdh = thdh;
+                fpkjxxDdxx.dddate = dddate;
+                return fpkjxxDdxx;
+            }
+        }
 
 
 
@@ -860,7 +1087,32 @@ public class KpRequestyl {
         private String className = "FPKJXX_DDMXXX;";
 
         @XmlAttribute(name = "size")
-        private String size = "1;";
+        private String size = "0";
+
+        @XmlElement(name = "FPKJXX_DDMXXX",type = FpkjxxDdmxxx.class)
+        private List<FpkjxxDdmxxx> fpkjxxDdmxxxList;
+
+        public static class Builder {
+
+            private String size = "0";
+
+            private List<FpkjxxDdmxxx> fpkjxxDdmxxxList;
+
+            public void setSize(String size) {
+                this.size = size;
+            }
+
+            public void setFpkjxxDdmxxxList(List<FpkjxxDdmxxx> fpkjxxDdmxxxList) {
+                this.fpkjxxDdmxxxList = fpkjxxDdmxxxList;
+            }
+
+            public FpkjxxDdmxxxs build() {
+                FpkjxxDdmxxxs fpkjxxDdmxxxs = new FpkjxxDdmxxxs();
+                fpkjxxDdmxxxs.size = size;
+                fpkjxxDdmxxxs.fpkjxxDdmxxxList = fpkjxxDdmxxxList;
+                return fpkjxxDdmxxxs;
+            }
+        }
     }
 
     @XmlRootElement(name = "FPKJXX_DDMXXX")
@@ -910,6 +1162,106 @@ public class KpRequestyl {
         @XmlElement(name = "BYZD5")
         private String byzd5;
 
+
+
+
+        public static class Builder {
+
+            //订单名称
+            private String ddmc;
+
+            //单位
+            private String dw;
+
+            //规格型号
+            private String ggxh;
+
+            //数量
+            private String sl;
+
+            //单价
+            private String dj;
+
+            //金额
+            private String je;
+
+            //备用字段
+            private String byzd1;
+
+            //备用字段2
+            private String byzd2;
+
+            //备用字段3
+            private String byzd3;
+
+            //备用字段4
+            private String byzd4;
+
+            //备用字段5
+            private String byzd5;
+
+
+            public void setDdmc(String ddmc) {
+                this.ddmc = ddmc;
+            }
+
+            public void setDw(String dw) {
+                this.dw = dw;
+            }
+
+            public void setGgxh(String ggxh) {
+                this.ggxh = ggxh;
+            }
+
+            public void setSl(String sl) {
+                this.sl = sl;
+            }
+
+            public void setDj(String dj) {
+                this.dj = dj;
+            }
+
+            public void setJe(String je) {
+                this.je = je;
+            }
+
+            public void setByzd1(String byzd1) {
+                this.byzd1 = byzd1;
+            }
+
+            public void setByzd2(String byzd2) {
+                this.byzd2 = byzd2;
+            }
+
+            public void setByzd3(String byzd3) {
+                this.byzd3 = byzd3;
+            }
+
+            public void setByzd4(String byzd4) {
+                this.byzd4 = byzd4;
+            }
+
+            public void setByzd5(String byzd5) {
+                this.byzd5 = byzd5;
+            }
+
+            public FpkjxxDdmxxx build() {
+                FpkjxxDdmxxx fpkjxxDdmxxx = new FpkjxxDdmxxx();
+                fpkjxxDdmxxx.ddmc = ddmc;
+                fpkjxxDdmxxx.dw = dw;
+                fpkjxxDdmxxx.sl = sl;
+                fpkjxxDdmxxx.dj = dj;
+                fpkjxxDdmxxx.je = je;
+                fpkjxxDdmxxx.byzd1 = byzd1;
+                fpkjxxDdmxxx.byzd2 = byzd2;
+                fpkjxxDdmxxx.byzd3 = byzd3;
+                fpkjxxDdmxxx.byzd4 = byzd4;
+                fpkjxxDdmxxx.byzd5 = byzd5;
+                return fpkjxxDdmxxx;
+            }
+        }
+
+
     }
 
     @XmlRootElement(name = "FPKJXX_ZFXX")
@@ -928,6 +1280,42 @@ public class KpRequestyl {
         //支付平台
         @XmlElement(name = "ZFPT")
         private String zfpt;
+
+
+        public static class Builder {
+
+            //支付方式
+            private String zffs;
+
+            //支付流水号
+            private String zflsh;
+
+            //支付平台
+            private String zfpt;
+
+
+            public void setZffs(String zffs) {
+                this.zffs = zffs;
+            }
+
+            public void setZflsh(String zflsh) {
+                this.zflsh = zflsh;
+            }
+
+            public void setZfpt(String zfpt) {
+                this.zfpt = zfpt;
+            }
+
+            public FpkjxxZfxx build() {
+                FpkjxxZfxx fpkjxxZfxx = new FpkjxxZfxx();
+                fpkjxxZfxx.zffs = zffs;
+                fpkjxxZfxx.zflsh = zflsh;
+                fpkjxxZfxx.zfpt = zfpt;
+                return fpkjxxZfxx;
+            }
+        }
+
+
     }
 
     @XmlRootElement(name = "FPKJXX_WLXX")
@@ -950,31 +1338,75 @@ public class KpRequestyl {
         //送货地址
         @XmlElement(name = "SHDZ")
         private String shdz;
-    }
 
 
-    public static void main(String[] args) {
-        try {
-            JAXBContext jc = JAXBContext.newInstance(RequestFpkjxx.class);
-            Marshaller ms = jc.createMarshaller();
-            RequestFpkjxx.Builder builder = new RequestFpkjxx.Builder();
-            builder.setFpkjxxDdmxxxs(new FpkjxxDdmxxxs());
-            builder.setFpkjxxDdxx(new FpkjxxDdxx());
-            FpkjxxFptxx.Builder builder1 =new FpkjxxFptxx.Builder();
-            builder1.setByzd1("asdf");
-            builder1.setByzd2("asdfsdf");
-            builder1.setByzd3("asdfsdf");
-            builder1.setByzd4("asdfsdf");
-            builder1.setByzd5("asdfsdf");
-            builder1.setChyy("asdfsdf");
-            builder.setFpkjxxFptxx(builder1.build());
-            RequestFpkjxx requestFpkjxx = builder.build();
-            ms.marshal(requestFpkjxx,System.out);
-//            System.out.println(requestFpkjxx);
-        } catch (JAXBException e) {
-            e.printStackTrace();
+        public static class Builder {
+
+            //承运公司
+            private String cygs;
+
+            //送货时间
+            private String shsj;
+
+            //物流单号
+            private String wldh;
+
+            //送货地址
+            private String shdz;
+
+            public void setCygs(String cygs) {
+                this.cygs = cygs;
+            }
+
+            public void setShsj(String shsj) {
+                this.shsj = shsj;
+            }
+
+            public void setWldh(String wldh) {
+                this.wldh = wldh;
+            }
+
+            public void setShdz(String shdz) {
+                this.shdz = shdz;
+            }
+
+            public FpkjxxWlxx build() {
+                FpkjxxWlxx fpkjxxWlxx = new FpkjxxWlxx();
+                fpkjxxWlxx.cygs = cygs;
+                fpkjxxWlxx.shsj = shsj;
+                fpkjxxWlxx.wldh = wldh;
+                fpkjxxWlxx.shdz = shdz;
+                return fpkjxxWlxx;
+            }
         }
+
+
+
     }
+
+
+//    public static void main(String[] args) {
+//        try {
+//            JAXBContext jc = JAXBContext.newInstance(RequestFpkjxx.class);
+//            Marshaller ms = jc.createMarshaller();
+//            RequestFpkjxx.Builder builder = new RequestFpkjxx.Builder();
+//            builder.setFpkjxxDdmxxxs(new FpkjxxDdmxxxs());
+//            builder.setFpkjxxDdxx(new FpkjxxDdxx());
+//            FpkjxxFptxx.Builder builder1 =new FpkjxxFptxx.Builder();
+//            builder1.setByzd1("asdf");
+//            builder1.setByzd2("asdfsdf");
+//            builder1.setByzd3("asdfsdf");
+//            builder1.setByzd4("asdfsdf");
+//            builder1.setByzd5("asdfsdf");
+//            builder1.setChyy("asdfsdf");
+//            builder.setFpkjxxFptxx(builder1.build());
+//            RequestFpkjxx requestFpkjxx = builder.build();
+//            ms.marshal(requestFpkjxx,System.out);
+////            System.out.println(requestFpkjxx);
+//        } catch (JAXBException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
 
 }

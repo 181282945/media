@@ -102,3 +102,18 @@ SystemParameter:
         `delflags` tinyint(4) DEFAULT NULL,
         PRIMARY KEY (`id`)
       ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+#
+Requestt:
+  GlobalInfo:
+    terminalCode: 0 #//终端类型标识代码 0:B/S 请求来源 1:C/S 请求来源
+    appId: ZZS_PT_DZFP  #应用标识 固定为： DZFP 表示普通发票。 ZZS_PT_DZFP 表示增值税普通电子发票
+    version: 2.0    #接口版本
+#    interfaceCode: DFXJ1009
+    responseCode: 121 #数据交换请求接受方代码
+    dataExchangeId: P0000001ECXML.FPKJ.BC.E_INV000000001  #据说没有校验,所以可以写死
+
+  DataDescription:
+    zipCode: 0  #压缩标识 0：不压缩 1：压缩 (用 GZip 压缩) 企业调 用时数据包大于 10k 要求自动压缩，
+    encryptCode: 2 #加密标识 0:不加密 1: AES 加密 2:CA 加密
+    codeType: CA  #加密方式 0 、 AES 加密 、 CA 加密

@@ -82,10 +82,10 @@ public class AclAuthCodeInfoController extends BaseController<AuthCodeInfo>{
     /**
      * 删除
      */
-    @RequestMapping(value = "/delete",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @AclResc(id = 70004,code = "delete",name = "删除菜单")
-    public ResultDataDto delete(@RequestParam("id") Integer id){
-        authCodeInfoService.deleteById(id);
+    @RequestMapping(value = "/invalid",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @AclResc(id = 70004,code = "invalid",name = "删除菜单")
+    public ResultDataDto invalid(@RequestParam("id") Integer id){
+        authCodeInfoService.updateEntityInvalid(id);
         return ResultDataDto.addDeleteSuccess();
     }
 }

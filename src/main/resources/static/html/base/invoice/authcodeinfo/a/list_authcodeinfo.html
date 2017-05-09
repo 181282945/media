@@ -199,7 +199,7 @@
 //                totalrows:"rowCount" // 表示需从Server得到总共多少行数据的参数名称，参见jqGrid选项中的rowTotal
             },
             height: 400,
-            colNames:[' ', 'id','企业税号','用户账号','平台编码','授权码','注册码','开票方电子档案号','税务机构代码','编码表版本号','税务机构代码','创建时间','是否生效'],
+            colNames:[' ', 'ID','企业税号','用户账号','平台编码','授权码','注册码','开票方电子档案号','税务机构代码','编码表版本号','创建时间','是否生效'],
             colModel:[
                 {name:'myac',index:'', width:80, fixed:true, sortable:false, resize:false,
                     formatter:'actions',
@@ -217,7 +217,7 @@
                     }
                 },
 
-                {name:'id',index:'id',width:50, editable: false,search:true,hidden:true},
+                {name:'id',index:'id',width:50, editable: true,search:true,hidden:true},
                 {name:'taxNo',index:'taxNo', editable: true},
                 {name:'usrno',index:'usrno', editable: true},
                 {name:'platformCode', index: 'platformCode', editable: true},
@@ -226,7 +226,6 @@
                 {name:'elecNmber',index:'elecNmber', editable: true},
                 {name:'taxCode',index:'taxCode', editable: true},
                 {name:'codeTableVer',index:'codeTableVer', editable: true},
-                {name:'taxCode',index:'taxCode', editable: true},
                 {name:'insertDate',index:'insertDate', editable: false,formatter:'date',formatter:'date', formatoptions: {srcformat: 'u', newformat:'Y-m-d H:i'}},
                 {name:'delflags',index:'delflags', editable: true},
             ],

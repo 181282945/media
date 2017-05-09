@@ -21,8 +21,7 @@ public class CuzDataSourceAspectj {
 
     @Around("cuzDataSource()")
     public Object aroundCuzDataSource(ProceedingJoinPoint joinPoint){
-        Integer userId = SecurityUtil.getCurrentUserInfo().getId();
-        DataSourceContextHolder.setTargetDataSource(userId.toString());
+        DataSourceContextHolder.user();
         try {
             return joinPoint.proceed();
         } catch (Throwable throwable) {

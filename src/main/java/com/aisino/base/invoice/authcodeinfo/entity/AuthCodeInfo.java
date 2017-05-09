@@ -14,20 +14,20 @@ public class AuthCodeInfo extends BaseInvoiceEntity {
     //企业税号
     @IsNotNull(description = "企业税号")
     private String taxNo;
-    //平台编码
+    //平台编码 - DSPTBM
     @IsNotNull(description = "平台编码")
     private String platformCode;
-    //授权码
+    //授权码 -
     @IsNotNull(description = "授权码")
     private String authCode;
-    //注册码
+    //注册码 -
     @IsNotNull(description = "注册码")
     private String regiCode;
     //开票方电子档案号
     private String elecNmber;
     //税务机构代码
     private String taxCode;
-    //编码表版本号(税控分类)
+    //编码表版本号(税控分类) - BMB_BBH
     @IsNotNull(description = "编码表版本号")
     private String codeTableVer;
     //用户账号

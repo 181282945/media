@@ -22,4 +22,9 @@ public interface OrderDetailService extends BaseService<OrderDetail,OrderDeailMa
      *  根据订单号分页查询
      */
     List<OrderDetail> findByOrderNo(String orderNo, PageAndSort pageAndSort);
+
+    /**
+     *  根据订单号查询
+     */
+    List<OrderDetail> findByOrderNo(String orderNo);
 }

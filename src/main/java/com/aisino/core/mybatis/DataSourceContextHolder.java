@@ -1,5 +1,7 @@
 package com.aisino.core.mybatis;
 
+import com.aisino.core.security.util.SecurityUtil;
+
 /**
  * Created by ZhenWeiLai on 2016/11/22.
  * 多数据源/读写分离
@@ -25,11 +27,14 @@ public class DataSourceContextHolder {
         dataSourceLocal.set(TargetDataSource.WRITE.getCode());
     }
 
-    public static String getTargetDataSource() {
-        return dataSourceLocal.get();
+
+    public static void user() {
+        String userInfo = SecurityUtil.getCurrentUserNo();
+        if (userInfo != null)
+            dataSourceLocal.set(userInfo);
     }
 
-    public static void setTargetDataSource(String usrno) {
-        dataSourceLocal.set(usrno);
+    public static String getTargetDataSource() {
+        return dataSourceLocal.get();
     }
 }

@@ -27,6 +27,14 @@ public class OrderDetailServiceImpl extends BaseServiceImpl<OrderDetail,OrderDea
         return this.findByPage(specification);
     }
 
+
+    @Override
+    public List<OrderDetail> findByOrderNo(String orderNo){
+        Specification<OrderDetail> specification = new Specification<>(OrderDetail.class);
+        specification.addQueryLike(new QueryLike("orderNo", QueryLike.LikeMode.Eq,orderNo));
+        return this.findByLike(specification);
+    }
+
     @Override
     public OrderDetail orderDetailTransform(String [] value){
         OrderDetail orderDetail = new OrderDetail();
@@ -36,7 +44,9 @@ public class OrderDetailServiceImpl extends BaseServiceImpl<OrderDetail,OrderDea
         orderDetail.setItemNum(StringUtils.trimToNull(value[3]));
         orderDetail.setSpecMode(StringUtils.trimToNull(value[4]));
         orderDetail.setItemPrice(StringUtils.trimToNull(value[5]));
-//                        orderDetail.setInvoiceNature(StringUtils.trimToNull(value[6]));
+        String invoiceNature = StringUtils.trimToNull(value[6]);
+        if (invoiceNature!=null&& StringUtils.isNumeric(invoiceNature)&&OrderDetail.InvoiceNature.getNameByCode(Integer.parseInt(invoiceNature)).length()>0)
+            orderDetail.setInvoiceNature(Integer.parseInt(invoiceNature));
         orderDetail.setItemTaxCode(StringUtils.trimToNull(value[7]));
         return  orderDetail;
     }

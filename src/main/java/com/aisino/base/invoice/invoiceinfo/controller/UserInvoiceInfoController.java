@@ -2,11 +2,13 @@ package com.aisino.base.invoice.invoiceinfo.controller;
 
 import com.aisino.base.invoice.invoiceinfo.entity.InvoiceInfo;
 import com.aisino.base.invoice.invoiceinfo.service.InvoiceInfoService;
+import com.aisino.base.invoice.userinfo.entity.UserInfo;
 import com.aisino.base.sysmgr.aclresource.annotation.AclResc;
 import com.aisino.base.sysmgr.aclresource.entity.AclResource;
 import com.aisino.common.annotation.CuzDataSource;
 import com.aisino.common.controller.IndexController;
 import com.aisino.common.dto.jqgrid.JqgridFilters;
+import com.aisino.common.util.ParamUtil;
 import com.aisino.core.controller.BaseController;
 import com.aisino.core.dto.ResultDataDto;
 import com.aisino.core.mybatis.specification.PageAndSort;
@@ -61,6 +63,7 @@ public class UserInvoiceInfoController extends BaseController<InvoiceInfo> {
 //        mav.addObject("ADD_URL",ADD_URL);
 //        mav.addObject("DELETE_URL",DELETE_URL);
         mav.addObject("SEARCH_URL",SEARCH_URL);
+        mav.addObject("invoiceTypeParams", ParamUtil.JqgridSelectVal(InvoiceInfo.InvoiceType.getParams()));
         return mav;
     }
 
@@ -75,6 +78,30 @@ public class UserInvoiceInfoController extends BaseController<InvoiceInfo> {
     public ResultDataDto list(JqgridFilters jqgridFilters, @ModelAttribute("pageAndSort")PageAndSort pageAndSort){
         List<InvoiceInfo> invoiceInfos = invoiceInfoService.findByJqgridFilters(jqgridFilters,pageAndSort);
         return new ResultDataDto(invoiceInfos,pageAndSort);
+    }
+
+    /**
+     * 开票
+     */
+    @RequestMapping(value = "/billing",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @AclResc(id = 30002,code = "billing",name = "开票")
+    public ResultDataDto billing(@RequestParam("orderId") Integer orderId){
+        if(invoiceInfoService.requestBilling(SecurityUtil.getCurrentUserNo(),orderId, InvoiceInfo.InvoiceType.NORMAL)!=null)
+            return ResultDataDto.addOperationSuccess("开票成功");
+        return ResultDataDto.addOperationFailure();
+    }
+
+    /**
+     * 下载发票
+     */
+    @RequestMapping(value = "/download",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @AclResc(id = 30003,code = "download",name = "下载")
+    public ResultDataDto download(@RequestParam("id") Integer id){
+        invoiceInfoService.downloadRequest(id,SecurityUtil.getCurrentUserNo());
+//        UserInfo currentUser = SecurityUtil.getCurrentUserInfo();
+//        if(invoiceInfoService.requestBilling(currentUser,orderId, InvoiceInfo.InvoiceType.NORMAL)!=null)
+//            return ResultDataDto.addOperationSuccess("开票成功");
+        return ResultDataDto.addOperationFailure();
     }
 
 }

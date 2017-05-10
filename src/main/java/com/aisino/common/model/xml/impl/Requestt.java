@@ -1,4 +1,6 @@
-package com.aisino.common.model.xml;
+package com.aisino.common.model.xml.impl;
+
+import com.aisino.common.model.xml.BaseXmlModel;
 
 import javax.xml.bind.annotation.*;
 
@@ -7,7 +9,7 @@ import javax.xml.bind.annotation.*;
  */
 @XmlRootElement(name = "interface")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Requestt {
+public class Requestt implements BaseXmlModel {
 
     @XmlAttribute(name = "xmlns" )
     private String xmlns = "";
@@ -22,13 +24,13 @@ public class Requestt {
     private String version = "DZFP1.0";
 
 
-    @XmlElement(name = "globalInfo", type = GlobalInfo.class,nillable = true)
+    @XmlElement(name = "globalInfo", type = GlobalInfo.class)
     private GlobalInfo globalInfo;
 
-    @XmlElement(name = "returnStateInfo", type = ReturnStateInfo.class,nillable = true)
+    @XmlElement(name = "returnStateInfo", type = ReturnStateInfo.class)
     private ReturnStateInfo returnStateInfo;
 
-    @XmlElement(name = "Data",type = Data.class,nillable = true)
+    @XmlElement(name = "Data",type = Data.class)
     private Data data;
 
 
@@ -58,42 +60,42 @@ public class Requestt {
 
     @XmlRootElement(name = "globalInfo")
     @XmlAccessorType(XmlAccessType.FIELD)
-    public static class GlobalInfo {
+    public static class GlobalInfo implements BaseXmlModel  {
 
-        @XmlElement(name = "terminalCode",nillable = true)
+        @XmlElement(name = "terminalCode")
         private String terminalCode;
 
-        @XmlElement(name = "appId",nillable = true)
+        @XmlElement(name = "appId")
         private String appId;
 
-        @XmlElement(name = "version",nillable = true)
+        @XmlElement(name = "version")
         private String version;
 
-        @XmlElement(name = "interfaceCode",nillable = true)
+        @XmlElement(name = "interfaceCode")
         private String interfaceCode;
 
-        @XmlElement(name = "userName",nillable = true)
+        @XmlElement(name = "userName")
         private String userName;
 
-        @XmlElement(name = "passWord",nillable = true)
+        @XmlElement(name = "passWord")
         private String passWord;
 
-        @XmlElement(name = "taxpayerId",nillable = true)
+        @XmlElement(name = "taxpayerId")
         private String taxpayerId;
 
-        @XmlElement(name = "authorizationCode",nillable = true)
+        @XmlElement(name = "authorizationCode")
         private String authorizationCode;
 
-        @XmlElement(name = "requestCode",nillable = true)
+        @XmlElement(name = "requestCode")
         private String requestCode;
 
-        @XmlElement(name = "requestTime",nillable = true)
+        @XmlElement(name = "requestTime")
         private String requestTime;
 
-        @XmlElement(name = "responseCode",nillable = true)
+        @XmlElement(name = "responseCode")
         private String responseCode;
 
-        @XmlElement(name = "dataExchangeId",nillable = true)
+        @XmlElement(name = "dataExchangeId")
         private String dataExchangeId;
 
         public String getTerminalCode() {
@@ -195,12 +197,12 @@ public class Requestt {
 
     @XmlRootElement(name = "returnStateInfo")
     @XmlAccessorType(XmlAccessType.FIELD)
-    public static class ReturnStateInfo {
+    public static class ReturnStateInfo implements BaseXmlModel  {
 
-        @XmlElement(name = "returnCode",nillable = true)
+        @XmlElement(name = "returnCode")
         private String returnCode;
 
-        @XmlElement(name = "returnMessage",nillable = true)
+        @XmlElement(name = "returnMessage")
         private String returnMessage;
 
         public String getReturnCode() {
@@ -222,13 +224,13 @@ public class Requestt {
 
     @XmlRootElement(name = "Data")
     @XmlAccessorType(XmlAccessType.FIELD)
-    public static class Data {
+    public static class Data implements BaseXmlModel  {
 
         @XmlElement(name = "dataDescription", type = DataDescription.class)
         private DataDescription dataDescription;
 
 
-        @XmlElement(name = "content",nillable = true)
+        @XmlElement(name = "content")
         private String content;
 
         public DataDescription getDataDescription() {
@@ -250,14 +252,14 @@ public class Requestt {
 
     @XmlRootElement(name = "dataDescription")
     @XmlAccessorType(XmlAccessType.FIELD)
-    public static class DataDescription {
-        @XmlElement(name = "zipCode",nillable = true)
+    public static class DataDescription implements BaseXmlModel  {
+        @XmlElement(name = "zipCode")
         private String zipCode;
 
-        @XmlElement(name = "encryptCode",nillable = true)
+        @XmlElement(name = "encryptCode")
         private String encryptCode;
 
-        @XmlElement(name = "codeType",nillable = true)
+        @XmlElement(name = "codeType")
         private String codeType;
 
         public String getZipCode() {

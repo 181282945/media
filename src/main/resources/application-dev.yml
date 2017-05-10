@@ -108,7 +108,8 @@ SystemParameter:
                   ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 #
-Requestt:
+Request:
+  url: http://ei.szhtxx.com:9001/front/request/4458
   GlobalInfo:
     terminalCode: 0 #//终端类型标识代码 0:B/S 请求来源 1:C/S 请求来源
     appId: ZZS_PT_DZFP  #应用标识 固定为： DZFP 表示普通发票。 ZZS_PT_DZFP 表示增值税普通电子发票

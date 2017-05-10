@@ -1,4 +1,6 @@
-package com.aisino.common.model.xml;
+package com.aisino.common.model.xml.impl;
+
+import com.aisino.common.model.xml.BaseXmlModel;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -10,51 +12,51 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement(name = "RESPONSE_FPKJ")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ResponseFpkj {
+public class ResponseFpkj implements BaseXmlModel {
 
-    @XmlElement(name = "RETURNCODE",nillable = true)
+    @XmlElement(name = "RETURNCODE")
     private String returnCode;
 
-    @XmlElement(name = "RETURNMESSAGE",nillable = true)
+    @XmlElement(name = "RETURNMESSAGE")
     private String returnMessage;
 
-    @XmlElement(name = "HJBHSJE",nillable = true)
+    @XmlElement(name = "HJBHSJE")
     private String hjbhsje;
 
-    @XmlElement(name = "HJSE",nillable = true)
+    @XmlElement(name = "HJSE")
     private String hjse;
 
-    @XmlElement(name = "KPRQ",nillable = true)
+    @XmlElement(name = "KPRQ")
     private String kprq;
 
-    @XmlElement(name = "SSYF",nillable = true)
+    @XmlElement(name = "SSYF")
     private String ssyf;
 
-    @XmlElement(name = "FP_DM",nillable = true)
+    @XmlElement(name = "FP_DM")
     private String fpdm;
 
-    @XmlElement(name = "FP_HM",nillable = true)
+    @XmlElement(name = "FP_HM")
     private String fphm;
 
-    @XmlElement(name = "XHQDBZ",nillable = true)
+    @XmlElement(name = "XHQDBZ")
     private String xhqdbz;
 
-    @XmlElement(name = "RETCODE",nillable = true)
+    @XmlElement(name = "RETCODE")
     private String retcode;
 
-    @XmlElement(name = "FWMW",nillable = true)
+    @XmlElement(name = "FWMW")
     private String fwmw;
 
-    @XmlElement(name = "JYM",nillable = true)
+    @XmlElement(name = "JYM")
     private String jym;
 
-    @XmlElement(name = "SZQM",nillable = true)
+    @XmlElement(name = "SZQM")
     private String szqm;
 
-    @XmlElement(name = "EWM",nillable = true)
+    @XmlElement(name = "EWM")
     private String EWM;
 
-    @XmlElement(name = "PDF_URL",nillable = true)
+    @XmlElement(name = "PDF_URL")
     private String pdfurl;
 
 

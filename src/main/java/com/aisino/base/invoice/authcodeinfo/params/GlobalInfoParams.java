@@ -5,7 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 /**
  * Created by 为 on 2017-5-9.
  */
-@ConfigurationProperties(prefix = "Requestt.GlobalInfo")
+@ConfigurationProperties(prefix = "Request.GlobalInfo")
 public class GlobalInfoParams {
     /**
      * 终端类型标识代码 0:B/S 请求来源 1:C/S 请求来源

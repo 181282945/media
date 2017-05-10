@@ -1,7 +1,8 @@
 package com.aisino;
 
 import com.aisino.base.invoice.authcodeinfo.params.GlobalInfoParams;
-import com.aisino.base.invoice.authcodeinfo.params.RequesttParams;
+import com.aisino.base.invoice.authcodeinfo.params.DataDescriptionParams;
+import com.aisino.base.invoice.authcodeinfo.params.RequestParams;
 import com.aisino.common.listener.WebSessionListener;
 import com.aisino.common.params.SystemParameter;
 import com.aisino.core.listener.StartupListener;
@@ -24,7 +25,7 @@ import javax.servlet.ServletException;
  */
 @SpringBootApplication
 @ServletComponentScan(basePackageClasses = {StartupListener.class, WebSessionListener.class})
-@EnableConfigurationProperties({SystemParameter.class, GlobalInfoParams.class, RequesttParams.class})
+@EnableConfigurationProperties({SystemParameter.class, RequestParams.class, GlobalInfoParams.class, DataDescriptionParams.class})
 public class Application extends SpringBootServletInitializer implements EmbeddedServletContainerCustomizer {
 	/**
 	 * 自己new一个SpringApplication 为了添加监听器,实例调用run

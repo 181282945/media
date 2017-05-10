@@ -1,5 +1,7 @@
-package com.aisino.common.model.xml;
+package com.aisino.common.model.xml.impl;
 
+
+import com.aisino.common.model.xml.BaseXmlModel;
 
 import javax.xml.bind.annotation.*;
 import java.util.List;
@@ -11,24 +13,24 @@ public class KpRequestyl {
 
     @XmlRootElement(name = "REQUEST_FPKJXX")
     @XmlAccessorType(XmlAccessType.FIELD)
-    public static class RequestFpkjxx{
+    public static class RequestFpkjxx implements BaseXmlModel {
 
-        @XmlElement(name = "FPKJXX_FPTXX",type = FpkjxxFptxx.class,nillable = true)
+        @XmlElement(name = "FPKJXX_FPTXX",type = FpkjxxFptxx.class)
         private FpkjxxFptxx fpkjxxFptxx;
 
-        @XmlElement(name = "FPKJXX_XMXXS",type = FpkjxxXmxxs.class,nillable = true)
+        @XmlElement(name = "FPKJXX_XMXXS",type = FpkjxxXmxxs.class)
         private FpkjxxXmxxs fpkjxxXmxxs;
 
-        @XmlElement(name = "FPKJXX_DDXX",type = FpkjxxDdxx.class,nillable = true)
+        @XmlElement(name = "FPKJXX_DDXX",type = FpkjxxDdxx.class)
         private FpkjxxDdxx fpkjxxDdxx;
 
-        @XmlElement(name = "FPKJXX_DDMXXXS",type = FpkjxxDdmxxxs.class,nillable = true)
+        @XmlElement(name = "FPKJXX_DDMXXXS",type = FpkjxxDdmxxxs.class)
         private FpkjxxDdmxxxs fpkjxxDdmxxxs;
 
-        @XmlElement(name = "FPKJXX_ZFXX",type = FpkjxxZfxx.class,nillable = true)
+        @XmlElement(name = "FPKJXX_ZFXX",type = FpkjxxZfxx.class)
         private FpkjxxZfxx fpkjxxZfxx;
 
-        @XmlElement(name = "FPKJXX_WLXX",type = FpkjxxWlxx.class,nillable = true)
+        @XmlElement(name = "FPKJXX_WLXX",type = FpkjxxWlxx.class)
         private FpkjxxWlxx fpkjxxWlxx;
 
         public FpkjxxFptxx getFpkjxxFptxx() {
@@ -82,192 +84,192 @@ public class KpRequestyl {
 
     @XmlRootElement(name = "FPKJXX_FPTXX")
     @XmlAccessorType(XmlAccessType.FIELD)
-    public static class FpkjxxFptxx{
+    public static class FpkjxxFptxx implements BaseXmlModel {
         @XmlAttribute(name = "class")
         private String className = "FPKJXX_FPTXX";
 
         //发票请求唯一流水号
-        @XmlElement(name = "FPQQLSH",nillable = true)
+        @XmlElement(name = "FPQQLSH")
         private String fpqqlsh;
 
         //平台编码
-        @XmlElement(name = "DSPTBM",nillable = true)
+        @XmlElement(name = "DSPTBM")
         private String dsptbm;
 
         //开票方识别码
-        @XmlElement(name = "NSRSBH",nillable = true)
+        @XmlElement(name = "NSRSBH")
         private String nsrsbh;
 
         //开票方名称
-        @XmlElement(name = "NSRMC",nillable = true)
+        @XmlElement(name = "NSRMC")
         private String nsrmc;
 
         //开票方电子档案号
-        @XmlElement(name = "NSRDZDAH",nillable = true)
+        @XmlElement(name = "NSRDZDAH")
         private String nsrdzdah;
 
         //税务机构代码
-        @XmlElement(name = "SWJG_DM",nillable = true)
+        @XmlElement(name = "SWJG_DM")
         private String swjgdm;
 
         //代开标志
-        @XmlElement(name = "DKBZ",nillable = true)
+        @XmlElement(name = "DKBZ")
         private String dkbz;
 
         //票样代码
-        @XmlElement(name = "PYDM",nillable = true)
+        @XmlElement(name = "PYDM")
         private String pydm;
 
         //主要开票项目
-        @XmlElement(name = "KPXM",nillable = true)
+        @XmlElement(name = "KPXM")
         private String kpxm;
 
         //编码表版本号
-        @XmlElement(name = "BMB_BBH",nillable = true)
+        @XmlElement(name = "BMB_BBH")
         private String bmbbbh;
 
         //销货方识别号
-        @XmlElement(name = "XHF_NSRSBH",nillable = true)
+        @XmlElement(name = "XHF_NSRSBH")
         private String xhfnsrsbh;
 
         //销货方名称
-        @XmlElement(name = "XHFMC",nillable = true)
+        @XmlElement(name = "XHFMC")
         private String xhfmc;
 
         //销货方地址
-        @XmlElement(name = "XHF_DZ",nillable = true)
+        @XmlElement(name = "XHF_DZ")
         private String xhfdz;
 
         //销货方电话
-        @XmlElement(name = "XHF_DH",nillable = true)
+        @XmlElement(name = "XHF_DH")
         private String xhfdh;
 
         //销货方银行账号
-        @XmlElement(name = "XHF_YHZH",nillable = true)
+        @XmlElement(name = "XHF_YHZH")
         private String xhfyhzh;
 
         //购货方名称
-        @XmlElement(name = "GHFMC",nillable = true)
+        @XmlElement(name = "GHFMC")
         private String ghfmc;
 
         //购货方识别号
-        @XmlElement(name = "GHF_NSRSBH",nillable = true)
+        @XmlElement(name = "GHF_NSRSBH")
         private String ghfnsrsbh;
 
         //购货方省份
-        @XmlElement(name = "GHF_SF",nillable = true)
+        @XmlElement(name = "GHF_SF")
         private String ghfsf;
 
         //购货方地址
-        @XmlElement(name = "GHF_DZ",nillable = true)
+        @XmlElement(name = "GHF_DZ")
         private String ghfdz;
 
         //购货方固定电话
-        @XmlElement(name = "GHF_GDDH",nillable = true)
+        @XmlElement(name = "GHF_GDDH")
         private String ghfgddh;
 
         //购货方手机
-        @XmlElement(name = "GHF_SJ",nillable = true)
+        @XmlElement(name = "GHF_SJ")
         private String ghfsj;
 
         //购货方邮箱
-        @XmlElement(name = "GHF_EMAIL",nillable = true)
+        @XmlElement(name = "GHF_EMAIL")
         private String ghfemail;
 
         //01
-        @XmlElement(name = "GHFQYLX",nillable = true)
+        @XmlElement(name = "GHFQYLX")
         private String ghfqylx;
 
         //01
-        @XmlElement(name = "GHF_YHZH",nillable = true)
+        @XmlElement(name = "GHF_YHZH")
         private String ghfyhzh;
 
         //行业代码
-        @XmlElement(name = "HY_DM",nillable = true)
+        @XmlElement(name = "HY_DM")
         private String hydm;
 
         //行业名称
-        @XmlElement(name = "HY_MC",nillable = true)
+        @XmlElement(name = "HY_MC")
         private String hymc;
 
         //开票员
-        @XmlElement(name = "KPY",nillable = true)
+        @XmlElement(name = "KPY")
         private String kpy;
 
         //收款员
-        @XmlElement(name = "SKY",nillable = true)
+        @XmlElement(name = "SKY")
         private String sky;
 
         //复核人
-        @XmlElement(name = "FHR",nillable = true)
+        @XmlElement(name = "FHR")
         private String fhr;
 
         //开票日期
-        @XmlElement(name = "KPRQ",nillable = true)
+        @XmlElement(name = "KPRQ")
         private String kprq;
 
         //开票类型
-        @XmlElement(name = "KPLX",nillable = true)
+        @XmlElement(name = "KPLX")
         private String kplx;
 
         //原发票代码
-        @XmlElement(name = "YFP_DM",nillable = true)
+        @XmlElement(name = "YFP_DM")
         private String yfpdm;
 
         //原发票号码
-        @XmlElement(name = "YFP_HM",nillable = true)
+        @XmlElement(name = "YFP_HM")
         private String yfphm;
 
         //操作代码
-        @XmlElement(name = "CZDM",nillable = true)
+        @XmlElement(name = "CZDM")
         private String czdm;
 
         //清单标志
-        @XmlElement(name = "QD_BZ",nillable = true)
+        @XmlElement(name = "QD_BZ")
         private String qdbz;
 
         //清单发票项目名称
-        @XmlElement(name = "QDXMMC",nillable = true)
+        @XmlElement(name = "QDXMMC")
         private String qdxmmc;
 
         //冲红原因
-        @XmlElement(name = "CHYY",nillable = true)
+        @XmlElement(name = "CHYY")
         private String chyy;
 
         //特殊冲红标志
-        @XmlElement(name = "TSCHBZ",nillable = true)
+        @XmlElement(name = "TSCHBZ")
         private String tschbz;
 
         //价税合计金额
-        @XmlElement(name = "KPHJJE",nillable = true)
+        @XmlElement(name = "KPHJJE")
         private String kphjje;
 
         //合计不含税金额
-        @XmlElement(name = "HJBHSJE",nillable = true)
+        @XmlElement(name = "HJBHSJE")
         private String hjbhsje;
 
         //合计税额
-        @XmlElement(name = "HJSE",nillable = true)
+        @XmlElement(name = "HJSE")
         private String hjse;
 
         //备注
-        @XmlElement(name = "BZ",nillable = true)
+        @XmlElement(name = "BZ")
         private String bz;
 
         //备用字段1
-        @XmlElement(name = "BYZD1",nillable = true)
+        @XmlElement(name = "BYZD1")
         private String byzd1;
         //备用字段2
-        @XmlElement(name = "BYZD2",nillable = true)
+        @XmlElement(name = "BYZD2")
         private String byzd2;
         //备用字段3
-        @XmlElement(name = "BYZD3",nillable = true)
+        @XmlElement(name = "BYZD3")
         private String byzd3;
         //备用字4
-        @XmlElement(name = "BYZD4",nillable = true)
+        @XmlElement(name = "BYZD4")
         private String byzd4;
         //备用字段5
-        @XmlElement(name = "BYZD5",nillable = true)
+        @XmlElement(name = "BYZD5")
         private String byzd5;
 
 
@@ -658,7 +660,7 @@ public class KpRequestyl {
 
     @XmlRootElement(name = "FPKJXX_XMXXS")
     @XmlAccessorType(XmlAccessType.FIELD)
-    public static class FpkjxxXmxxs{
+    public static class FpkjxxXmxxs implements BaseXmlModel {
         @XmlAttribute(name = "class")
         private String className = "FPKJXX_XMXX;";
 
@@ -666,7 +668,7 @@ public class KpRequestyl {
         private String size;
 
 
-        @XmlElement(name = "FPKJXX_XMXX",type = FpkjxxXmxx.class,nillable = true)
+        @XmlElement(name = "FPKJXX_XMXX",type = FpkjxxXmxx.class)
         private List<FpkjxxXmxx> fpkjxxXmxxList;
 
         public String getSize() {
@@ -688,86 +690,86 @@ public class KpRequestyl {
 
     @XmlRootElement(name = "FPKJXX_XMXX")
     @XmlAccessorType(XmlAccessType.FIELD)
-    public static class FpkjxxXmxx{
+    public static class FpkjxxXmxx implements BaseXmlModel {
 
         //项目名称
-        @XmlElement(name = "XMMC",nillable = true)
+        @XmlElement(name = "XMMC")
         private String xmmc;
 
         //项目单位
-        @XmlElement(name = "XMDW",nillable = true)
+        @XmlElement(name = "XMDW")
         private String xmdw;
 
         //规格型号
-        @XmlElement(name = "GGXH",nillable = true)
+        @XmlElement(name = "GGXH")
         private String ggxh;
 
         //项目数量
-        @XmlElement(name = "XMSL",nillable = true)
+        @XmlElement(name = "XMSL")
         private String xmsl;
 
         //含税标志
-        @XmlElement(name = "HSBZ",nillable = true)
+        @XmlElement(name = "HSBZ")
         private String hsbz;
 
         //项目单价
-        @XmlElement(name = "XMDJ",nillable = true)
+        @XmlElement(name = "XMDJ")
         private String xmdj;
 
         //发票行性质
-        @XmlElement(name = "FPHXZ",nillable = true)
+        @XmlElement(name = "FPHXZ")
         private String fphxz;
 
         //商品编码
-        @XmlElement(name = "SPBM",nillable = true)
+        @XmlElement(name = "SPBM")
         private String spbm;
 
         //自行编码
-        @XmlElement(name = "ZXBM",nillable = true)
+        @XmlElement(name = "ZXBM")
         private String zxbm;
 
         //优惠政策标识
-        @XmlElement(name = "YHZCBS",nillable = true)
+        @XmlElement(name = "YHZCBS")
         private String yhzcbs;
 
         //零税率标识
-        @XmlElement(name = "LSLBS",nillable = true)
+        @XmlElement(name = "LSLBS")
         private String lslbs;
 
         //增值税特殊管理
-        @XmlElement(name = "ZZSTSGL",nillable = true)
+        @XmlElement(name = "ZZSTSGL")
         private String zzstsgl;
 
         //项目金额
-        @XmlElement(name = "XMJE",nillable = true)
+        @XmlElement(name = "XMJE")
         private String xmje;
 
         //税率
-        @XmlElement(name = "SL",nillable = true)
+        @XmlElement(name = "SL")
         private String sl;
 
         //税额
-        @XmlElement(name = "SE",nillable = true)
+        @XmlElement(name = "SE")
         private String se;
 
         //备用字段
-        @XmlElement(name = "BYZD1",nillable = true)
+        @XmlElement(name = "BYZD1")
         private String byzd1;
 
         //备用字段2
-        @XmlElement(name = "BYZD2",nillable = true)
+        @XmlElement(name = "BYZD2")
         private String byzd2;
 
         //备用字段3
-        @XmlElement(name = "BYZD3",nillable = true)
+        @XmlElement(name = "BYZD3")
         private String byzd3;
 
         //备用字段4
-        @XmlElement(name = "BYZD4",nillable = true)
+        @XmlElement(name = "BYZD4")
         private String byzd4;
 
         //备用字段5
-        @XmlElement(name = "BYZD5",nillable = true)
+        @XmlElement(name = "BYZD5")
         private String byzd5;
 
 
@@ -934,20 +936,20 @@ public class KpRequestyl {
 
     @XmlRootElement(name = "FPKJXX_DDXX")
     @XmlAccessorType(XmlAccessType.FIELD)
-    public static class FpkjxxDdxx{
+    public static class FpkjxxDdxx implements BaseXmlModel {
         @XmlAttribute(name = "class")
         private String className = "FPKJXX_DDXX";
 
         //订单号
-        @XmlElement(name = "DDH",nillable = true)
+        @XmlElement(name = "DDH")
         private String ddh;
 
         //退货单号
-        @XmlElement(name = "THDH",nillable = true)
+        @XmlElement(name = "THDH")
         private String thdh;
 
         //订单时间
-        @XmlElement(name = "DDDATE",nillable = true)
+        @XmlElement(name = "DDDATE")
         private String dddate;
 
 
@@ -978,14 +980,14 @@ public class KpRequestyl {
 
     @XmlRootElement(name = "FPKJXX_DDMXXXS")
     @XmlAccessorType(XmlAccessType.FIELD)
-    public static class FpkjxxDdmxxxs{
+    public static class FpkjxxDdmxxxs implements BaseXmlModel {
         @XmlAttribute(name = "class")
         private String className = "FPKJXX_DDMXXX;";
 
         @XmlAttribute(name = "size")
         private String size = "0";
 
-        @XmlElement(name = "FPKJXX_DDMXXX",type = FpkjxxDdmxxx.class,nillable = true)
+        @XmlElement(name = "FPKJXX_DDMXXX",type = FpkjxxDdmxxx.class)
         private List<FpkjxxDdmxxx> fpkjxxDdmxxxList;
 
         public String getSize() {
@@ -1007,50 +1009,50 @@ public class KpRequestyl {
 
     @XmlRootElement(name = "FPKJXX_DDMXXX")
     @XmlAccessorType(XmlAccessType.FIELD)
-    public static class FpkjxxDdmxxx{
+    public static class FpkjxxDdmxxx implements BaseXmlModel {
 
         //订单名称
-        @XmlElement(name = "DDMC",nillable = true)
+        @XmlElement(name = "DDMC")
         private String ddmc;
 
         //单位
-        @XmlElement(name = "DW",nillable = true)
+        @XmlElement(name = "DW")
         private String dw;
 
         //规格型号
-        @XmlElement(name = "GGXH",nillable = true)
+        @XmlElement(name = "GGXH")
         private String ggxh;
 
         //数量
-        @XmlElement(name = "SL",nillable = true)
+        @XmlElement(name = "SL")
         private String sl;
 
         //单价
-        @XmlElement(name = "DJ",nillable = true)
+        @XmlElement(name = "DJ")
         private String dj;
 
         //金额
-        @XmlElement(name = "JE",nillable = true)
+        @XmlElement(name = "JE")
         private String je;
 
         //备用字段
-        @XmlElement(name = "BYZD1",nillable = true)
+        @XmlElement(name = "BYZD1")
         private String byzd1;
 
         //备用字段2
-        @XmlElement(name = "BYZD2",nillable = true)
+        @XmlElement(name = "BYZD2")
         private String byzd2;
 
         //备用字段3
-        @XmlElement(name = "BYZD3",nillable = true)
+        @XmlElement(name = "BYZD3")
         private String byzd3;
 
         //备用字段4
-        @XmlElement(name = "BYZD4",nillable = true)
+        @XmlElement(name = "BYZD4")
         private String byzd4;
 
         //备用字段5
-        @XmlElement(name = "BYZD5",nillable = true)
+        @XmlElement(name = "BYZD5")
         private String byzd5;
 
 
@@ -1145,20 +1147,20 @@ public class KpRequestyl {
 
     @XmlRootElement(name = "FPKJXX_ZFXX")
     @XmlAccessorType(XmlAccessType.FIELD)
-    public static class FpkjxxZfxx{
+    public static class FpkjxxZfxx implements BaseXmlModel {
         @XmlAttribute(name = "class")
         private String className = "FPKJXX_ZFXX";
 
         //支付方式
-        @XmlElement(name = "ZFFS",nillable = true)
+        @XmlElement(name = "ZFFS")
         private String zffs;
 
         //支付流水号
-        @XmlElement(name = "ZFLSH",nillable = true)
+        @XmlElement(name = "ZFLSH")
         private String zflsh;
 
         //支付平台
-        @XmlElement(name = "ZFPT",nillable = true)
+        @XmlElement(name = "ZFPT")
         private String zfpt;
 
 
@@ -1189,24 +1191,24 @@ public class KpRequestyl {
 
     @XmlRootElement(name = "FPKJXX_WLXX")
     @XmlAccessorType(XmlAccessType.FIELD)
-    public static class FpkjxxWlxx{
+    public static class FpkjxxWlxx implements BaseXmlModel {
         @XmlAttribute(name = "class")
         private String className = "FPKJXX_WLXX";
 
         //承运公司
-        @XmlElement(name = "CYGS",nillable = true)
+        @XmlElement(name = "CYGS")
         private String cygs;
 
         //送货时间
-        @XmlElement(name = "SHSJ",nillable = true)
+        @XmlElement(name = "SHSJ")
         private String shsj;
 
         //物流单号
-        @XmlElement(name = "WLDH",nillable = true)
+        @XmlElement(name = "WLDH")
         private String wldh;
 
         //送货地址
-        @XmlElement(name = "SHDZ",nillable = true)
+        @XmlElement(name = "SHDZ")
         private String shdz;
 
 

@@ -1088,7 +1088,9 @@
 
     $('#billingBtn').click(function(){
         var sel_id = $('#grid-table').jqGrid('getGridParam', 'selrow');
-        $.post("/base/invoice/order/orderinfo/u/billing", 'id='+sel_id );
+        $.post("/base/invoice/invoiceinfo/u/billing", 'orderId='+sel_id,function(data) {
+            layerAlertMsg(data.message);
+        });
     });
 
 </script>

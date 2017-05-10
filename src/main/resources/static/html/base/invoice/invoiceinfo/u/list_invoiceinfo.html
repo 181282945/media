@@ -194,7 +194,7 @@
                             <button class="btn btn-xs btn-info">红冲</button>
                         </div>
                         <div class="col-md-2 ">
-                            <button class="btn btn-xs btn-info">下载</button>
+                            <button class="btn btn-xs btn-info" id="downloadBtn">下载</button>
                         </div>
                         <div class="col-md-2 "></div>
                     </div>
@@ -479,9 +479,9 @@
                 {name: 'priceTotal', index: 'priceTotal', editable: false,},
                 {name: 'invoiceCode', index: 'invoiceCode', editable: false,},
                 {name: 'invoiceNum', index: 'invoiceNum', editable: false,},
-                {name: 'invoiceDate', index: 'invoiceDate', editable: false,},
-                {name: 'pdfUrl', index: 'pdfUrl', editable: false,},
-                {name: 'invoiceType', index: 'invoiceType', editable: false,},
+                {name: 'invoiceDate', index: 'invoiceDate', editable: false,formatter:'date', formatoptions: {srcformat: 'u', newformat:'Y-m-d H:i'}},
+                {name: 'pdfUrl', index: 'pdfUrl', editable: false,formatter:downloadPdf},
+                {name: 'invoiceType', index: 'invoiceType', editable: false,edittype: "select",editoptions: {value: [[${invoiceTypeParams}]]},formatter: 'select'},
                 {name: 'reMarks', index: 'reMarks', editable: false,},
                 {name: 'usrno', index: 'usrno', editable: false,}
             ],
@@ -753,20 +753,30 @@
         console.log(filtersStr)
     });
 
+
+    /**
+     *  格式化下载地址
+     */
+    function downloadPdf(cellvalue, options, rowObject) {
+        return '<a href="'+cellvalue+'">下载</a>';
+    }
+
+
+    $('#downloadBtn').click(function(){
+        var sel_id = $('#grid-table').jqGrid('getGridParam', 'selrow');
+        $.post("/base/invoice/invoiceinfo/u/download", 'id='+sel_id,function(data) {
+            layerAlertMsg(data.message);
+        });
+    });
+
 </script>
 
 <!-- the following scripts are used in demo only for onpage help and you don't need them -->
 <link rel="stylesheet" href="/assets/css/ace.onpage-help.css"/>
-<link rel="stylesheet" href="/docs/assets/js/themes/sunburst.css"/>
 
 <script type="text/javascript"> ace.vars['base'] = '..'; </script>
 <script src="/assets/js/src/elements.onpage-help.js"></script>
 <script src="/assets/js/src/ace.onpage-help.js"></script>
-<script src="/docs/assets/js/rainbow.js"></script>
-<script src="/docs/assets/js/language/generic.js"></script>
-<script src="/docs/assets/js/language/html.js"></script>
-<script src="/docs/assets/js/language/css.js"></script>
-<script src="/docs/assets/js/language/javascript.js"></script>
 
 
 </body>

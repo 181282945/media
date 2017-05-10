@@ -1,17 +1,14 @@
 package com.aisino.base.invoice.order.orderinfo.controller;
 
 import com.aisino.base.invoice.authcodeinfo.service.AuthCodeInfoService;
-import com.aisino.base.invoice.invoiceinfo.entity.InvoiceInfo;
 import com.aisino.base.invoice.order.orderinfo.entity.OrderInfo;
 import com.aisino.base.invoice.order.orderinfo.service.OrderInfoService;
 import com.aisino.base.invoice.order.orderinfo.service.impl.OrderInfoServiceImpl;
-import com.aisino.base.invoice.userinfo.entity.UserInfo;
 import com.aisino.base.sysmgr.aclresource.annotation.AclResc;
 import com.aisino.base.sysmgr.aclresource.entity.AclResource;
 import com.aisino.common.annotation.CuzDataSource;
 import com.aisino.common.controller.IndexController;
 import com.aisino.common.dto.jqgrid.JqgridFilters;
-import com.aisino.common.model.xml.Requestt;
 import com.aisino.common.util.ParamUtil;
 import com.aisino.core.controller.BaseController;
 import com.aisino.core.dto.ResultDataDto;
@@ -201,23 +198,6 @@ public class UserOrderInfoController extends BaseController<OrderInfo> {
     public ResultDataDto invalid(@RequestParam("id") Integer id){
         orderInfoService.updateEntityInvalid(id);
         return ResultDataDto.addOperationSuccess();
-    }
-
-
-    /**
-     * 开票
-     */
-    @RequestMapping(value = "/billing",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @AclResc(id = 20008,code = "billing",name = "开票")
-    public ResultDataDto billing(@RequestParam("id") Integer id){
-        UserInfo currentUser = SecurityUtil.getCurrentUserInfo();
-        orderInfoService.createRequestt(currentUser,id, InvoiceInfo.InvoiceType.NORMAL);
-//        authCodeInfoService.getByTaxno(currentUser.getTaxNo());
-
-
-
-
-        return null;
     }
 
 }

@@ -6,7 +6,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * Created by 为 on 2017-5-9.
  */
 @ConfigurationProperties(prefix = "Requestt.DataDescription")
-public class RequesttParams {
+public class DataDescriptionParams {
 
 
     /**

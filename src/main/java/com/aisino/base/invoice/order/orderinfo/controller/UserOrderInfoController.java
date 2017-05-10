@@ -1,6 +1,7 @@
 package com.aisino.base.invoice.order.orderinfo.controller;
 
 import com.aisino.base.invoice.authcodeinfo.service.AuthCodeInfoService;
+import com.aisino.base.invoice.invoiceinfo.entity.InvoiceInfo;
 import com.aisino.base.invoice.order.orderinfo.entity.OrderInfo;
 import com.aisino.base.invoice.order.orderinfo.service.OrderInfoService;
 import com.aisino.base.invoice.order.orderinfo.service.impl.OrderInfoServiceImpl;
@@ -210,7 +211,7 @@ public class UserOrderInfoController extends BaseController<OrderInfo> {
     @AclResc(id = 20008,code = "billing",name = "开票")
     public ResultDataDto billing(@RequestParam("id") Integer id){
         UserInfo currentUser = SecurityUtil.getCurrentUserInfo();
-        orderInfoService.createRequestt(currentUser,id);
+        orderInfoService.createRequestt(currentUser,id, InvoiceInfo.InvoiceType.NORMAL);
 //        authCodeInfoService.getByTaxno(currentUser.getTaxNo());
 
 

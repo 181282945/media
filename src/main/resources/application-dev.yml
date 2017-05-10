@@ -42,30 +42,32 @@ SystemParameter:
   username: root
   password: 123
   orderinfoSql: CREATE TABLE `invoice_orderinfo` (
-        `id` int(11) NOT NULL AUTO_INCREMENT,
-        `taxno` varchar(20) NOT NULL,
-        `dkflags` tinyint(4) DEFAULT NULL,
-        `ticketCode` varchar(10) DEFAULT NULL,
-        `majorItems` varchar(255) DEFAULT NULL,
-        `buyerName` varchar(200) DEFAULT NULL,
-        `buyerTaxno` varchar(20) DEFAULT NULL,
-        `buyerAddr` varchar(200) DEFAULT NULL,
-        `buyerProvince` varchar(20) DEFAULT NULL,
-        `buyerTele` varchar(15) DEFAULT NULL,
-        `buyerMobile` varchar(30) DEFAULT NULL,
-        `buyerEmail` varchar(100) DEFAULT NULL,
-        `buyerType` varchar(10) DEFAULT NULL,
-        `buyerBankAcc` varchar(100) DEFAULT NULL,
-        `induCode` varchar(50) DEFAULT NULL,
-        `induName` varchar(50) DEFAULT NULL,
-        `remarks` varchar(200) DEFAULT NULL,
-        `orderNo` varchar(20) DEFAULT NULL,
-        `status` tinyint(4) DEFAULT NULL,
-        `usrno` varchar(50) DEFAULT NULL,
-        `insertDate` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
-        `delflags` tinyint(4) DEFAULT NULL,
-        PRIMARY KEY (`id`)
-      ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+                  `id` int(11) NOT NULL AUTO_INCREMENT,
+                  `taxno` varchar(50) NOT NULL,
+                  `dkflags` tinyint(4) DEFAULT NULL,
+                  `ticketCode` varchar(10) DEFAULT NULL,
+                  `majorItems` varchar(255) DEFAULT NULL,
+                  `buyerName` varchar(200) DEFAULT NULL,
+                  `buyerTaxno` varchar(20) DEFAULT NULL,
+                  `buyerAddr` varchar(200) DEFAULT NULL,
+                  `buyerProvince` varchar(20) DEFAULT NULL,
+                  `buyerTele` varchar(15) DEFAULT NULL,
+                  `buyerMobile` varchar(30) DEFAULT NULL,
+                  `buyerEmail` varchar(100) DEFAULT NULL,
+                  `buyerType` varchar(10) DEFAULT NULL,
+                  `buyerBankAcc` varchar(100) DEFAULT NULL,
+                  `induCode` varchar(50) DEFAULT NULL,
+                  `induName` varchar(50) DEFAULT NULL,
+                  `remarks` varchar(200) DEFAULT NULL,
+                  `orderNo` varchar(50) DEFAULT NULL,
+                  `status` tinyint(4) DEFAULT '0',
+                  `usrno` varchar(50) DEFAULT NULL,
+                  `orderDate` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+                  `insertDate` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+                  `delflags` tinyint(4) DEFAULT NULL,
+                  PRIMARY KEY (`id`),
+                  UNIQUE KEY `idx_uniq_orderNo` (`orderNo`)
+                ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
   orderdetailSql: CREATE TABLE `invoice_orderdetail` (
                     `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -74,34 +76,36 @@ SystemParameter:
                     `itemUnit` varchar(10) DEFAULT NULL,
                     `itemNum` varchar(30) DEFAULT NULL,
                     `specMode` varchar(30) DEFAULT NULL,
-                    `itemPrice` decimal(10,0) DEFAULT NULL,
+                    `itemPrice` decimal(10,2) DEFAULT NULL,
                     `invoiceNature` tinyint(4) DEFAULT NULL,
                     `itemTaxCode` varchar(50) DEFAULT NULL,
                     `taxRate` decimal(10,0) DEFAULT NULL,
                     `insertDate` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
                     `delflags` tinyint(4) DEFAULT NULL,
-                    PRIMARY KEY (`id`)
-                  ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+                    PRIMARY KEY (`id`),
+                    KEY `fk_orderNo` (`orderNo`),
+                    CONSTRAINT `fk_orderNo` FOREIGN KEY (`orderNo`) REFERENCES `invoice_orderinfo` (`orderNo`) ON DELETE CASCADE ON UPDATE CASCADE
+                  ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
   invoiceinfoSql: CREATE TABLE `invoice_invoiceinfo` (
-        `id` int(11) NOT NULL AUTO_INCREMENT,
-        `serialNo` varchar(50) DEFAULT NULL,
-        `orderNo` varchar(50) DEFAULT NULL,
-        `projectName` varchar(255) DEFAULT NULL,
-        `taxTotal` decimal(10,0) DEFAULT NULL,
-        `noTaxTotal` decimal(10,0) DEFAULT NULL,
-        `priceTotal` decimal(10,0) DEFAULT NULL,
-        `invoiceCode` varchar(50) DEFAULT NULL,
-        `invoiceNum` varchar(50) DEFAULT NULL,
-        `invoiceDate` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
-        `pdfUrl` varchar(255) DEFAULT NULL,
-        `invoiceType` tinyint(4) DEFAULT NULL,
-        `reMarks` varchar(255) DEFAULT NULL,
-        `usrno` varchar(50) DEFAULT NULL,
-        `insertdate` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
-        `delflags` tinyint(4) DEFAULT NULL,
-        PRIMARY KEY (`id`)
-      ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+                    `id` int(11) NOT NULL AUTO_INCREMENT,
+                    `serialNo` varchar(50) DEFAULT NULL,
+                    `orderNo` varchar(50) DEFAULT NULL,
+                    `projectName` varchar(255) DEFAULT NULL,
+                    `taxTotal` decimal(10,0) DEFAULT NULL,
+                    `noTaxTotal` decimal(10,0) DEFAULT NULL,
+                    `priceTotal` decimal(10,0) DEFAULT NULL,
+                    `invoiceCode` varchar(50) DEFAULT NULL,
+                    `invoiceNum` varchar(50) DEFAULT NULL,
+                    `invoiceDate` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+                    `pdfUrl` varchar(255) DEFAULT NULL,
+                    `invoiceType` tinyint(4) DEFAULT NULL,
+                    `reMarks` varchar(255) DEFAULT NULL,
+                    `usrno` varchar(50) DEFAULT NULL,
+                    `insertdate` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+                    `delflags` tinyint(4) DEFAULT NULL,
+                    PRIMARY KEY (`id`)
+                  ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 #
 Requestt:

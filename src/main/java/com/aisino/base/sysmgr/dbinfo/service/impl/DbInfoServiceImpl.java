@@ -4,12 +4,15 @@ import com.aisino.base.sysmgr.dbinfo.dao.DbInfoMapper;
 import com.aisino.base.sysmgr.dbinfo.entity.DbInfo;
 import com.aisino.base.sysmgr.dbinfo.service.DbInfoService;
 import com.aisino.common.params.SystemParameter;
+import com.aisino.core.mybatis.MyRoutingDataSource;
 import com.aisino.core.mybatis.specification.QueryLike;
 import com.aisino.core.mybatis.specification.Specification;
+import com.aisino.core.security.util.SecurityUtil;
 import com.aisino.core.service.BaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -23,6 +26,9 @@ public class DbInfoServiceImpl extends BaseServiceImpl<DbInfo,DbInfoMapper> impl
 
     @Autowired
     private SystemParameter systemParameter;
+
+    @Resource
+    private MyRoutingDataSource routingDataSource;
 
     private static final String mysqlDriver = "com.mysql.jdbc.Driver";
 
@@ -113,6 +119,10 @@ public class DbInfoServiceImpl extends BaseServiceImpl<DbInfo,DbInfoMapper> impl
                     if (k == 0) {
                         System.out.println("invoiceinfoSql 表已经创建成功!");
                     }
+
+
+
+                    routingDataSource.addCuzDataSource(SecurityUtil.getCurrentUserInfo());
 
                     return dbInfo;
                 }

@@ -33,29 +33,6 @@
     <link rel="stylesheet" href="/assets/css/ace-ie.css"/>
     <![endif]-->
 
-    <!-- inline styles related to this page -->
-    <style>
-        /* some elements used in demo only */
-        .spinner-preview {
-            width: 100px;
-            height: 100px;
-            text-align: center;
-            margin-top: 60px;
-        }
-
-        .dropdown-preview {
-            margin: 0 5px;
-            display: inline-block;
-        }
-
-        .dropdown-preview > .dropdown-menu {
-            display: block;
-            position: static;
-            margin-bottom: 5px;
-        }
-
-
-    </style>
 
     <!-- ace settings handler -->
     <script src="/assets/js/ace-extra.js"></script>
@@ -86,6 +63,12 @@
                         <fieldset>
                             <input type="text" name="id" class="form-control hidden" th:value="${currentEnInfo}? ${currentEnInfo.id}" />
 
+
+                            <div class="form-group" style="margin-bottom: 5px">
+                                <label class="form-label">企业税号&ensp;:&ensp;</label>
+                                <input type="text" name="taxno" class="form-control"  placeholder="企业税号" th:value="${currentEnInfo}? ${currentEnInfo.taxno}"/>
+                                <i class="ace-icon fa glyphicon-asterisk red"></i>
+                            </div>
 
                             <div class="form-group" style="margin-bottom: 5px">
                                 <label class="form-label">企业名称&ensp;:&ensp;</label>
@@ -290,15 +273,9 @@
 
 <!-- the following scripts are used in demo only for onpage help and you don't need them -->
 <link rel="stylesheet" href="/assets/css/ace.onpage-help.css"/>
-<link rel="stylesheet" href="/docs/assets/js/themes/sunburst.css"/>
 
 <script type="text/javascript"> ace.vars['base'] = '..'; </script>
 <script src="/assets/js/src/elements.onpage-help.js"></script>
 <script src="/assets/js/src/ace.onpage-help.js"></script>
-<script src="/docs/assets/js/rainbow.js"></script>
-<script src="/docs/assets/js/language/generic.js"></script>
-<script src="/docs/assets/js/language/html.js"></script>
-<script src="/docs/assets/js/language/css.js"></script>
-<script src="/docs/assets/js/language/javascript.js"></script>
 </body>
 </html>

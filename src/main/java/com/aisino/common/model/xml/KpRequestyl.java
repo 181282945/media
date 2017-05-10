@@ -1,8 +1,7 @@
 package com.aisino.common.model.xml;
 
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+
+import javax.xml.bind.annotation.*;
 import java.util.List;
 
 /**
@@ -11,722 +10,654 @@ import java.util.List;
 public class KpRequestyl {
 
     @XmlRootElement(name = "REQUEST_FPKJXX")
+    @XmlAccessorType(XmlAccessType.FIELD)
     public static class RequestFpkjxx{
-        @XmlAttribute(name = "class")
-        private String className = "REQUEST_FPKJXX";
 
-        @XmlElement(name = "FPKJXX_FPTXX",type = FpkjxxFptxx.class)
+        @XmlElement(name = "FPKJXX_FPTXX",type = FpkjxxFptxx.class,nillable = true)
         private FpkjxxFptxx fpkjxxFptxx;
 
-        @XmlElement(name = "FPKJXX_XMXXS",type = FpkjxxXmxxs.class)
+        @XmlElement(name = "FPKJXX_XMXXS",type = FpkjxxXmxxs.class,nillable = true)
         private FpkjxxXmxxs fpkjxxXmxxs;
 
-        @XmlElement(name = "FPKJXX_DDXX",type = FpkjxxDdxx.class)
+        @XmlElement(name = "FPKJXX_DDXX",type = FpkjxxDdxx.class,nillable = true)
         private FpkjxxDdxx fpkjxxDdxx;
 
-        @XmlElement(name = "FPKJXX_DDMXXXS",type = FpkjxxDdmxxxs.class)
+        @XmlElement(name = "FPKJXX_DDMXXXS",type = FpkjxxDdmxxxs.class,nillable = true)
         private FpkjxxDdmxxxs fpkjxxDdmxxxs;
 
-        @XmlElement(name = "FPKJXX_ZFXX",type = FpkjxxZfxx.class)
+        @XmlElement(name = "FPKJXX_ZFXX",type = FpkjxxZfxx.class,nillable = true)
         private FpkjxxZfxx fpkjxxZfxx;
 
-        @XmlElement(name = "FPKJXX_WLXX",type = FpkjxxWlxx.class)
+        @XmlElement(name = "FPKJXX_WLXX",type = FpkjxxWlxx.class,nillable = true)
         private FpkjxxWlxx fpkjxxWlxx;
 
+        public FpkjxxFptxx getFpkjxxFptxx() {
+            return fpkjxxFptxx;
+        }
 
-        public static class Builder{
-            private FpkjxxFptxx fpkjxxFptxx;
+        public void setFpkjxxFptxx(FpkjxxFptxx fpkjxxFptxx) {
+            this.fpkjxxFptxx = fpkjxxFptxx;
+        }
 
-            private FpkjxxXmxxs fpkjxxXmxxs;
+        public FpkjxxXmxxs getFpkjxxXmxxs() {
+            return fpkjxxXmxxs;
+        }
 
-            private FpkjxxDdxx fpkjxxDdxx;
+        public void setFpkjxxXmxxs(FpkjxxXmxxs fpkjxxXmxxs) {
+            this.fpkjxxXmxxs = fpkjxxXmxxs;
+        }
 
-            private FpkjxxDdmxxxs fpkjxxDdmxxxs;
+        public FpkjxxDdxx getFpkjxxDdxx() {
+            return fpkjxxDdxx;
+        }
 
-            private FpkjxxZfxx fpkjxxZfxx;
+        public void setFpkjxxDdxx(FpkjxxDdxx fpkjxxDdxx) {
+            this.fpkjxxDdxx = fpkjxxDdxx;
+        }
 
-            private FpkjxxWlxx fpkjxxWlxx;
+        public FpkjxxDdmxxxs getFpkjxxDdmxxxs() {
+            return fpkjxxDdmxxxs;
+        }
 
-            public Builder setFpkjxxFptxx(FpkjxxFptxx fpkjxxFptxx) {
-                this.fpkjxxFptxx = fpkjxxFptxx;
-                return this;
-            }
+        public void setFpkjxxDdmxxxs(FpkjxxDdmxxxs fpkjxxDdmxxxs) {
+            this.fpkjxxDdmxxxs = fpkjxxDdmxxxs;
+        }
 
-            public Builder setFpkjxxXmxxs(FpkjxxXmxxs fpkjxxXmxxs) {
-                this.fpkjxxXmxxs = fpkjxxXmxxs;
-                return this;
-            }
+        public FpkjxxZfxx getFpkjxxZfxx() {
+            return fpkjxxZfxx;
+        }
 
-            public Builder setFpkjxxDdxx(FpkjxxDdxx fpkjxxDdxx) {
-                this.fpkjxxDdxx = fpkjxxDdxx;
-                return this;
-            }
+        public void setFpkjxxZfxx(FpkjxxZfxx fpkjxxZfxx) {
+            this.fpkjxxZfxx = fpkjxxZfxx;
+        }
 
-            public Builder setFpkjxxDdmxxxs(FpkjxxDdmxxxs fpkjxxDdmxxxs) {
-                this.fpkjxxDdmxxxs = fpkjxxDdmxxxs;
-                return this;
-            }
+        public FpkjxxWlxx getFpkjxxWlxx() {
+            return fpkjxxWlxx;
+        }
 
-            public Builder setFpkjxxZfxx(FpkjxxZfxx fpkjxxZfxx) {
-                this.fpkjxxZfxx = fpkjxxZfxx;
-                return this;
-            }
-
-            public Builder setFpkjxxWlxx(FpkjxxWlxx fpkjxxWlxx) {
-                this.fpkjxxWlxx = fpkjxxWlxx;
-                return this;
-            }
-
-            public RequestFpkjxx build() {
-                RequestFpkjxx requestFpkjxx = new RequestFpkjxx();
-                requestFpkjxx.fpkjxxFptxx = fpkjxxFptxx;
-                requestFpkjxx.fpkjxxXmxxs = fpkjxxXmxxs;
-                requestFpkjxx.fpkjxxDdxx = fpkjxxDdxx;
-                requestFpkjxx.fpkjxxDdmxxxs = fpkjxxDdmxxxs;
-                requestFpkjxx.fpkjxxZfxx = fpkjxxZfxx;
-                requestFpkjxx.fpkjxxWlxx = fpkjxxWlxx;
-                return requestFpkjxx;
-            }
-
+        public void setFpkjxxWlxx(FpkjxxWlxx fpkjxxWlxx) {
+            this.fpkjxxWlxx = fpkjxxWlxx;
         }
     }
 
     @XmlRootElement(name = "FPKJXX_FPTXX")
+    @XmlAccessorType(XmlAccessType.FIELD)
     public static class FpkjxxFptxx{
         @XmlAttribute(name = "class")
         private String className = "FPKJXX_FPTXX";
 
         //发票请求唯一流水号
-        @XmlElement(name = "FPQQLSH")
+        @XmlElement(name = "FPQQLSH",nillable = true)
         private String fpqqlsh;
 
         //平台编码
-        @XmlElement(name = "DSPTBM")
+        @XmlElement(name = "DSPTBM",nillable = true)
         private String dsptbm;
 
         //开票方识别码
-        @XmlElement(name = "NSRSBH")
+        @XmlElement(name = "NSRSBH",nillable = true)
         private String nsrsbh;
 
         //开票方名称
-        @XmlElement(name = "NSRMC")
+        @XmlElement(name = "NSRMC",nillable = true)
         private String nsrmc;
 
         //开票方电子档案号
-        @XmlElement(name = "NSRDZDAH")
+        @XmlElement(name = "NSRDZDAH",nillable = true)
         private String nsrdzdah;
 
         //税务机构代码
-        @XmlElement(name = "SWJG_D")
-        private String swjgd;
+        @XmlElement(name = "SWJG_DM",nillable = true)
+        private String swjgdm;
 
         //代开标志
-        @XmlElement(name = "DKBZ")
+        @XmlElement(name = "DKBZ",nillable = true)
         private String dkbz;
 
         //票样代码
-        @XmlElement(name = "PYDM")
+        @XmlElement(name = "PYDM",nillable = true)
         private String pydm;
 
         //主要开票项目
-        @XmlElement(name = "KPXM")
+        @XmlElement(name = "KPXM",nillable = true)
         private String kpxm;
 
         //编码表版本号
-        @XmlElement(name = "BMB_BBH")
+        @XmlElement(name = "BMB_BBH",nillable = true)
         private String bmbbbh;
 
         //销货方识别号
-        @XmlElement(name = "XHF_NSRSBH")
+        @XmlElement(name = "XHF_NSRSBH",nillable = true)
         private String xhfnsrsbh;
 
         //销货方名称
-        @XmlElement(name = "XHFMC")
+        @XmlElement(name = "XHFMC",nillable = true)
         private String xhfmc;
 
         //销货方地址
-        @XmlElement(name = "XHF_DZ")
+        @XmlElement(name = "XHF_DZ",nillable = true)
         private String xhfdz;
 
         //销货方电话
-        @XmlElement(name = "XHF_DH")
+        @XmlElement(name = "XHF_DH",nillable = true)
         private String xhfdh;
 
         //销货方银行账号
-        @XmlElement(name = "XHF_YHZH")
+        @XmlElement(name = "XHF_YHZH",nillable = true)
         private String xhfyhzh;
 
         //购货方名称
-        @XmlElement(name = "GHFMC")
+        @XmlElement(name = "GHFMC",nillable = true)
         private String ghfmc;
 
         //购货方识别号
-        @XmlElement(name = "GHF_NSRSBH")
+        @XmlElement(name = "GHF_NSRSBH",nillable = true)
         private String ghfnsrsbh;
 
         //购货方省份
-        @XmlElement(name = "GHF_SF")
+        @XmlElement(name = "GHF_SF",nillable = true)
         private String ghfsf;
 
         //购货方地址
-        @XmlElement(name = "GHF_DZ")
+        @XmlElement(name = "GHF_DZ",nillable = true)
         private String ghfdz;
 
         //购货方固定电话
-        @XmlElement(name = "GHF_GDDH")
+        @XmlElement(name = "GHF_GDDH",nillable = true)
         private String ghfgddh;
 
         //购货方手机
-        @XmlElement(name = "GHF_SJ")
+        @XmlElement(name = "GHF_SJ",nillable = true)
         private String ghfsj;
 
         //购货方邮箱
-        @XmlElement(name = "GHF_EMAIL")
+        @XmlElement(name = "GHF_EMAIL",nillable = true)
         private String ghfemail;
 
         //01
-        @XmlElement(name = "GHFQYLX")
+        @XmlElement(name = "GHFQYLX",nillable = true)
         private String ghfqylx;
 
         //01
-        @XmlElement(name = "GHF_YHZH")
+        @XmlElement(name = "GHF_YHZH",nillable = true)
         private String ghfyhzh;
 
         //行业代码
-        @XmlElement(name = "HY_DM")
+        @XmlElement(name = "HY_DM",nillable = true)
         private String hydm;
 
         //行业名称
-        @XmlElement(name = "HY_MC")
+        @XmlElement(name = "HY_MC",nillable = true)
         private String hymc;
 
         //开票员
-        @XmlElement(name = "KPY")
+        @XmlElement(name = "KPY",nillable = true)
         private String kpy;
 
         //收款员
-        @XmlElement(name = "SKY")
+        @XmlElement(name = "SKY",nillable = true)
         private String sky;
 
         //复核人
-        @XmlElement(name = "FHR")
+        @XmlElement(name = "FHR",nillable = true)
         private String fhr;
 
         //开票日期
-        @XmlElement(name = "KPRQ")
+        @XmlElement(name = "KPRQ",nillable = true)
         private String kprq;
 
         //开票类型
-        @XmlElement(name = "KPLX")
+        @XmlElement(name = "KPLX",nillable = true)
         private String kplx;
 
         //原发票代码
-        @XmlElement(name = "YFP_DM")
+        @XmlElement(name = "YFP_DM",nillable = true)
         private String yfpdm;
 
         //原发票号码
-        @XmlElement(name = "YFP_HM")
+        @XmlElement(name = "YFP_HM",nillable = true)
         private String yfphm;
 
         //操作代码
-        @XmlElement(name = "CZDM")
+        @XmlElement(name = "CZDM",nillable = true)
         private String czdm;
 
         //清单标志
-        @XmlElement(name = "QD_BZ")
+        @XmlElement(name = "QD_BZ",nillable = true)
         private String qdbz;
 
         //清单发票项目名称
-        @XmlElement(name = "QDXMMC")
+        @XmlElement(name = "QDXMMC",nillable = true)
         private String qdxmmc;
 
         //冲红原因
-        @XmlElement(name = "CHYY")
+        @XmlElement(name = "CHYY",nillable = true)
         private String chyy;
 
         //特殊冲红标志
-        @XmlElement(name = "TSCHBZ")
+        @XmlElement(name = "TSCHBZ",nillable = true)
         private String tschbz;
 
         //价税合计金额
-        @XmlElement(name = "KPHJJE")
+        @XmlElement(name = "KPHJJE",nillable = true)
         private String kphjje;
 
         //合计不含税金额
-        @XmlElement(name = "HJBHSJE")
+        @XmlElement(name = "HJBHSJE",nillable = true)
         private String hjbhsje;
 
         //合计税额
-        @XmlElement(name = "HJSE")
+        @XmlElement(name = "HJSE",nillable = true)
         private String hjse;
 
         //备注
-        @XmlElement(name = "BZ")
+        @XmlElement(name = "BZ",nillable = true)
         private String bz;
 
         //备用字段1
-        @XmlElement(name = "BYZD1")
+        @XmlElement(name = "BYZD1",nillable = true)
         private String byzd1;
         //备用字段2
-        @XmlElement(name = "BYZD2")
+        @XmlElement(name = "BYZD2",nillable = true)
         private String byzd2;
         //备用字段3
-        @XmlElement(name = "BYZD3")
+        @XmlElement(name = "BYZD3",nillable = true)
         private String byzd3;
         //备用字4
-        @XmlElement(name = "BYZD4")
+        @XmlElement(name = "BYZD4",nillable = true)
         private String byzd4;
         //备用字段5
-        @XmlElement(name = "BYZD5")
+        @XmlElement(name = "BYZD5",nillable = true)
         private String byzd5;
 
 
-
-
-        public static class Builder{
-
-            //发票请求唯一流水号
-            private String fpqqlsh;
-
-            //平台编码
-            private String dsptbm;
-
-            //开票方识别码
-            private String nsrsbh;
-
-            //开票方名称
-            private String nsrmc;
-
-            //开票方电子档案号
-            private String nsrdzdah;
-
-            //税务机构代码
-            private String swjgd;
-
-            //代开标志
-            private String dkbz;
-
-            //票样代码
-            private String pydm;
-
-            //主要开票项目
-            private String kpxm;
-
-            //编码表版本号
-            private String bmbbbh;
-
-            //销货方识别号
-            private String xhfnsrsbh;
-
-            //销货方名称
-            private String xhfmc;
-
-            //销货方地址
-            private String xhfdz;
-
-            //销货方电话
-            private String xhfdh;
-
-            //销货方银行账号
-            private String xhfyhzh;
-
-            //购货方名称
-            private String ghfmc;
-
-            //购货方识别号
-            private String ghfnsrsbh;
-
-            //购货方省份
-            private String ghfsf;
-
-            //购货方地址
-            private String ghfdz;
-
-            //购货方固定电话
-            private String ghfgddh;
-
-            //购货方手机
-            private String ghfsj;
-
-            //购货方邮箱
-            private String ghfemail;
-
-            //01
-            private String ghfqylx;
-
-            //01
-            private String ghfyhzh;
-
-            //行业代码
-            private String hydm;
-
-            //行业名称
-            private String hymc;
-
-            //开票员
-            private String kpy;
-
-            //收款员
-            private String sky;
-
-            //复核人
-            private String fhr;
-
-            //开票日期
-            private String kprq;
-
-            //开票类型
-            private String kplx;
-
-            //原发票代码
-            private String yfpdm;
-
-            //原发票号码
-            private String yfphm;
-
-            //操作代码
-            private String czdm;
-
-            //清单标志
-            private String qdbz;
-
-            //清单发票项目名称
-            private String qdxmmc;
-
-            //冲红原因
-            private String chyy;
-
-            //特殊冲红标志
-            private String tschbz;
-
-            //价税合计金额
-            private String kphjje;
-
-            //合计不含税金额
-            private String hjbhsje;
-
-            //合计税额
-            private String hjse;
-
-            //备注
-            private String bz;
-
-            //备用字段1
-            private String byzd1;
-            //备用字段2
-            private String byzd2;
-            //备用字段3
-            private String byzd3;
-            //备用字4
-            private String byzd4;
-            //备用字段5
-            private String byzd5;
-
-            public Builder setFpqqlsh(String fpqqlsh) {
-                this.fpqqlsh = fpqqlsh;
-                return this;
-            }
-
-            public Builder setDsptbm(String dsptbm) {
-                this.dsptbm = dsptbm;
-                return this;
-            }
-
-            public Builder setNsrsbh(String nsrsbh) {
-                this.nsrsbh = nsrsbh;
-                return this;
-            }
-
-            public Builder setNsrmc(String nsrmc) {
-                this.nsrmc = nsrmc;
-                return this;
-            }
-
-            public Builder setNsrdzdah(String nsrdzdah) {
-                this.nsrdzdah = nsrdzdah;
-                return this;
-            }
-
-            public Builder setSwjgd(String swjgd) {
-                this.swjgd = swjgd;
-                return this;
-            }
-
-            public Builder setDkbz(String dkbz) {
-                this.dkbz = dkbz;
-                return this;
-            }
-
-            public Builder setPydm(String pydm) {
-                this.pydm = pydm;
-                return this;
-            }
-
-            public Builder setKpxm(String kpxm) {
-                this.kpxm = kpxm;
-                return this;
-            }
-
-            public Builder setBmbbbh(String bmbbbh) {
-                this.bmbbbh = bmbbbh;
-                return this;
-            }
-
-            public Builder setXhfnsrsbh(String xhfnsrsbh) {
-                this.xhfnsrsbh = xhfnsrsbh;
-                return this;
-            }
-
-            public Builder setXhfmc(String xhfmc) {
-                this.xhfmc = xhfmc;
-                return this;
-            }
-
-            public Builder setXhfdz(String xhfdz) {
-                this.xhfdz = xhfdz;
-                return this;
-            }
-
-            public Builder setXhfdh(String xhfdh) {
-                this.xhfdh = xhfdh;
-                return this;
-            }
-
-            public Builder setXhfyhzh(String xhfyhzh) {
-                this.xhfyhzh = xhfyhzh;
-                return this;
-            }
-
-            public Builder setGhfmc(String ghfmc) {
-                this.ghfmc = ghfmc;
-                return this;
-            }
-
-            public Builder setGhfnsrsbh(String ghfnsrsbh) {
-                this.ghfnsrsbh = ghfnsrsbh;
-                return this;
-            }
-
-            public Builder setGhfsf(String ghfsf) {
-                this.ghfsf = ghfsf;
-                return this;
-            }
-
-            public Builder setGhfdz(String ghfdz) {
-                this.ghfdz = ghfdz;
-                return this;
-            }
-
-            public Builder setGhfgddh(String ghfgddh) {
-                this.ghfgddh = ghfgddh;
-                return this;
-            }
-
-            public Builder setGhfsj(String ghfsj) {
-                this.ghfsj = ghfsj;
-                return this;
-            }
-
-            public Builder setGhfemail(String ghfemail) {
-                this.ghfemail = ghfemail;
-                return this;
-            }
-
-            public Builder setGhfqylx(String ghfqylx) {
-                this.ghfqylx = ghfqylx;
-                return this;
-            }
-
-            public Builder setGhfyhzh(String ghfyhzh) {
-                this.ghfyhzh = ghfyhzh;
-                return this;
-            }
-
-            public Builder setHydm(String hydm) {
-                this.hydm = hydm;
-                return this;
-            }
-
-            public Builder setHymc(String hymc) {
-                this.hymc = hymc;
-                return this;
-            }
-
-            public Builder setKpy(String kpy) {
-                this.kpy = kpy;
-                return this;
-            }
-
-            public Builder setSky(String sky) {
-                this.sky = sky;
-                return this;
-            }
-
-            public Builder setFhr(String fhr) {
-                this.fhr = fhr;
-                return this;
-            }
-
-            public Builder setKprq(String kprq) {
-                this.kprq = kprq;
-                return this;
-            }
-
-            public Builder setKplx(String kplx) {
-                this.kplx = kplx;
-                return this;
-            }
-
-            public Builder setYfpdm(String yfpdm) {
-                this.yfpdm = yfpdm;
-                return this;
-            }
-
-            public Builder setYfphm(String yfphm) {
-                this.yfphm = yfphm;
-                return this;
-            }
-
-            public Builder setCzdm(String czdm) {
-                this.czdm = czdm;
-                return this;
-            }
-
-            public Builder setQdbz(String qdbz) {
-                this.qdbz = qdbz;
-                return this;
-            }
-
-            public Builder setQdxmmc(String qdxmmc) {
-                this.qdxmmc = qdxmmc;
-                return this;
-            }
-
-            public Builder setChyy(String chyy) {
-                this.chyy = chyy;
-                return this;
-            }
-
-            public Builder setTschbz(String tschbz) {
-                this.tschbz = tschbz;
-                return this;
-            }
-
-            public Builder setKphjje(String kphjje) {
-                this.kphjje = kphjje;
-                return this;
-            }
-
-            public Builder setHjbhsje(String hjbhsje) {
-                this.hjbhsje = hjbhsje;
-                return this;
-            }
-
-            public Builder setHjse(String hjse) {
-                this.hjse = hjse;
-                return this;
-            }
-
-            public Builder setBz(String bz) {
-                this.bz = bz;
-                return this;
-            }
-
-            public Builder setByzd1(String byzd1) {
-                this.byzd1 = byzd1;
-                return this;
-            }
-
-            public Builder setByzd2(String byzd2) {
-                this.byzd2 = byzd2;
-                return this;
-            }
-
-            public Builder setByzd3(String byzd3) {
-                this.byzd3 = byzd3;
-                return this;
-            }
-
-            public Builder setByzd4(String byzd4) {
-                this.byzd4 = byzd4;
-                return this;
-            }
-
-            public Builder setByzd5(String byzd5) {
-                this.byzd5 = byzd5;
-                return this;
-            }
-
-
-             public FpkjxxFptxx build() {
-                 FpkjxxFptxx fpkjxxFptxx = new FpkjxxFptxx();
-                 fpkjxxFptxx.fpqqlsh = this.fpqqlsh;
-                 fpkjxxFptxx.dsptbm = this.dsptbm;
-
-                 fpkjxxFptxx.nsrsbh = this.nsrsbh;
-                 fpkjxxFptxx.nsrmc = this.nsrmc;
-                 fpkjxxFptxx.nsrdzdah = this.nsrdzdah;
-                 fpkjxxFptxx.swjgd = this.swjgd;
-
-                 fpkjxxFptxx.dkbz = this.dkbz;
-                 fpkjxxFptxx.pydm = this.pydm;
-                 fpkjxxFptxx.kpxm = this.kpxm;
-                 fpkjxxFptxx.bmbbbh = this.bmbbbh;
-                 fpkjxxFptxx.xhfnsrsbh = this.xhfnsrsbh;
-                 fpkjxxFptxx.xhfmc = this.xhfmc;
-
-                 fpkjxxFptxx.xhfdz = this.xhfdz;
-                 fpkjxxFptxx.xhfdh = this.xhfdh;
-                 fpkjxxFptxx.xhfyhzh = this.xhfyhzh;
-                 fpkjxxFptxx.ghfmc = this.ghfmc;
-                 fpkjxxFptxx.ghfnsrsbh = this.ghfnsrsbh;
-                 fpkjxxFptxx.ghfsf = this.ghfsf;
-                 fpkjxxFptxx.ghfdz = this.ghfdz;
-                 fpkjxxFptxx.ghfgddh = this.ghfgddh;
-                 fpkjxxFptxx.ghfsj = this.ghfsj;
-                 fpkjxxFptxx.ghfemail = this.ghfemail;
-                 fpkjxxFptxx.ghfqylx = this.ghfqylx;
-
-
-                 fpkjxxFptxx.ghfyhzh = this.ghfyhzh;
-                 fpkjxxFptxx.hydm = this.hydm;
-                 fpkjxxFptxx.hymc = this.hymc;
-                 fpkjxxFptxx.kpy = this.kpy;
-                 fpkjxxFptxx.sky = this.sky;
-                 fpkjxxFptxx.fhr = this.fhr;
-
-                 fpkjxxFptxx.kprq = this.kprq;
-                 fpkjxxFptxx.kplx = this.kplx;
-                 fpkjxxFptxx.yfpdm = this.yfpdm;
-                 fpkjxxFptxx.yfphm = this.yfphm;
-                 fpkjxxFptxx.czdm = this.czdm;
-
-                 fpkjxxFptxx.qdbz = this.qdbz;
-                 fpkjxxFptxx.qdxmmc = this.qdxmmc;
-                 fpkjxxFptxx.chyy = this.chyy;
-                 fpkjxxFptxx.tschbz = this.tschbz;
-                 fpkjxxFptxx.kphjje = this.kphjje;
-                 fpkjxxFptxx.hjbhsje = this.hjbhsje;
-
-                 fpkjxxFptxx.hjse = this.hjse;
-                 fpkjxxFptxx.bz = this.bz;
-                 fpkjxxFptxx.byzd1 = this.byzd1;
-                 fpkjxxFptxx.byzd2 = this.byzd2;
-                 fpkjxxFptxx.byzd3 = this.byzd3;
-
-                 fpkjxxFptxx.byzd4 = this.byzd4;
-                 fpkjxxFptxx.byzd5 = this.byzd5;
-
-                return fpkjxxFptxx;
-            }
-
+        public String getClassName() {
+            return className;
         }
 
+        public void setClassName(String className) {
+            this.className = className;
+        }
 
+        public String getFpqqlsh() {
+            return fpqqlsh;
+        }
 
+        public void setFpqqlsh(String fpqqlsh) {
+            this.fpqqlsh = fpqqlsh;
+        }
+
+        public String getDsptbm() {
+            return dsptbm;
+        }
+
+        public void setDsptbm(String dsptbm) {
+            this.dsptbm = dsptbm;
+        }
+
+        public String getNsrsbh() {
+            return nsrsbh;
+        }
+
+        public void setNsrsbh(String nsrsbh) {
+            this.nsrsbh = nsrsbh;
+        }
+
+        public String getNsrmc() {
+            return nsrmc;
+        }
+
+        public void setNsrmc(String nsrmc) {
+            this.nsrmc = nsrmc;
+        }
+
+        public String getNsrdzdah() {
+            return nsrdzdah;
+        }
+
+        public void setNsrdzdah(String nsrdzdah) {
+            this.nsrdzdah = nsrdzdah;
+        }
+
+        public String getSwjgdm() {
+            return swjgdm;
+        }
+
+        public void setSwjgdm(String swjgdm) {
+            this.swjgdm = swjgdm;
+        }
+
+        public String getDkbz() {
+            return dkbz;
+        }
+
+        public void setDkbz(String dkbz) {
+            this.dkbz = dkbz;
+        }
+
+        public String getPydm() {
+            return pydm;
+        }
+
+        public void setPydm(String pydm) {
+            this.pydm = pydm;
+        }
+
+        public String getKpxm() {
+            return kpxm;
+        }
+
+        public void setKpxm(String kpxm) {
+            this.kpxm = kpxm;
+        }
+
+        public String getBmbbbh() {
+            return bmbbbh;
+        }
+
+        public void setBmbbbh(String bmbbbh) {
+            this.bmbbbh = bmbbbh;
+        }
+
+        public String getXhfnsrsbh() {
+            return xhfnsrsbh;
+        }
+
+        public void setXhfnsrsbh(String xhfnsrsbh) {
+            this.xhfnsrsbh = xhfnsrsbh;
+        }
+
+        public String getXhfmc() {
+            return xhfmc;
+        }
+
+        public void setXhfmc(String xhfmc) {
+            this.xhfmc = xhfmc;
+        }
+
+        public String getXhfdz() {
+            return xhfdz;
+        }
+
+        public void setXhfdz(String xhfdz) {
+            this.xhfdz = xhfdz;
+        }
+
+        public String getXhfdh() {
+            return xhfdh;
+        }
+
+        public void setXhfdh(String xhfdh) {
+            this.xhfdh = xhfdh;
+        }
+
+        public String getXhfyhzh() {
+            return xhfyhzh;
+        }
+
+        public void setXhfyhzh(String xhfyhzh) {
+            this.xhfyhzh = xhfyhzh;
+        }
+
+        public String getGhfmc() {
+            return ghfmc;
+        }
+
+        public void setGhfmc(String ghfmc) {
+            this.ghfmc = ghfmc;
+        }
+
+        public String getGhfnsrsbh() {
+            return ghfnsrsbh;
+        }
+
+        public void setGhfnsrsbh(String ghfnsrsbh) {
+            this.ghfnsrsbh = ghfnsrsbh;
+        }
+
+        public String getGhfsf() {
+            return ghfsf;
+        }
+
+        public void setGhfsf(String ghfsf) {
+            this.ghfsf = ghfsf;
+        }
+
+        public String getGhfdz() {
+            return ghfdz;
+        }
+
+        public void setGhfdz(String ghfdz) {
+            this.ghfdz = ghfdz;
+        }
+
+        public String getGhfgddh() {
+            return ghfgddh;
+        }
+
+        public void setGhfgddh(String ghfgddh) {
+            this.ghfgddh = ghfgddh;
+        }
+
+        public String getGhfsj() {
+            return ghfsj;
+        }
+
+        public void setGhfsj(String ghfsj) {
+            this.ghfsj = ghfsj;
+        }
+
+        public String getGhfemail() {
+            return ghfemail;
+        }
+
+        public void setGhfemail(String ghfemail) {
+            this.ghfemail = ghfemail;
+        }
+
+        public String getGhfqylx() {
+            return ghfqylx;
+        }
+
+        public void setGhfqylx(String ghfqylx) {
+            this.ghfqylx = ghfqylx;
+        }
+
+        public String getGhfyhzh() {
+            return ghfyhzh;
+        }
+
+        public void setGhfyhzh(String ghfyhzh) {
+            this.ghfyhzh = ghfyhzh;
+        }
+
+        public String getHydm() {
+            return hydm;
+        }
+
+        public void setHydm(String hydm) {
+            this.hydm = hydm;
+        }
+
+        public String getHymc() {
+            return hymc;
+        }
+
+        public void setHymc(String hymc) {
+            this.hymc = hymc;
+        }
+
+        public String getKpy() {
+            return kpy;
+        }
+
+        public void setKpy(String kpy) {
+            this.kpy = kpy;
+        }
+
+        public String getSky() {
+            return sky;
+        }
+
+        public void setSky(String sky) {
+            this.sky = sky;
+        }
+
+        public String getFhr() {
+            return fhr;
+        }
+
+        public void setFhr(String fhr) {
+            this.fhr = fhr;
+        }
+
+        public String getKprq() {
+            return kprq;
+        }
+
+        public void setKprq(String kprq) {
+            this.kprq = kprq;
+        }
+
+        public String getKplx() {
+            return kplx;
+        }
+
+        public void setKplx(String kplx) {
+            this.kplx = kplx;
+        }
+
+        public String getYfpdm() {
+            return yfpdm;
+        }
+
+        public void setYfpdm(String yfpdm) {
+            this.yfpdm = yfpdm;
+        }
+
+        public String getYfphm() {
+            return yfphm;
+        }
+
+        public void setYfphm(String yfphm) {
+            this.yfphm = yfphm;
+        }
+
+        public String getCzdm() {
+            return czdm;
+        }
+
+        public void setCzdm(String czdm) {
+            this.czdm = czdm;
+        }
+
+        public String getQdbz() {
+            return qdbz;
+        }
+
+        public void setQdbz(String qdbz) {
+            this.qdbz = qdbz;
+        }
+
+        public String getQdxmmc() {
+            return qdxmmc;
+        }
+
+        public void setQdxmmc(String qdxmmc) {
+            this.qdxmmc = qdxmmc;
+        }
+
+        public String getChyy() {
+            return chyy;
+        }
+
+        public void setChyy(String chyy) {
+            this.chyy = chyy;
+        }
+
+        public String getTschbz() {
+            return tschbz;
+        }
+
+        public void setTschbz(String tschbz) {
+            this.tschbz = tschbz;
+        }
+
+        public String getKphjje() {
+            return kphjje;
+        }
+
+        public void setKphjje(String kphjje) {
+            this.kphjje = kphjje;
+        }
+
+        public String getHjbhsje() {
+            return hjbhsje;
+        }
+
+        public void setHjbhsje(String hjbhsje) {
+            this.hjbhsje = hjbhsje;
+        }
+
+        public String getHjse() {
+            return hjse;
+        }
+
+        public void setHjse(String hjse) {
+            this.hjse = hjse;
+        }
+
+        public String getBz() {
+            return bz;
+        }
+
+        public void setBz(String bz) {
+            this.bz = bz;
+        }
+
+        public String getByzd1() {
+            return byzd1;
+        }
+
+        public void setByzd1(String byzd1) {
+            this.byzd1 = byzd1;
+        }
+
+        public String getByzd2() {
+            return byzd2;
+        }
+
+        public void setByzd2(String byzd2) {
+            this.byzd2 = byzd2;
+        }
+
+        public String getByzd3() {
+            return byzd3;
+        }
+
+        public void setByzd3(String byzd3) {
+            this.byzd3 = byzd3;
+        }
+
+        public String getByzd4() {
+            return byzd4;
+        }
+
+        public void setByzd4(String byzd4) {
+            this.byzd4 = byzd4;
+        }
+
+        public String getByzd5() {
+            return byzd5;
+        }
+
+        public void setByzd5(String byzd5) {
+            this.byzd5 = byzd5;
+        }
     }
 
     @XmlRootElement(name = "FPKJXX_XMXXS")
+    @XmlAccessorType(XmlAccessType.FIELD)
     public static class FpkjxxXmxxs{
         @XmlAttribute(name = "class")
         private String className = "FPKJXX_XMXX;";
@@ -735,353 +666,318 @@ public class KpRequestyl {
         private String size;
 
 
-        @XmlElement(name = "FPKJXX_XMXX",type = FpkjxxXmxx.class)
+        @XmlElement(name = "FPKJXX_XMXX",type = FpkjxxXmxx.class,nillable = true)
         private List<FpkjxxXmxx> fpkjxxXmxxList;
 
-
-
-        public static class Builder {
-
-            private String size;
-
-            private List<FpkjxxXmxx> fpkjxxXmxxList;
-
-            public Builder setSize(String size) {
-                this.size = size;
-                return this;
-            }
-
-            public Builder setFpkjxxXmxxList(List<FpkjxxXmxx> fpkjxxXmxxList) {
-                this.fpkjxxXmxxList = fpkjxxXmxxList;
-                return this;
-            }
-
-            public FpkjxxXmxxs build() {
-                FpkjxxXmxxs fpkjxxXmxxs = new FpkjxxXmxxs();
-                fpkjxxXmxxs.size = size;
-                fpkjxxXmxxs.fpkjxxXmxxList = fpkjxxXmxxList;
-                return fpkjxxXmxxs;
-            }
+        public String getSize() {
+            return size;
         }
 
+        public void setSize(String size) {
+            this.size = size;
+        }
+
+        public List<FpkjxxXmxx> getFpkjxxXmxxList() {
+            return fpkjxxXmxxList;
+        }
+
+        public void setFpkjxxXmxxList(List<FpkjxxXmxx> fpkjxxXmxxList) {
+            this.fpkjxxXmxxList = fpkjxxXmxxList;
+        }
     }
 
     @XmlRootElement(name = "FPKJXX_XMXX")
+    @XmlAccessorType(XmlAccessType.FIELD)
     public static class FpkjxxXmxx{
-        @XmlAttribute(name = "class")
-        private String className = "FPKJXX_XMXX;";
 
         //项目名称
-        @XmlElement(name = "XMMC")
+        @XmlElement(name = "XMMC",nillable = true)
         private String xmmc;
 
         //项目单位
-        @XmlElement(name = "XMDW")
+        @XmlElement(name = "XMDW",nillable = true)
         private String xmdw;
 
         //规格型号
-        @XmlElement(name = "GGXH")
+        @XmlElement(name = "GGXH",nillable = true)
         private String ggxh;
 
         //项目数量
-        @XmlElement(name = "XMSL")
+        @XmlElement(name = "XMSL",nillable = true)
         private String xmsl;
 
         //含税标志
-        @XmlElement(name = "HSBZ")
+        @XmlElement(name = "HSBZ",nillable = true)
         private String hsbz;
 
         //项目单价
-        @XmlElement(name = "XMDJ")
+        @XmlElement(name = "XMDJ",nillable = true)
         private String xmdj;
 
         //发票行性质
-        @XmlElement(name = "FPHXZ")
+        @XmlElement(name = "FPHXZ",nillable = true)
         private String fphxz;
 
         //商品编码
-        @XmlElement(name = "SPBM")
+        @XmlElement(name = "SPBM",nillable = true)
         private String spbm;
 
         //自行编码
-        @XmlElement(name = "ZXBM")
+        @XmlElement(name = "ZXBM",nillable = true)
         private String zxbm;
 
         //优惠政策标识
-        @XmlElement(name = "YHZCBS")
+        @XmlElement(name = "YHZCBS",nillable = true)
         private String yhzcbs;
 
         //零税率标识
-        @XmlElement(name = "LSLBS")
+        @XmlElement(name = "LSLBS",nillable = true)
         private String lslbs;
 
         //增值税特殊管理
-        @XmlElement(name = "ZZSTSGL")
+        @XmlElement(name = "ZZSTSGL",nillable = true)
         private String zzstsgl;
 
         //项目金额
-        @XmlElement(name = "XMJE")
+        @XmlElement(name = "XMJE",nillable = true)
         private String xmje;
 
         //税率
-        @XmlElement(name = "SL")
+        @XmlElement(name = "SL",nillable = true)
         private String sl;
 
         //税额
-        @XmlElement(name = "SE")
+        @XmlElement(name = "SE",nillable = true)
         private String se;
 
         //备用字段
-        @XmlElement(name = "BYZD1")
+        @XmlElement(name = "BYZD1",nillable = true)
         private String byzd1;
 
         //备用字段2
-        @XmlElement(name = "BYZD2")
+        @XmlElement(name = "BYZD2",nillable = true)
         private String byzd2;
 
         //备用字段3
-        @XmlElement(name = "BYZD3")
+        @XmlElement(name = "BYZD3",nillable = true)
         private String byzd3;
 
         //备用字段4
-        @XmlElement(name = "BYZD4")
+        @XmlElement(name = "BYZD4",nillable = true)
         private String byzd4;
 
         //备用字段5
-        @XmlElement(name = "BYZD5")
+        @XmlElement(name = "BYZD5",nillable = true)
         private String byzd5;
 
 
-
-        public static class Builder {
-            //项目名称
-            private String xmmc;
-            //项目单位
-            private String xmdw;
-            //规格型号
-            private String ggxh;
-            //项目数量
-            private String xmsl;
-            //含税标志
-            private String hsbz;
-            //项目单价
-            private String xmdj;
-            //发票行性质
-            private String fphxz;
-            //商品编码
-            private String spbm;
-            //自行编码
-            private String zxbm;
-            //优惠政策标识
-            private String yhzcbs;
-            //零税率标识
-            private String lslbs;
-            //增值税特殊管理
-            private String zzstsgl;
-            //项目金额
-            private String xmje;
-            //税率
-            private String sl;
-            //税额
-            private String se;
-            //备用字段
-            private String byzd1;
-            //备用字段2
-            private String byzd2;
-            //备用字段3
-            private String byzd3;
-            //备用字段4
-            private String byzd4;
-            //备用字段5
-            private String byzd5;
-
-
-            public Builder setXmmc(String xmmc) {
-                this.xmmc = xmmc;
-                return this;
-            }
-
-            public Builder setXmdw(String xmdw) {
-                this.xmdw = xmdw;
-                return this;
-            }
-
-            public Builder setGgxh(String ggxh) {
-                this.ggxh = ggxh;
-                return this;
-            }
-
-            public Builder setXmsl(String xmsl) {
-                this.xmsl = xmsl;
-                return this;
-            }
-
-            public Builder setHsbz(String hsbz) {
-                this.hsbz = hsbz;
-                return this;
-            }
-
-            public Builder setXmdj(String xmdj) {
-                this.xmdj = xmdj;
-                return this;
-            }
-
-            public Builder setFphxz(String fphxz) {
-                this.fphxz = fphxz;
-                return this;
-            }
-
-            public Builder setSpbm(String spbm) {
-                this.spbm = spbm;
-                return this;
-            }
-
-            public Builder setZxbm(String zxbm) {
-                this.zxbm = zxbm;
-                return this;
-            }
-
-            public Builder setYhzcbs(String yhzcbs) {
-                this.yhzcbs = yhzcbs;
-                return this;
-            }
-
-            public Builder setLslbs(String lslbs) {
-                this.lslbs = lslbs;
-                return this;
-            }
-
-            public Builder setZzstsgl(String zzstsgl) {
-                this.zzstsgl = zzstsgl;
-                return this;
-            }
-
-            public Builder setXmje(String xmje) {
-                this.xmje = xmje;
-                return this;
-            }
-
-            public Builder setSl(String sl) {
-                this.sl = sl;
-                return this;
-            }
-
-            public Builder setSe(String se) {
-                this.se = se;
-                return this;
-            }
-
-            public Builder setByzd1(String byzd1) {
-                this.byzd1 = byzd1;
-                return this;
-            }
-
-            public Builder setByzd2(String byzd2) {
-                this.byzd2 = byzd2;
-                return this;
-            }
-
-            public Builder setByzd3(String byzd3) {
-                this.byzd3 = byzd3;
-                return this;
-            }
-
-            public Builder setByzd4(String byzd4) {
-                this.byzd4 = byzd4;
-                return this;
-            }
-
-            public Builder setByzd5(String byzd5) {
-                this.byzd5 = byzd5;
-                return this;
-            }
-
-            public FpkjxxXmxx build() {
-                FpkjxxXmxx fpkjxxXmxx = new FpkjxxXmxx();
-                fpkjxxXmxx.xmmc = xmmc;
-                fpkjxxXmxx.xmdw = xmdw;
-                fpkjxxXmxx.ggxh = ggxh;
-                fpkjxxXmxx.xmsl = xmsl;
-                fpkjxxXmxx.hsbz = hsbz;
-                fpkjxxXmxx.xmdj = xmdj;
-                fpkjxxXmxx.fphxz = fphxz;
-                fpkjxxXmxx.spbm = spbm;
-                fpkjxxXmxx.zxbm = zxbm;
-                fpkjxxXmxx.yhzcbs = yhzcbs;
-                fpkjxxXmxx.lslbs = lslbs;
-                fpkjxxXmxx.zzstsgl = zzstsgl;
-                fpkjxxXmxx.xmje = xmje;
-                fpkjxxXmxx.sl = sl;
-                fpkjxxXmxx.se = se;
-                fpkjxxXmxx.byzd1 = byzd1;
-                fpkjxxXmxx.byzd2 = byzd2;
-                fpkjxxXmxx.byzd3 = byzd3;
-                fpkjxxXmxx.byzd4 = byzd4;
-                fpkjxxXmxx.byzd5 = byzd5;
-
-                return fpkjxxXmxx;
-            }
-
+        public String getXmmc() {
+            return xmmc;
         }
 
+        public void setXmmc(String xmmc) {
+            this.xmmc = xmmc;
+        }
+
+        public String getXmdw() {
+            return xmdw;
+        }
+
+        public void setXmdw(String xmdw) {
+            this.xmdw = xmdw;
+        }
+
+        public String getGgxh() {
+            return ggxh;
+        }
+
+        public void setGgxh(String ggxh) {
+            this.ggxh = ggxh;
+        }
+
+        public String getXmsl() {
+            return xmsl;
+        }
+
+        public void setXmsl(String xmsl) {
+            this.xmsl = xmsl;
+        }
+
+        public String getHsbz() {
+            return hsbz;
+        }
+
+        public void setHsbz(String hsbz) {
+            this.hsbz = hsbz;
+        }
+
+        public String getXmdj() {
+            return xmdj;
+        }
+
+        public void setXmdj(String xmdj) {
+            this.xmdj = xmdj;
+        }
+
+        public String getFphxz() {
+            return fphxz;
+        }
+
+        public void setFphxz(String fphxz) {
+            this.fphxz = fphxz;
+        }
+
+        public String getSpbm() {
+            return spbm;
+        }
+
+        public void setSpbm(String spbm) {
+            this.spbm = spbm;
+        }
+
+        public String getZxbm() {
+            return zxbm;
+        }
+
+        public void setZxbm(String zxbm) {
+            this.zxbm = zxbm;
+        }
+
+        public String getYhzcbs() {
+            return yhzcbs;
+        }
+
+        public void setYhzcbs(String yhzcbs) {
+            this.yhzcbs = yhzcbs;
+        }
+
+        public String getLslbs() {
+            return lslbs;
+        }
+
+        public void setLslbs(String lslbs) {
+            this.lslbs = lslbs;
+        }
+
+        public String getZzstsgl() {
+            return zzstsgl;
+        }
+
+        public void setZzstsgl(String zzstsgl) {
+            this.zzstsgl = zzstsgl;
+        }
+
+        public String getXmje() {
+            return xmje;
+        }
+
+        public void setXmje(String xmje) {
+            this.xmje = xmje;
+        }
+
+        public String getSl() {
+            return sl;
+        }
+
+        public void setSl(String sl) {
+            this.sl = sl;
+        }
+
+        public String getSe() {
+            return se;
+        }
+
+        public void setSe(String se) {
+            this.se = se;
+        }
+
+        public String getByzd1() {
+            return byzd1;
+        }
+
+        public void setByzd1(String byzd1) {
+            this.byzd1 = byzd1;
+        }
+
+        public String getByzd2() {
+            return byzd2;
+        }
+
+        public void setByzd2(String byzd2) {
+            this.byzd2 = byzd2;
+        }
+
+        public String getByzd3() {
+            return byzd3;
+        }
+
+        public void setByzd3(String byzd3) {
+            this.byzd3 = byzd3;
+        }
+
+        public String getByzd4() {
+            return byzd4;
+        }
+
+        public void setByzd4(String byzd4) {
+            this.byzd4 = byzd4;
+        }
+
+        public String getByzd5() {
+            return byzd5;
+        }
+
+        public void setByzd5(String byzd5) {
+            this.byzd5 = byzd5;
+        }
     }
 
     @XmlRootElement(name = "FPKJXX_DDXX")
+    @XmlAccessorType(XmlAccessType.FIELD)
     public static class FpkjxxDdxx{
         @XmlAttribute(name = "class")
         private String className = "FPKJXX_DDXX";
 
         //订单号
-        @XmlElement(name = "DDH")
+        @XmlElement(name = "DDH",nillable = true)
         private String ddh;
 
         //退货单号
-        @XmlElement(name = "THDH")
+        @XmlElement(name = "THDH",nillable = true)
         private String thdh;
 
         //订单时间
-        @XmlElement(name = "DDDATE")
+        @XmlElement(name = "DDDATE",nillable = true)
         private String dddate;
 
 
-
-        public static class Builder {
-            //订单号
-            private String ddh;
-
-            //退货单号
-            private String thdh;
-
-            //订单时间
-            private String dddate;
-
-            public void setDdh(String ddh) {
-                this.ddh = ddh;
-            }
-
-            public void setThdh(String thdh) {
-                this.thdh = thdh;
-            }
-
-            public void setDddate(String dddate) {
-                this.dddate = dddate;
-            }
-
-            public FpkjxxDdxx build() {
-                FpkjxxDdxx fpkjxxDdxx = new FpkjxxDdxx();
-                fpkjxxDdxx.ddh = ddh;
-                fpkjxxDdxx.thdh = thdh;
-                fpkjxxDdxx.dddate = dddate;
-                return fpkjxxDdxx;
-            }
+        public String getDdh() {
+            return ddh;
         }
 
+        public void setDdh(String ddh) {
+            this.ddh = ddh;
+        }
 
+        public String getThdh() {
+            return thdh;
+        }
 
+        public void setThdh(String thdh) {
+            this.thdh = thdh;
+        }
 
+        public String getDddate() {
+            return dddate;
+        }
+
+        public void setDddate(String dddate) {
+            this.dddate = dddate;
+        }
     }
 
     @XmlRootElement(name = "FPKJXX_DDMXXXS")
+    @XmlAccessorType(XmlAccessType.FIELD)
     public static class FpkjxxDdmxxxs{
         @XmlAttribute(name = "class")
         private String className = "FPKJXX_DDMXXX;";
@@ -1089,299 +985,262 @@ public class KpRequestyl {
         @XmlAttribute(name = "size")
         private String size = "0";
 
-        @XmlElement(name = "FPKJXX_DDMXXX",type = FpkjxxDdmxxx.class)
+        @XmlElement(name = "FPKJXX_DDMXXX",type = FpkjxxDdmxxx.class,nillable = true)
         private List<FpkjxxDdmxxx> fpkjxxDdmxxxList;
 
-        public static class Builder {
+        public String getSize() {
+            return size;
+        }
 
-            private String size = "0";
+        public void setSize(String size) {
+            this.size = size;
+        }
 
-            private List<FpkjxxDdmxxx> fpkjxxDdmxxxList;
+        public List<FpkjxxDdmxxx> getFpkjxxDdmxxxList() {
+            return fpkjxxDdmxxxList;
+        }
 
-            public void setSize(String size) {
-                this.size = size;
-            }
-
-            public void setFpkjxxDdmxxxList(List<FpkjxxDdmxxx> fpkjxxDdmxxxList) {
-                this.fpkjxxDdmxxxList = fpkjxxDdmxxxList;
-            }
-
-            public FpkjxxDdmxxxs build() {
-                FpkjxxDdmxxxs fpkjxxDdmxxxs = new FpkjxxDdmxxxs();
-                fpkjxxDdmxxxs.size = size;
-                fpkjxxDdmxxxs.fpkjxxDdmxxxList = fpkjxxDdmxxxList;
-                return fpkjxxDdmxxxs;
-            }
+        public void setFpkjxxDdmxxxList(List<FpkjxxDdmxxx> fpkjxxDdmxxxList) {
+            this.fpkjxxDdmxxxList = fpkjxxDdmxxxList;
         }
     }
 
     @XmlRootElement(name = "FPKJXX_DDMXXX")
+    @XmlAccessorType(XmlAccessType.FIELD)
     public static class FpkjxxDdmxxx{
 
         //订单名称
-        @XmlElement(name = "DDMC")
+        @XmlElement(name = "DDMC",nillable = true)
         private String ddmc;
 
         //单位
-        @XmlElement(name = "DW")
+        @XmlElement(name = "DW",nillable = true)
         private String dw;
 
         //规格型号
-        @XmlElement(name = "GGXH")
+        @XmlElement(name = "GGXH",nillable = true)
         private String ggxh;
 
         //数量
-        @XmlElement(name = "SL")
+        @XmlElement(name = "SL",nillable = true)
         private String sl;
 
         //单价
-        @XmlElement(name = "DJ")
+        @XmlElement(name = "DJ",nillable = true)
         private String dj;
 
         //金额
-        @XmlElement(name = "JE")
+        @XmlElement(name = "JE",nillable = true)
         private String je;
 
         //备用字段
-        @XmlElement(name = "BYZD1")
+        @XmlElement(name = "BYZD1",nillable = true)
         private String byzd1;
 
         //备用字段2
-        @XmlElement(name = "BYZD2")
+        @XmlElement(name = "BYZD2",nillable = true)
         private String byzd2;
 
         //备用字段3
-        @XmlElement(name = "BYZD3")
+        @XmlElement(name = "BYZD3",nillable = true)
         private String byzd3;
 
         //备用字段4
-        @XmlElement(name = "BYZD4")
+        @XmlElement(name = "BYZD4",nillable = true)
         private String byzd4;
 
         //备用字段5
-        @XmlElement(name = "BYZD5")
+        @XmlElement(name = "BYZD5",nillable = true)
         private String byzd5;
 
 
-
-
-        public static class Builder {
-
-            //订单名称
-            private String ddmc;
-
-            //单位
-            private String dw;
-
-            //规格型号
-            private String ggxh;
-
-            //数量
-            private String sl;
-
-            //单价
-            private String dj;
-
-            //金额
-            private String je;
-
-            //备用字段
-            private String byzd1;
-
-            //备用字段2
-            private String byzd2;
-
-            //备用字段3
-            private String byzd3;
-
-            //备用字段4
-            private String byzd4;
-
-            //备用字段5
-            private String byzd5;
-
-
-            public void setDdmc(String ddmc) {
-                this.ddmc = ddmc;
-            }
-
-            public void setDw(String dw) {
-                this.dw = dw;
-            }
-
-            public void setGgxh(String ggxh) {
-                this.ggxh = ggxh;
-            }
-
-            public void setSl(String sl) {
-                this.sl = sl;
-            }
-
-            public void setDj(String dj) {
-                this.dj = dj;
-            }
-
-            public void setJe(String je) {
-                this.je = je;
-            }
-
-            public void setByzd1(String byzd1) {
-                this.byzd1 = byzd1;
-            }
-
-            public void setByzd2(String byzd2) {
-                this.byzd2 = byzd2;
-            }
-
-            public void setByzd3(String byzd3) {
-                this.byzd3 = byzd3;
-            }
-
-            public void setByzd4(String byzd4) {
-                this.byzd4 = byzd4;
-            }
-
-            public void setByzd5(String byzd5) {
-                this.byzd5 = byzd5;
-            }
-
-            public FpkjxxDdmxxx build() {
-                FpkjxxDdmxxx fpkjxxDdmxxx = new FpkjxxDdmxxx();
-                fpkjxxDdmxxx.ddmc = ddmc;
-                fpkjxxDdmxxx.dw = dw;
-                fpkjxxDdmxxx.sl = sl;
-                fpkjxxDdmxxx.dj = dj;
-                fpkjxxDdmxxx.je = je;
-                fpkjxxDdmxxx.byzd1 = byzd1;
-                fpkjxxDdmxxx.byzd2 = byzd2;
-                fpkjxxDdmxxx.byzd3 = byzd3;
-                fpkjxxDdmxxx.byzd4 = byzd4;
-                fpkjxxDdmxxx.byzd5 = byzd5;
-                return fpkjxxDdmxxx;
-            }
+        public String getDdmc() {
+            return ddmc;
         }
 
+        public void setDdmc(String ddmc) {
+            this.ddmc = ddmc;
+        }
 
+        public String getDw() {
+            return dw;
+        }
+
+        public void setDw(String dw) {
+            this.dw = dw;
+        }
+
+        public String getGgxh() {
+            return ggxh;
+        }
+
+        public void setGgxh(String ggxh) {
+            this.ggxh = ggxh;
+        }
+
+        public String getSl() {
+            return sl;
+        }
+
+        public void setSl(String sl) {
+            this.sl = sl;
+        }
+
+        public String getDj() {
+            return dj;
+        }
+
+        public void setDj(String dj) {
+            this.dj = dj;
+        }
+
+        public String getJe() {
+            return je;
+        }
+
+        public void setJe(String je) {
+            this.je = je;
+        }
+
+        public String getByzd1() {
+            return byzd1;
+        }
+
+        public void setByzd1(String byzd1) {
+            this.byzd1 = byzd1;
+        }
+
+        public String getByzd2() {
+            return byzd2;
+        }
+
+        public void setByzd2(String byzd2) {
+            this.byzd2 = byzd2;
+        }
+
+        public String getByzd3() {
+            return byzd3;
+        }
+
+        public void setByzd3(String byzd3) {
+            this.byzd3 = byzd3;
+        }
+
+        public String getByzd4() {
+            return byzd4;
+        }
+
+        public void setByzd4(String byzd4) {
+            this.byzd4 = byzd4;
+        }
+
+        public String getByzd5() {
+            return byzd5;
+        }
+
+        public void setByzd5(String byzd5) {
+            this.byzd5 = byzd5;
+        }
     }
 
     @XmlRootElement(name = "FPKJXX_ZFXX")
+    @XmlAccessorType(XmlAccessType.FIELD)
     public static class FpkjxxZfxx{
         @XmlAttribute(name = "class")
         private String className = "FPKJXX_ZFXX";
 
         //支付方式
-        @XmlElement(name = "ZFFS")
+        @XmlElement(name = "ZFFS",nillable = true)
         private String zffs;
 
         //支付流水号
-        @XmlElement(name = "ZFLSH")
+        @XmlElement(name = "ZFLSH",nillable = true)
         private String zflsh;
 
         //支付平台
-        @XmlElement(name = "ZFPT")
+        @XmlElement(name = "ZFPT",nillable = true)
         private String zfpt;
 
 
-        public static class Builder {
-
-            //支付方式
-            private String zffs;
-
-            //支付流水号
-            private String zflsh;
-
-            //支付平台
-            private String zfpt;
-
-
-            public void setZffs(String zffs) {
-                this.zffs = zffs;
-            }
-
-            public void setZflsh(String zflsh) {
-                this.zflsh = zflsh;
-            }
-
-            public void setZfpt(String zfpt) {
-                this.zfpt = zfpt;
-            }
-
-            public FpkjxxZfxx build() {
-                FpkjxxZfxx fpkjxxZfxx = new FpkjxxZfxx();
-                fpkjxxZfxx.zffs = zffs;
-                fpkjxxZfxx.zflsh = zflsh;
-                fpkjxxZfxx.zfpt = zfpt;
-                return fpkjxxZfxx;
-            }
+        public String getZffs() {
+            return zffs;
         }
 
+        public void setZffs(String zffs) {
+            this.zffs = zffs;
+        }
 
+        public String getZflsh() {
+            return zflsh;
+        }
+
+        public void setZflsh(String zflsh) {
+            this.zflsh = zflsh;
+        }
+
+        public String getZfpt() {
+            return zfpt;
+        }
+
+        public void setZfpt(String zfpt) {
+            this.zfpt = zfpt;
+        }
     }
 
     @XmlRootElement(name = "FPKJXX_WLXX")
+    @XmlAccessorType(XmlAccessType.FIELD)
     public static class FpkjxxWlxx{
         @XmlAttribute(name = "class")
         private String className = "FPKJXX_WLXX";
 
         //承运公司
-        @XmlElement(name = "CYGS")
+        @XmlElement(name = "CYGS",nillable = true)
         private String cygs;
 
         //送货时间
-        @XmlElement(name = "SHSJ")
+        @XmlElement(name = "SHSJ",nillable = true)
         private String shsj;
 
         //物流单号
-        @XmlElement(name = "WLDH")
+        @XmlElement(name = "WLDH",nillable = true)
         private String wldh;
 
         //送货地址
-        @XmlElement(name = "SHDZ")
+        @XmlElement(name = "SHDZ",nillable = true)
         private String shdz;
 
 
-        public static class Builder {
-
-            //承运公司
-            private String cygs;
-
-            //送货时间
-            private String shsj;
-
-            //物流单号
-            private String wldh;
-
-            //送货地址
-            private String shdz;
-
-            public void setCygs(String cygs) {
-                this.cygs = cygs;
-            }
-
-            public void setShsj(String shsj) {
-                this.shsj = shsj;
-            }
-
-            public void setWldh(String wldh) {
-                this.wldh = wldh;
-            }
-
-            public void setShdz(String shdz) {
-                this.shdz = shdz;
-            }
-
-            public FpkjxxWlxx build() {
-                FpkjxxWlxx fpkjxxWlxx = new FpkjxxWlxx();
-                fpkjxxWlxx.cygs = cygs;
-                fpkjxxWlxx.shsj = shsj;
-                fpkjxxWlxx.wldh = wldh;
-                fpkjxxWlxx.shdz = shdz;
-                return fpkjxxWlxx;
-            }
+        public String getCygs() {
+            return cygs;
         }
 
+        public void setCygs(String cygs) {
+            this.cygs = cygs;
+        }
 
+        public String getShsj() {
+            return shsj;
+        }
 
+        public void setShsj(String shsj) {
+            this.shsj = shsj;
+        }
+
+        public String getWldh() {
+            return wldh;
+        }
+
+        public void setWldh(String wldh) {
+            this.wldh = wldh;
+        }
+
+        public String getShdz() {
+            return shdz;
+        }
+
+        public void setShdz(String shdz) {
+            this.shdz = shdz;
+        }
     }
 
 

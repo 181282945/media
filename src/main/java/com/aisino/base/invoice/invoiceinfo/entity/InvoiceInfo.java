@@ -1,5 +1,6 @@
 package com.aisino.base.invoice.invoiceinfo.entity;
 
+import com.aisino.common.dto.param.ParamDto;
 import com.aisino.core.entity.BaseInvoiceEntity;
 import com.aisino.core.entity.annotation.BaseEntityMapper;
 import org.apache.ibatis.type.Alias;
@@ -55,7 +56,7 @@ public class InvoiceInfo extends BaseInvoiceEntity {
     /**
      * 发票类型
      */
-    private Integer invoiceType;
+    private String invoiceType;
     /**
      * 备注
      */
@@ -148,11 +149,11 @@ public class InvoiceInfo extends BaseInvoiceEntity {
         this.pdfUrl = pdfUrl;
     }
 
-    public Integer getInvoiceType() {
+    public String getInvoiceType() {
         return invoiceType;
     }
 
-    public void setInvoiceType(Integer invoiceType) {
+    public void setInvoiceType(String invoiceType) {
         this.invoiceType = invoiceType;
     }
 
@@ -171,4 +172,65 @@ public class InvoiceInfo extends BaseInvoiceEntity {
     public void setUsrno(String usrno) {
         this.usrno = usrno;
     }
+
+
+    //---------------------------------------------------------枚举--------------
+
+    public enum InvoiceType {
+
+        NORMAL("1","正票"),RED("2","红票");
+
+        //状态代码
+        private String code;
+        //状态名称
+        private String name;
+
+
+        //构造方法
+        InvoiceType(String code, String name){
+            this.code = code;
+            this.name = name;
+        }
+
+        //根据code获取状态名称
+        public static String getNameByCode(String code){
+            for(InvoiceType item : InvoiceType.values()){
+                if(item.getCode().equals(code)){
+                    return item.getName();
+                }
+            }
+            return "";
+        }
+
+        public static ParamDto[] getParams(){
+            ParamDto[] invoiceTypeParams = new ParamDto[InvoiceType.values().length];
+
+            for(int i=0;i<invoiceTypeParams.length;i++){
+                invoiceTypeParams[i] = new ParamDto(InvoiceType.values()[i].getCode(),InvoiceType.values()[i].getName());
+            }
+            return  invoiceTypeParams;
+        }
+
+
+
+        //-----------------------------------getter and setter---------------------------------------------------------
+
+
+        public String getCode() {
+            return code;
+        }
+
+        public void setCode(String code) {
+            this.code = code;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+    }
+
 }

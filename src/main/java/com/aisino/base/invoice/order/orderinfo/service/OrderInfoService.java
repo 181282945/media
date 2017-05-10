@@ -1,5 +1,6 @@
 package com.aisino.base.invoice.order.orderinfo.service;
 
+import com.aisino.base.invoice.invoiceinfo.entity.InvoiceInfo;
 import com.aisino.base.invoice.order.orderinfo.dao.OrderInfoMapper;
 import com.aisino.base.invoice.order.orderinfo.entity.OrderInfo;
 import com.aisino.base.invoice.order.orderinfo.service.impl.OrderInfoServiceImpl;
@@ -24,5 +25,5 @@ public interface OrderInfoService extends BaseService<OrderInfo,OrderInfoMapper>
     OrderInfoServiceImpl.ImportResultDto importExcel(InputStream inputStream) throws IOException, OpenXML4JException,ParserConfigurationException, SAXException;
 
 
-    void createRequestt(UserInfo userInfo, Integer orderInfoId);
+    void createRequestt(UserInfo userInfo, Integer orderInfoId, InvoiceInfo.InvoiceType invoiceType);
 }

@@ -1,329 +1,288 @@
 package com.aisino.common.model.xml;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.*;
 
 /**
  * Created by 为 on 2017-5-9.
  */
 @XmlRootElement(name = "interface")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Requestt {
 
-    @XmlElement(name = "globalInfo", type = GlobalInfo.class)
+    @XmlAttribute(name = "xmlns" )
+    private String xmlns = "";
+
+    @XmlAttribute(name = "xmlns:xsi")
+    private String xmlns_xsi = "http://www.w3.org/2001/XMLSchema-instance";
+
+    @XmlAttribute(name = "xsi:schemaLocation")
+    private String xsi_schemaLocation = "http://www.chinatax.gov.cn/tirip/dataspec/interfaces.xsd";
+
+    @XmlAttribute(name = "version")
+    private String version = "DZFP1.0";
+
+
+    @XmlElement(name = "globalInfo", type = GlobalInfo.class,nillable = true)
     private GlobalInfo globalInfo;
 
-    @XmlElement(name = "returnStateInfo", type = ReturnStateInfo.class)
+    @XmlElement(name = "returnStateInfo", type = ReturnStateInfo.class,nillable = true)
     private ReturnStateInfo returnStateInfo;
 
-    @XmlElement(name = "Data",type = Data.class)
+    @XmlElement(name = "Data",type = Data.class,nillable = true)
     private Data data;
 
 
-
-    public static class Builder {
-
-        private GlobalInfo globalInfo;
-
-        private ReturnStateInfo returnStateInfo;
-
-        private Data data;
-
-        public Builder setGlobalInfo(GlobalInfo globalInfo) {
-            this.globalInfo = globalInfo;
-            return this;
-        }
-
-        public Builder setReturnStateInfo(ReturnStateInfo returnStateInfo) {
-            this.returnStateInfo = returnStateInfo;
-            return this;
-        }
-
-        public Builder setData(Data data) {
-            this.data = data;
-            return this;
-        }
-
-        public Requestt build() {
-            Requestt requestt = new Requestt();
-            requestt.globalInfo = globalInfo;
-            requestt.returnStateInfo = returnStateInfo;
-            requestt.data = data;
-            return requestt;
-        }
+    public GlobalInfo getGlobalInfo() {
+        return globalInfo;
     }
 
+    public void setGlobalInfo(GlobalInfo globalInfo) {
+        this.globalInfo = globalInfo;
+    }
+
+    public ReturnStateInfo getReturnStateInfo() {
+        return returnStateInfo;
+    }
+
+    public void setReturnStateInfo(ReturnStateInfo returnStateInfo) {
+        this.returnStateInfo = returnStateInfo;
+    }
+
+    public Data getData() {
+        return data;
+    }
+
+    public void setData(Data data) {
+        this.data = data;
+    }
 
     @XmlRootElement(name = "globalInfo")
+    @XmlAccessorType(XmlAccessType.FIELD)
     public static class GlobalInfo {
 
-        @XmlElement(name = "terminalCode")
+        @XmlElement(name = "terminalCode",nillable = true)
         private String terminalCode;
 
-        @XmlElement(name = "appId")
+        @XmlElement(name = "appId",nillable = true)
         private String appId;
 
-        @XmlElement(name = "version")
+        @XmlElement(name = "version",nillable = true)
         private String version;
 
-        @XmlElement(name = "interfaceCode")
+        @XmlElement(name = "interfaceCode",nillable = true)
         private String interfaceCode;
 
-        @XmlElement(name = "userName")
+        @XmlElement(name = "userName",nillable = true)
         private String userName;
 
-        @XmlElement(name = "passWord")
+        @XmlElement(name = "passWord",nillable = true)
         private String passWord;
 
-        @XmlElement(name = "taxpayerId")
+        @XmlElement(name = "taxpayerId",nillable = true)
         private String taxpayerId;
 
-        @XmlElement(name = "authorizationCode")
+        @XmlElement(name = "authorizationCode",nillable = true)
         private String authorizationCode;
 
-        @XmlElement(name = "requestCode")
+        @XmlElement(name = "requestCode",nillable = true)
         private String requestCode;
 
-        @XmlElement(name = "requestTime")
+        @XmlElement(name = "requestTime",nillable = true)
         private String requestTime;
 
-        @XmlElement(name = "responseCode")
+        @XmlElement(name = "responseCode",nillable = true)
         private String responseCode;
 
-        @XmlElement(name = "dataExchangeId")
+        @XmlElement(name = "dataExchangeId",nillable = true)
         private String dataExchangeId;
 
+        public String getTerminalCode() {
+            return terminalCode;
+        }
 
-        public static class Builder {
-            private String terminalCode;
+        public void setTerminalCode(String terminalCode) {
+            this.terminalCode = terminalCode;
+        }
 
-            private String appId;
+        public String getAppId() {
+            return appId;
+        }
 
-            private String version;
+        public void setAppId(String appId) {
+            this.appId = appId;
+        }
 
-            private String interfaceCode;
+        public String getVersion() {
+            return version;
+        }
 
-            private String userName;
+        public void setVersion(String version) {
+            this.version = version;
+        }
 
-            private String passWord;
+        public String getInterfaceCode() {
+            return interfaceCode;
+        }
 
-            private String taxpayerId;
+        public void setInterfaceCode(String interfaceCode) {
+            this.interfaceCode = interfaceCode;
+        }
 
-            private String authorizationCode;
+        public String getUserName() {
+            return userName;
+        }
 
-            private String requestCode;
+        public void setUserName(String userName) {
+            this.userName = userName;
+        }
 
-            private String requestTime;
+        public String getPassWord() {
+            return passWord;
+        }
 
-            private String responseCode;
+        public void setPassWord(String passWord) {
+            this.passWord = passWord;
+        }
 
-            private String dataExchangeId;
+        public String getTaxpayerId() {
+            return taxpayerId;
+        }
 
-            public Builder setTerminalCode(String terminalCode) {
-                this.terminalCode = terminalCode;
-                return this;
-            }
+        public void setTaxpayerId(String taxpayerId) {
+            this.taxpayerId = taxpayerId;
+        }
 
-            public Builder setAppId(String appId) {
-                this.appId = appId;
-                return this;
-            }
+        public String getAuthorizationCode() {
+            return authorizationCode;
+        }
 
-            public Builder setVersion(String version) {
-                this.version = version;
-                return this;
-            }
+        public void setAuthorizationCode(String authorizationCode) {
+            this.authorizationCode = authorizationCode;
+        }
 
-            public Builder setInterfaceCode(String interfaceCode) {
-                this.interfaceCode = interfaceCode;
-                return this;
-            }
+        public String getRequestCode() {
+            return requestCode;
+        }
 
-            public Builder setUserName(String userName) {
-                this.userName = userName;
-                return this;
-            }
+        public void setRequestCode(String requestCode) {
+            this.requestCode = requestCode;
+        }
 
-            public Builder setPassWord(String passWord) {
-                this.passWord = passWord;
-                return this;
-            }
+        public String getRequestTime() {
+            return requestTime;
+        }
 
-            public Builder setTaxpayerId(String taxpayerId) {
-                this.taxpayerId = taxpayerId;
-                return this;
-            }
+        public void setRequestTime(String requestTime) {
+            this.requestTime = requestTime;
+        }
 
-            public Builder setAuthorizationCode(String authorizationCode) {
-                this.authorizationCode = authorizationCode;
-                return this;
-            }
+        public String getResponseCode() {
+            return responseCode;
+        }
 
-            public Builder setRequestCode(String requestCode) {
-                this.requestCode = requestCode;
-                return this;
-            }
+        public void setResponseCode(String responseCode) {
+            this.responseCode = responseCode;
+        }
 
-            public Builder setRequestTime(String requestTime) {
-                this.requestTime = requestTime;
-                return this;
-            }
+        public String getDataExchangeId() {
+            return dataExchangeId;
+        }
 
-            public Builder setResponseCode(String responseCode) {
-                this.responseCode = responseCode;
-                return this;
-            }
-
-            public Builder setDataExchangeId(String dataExchangeId) {
-                this.dataExchangeId = dataExchangeId;
-                return this;
-            }
-
-
-            public GlobalInfo build() {
-                GlobalInfo globalInfo = new GlobalInfo();
-                globalInfo.terminalCode = terminalCode;
-                globalInfo.appId = appId;
-                globalInfo.version = version;
-                globalInfo.interfaceCode = interfaceCode;
-                globalInfo.userName = userName;
-                globalInfo.passWord = passWord;
-                globalInfo.taxpayerId = taxpayerId;
-                globalInfo.authorizationCode = authorizationCode;
-                globalInfo.requestCode = requestCode;
-                globalInfo.requestTime = requestTime;
-                globalInfo.responseCode = responseCode;
-                globalInfo.dataExchangeId = dataExchangeId;
-                return globalInfo;
-            }
+        public void setDataExchangeId(String dataExchangeId) {
+            this.dataExchangeId = dataExchangeId;
         }
     }
 
     @XmlRootElement(name = "returnStateInfo")
+    @XmlAccessorType(XmlAccessType.FIELD)
     public static class ReturnStateInfo {
 
-        @XmlElement(name = "returnCode")
+        @XmlElement(name = "returnCode",nillable = true)
         private String returnCode;
 
-        @XmlElement(name = "returnMessage")
+        @XmlElement(name = "returnMessage",nillable = true)
         private String returnMessage;
 
-
-
-
-
-        public static class Builder {
-            private String returnCode;
-
-            private String returnMessage;
-
-
-            public Builder setReturnCode(String returnCode) {
-                this.returnCode = returnCode;
-                return this;
-            }
-
-            public Builder setReturnMessage(String returnMessage) {
-                this.returnMessage = returnMessage;
-                return this;
-            }
-
-            public ReturnStateInfo build() {
-                ReturnStateInfo returnStateInfo = new ReturnStateInfo();
-                returnStateInfo.returnCode = returnCode;
-                returnStateInfo.returnMessage = returnMessage;
-                return returnStateInfo;
-            }
+        public String getReturnCode() {
+            return returnCode;
         }
 
+        public void setReturnCode(String returnCode) {
+            this.returnCode = returnCode;
+        }
 
+        public String getReturnMessage() {
+            return returnMessage;
+        }
 
-
+        public void setReturnMessage(String returnMessage) {
+            this.returnMessage = returnMessage;
+        }
     }
 
     @XmlRootElement(name = "Data")
+    @XmlAccessorType(XmlAccessType.FIELD)
     public static class Data {
 
         @XmlElement(name = "dataDescription", type = DataDescription.class)
         private DataDescription dataDescription;
 
 
-        @XmlElement(name = "content")
+        @XmlElement(name = "content",nillable = true)
         private String content;
 
-
-        public static class Builder {
-
-            private DataDescription dataDescription;
-
-            private String content;
-
-
-            public void setDataDescription(DataDescription dataDescription) {
-                this.dataDescription = dataDescription;
-            }
-
-            public void setContent(String content) {
-                this.content = content;
-            }
-
-            public Data build() {
-                Data data = new Data();
-                data.dataDescription = dataDescription;
-                data.content = content;
-                return data;
-            }
+        public DataDescription getDataDescription() {
+            return dataDescription;
         }
 
+        public void setDataDescription(DataDescription dataDescription) {
+            this.dataDescription = dataDescription;
+        }
 
+        public String getContent() {
+            return content;
+        }
+
+        public void setContent(String content) {
+            this.content = content;
+        }
     }
 
     @XmlRootElement(name = "dataDescription")
+    @XmlAccessorType(XmlAccessType.FIELD)
     public static class DataDescription {
-        @XmlElement(name = "zipCode")
+        @XmlElement(name = "zipCode",nillable = true)
         private String zipCode;
 
-        @XmlElement(name = "encryptCode")
+        @XmlElement(name = "encryptCode",nillable = true)
         private String encryptCode;
 
-        @XmlElement(name = "codeType")
+        @XmlElement(name = "codeType",nillable = true)
         private String codeType;
 
-
-
-        public static class Builder {
-
-            private String zipCode;
-
-            private String encryptCode;
-
-            private String codeType;
-
-
-            public Builder setZipCode(String zipCode) {
-                this.zipCode = zipCode;
-                return this;
-            }
-
-            public Builder setEncryptCode(String encryptCode) {
-                this.encryptCode = encryptCode;
-                return this;
-            }
-
-            public Builder setCodeType(String codeType) {
-                this.codeType = codeType;
-                return this;
-            }
-
-            public DataDescription build() {
-                DataDescription dataDescription = new DataDescription();
-                dataDescription.zipCode = zipCode;
-                dataDescription.encryptCode = encryptCode;
-                dataDescription.codeType = codeType;
-                return dataDescription;
-            }
+        public String getZipCode() {
+            return zipCode;
         }
 
+        public void setZipCode(String zipCode) {
+            this.zipCode = zipCode;
+        }
 
+        public String getEncryptCode() {
+            return encryptCode;
+        }
+
+        public void setEncryptCode(String encryptCode) {
+            this.encryptCode = encryptCode;
+        }
+
+        public String getCodeType() {
+            return codeType;
+        }
+
+        public void setCodeType(String codeType) {
+            this.codeType = codeType;
+        }
     }
 
 }

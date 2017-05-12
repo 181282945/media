@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.*;
  */
 @XmlRootElement(name = "REQUEST_FPXXXZ_NEW")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class XzRequest implements BaseXmlModel {
+public class XzRequest extends BaseXmlModel {
 
     public XzRequest(){}
 

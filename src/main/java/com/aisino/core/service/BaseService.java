@@ -39,7 +39,7 @@ public interface BaseService<T extends BaseEntity,M extends BaseMapper> {
     /**
      * 更新实体状态
      */
-    void updateEntityStatus(String entityId, String status);
+    void updateEntityStatus(Integer entityId, String status);
 
     /**
      * 更新实体为失效状态

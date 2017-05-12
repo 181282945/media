@@ -1,6 +1,7 @@
 package com.aisino.common.model.xml.impl;
 
 
+import com.aisino.common.dto.param.ParamDto;
 import com.aisino.common.model.xml.BaseXmlModel;
 
 import javax.xml.bind.annotation.*;
@@ -13,7 +14,7 @@ public class KpRequestyl {
 
     @XmlRootElement(name = "REQUEST_FPKJXX")
     @XmlAccessorType(XmlAccessType.FIELD)
-    public static class RequestFpkjxx implements BaseXmlModel {
+    public static class RequestFpkjxx extends BaseXmlModel {
 
         @XmlElement(name = "FPKJXX_FPTXX",type = FpkjxxFptxx.class)
         private FpkjxxFptxx fpkjxxFptxx;
@@ -84,7 +85,7 @@ public class KpRequestyl {
 
     @XmlRootElement(name = "FPKJXX_FPTXX")
     @XmlAccessorType(XmlAccessType.FIELD)
-    public static class FpkjxxFptxx implements BaseXmlModel {
+    public static class FpkjxxFptxx extends BaseXmlModel {
         @XmlAttribute(name = "class")
         private String className = "FPKJXX_FPTXX";
 
@@ -656,11 +657,72 @@ public class KpRequestyl {
         public void setByzd5(String byzd5) {
             this.byzd5 = byzd5;
         }
+
+
+        //----------------------枚举----------------------------
+
+        public enum CzdmType {
+            NORMAL("10","正票正常开具"),REDO("11","正票错票重开"),RETURN_RED("20","退货折让红票"),REDO_RED("21","错票重开红票"),RED("22","换票冲红");
+
+            //状态代码
+            private String code;
+            //状态名称
+            private String name;
+
+            //构造方法
+            CzdmType(String code, String name){
+                this.code = code;
+                this.name = name;
+            }
+
+            //根据code获取状态名称
+            public static String getNameByCode(String code){
+                for(CzdmType item : CzdmType.values()){
+                    if(item.getCode().equals(code)){
+                        return item.getName();
+                    }
+                }
+                return "";
+            }
+
+            public static ParamDto[] getParams(){
+                ParamDto[] czdmTypeParams = new ParamDto[CzdmType.values().length];
+
+                for(int i=0;i<czdmTypeParams.length;i++){
+                    czdmTypeParams[i] = new ParamDto(CzdmType.values()[i].getCode(),CzdmType.values()[i].getName());
+                }
+                return  czdmTypeParams;
+            }
+
+
+
+            //-----------------------------------getter and setter---------------------------------------------------------
+
+
+            public String getCode() {
+                return code;
+            }
+
+            public void setCode(String code) {
+                this.code = code;
+            }
+
+            public String getName() {
+                return name;
+            }
+
+            public void setName(String name) {
+                this.name = name;
+            }
+        }
+
+
+
     }
 
     @XmlRootElement(name = "FPKJXX_XMXXS")
     @XmlAccessorType(XmlAccessType.FIELD)
-    public static class FpkjxxXmxxs implements BaseXmlModel {
+    public static class FpkjxxXmxxs extends BaseXmlModel {
         @XmlAttribute(name = "class")
         private String className = "FPKJXX_XMXX;";
 
@@ -688,9 +750,12 @@ public class KpRequestyl {
         }
     }
 
+    /**
+     * 项目信息（ 发票明细）（ 多条）
+     */
     @XmlRootElement(name = "FPKJXX_XMXX")
     @XmlAccessorType(XmlAccessType.FIELD)
-    public static class FpkjxxXmxx implements BaseXmlModel {
+    public static class FpkjxxXmxx extends BaseXmlModel {
 
         //项目名称
         @XmlElement(name = "XMMC")
@@ -936,7 +1001,7 @@ public class KpRequestyl {
 
     @XmlRootElement(name = "FPKJXX_DDXX")
     @XmlAccessorType(XmlAccessType.FIELD)
-    public static class FpkjxxDdxx implements BaseXmlModel {
+    public static class FpkjxxDdxx extends BaseXmlModel {
         @XmlAttribute(name = "class")
         private String className = "FPKJXX_DDXX";
 
@@ -978,9 +1043,13 @@ public class KpRequestyl {
         }
     }
 
+
+    /**
+     * (DDMXXX)订单明细信息（多条）
+     */
     @XmlRootElement(name = "FPKJXX_DDMXXXS")
     @XmlAccessorType(XmlAccessType.FIELD)
-    public static class FpkjxxDdmxxxs implements BaseXmlModel {
+    public static class FpkjxxDdmxxxs extends BaseXmlModel {
         @XmlAttribute(name = "class")
         private String className = "FPKJXX_DDMXXX;";
 
@@ -1009,7 +1078,7 @@ public class KpRequestyl {
 
     @XmlRootElement(name = "FPKJXX_DDMXXX")
     @XmlAccessorType(XmlAccessType.FIELD)
-    public static class FpkjxxDdmxxx implements BaseXmlModel {
+    public static class FpkjxxDdmxxx extends BaseXmlModel {
 
         //订单名称
         @XmlElement(name = "DDMC")
@@ -1147,7 +1216,7 @@ public class KpRequestyl {
 
     @XmlRootElement(name = "FPKJXX_ZFXX")
     @XmlAccessorType(XmlAccessType.FIELD)
-    public static class FpkjxxZfxx implements BaseXmlModel {
+    public static class FpkjxxZfxx extends BaseXmlModel {
         @XmlAttribute(name = "class")
         private String className = "FPKJXX_ZFXX";
 
@@ -1191,7 +1260,7 @@ public class KpRequestyl {
 
     @XmlRootElement(name = "FPKJXX_WLXX")
     @XmlAccessorType(XmlAccessType.FIELD)
-    public static class FpkjxxWlxx implements BaseXmlModel {
+    public static class FpkjxxWlxx extends BaseXmlModel {
         @XmlAttribute(name = "class")
         private String className = "FPKJXX_WLXX";
 

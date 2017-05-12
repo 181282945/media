@@ -9,7 +9,10 @@ import javax.xml.bind.annotation.*;
  */
 @XmlRootElement(name = "interface")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Requestt implements BaseXmlModel {
+public class Requestt extends BaseXmlModel {
+
+    public final static String SUCCESS_CODE = "0000";
+
 
     @XmlAttribute(name = "xmlns" )
     private String xmlns = "";
@@ -60,7 +63,7 @@ public class Requestt implements BaseXmlModel {
 
     @XmlRootElement(name = "globalInfo")
     @XmlAccessorType(XmlAccessType.FIELD)
-    public static class GlobalInfo implements BaseXmlModel  {
+    public static class GlobalInfo extends BaseXmlModel  {
 
         @XmlElement(name = "terminalCode")
         private String terminalCode;
@@ -197,7 +200,7 @@ public class Requestt implements BaseXmlModel {
 
     @XmlRootElement(name = "returnStateInfo")
     @XmlAccessorType(XmlAccessType.FIELD)
-    public static class ReturnStateInfo implements BaseXmlModel  {
+    public static class ReturnStateInfo extends BaseXmlModel  {
 
         @XmlElement(name = "returnCode")
         private String returnCode;
@@ -224,7 +227,7 @@ public class Requestt implements BaseXmlModel {
 
     @XmlRootElement(name = "Data")
     @XmlAccessorType(XmlAccessType.FIELD)
-    public static class Data implements BaseXmlModel  {
+    public static class Data extends BaseXmlModel  {
 
         @XmlElement(name = "dataDescription", type = DataDescription.class)
         private DataDescription dataDescription;
@@ -252,7 +255,7 @@ public class Requestt implements BaseXmlModel {
 
     @XmlRootElement(name = "dataDescription")
     @XmlAccessorType(XmlAccessType.FIELD)
-    public static class DataDescription implements BaseXmlModel  {
+    public static class DataDescription extends BaseXmlModel  {
         @XmlElement(name = "zipCode")
         private String zipCode;
 

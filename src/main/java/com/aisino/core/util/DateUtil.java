@@ -24,6 +24,7 @@ public class DateUtil {
     public static final String C_TIME_PATTON_MM = "yyyy-MM-dd HH:mm";
     public static final String C_TIME_MM_DD_MM = "MM-dd HH:mm";
     public static final String C_TIME_YYMMDDHHMM="yyyy年MM月dd日 HH:mm";
+    public static final String KPRQ_PATTON = "yyyyMMddHHmmss";
 
 
     public static Date parseDate(String strFormat, String dateValue) {

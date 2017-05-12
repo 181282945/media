@@ -109,7 +109,7 @@ public class BaseServiceImpl<T extends BaseEntity,M extends BaseMapper<T>> imple
     }
 
     @Override
-    public void updateEntityStatus(String entityId, String status) {
+    public void updateEntityStatus(Integer entityId, String status) {
         validateUpdateEntityStatus(entityId, status);
         BaseBusinessEntity entity;
         try {
@@ -117,12 +117,12 @@ public class BaseServiceImpl<T extends BaseEntity,M extends BaseMapper<T>> imple
         } catch (Exception e) {
             throw new RuntimeException("更新状态失败，类型异常。");
         }
-        entity.setId(Integer.parseInt(entityId));
+        entity.setId(entityId);
         entity.setStatus(status);
         getMapper().updateEntityStatus(entity);
     }
 
-    protected void validateUpdateEntityStatus(String entityId, String status) {
+    protected void validateUpdateEntityStatus(Integer entityId, String status) {
 
     }
 

@@ -31,6 +31,16 @@ public class GlobalInfoParams {
      */
     private String dataExchangeId;
 
+    /**
+     * 开票接口代码
+     */
+    private String billingInterfaceCode;
+
+    /**
+     * 下载开票接口代码
+     */
+    private String downloadInterfaceCode;
+
 
     //--------------------------------------getter and setter -------------------------------------
 
@@ -73,5 +83,21 @@ public class GlobalInfoParams {
 
     public void setDataExchangeId(String dataExchangeId) {
         this.dataExchangeId = dataExchangeId;
+    }
+
+    public String getDownloadInterfaceCode() {
+        return downloadInterfaceCode;
+    }
+
+    public void setDownloadInterfaceCode(String downloadInterfaceCode) {
+        this.downloadInterfaceCode = downloadInterfaceCode;
+    }
+
+    public String getBillingInterfaceCode() {
+        return billingInterfaceCode;
+    }
+
+    public void setBillingInterfaceCode(String billingInterfaceCode) {
+        this.billingInterfaceCode = billingInterfaceCode;
     }
 }

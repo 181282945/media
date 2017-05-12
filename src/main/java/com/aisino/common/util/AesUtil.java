@@ -105,8 +105,13 @@ public class AesUtil {
      * @return
      * @throws Exception
      */
-    public static String encrypt(String content) throws Exception{
-        byte[] enResult = encrypt(content, PASSWORD);
+    public static String encrypt(String content){
+        byte[] enResult = new byte[0];
+        try {
+            enResult = encrypt(content, PASSWORD);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         String hexStr = parseByte2HexStr(enResult);
         String baseStr = Base64.getBase64(hexStr);
         return baseStr;
@@ -118,11 +123,17 @@ public class AesUtil {
      * @return
      * @throws Exception
      */
-    public static String decrypt(String content) throws Exception{
+    public static String decrypt(String content){
         String enResult = Base64.getFromBase64(content);
+        String result = null;
         byte[] bt = parseHexStr2Byte(enResult);
-        byte[] resultBt = decrypt(bt, PASSWORD);
-        String result = new String(resultBt, "utf-8");
+        byte[] resultBt = new byte[0];
+        try {
+            resultBt = decrypt(bt, PASSWORD);
+            result = new String(resultBt, "utf-8");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return result;
     }
 }

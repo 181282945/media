@@ -3,6 +3,7 @@ package com.aisino.base.invoice.invoiceinfo.entity;
 import com.aisino.common.dto.param.ParamDto;
 import com.aisino.core.entity.BaseInvoiceEntity;
 import com.aisino.core.entity.annotation.BaseEntityMapper;
+import com.aisino.core.entity.annotation.DefaultValue;
 import org.apache.ibatis.type.Alias;
 
 import java.util.Date;
@@ -65,6 +66,12 @@ public class InvoiceInfo extends BaseInvoiceEntity {
      * 用户账号
      */
     private String usrno;
+
+    /**
+     * 冲红标记 0 未冲红,1已冲红
+     */
+    @DefaultValue("0")
+    private Integer redflags;
 
     //---------------------------getter and setter---------------------
 
@@ -173,6 +180,13 @@ public class InvoiceInfo extends BaseInvoiceEntity {
         this.usrno = usrno;
     }
 
+    public Integer getRedflags() {
+        return redflags;
+    }
+
+    public void setRedflags(Integer redflags) {
+        this.redflags = redflags;
+    }
 
     //---------------------------------------------------------枚举--------------
 
@@ -221,6 +235,65 @@ public class InvoiceInfo extends BaseInvoiceEntity {
         }
 
         public void setCode(String code) {
+            this.code = code;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+    }
+
+    /**
+     * 冲红类型枚举
+     */
+    public enum RedflagsType {
+        NOTYET(0,"未冲红"),ALREADY (1,"已冲红");
+
+        //状态代码
+        private Integer code;
+        //状态名称
+        private String name;
+
+
+        //构造方法
+        RedflagsType(Integer code, String name){
+            this.code = code;
+            this.name = name;
+        }
+
+        //根据code获取状态名称
+        public static String getNameByCode(Integer code){
+            for(InvoiceType item : InvoiceType.values()){
+                if(item.getCode().equals(code)){
+                    return item.getName();
+                }
+            }
+            return "";
+        }
+
+        public static ParamDto[] getParams(){
+            ParamDto[] redflagsTypeParams = new ParamDto[RedflagsType.values().length];
+
+            for(int i=0;i<redflagsTypeParams.length;i++){
+                redflagsTypeParams[i] = new ParamDto(RedflagsType.values()[i].getCode().toString(),RedflagsType.values()[i].getName());
+            }
+            return  redflagsTypeParams;
+        }
+
+
+
+        //-----------------------------------getter and setter---------------------------------------------------------
+
+
+        public Integer getCode() {
+            return code;
+        }
+
+        public void setCode(Integer code) {
             this.code = code;
         }
 

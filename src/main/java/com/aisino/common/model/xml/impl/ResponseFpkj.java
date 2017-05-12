@@ -12,7 +12,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement(name = "RESPONSE_FPKJ")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ResponseFpkj implements BaseXmlModel {
+public class ResponseFpkj extends BaseXmlModel {
 
     @XmlElement(name = "RETURNCODE")
     private String returnCode;

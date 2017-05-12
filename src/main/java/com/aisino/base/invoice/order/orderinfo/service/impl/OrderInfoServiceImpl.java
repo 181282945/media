@@ -44,7 +44,12 @@ public class OrderInfoServiceImpl extends BaseServiceImpl<OrderInfo, OrderInfoMa
             entity.setStatus(OrderInfo.StatusType.NOTYET.getCode().toString());
     }
 
-
+    @Override
+    public OrderInfo getByOrderNo(String orderNo) {
+        Specification<OrderInfo> specification = new Specification<>(OrderInfo.class);
+        specification.addQueryLike(new QueryLike("orderNo", QueryLike.LikeMode.Eq, orderNo));
+        return this.getOne(specification);
+    }
 
 
     /**
@@ -61,7 +66,7 @@ public class OrderInfoServiceImpl extends BaseServiceImpl<OrderInfo, OrderInfoMa
             orderInfoMap.put(orderInfos.get(i)[16], orderInfoTransform(orderInfos.get(i)));
         }
 
-        XLSXCovertCSVReader xlsx2csv2 = new XLSXCovertCSVReader(p, System.out, "明细", 8);
+        XLSXCovertCSVReader xlsx2csv2 = new XLSXCovertCSVReader(p, System.out, "明细", 9);
         List<String[]> orderdetails = xlsx2csv2.process();
         Map<String, List<OrderDetail>> orderDetailMap = new HashMap<>();
         //不要表头

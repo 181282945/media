@@ -18,7 +18,10 @@ spring:
       mode: LEGACYHTML5
       encoding: utf-8
       content-type: text/html
-
+    devtools:
+      restart:
+        enabled: true #热部署生效
+#        exclude: static
       #
 server:
   tomcat:
@@ -63,6 +66,7 @@ SystemParameter:
                   `status` tinyint(4) DEFAULT '0',
                   `usrno` varchar(50) DEFAULT NULL,
                   `orderDate` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+                  `serialNo` varchar(50) DEFAULT NULL,
                   `insertDate` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
                   `delflags` tinyint(4) DEFAULT NULL,
                   PRIMARY KEY (`id`),
@@ -117,6 +121,8 @@ Request:
 #    interfaceCode: DFXJ1009
     responseCode: 121 #数据交换请求接受方代码
     dataExchangeId: P0000001ECXML.FPKJ.BC.E_INV000000001  #据说没有校验,所以可以写死
+    downloadInterfaceCode: ECXML.FPXZ.CX.E_INV #下载接口代码
+    billingInterfaceCode: DFXJ1009 #测试开票 接口代码
 
   DataDescription:
     zipCode: 0  #压缩标识 0：不压缩 1：压缩 (用 GZip 压缩) 企业调 用时数据包大于 10k 要求自动压缩，

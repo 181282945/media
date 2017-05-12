@@ -21,4 +21,10 @@ public interface OrderInfoService extends BaseService<OrderInfo,OrderInfoMapper>
      */
     OrderInfoServiceImpl.ImportResultDto importExcel(InputStream inputStream) throws IOException, OpenXML4JException,ParserConfigurationException, SAXException;
 
+    /**
+     * 根据订单号查询订单
+     * @param orderNo
+     * @return
+     */
+    OrderInfo getByOrderNo(String orderNo);
 }

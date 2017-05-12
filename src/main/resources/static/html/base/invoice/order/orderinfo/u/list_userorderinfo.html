@@ -1088,9 +1088,12 @@
 
     $('#billingBtn').click(function(){
         var sel_id = $('#grid-table').jqGrid('getGridParam', 'selrow');
-        $.post("/base/invoice/invoiceinfo/u/billing", 'orderId='+sel_id,function(data) {
-            layerAlertMsg(data.message);
-        });
+        if(sel_id == undefined || sel_id==null){
+            layerAlertMsg('请选择开票行!');
+        }
+        $.post("/base/invoice/invoiceinfo/u/billing", 'orderId='+sel_id,function(result) {
+            layerAlertMsg(result.message);
+        },"json");
     });
 
 </script>

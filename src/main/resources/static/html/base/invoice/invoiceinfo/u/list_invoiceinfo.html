@@ -191,7 +191,7 @@
                             <!--<button class="btn btn-xs btn-info" id="editBtn">查询</button>-->
                         </div>
                         <div class="col-md-2 ">
-                            <button class="btn btn-xs btn-info">红冲</button>
+                            <button class="btn btn-xs btn-info" id="doRedBtn">红冲</button>
                         </div>
                         <div class="col-md-2 ">
                             <button class="btn btn-xs btn-info" id="downloadBtn">下载</button>
@@ -761,13 +761,28 @@
         return '<a href="'+cellvalue+'">下载</a>';
     }
 
-
+    /**
+     * 下载按钮事件
+     */
     $('#downloadBtn').click(function(){
         var sel_id = $('#grid-table').jqGrid('getGridParam', 'selrow');
         $.post("/base/invoice/invoiceinfo/u/download", 'id='+sel_id,function(data) {
             layerAlertMsg(data.message);
         });
     });
+
+    $('#doRedBtn').click(function () {
+        layer.prompt({title: '请输入冲红原因', formType: 2}, function(text, index){
+            layer.close(index);
+            var sel_id = $('#grid-table').jqGrid('getGridParam', 'selrow');
+            $.post("/base/invoice/invoiceinfo/u/doRed", 'invoiceId='+sel_id+'&reMarks='+text,function(data) {
+                layerAlertMsg(data.message);
+            });
+        });
+    });
+
+
+
 
 </script>
 

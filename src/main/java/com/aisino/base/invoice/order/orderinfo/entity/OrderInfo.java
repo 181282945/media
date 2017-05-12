@@ -93,6 +93,12 @@ public class OrderInfo extends BaseBusinessEntity {
      */
     private Date orderDate;
 
+    /**
+     * 流水号,唯一 冗余字段
+     * (此为发票流水号,避免重复开票,开票时更新此字段)
+     */
+    private String serialNo;
+
 
     //---------------------------------getter and setter ------------------------------------------------
 
@@ -249,9 +255,15 @@ public class OrderInfo extends BaseBusinessEntity {
         this.orderDate = orderDate;
     }
 
+    public String getSerialNo() {
+        return serialNo;
+    }
 
+    public void setSerialNo(String serialNo) {
+        this.serialNo = serialNo;
+    }
 
-    //--------------------------------枚举----------------------------------------------
+//--------------------------------枚举----------------------------------------------
 
     /**
      * 代开标识
@@ -375,22 +387,22 @@ public class OrderInfo extends BaseBusinessEntity {
      * 订单状态
      */
     public enum StatusType{
-        NOTYET(0,"未开"),ALREADY (1,"已开");
+        NOTYET("0","未开"),ALREADY ("1","已开");
 
         //状态代码
-        private Integer code;
+        private String code;
         //状态名称
         private String name;
 
 
         //构造方法
-        StatusType(Integer code, String name){
+        StatusType(String code, String name){
             this.code = code;
             this.name = name;
         }
 
         //根据code获取状态名称
-        public static String getNameByCode(Integer code){
+        public static String getNameByCode(String code){
             for(StatusType item : StatusType.values()){
                 if(item.getCode().equals(code)){
                     return item.getName();
@@ -412,11 +424,11 @@ public class OrderInfo extends BaseBusinessEntity {
         //-----------------------------------getter and setter---------------------------------------------------------
 
 
-        public Integer getCode() {
+        public String getCode() {
             return code;
         }
 
-        public void setCode(Integer code) {
+        public void setCode(String code) {
             this.code = code;
         }
 

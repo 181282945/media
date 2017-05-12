@@ -82,7 +82,7 @@ public class MyBatisConfig implements TransactionManagementConfigurer {
      * 事务配置,考虑多数据源情况下
      * @return
      */
-    @Bean
+    @Bean(name = "platformTransactionManager")
     @Override
     public PlatformTransactionManager annotationDrivenTransactionManager() {
         return new DataSourceTransactionManager(dataSourceProxy());

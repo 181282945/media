@@ -3,6 +3,7 @@ package com.aisino.base.invoice.order.orderdetail.service.impl;
 import com.aisino.base.invoice.order.orderdetail.dao.OrderDeailMapper;
 import com.aisino.base.invoice.order.orderdetail.entity.OrderDetail;
 import com.aisino.base.invoice.order.orderdetail.service.OrderDetailService;
+import com.aisino.common.util.tax.TaxCalculationUtil;
 import com.aisino.core.mybatis.specification.PageAndSort;
 import com.aisino.core.mybatis.specification.QueryLike;
 import com.aisino.core.mybatis.specification.Specification;
@@ -48,6 +49,13 @@ public class OrderDetailServiceImpl extends BaseServiceImpl<OrderDetail,OrderDea
         if (invoiceNature!=null&& StringUtils.isNumeric(invoiceNature)&&OrderDetail.InvoiceNature.getNameByCode(Integer.parseInt(invoiceNature)).length()>0)
             orderDetail.setInvoiceNature(Integer.parseInt(invoiceNature));
         orderDetail.setItemTaxCode(StringUtils.trimToNull(value[7]));
+        orderDetail.setTaxRate(StringUtils.trimToNull(value[8]));
+
+        //处理折扣行,无论EXCEL 正负都改成负数
+        if(orderDetail.getInvoiceNature().equals(OrderDetail.InvoiceNature.DISCOUNT.getCode())){
+            orderDetail.setItemPrice(TaxCalculationUtil.negative(orderDetail.getItemPrice()));
+        }
+
         return  orderDetail;
     }
 }

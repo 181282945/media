@@ -27,8 +27,8 @@ server:
   tomcat:
     access_log_enabled: true
     basedir: target/tomcat
-security:
-  ignored: /**
+#security:
+#  ignored: /**
 
 
 
@@ -118,6 +118,7 @@ Request:
     terminalCode: 0 #//终端类型标识代码 0:B/S 请求来源 1:C/S 请求来源
     appId: ZZS_PT_DZFP  #应用标识 固定为： DZFP 表示普通发票。 ZZS_PT_DZFP 表示增值税普通电子发票
     version: 2.0    #接口版本
+    requestCode: P0000001  #数据交换请求发出方代码
 #    interfaceCode: DFXJ1009
     responseCode: 121 #数据交换请求接受方代码
     dataExchangeId: P0000001ECXML.FPKJ.BC.E_INV000000001  #据说没有校验,所以可以写死

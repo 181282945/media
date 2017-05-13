@@ -130,7 +130,7 @@ public class MySecurityMetadataSource implements FilterInvocationSecurityMetadat
         moduleMap = new HashMap<>();
         for (AclResource module : aclResources) {
             /**
-             * 因为只有权限控制的资源才需要被拦截验证,所以只加载有权限控制的资源
+             * 加载所有模块资源
              */
             List<AclRescRole> aclRescRoles = aclRescRoleService.findByRescId(module.getId());
 
@@ -138,16 +138,15 @@ public class MySecurityMetadataSource implements FilterInvocationSecurityMetadat
              * 如果没有设置权限,那么至少需要登录才能访问
              */
             if(aclRescRoles.isEmpty()){
-                stuff(null,new SecurityConfig(AuthenticatedVoter.IS_AUTHENTICATED_FULLY),moduleMap,module.getPath());
+                stuff(new SecurityConfig(AuthenticatedVoter.IS_AUTHENTICATED_FULLY),moduleMap,module.getPath());
                 continue;
             }
 
             for(AclRescRole aclRescRole : aclRescRoles){
                 Integer roleId = aclRescRole.getRoleId();//角色ID
                 String roleCode = aclRoleService.findEntityById(roleId).getCode();//角色编码
-                Collection<ConfigAttribute> collection = moduleMap.get(module.getPath());
                 ConfigAttribute ca = new SecurityConfig(roleCode.toUpperCase());
-                stuff(collection,ca,moduleMap, module.getPath());
+                stuff(ca,moduleMap, module.getPath());
             }
         }
     }
@@ -165,13 +164,13 @@ public class MySecurityMetadataSource implements FilterInvocationSecurityMetadat
         List<Map<String,String>> pathAuths = aclAuthService.findPathCode();
         for (Map pathAuth : pathAuths) {
             String path = pathAuth.get("path").toString();
-            Collection<ConfigAttribute> collection = methodMap.get(path);
             ConfigAttribute ca = new SecurityConfig(pathAuth.get("code").toString().toUpperCase());
-            stuff(collection,ca,methodMap,path);
+            stuff(ca,methodMap,path);
         }
     }
 
-    private void stuff(Collection<ConfigAttribute> collection,ConfigAttribute ca,Map<String, Collection<ConfigAttribute>> map,String path){
+    private void stuff(ConfigAttribute ca,Map<String, Collection<ConfigAttribute>> map,String path){
+        Collection<ConfigAttribute> collection = moduleMap.get(path);
         String [] pathArr = path.substring(1,path.length()-1).split(Delimiter.COMMA.getDelimiter());
         for(String item : pathArr){
             if (collection != null) {

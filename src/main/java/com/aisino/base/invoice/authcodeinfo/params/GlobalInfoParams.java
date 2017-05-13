@@ -32,6 +32,11 @@ public class GlobalInfoParams {
     private String dataExchangeId;
 
     /**
+     * 数据交换请求发出方代码
+     */
+    private String requestCode;
+
+    /**
      * 开票接口代码
      */
     private String billingInterfaceCode;
@@ -91,6 +96,14 @@ public class GlobalInfoParams {
 
     public void setDownloadInterfaceCode(String downloadInterfaceCode) {
         this.downloadInterfaceCode = downloadInterfaceCode;
+    }
+
+    public String getRequestCode() {
+        return requestCode;
+    }
+
+    public void setRequestCode(String requestCode) {
+        this.requestCode = requestCode;
     }
 
     public String getBillingInterfaceCode() {

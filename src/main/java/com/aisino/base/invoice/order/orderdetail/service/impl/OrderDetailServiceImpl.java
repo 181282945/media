@@ -17,27 +17,27 @@ import java.util.List;
  * Created by 为 on 2017-4-25.
  */
 @Service("orderDetailService")
-public class OrderDetailServiceImpl extends BaseServiceImpl<OrderDetail,OrderDeailMapper> implements OrderDetailService {
+public class OrderDetailServiceImpl extends BaseServiceImpl<OrderDetail, OrderDeailMapper> implements OrderDetailService {
 
 
     @Override
-    public List<OrderDetail> findByOrderNo(String orderNo, PageAndSort pageAndSort){
+    public List<OrderDetail> findByOrderNo(String orderNo, PageAndSort pageAndSort) {
         Specification<OrderDetail> specification = new Specification<>(OrderDetail.class);
-        specification.addQueryLike(new QueryLike("orderNo", QueryLike.LikeMode.Eq,orderNo));
+        specification.addQueryLike(new QueryLike("orderNo", QueryLike.LikeMode.Eq, orderNo));
         specification.setPageAndSort(pageAndSort);
         return this.findByPage(specification);
     }
 
 
     @Override
-    public List<OrderDetail> findByOrderNo(String orderNo){
+    public List<OrderDetail> findByOrderNo(String orderNo) {
         Specification<OrderDetail> specification = new Specification<>(OrderDetail.class);
-        specification.addQueryLike(new QueryLike("orderNo", QueryLike.LikeMode.Eq,orderNo));
+        specification.addQueryLike(new QueryLike("orderNo", QueryLike.LikeMode.Eq, orderNo));
         return this.findByLike(specification);
     }
 
     @Override
-    public OrderDetail orderDetailTransform(String [] value){
+    public OrderDetail orderDetailTransform(String[] value) {
         OrderDetail orderDetail = new OrderDetail();
         orderDetail.setOrderNo(StringUtils.trimToNull(value[0]));
         orderDetail.setItemName(StringUtils.trimToNull(value[1]));
@@ -46,16 +46,19 @@ public class OrderDetailServiceImpl extends BaseServiceImpl<OrderDetail,OrderDea
         orderDetail.setSpecMode(StringUtils.trimToNull(value[4]));
         orderDetail.setItemPrice(StringUtils.trimToNull(value[5]));
         String invoiceNature = StringUtils.trimToNull(value[6]);
-        if (invoiceNature!=null&& StringUtils.isNumeric(invoiceNature)&&OrderDetail.InvoiceNature.getNameByCode(Integer.parseInt(invoiceNature)).length()>0)
+        if (invoiceNature != null && StringUtils.isNumeric(invoiceNature) && OrderDetail.InvoiceNature.getNameByCode(Integer.parseInt(invoiceNature)).length() > 0)
             orderDetail.setInvoiceNature(Integer.parseInt(invoiceNature));
         orderDetail.setItemTaxCode(StringUtils.trimToNull(value[7]));
-        orderDetail.setTaxRate(StringUtils.trimToNull(value[8]));
+
+        String taxRate = StringUtils.trimToNull(value[8]);
+        if (taxRate != null)
+            orderDetail.setTaxRate(TaxCalculationUtil.toPercentage(taxRate));
 
         //处理折扣行,无论EXCEL 正负都改成负数
-        if(orderDetail.getInvoiceNature().equals(OrderDetail.InvoiceNature.DISCOUNT.getCode())){
+        if (orderDetail.getInvoiceNature().equals(OrderDetail.InvoiceNature.DISCOUNT.getCode())) {
             orderDetail.setItemPrice(TaxCalculationUtil.negative(orderDetail.getItemPrice()));
         }
 
-        return  orderDetail;
+        return orderDetail;
     }
 }

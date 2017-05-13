@@ -8,15 +8,22 @@ import java.math.BigDecimal;
  */
 public class TaxCalculationUtil {
 
+    /**
+     *  根据税率,含税金额,计算不含税金额
+     */
+    public static String toPercentage(String taxRateTem){
+        BigDecimal taxPercentage =  new BigDecimal(taxRateTem).divide(new BigDecimal(100));
+        return  taxPercentage.toString();
+    }
+
 
     /**
      *  根据税率,含税金额,计算不含税金额
      */
     public static String calcBHSJE(String taxRateTem,String hsje){
-        BigDecimal taxRate = new BigDecimal(taxRateTem);
         BigDecimal xmje = new BigDecimal(hsje);
         //计算不含税金额
-        BigDecimal bhsje =  xmje.divide(taxRate.divide(new BigDecimal(100)).add(new BigDecimal(1)),2, BigDecimal.ROUND_HALF_UP);
+        BigDecimal bhsje =  xmje.divide(new BigDecimal(taxRateTem).add(new BigDecimal(1)),2, BigDecimal.ROUND_HALF_UP);
         return  bhsje.toString();
     }
 

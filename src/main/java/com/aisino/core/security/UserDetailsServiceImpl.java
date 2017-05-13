@@ -18,7 +18,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
@@ -87,9 +86,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         for (String authStr : preAuths) {
             auths.add(new SimpleGrantedAuthority(authStr.toUpperCase()));
         }
-
-//        auths.add(new SimpleGrantedAuthority(AuthenticatedVoter.IS_AUTHENTICATED_FULLY));
-
 
         if(entity instanceof UserInfo){
             /**

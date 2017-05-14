@@ -1,8 +1,10 @@
 package com.aisino.core.security;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.AccessDecisionVoter;
 import org.springframework.security.access.vote.AbstractAccessDecisionManager;
+import org.springframework.security.access.vote.AffirmativeBased;
 import org.springframework.security.access.vote.AuthenticatedVoter;
 import org.springframework.security.access.vote.RoleVoter;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,7 +15,11 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
+import org.springframework.security.web.access.expression.WebExpressionVoter;
+import org.springframework.security.web.access.intercept.DefaultFilterInvocationSecurityMetadataSource;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
@@ -43,6 +49,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Resource
     private MySecurityMetadataSource  securityMetadataSource;
 
+//    DefaultFilterInvocationSecurityMetadataSource
+//    @Resource
+//    ExpressionUrlAuthorizationConfigurer expressionUrlAuthorizationConfigurer;
+
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers("/js/**");
@@ -64,6 +74,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.headers().frameOptions().disable();
         http.addFilterAt(MyUsernamePasswordAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
+//        http.addFilterAfter(filterSecurityInterceptor(),FilterSecurityInterceptor.class).authorizeRequests().anyRequest().fullyAuthenticated().and().exceptionHandling().authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/index")).and().logout().logoutUrl("/logout").logoutSuccessUrl("/index").permitAll().and().exceptionHandling().accessDeniedPage("/accessDenied");;
+
+//        ExpressionUrlAuthorizationConfigurer expressionUrlAuthorizationConfigurer =new ExpressionUrlAuthorizationConfigurer();
         // 开启默认登录页面
         http.authorizeRequests().anyRequest().authenticated().withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
             public <O extends FilterSecurityInterceptor> O postProcess(O fsi) {
@@ -72,7 +85,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 fsi.setAuthenticationManager(authenticationManagerBean());
                 return fsi;
             }
-        }).and().exceptionHandling().authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/index")).and().logout().logoutUrl("/logout").logoutSuccessUrl("/index").permitAll().and().exceptionHandling().accessDeniedPage("/accessDenied");
+        }).expressionHandler(webSecurityExpressionHandler()).and().authorizeRequests().anyRequest().fullyAuthenticated().and().exceptionHandling().authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/index")).and().logout().logoutUrl("/logout").logoutSuccessUrl("/index").permitAll().and().exceptionHandling().accessDeniedPage("/accessDenied");
+
+//        http.authorizeRequests().anyRequest().fullyAuthenticated().and().exceptionHandling().authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/index")).and().logout().logoutUrl("/logout").logoutSuccessUrl("/index").permitAll().and().exceptionHandling().accessDeniedPage("/accessDenied");
 
         // 关闭csrf
         http.csrf().disable();
@@ -94,6 +109,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(userDetailsService);
         //不删除凭据，以便记住用户
         auth.eraseCredentials(false);
+    }
+
+    private FilterSecurityInterceptor filterSecurityInterceptor(){
+        FilterSecurityInterceptor filterSecurityInterceptor = new FilterSecurityInterceptor();
+        filterSecurityInterceptor.setAuthenticationManager(authenticationManagerBean());
+        filterSecurityInterceptor.setAccessDecisionManager(accessDecisionManager());
+        filterSecurityInterceptor.setSecurityMetadataSource(securityMetadataSource);
+        return filterSecurityInterceptor;
     }
 
     UsernamePasswordAuthenticationFilter MyUsernamePasswordAuthenticationFilter() throws Exception {
@@ -130,8 +153,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         AuthVoter.setRolePrefix("AUTH_");//特殊权限投票器,修改前缀为AUTH_
         decisionVoters.add(AuthVoter);
 
-//        decisionVoters.add(webExpressionVoter());// 启用表达式投票器
-        MyAccessDecisionManager accessDecisionManager = new MyAccessDecisionManager(decisionVoters);
+        decisionVoters.add(webExpressionVoter());// 启用表达式投票器
+
+        AbstractAccessDecisionManager accessDecisionManager = new AffirmativeBased(decisionVoters);
+
+//        MyAccessDecisionManager accessDecisionManager = new MyAccessDecisionManager(decisionVoters);
         return  accessDecisionManager;
     }
 
@@ -179,21 +205,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      *
      * @return
      */
-//    public DefaultWebSecurityExpressionHandler webSecurityExpressionHandler() {
-//        DefaultWebSecurityExpressionHandler webSecurityExpressionHandler = new DefaultWebSecurityExpressionHandler();
-//        return webSecurityExpressionHandler;
-//    }
+    private DefaultWebSecurityExpressionHandler webSecurityExpressionHandler() {
+        DefaultWebSecurityExpressionHandler webSecurityExpressionHandler = new DefaultWebSecurityExpressionHandler();
+        return webSecurityExpressionHandler;
+    }
 
     /**
      * 表达式投票器
      *
      * @return
      */
-//    public WebExpressionVoter webExpressionVoter() {
-//        WebExpressionVoter webExpressionVoter = new WebExpressionVoter();
-//        webExpressionVoter.setExpressionHandler(webSecurityExpressionHandler());
-//        return webExpressionVoter;
-//    }
+    private WebExpressionVoter webExpressionVoter() {
+        WebExpressionVoter webExpressionVoter = new WebExpressionVoter();
+        webExpressionVoter.setExpressionHandler(webSecurityExpressionHandler());
+        return webExpressionVoter;
+    }
 
 //    // Code5----------------------------------------------
 //    @Bean

@@ -8,7 +8,11 @@ import com.aisino.core.security.util.SecurityUtil;
 import com.aisino.base.sysmgr.aclmenu.domain.entity.AclMenu;
 import com.aisino.base.sysmgr.aclmenu.service.AclMenuService;
 import com.aisino.core.service.BaseServiceImpl;
+import com.aisino.core.util.Delimiter;
+import com.google.gson.Gson;
 import org.springframework.security.access.ConfigAttribute;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -36,21 +40,27 @@ public class AclMenuServiceImpl extends BaseServiceImpl<AclMenu, AclMenuMapper> 
         //创建完整的菜单,然后删除没有权限的菜单
         Map<AclMenu, List<AclResource>> userMenuModuleMap = findAclMenuModuleMap();
         //获取资源/权限集
-        Map<String, Collection<ConfigAttribute>> moduleMap = securityMetadataSource.getModuleMap();
-        for (String path : moduleMap.keySet()) {
-                //如果没有权限
-                if (!SecurityUtil.hastAnyAuth(moduleMap.get(path))) {
-                    Iterator<AclMenu> userMenuModuleMapKey = userMenuModuleMap.keySet().iterator();
-                    while (userMenuModuleMapKey.hasNext()) {
-                        AclMenu key = userMenuModuleMapKey.next();
-                        List<AclResource> modules = userMenuModuleMap.get(key);
-                        if(modules.isEmpty()){
-                            userMenuModuleMapKey.remove();
-                            continue;
-                        }
-                        Iterator<AclResource> aclResourceIterator = modules.iterator();
-                        while (aclResourceIterator.hasNext()) {
-                            if (aclResourceIterator.next().getPath().equals(path.substring(0,path.lastIndexOf("/**")))) {
+        Map<RequestMatcher, Collection<ConfigAttribute>> moduleMap = securityMetadataSource.getModuleMap();
+        for (RequestMatcher requestMatcher : moduleMap.keySet()) {
+            AntPathRequestMatcher antPathRequestMatcher = (AntPathRequestMatcher) requestMatcher;
+            String path = antPathRequestMatcher.getPattern();
+            path = path.substring(0, path.lastIndexOf("/**"));
+            //如果没有权限
+            if (!SecurityUtil.hastAnyAuth(moduleMap.get(antPathRequestMatcher))) {
+                Iterator<AclMenu> userMenuModuleMapKey = userMenuModuleMap.keySet().iterator();
+                while (userMenuModuleMapKey.hasNext()) {
+                    AclMenu key = userMenuModuleMapKey.next();
+                    List<AclResource> modules = userMenuModuleMap.get(key);
+                    if (modules.isEmpty()) {
+                        userMenuModuleMapKey.remove();
+                        continue;
+                    }
+                    Iterator<AclResource> aclResourceIterator = modules.iterator();
+                    while (aclResourceIterator.hasNext()) {
+                        String rescPath = aclResourceIterator.next().getPath();
+                        String[] pathArr = rescPath.substring(1, rescPath.length() - 1).split(Delimiter.COMMA.getDelimiter());
+                        for (String item : pathArr) {
+                            if (item.equals(path)) {
                                 //从菜单模块中删除
                                 aclResourceIterator.remove();
                                 //如果模块为空
@@ -60,8 +70,10 @@ public class AclMenuServiceImpl extends BaseServiceImpl<AclMenu, AclMenuMapper> 
                                 }
                             }
                         }
+
                     }
                 }
+            }
         }
         return userMenuModuleMap;
     }
@@ -106,7 +118,7 @@ public class AclMenuServiceImpl extends BaseServiceImpl<AclMenu, AclMenuMapper> 
                         }
                         iterator.remove();
                     }
-                }else {
+                } else {
                     //未分类
                     aclMenuModuleMap.get(unclassified).add(module);
                     iterator.remove();

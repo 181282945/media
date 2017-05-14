@@ -9,14 +9,15 @@ import com.aisino.base.sysmgr.aclrescrole.service.AclRescRoleService;
 import com.aisino.base.sysmgr.aclresource.entity.AclResource;
 import com.aisino.base.sysmgr.aclresource.service.AclResourceService;
 import com.aisino.base.sysmgr.aclrole.service.AclRoleService;
+import com.aisino.core.security.util.SecurityUtil;
 import com.aisino.core.util.Delimiter;
 import com.aisino.base.sysmgr.aclauth.service.AclAuthService;
 import com.aisino.base.sysmgr.aclrescrole.entity.AclRescRole;
 import com.aisino.core.util.CloneUtils;
+import com.google.gson.Gson;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityConfig;
-import org.springframework.security.access.vote.AuthenticatedVoter;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -31,9 +32,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Component("securityMetadataSource")
 public class MySecurityMetadataSource implements FilterInvocationSecurityMetadataSource {
 
-    private static Map<String, Collection<ConfigAttribute>> moduleMap = null;
+    private static Map<RequestMatcher, Collection<ConfigAttribute>> moduleMap = null;
 
-    private static Map<String, Collection<ConfigAttribute>> methodMap = null;
+    private static Map<RequestMatcher, Collection<ConfigAttribute>> methodMap = null;
 
     @Resource
     private AclResourceService aclResourceService;
@@ -49,47 +50,52 @@ public class MySecurityMetadataSource implements FilterInvocationSecurityMetadat
 
     @Override
     public Collection<ConfigAttribute> getAttributes(Object object) throws IllegalArgumentException {
-        HttpServletRequest request = ((FilterInvocation) object).getRequest();
         Collection<ConfigAttribute> collection;
-
-        collection = getAttributesHandler(methodMap,request);
+        collection = getAttributesHandler(methodMap,object);
         if(collection!=null)
             return collection;
-        collection = getAttributesHandler(moduleMap,request);
+        collection = getAttributesHandler(moduleMap,object);
             return collection;
     }
 
     /**
      * 处理方法
      * @param map
-     * @param request
      * @return
      */
-    private Collection<ConfigAttribute> getAttributesHandler(Map<String, Collection<ConfigAttribute>> map,HttpServletRequest request){
-        Iterator<String> ite = map.keySet().iterator();
-        while (ite.hasNext()) {
-            String resURL = ite.next();
-            RequestMatcher requestMatcher = new AntPathRequestMatcher(resURL);
-            if (requestMatcher.matches(request)) {
-                return map.get(resURL);
+    private Collection<ConfigAttribute> getAttributesHandler(Map<RequestMatcher, Collection<ConfigAttribute>> map,Object object){
+        HttpServletRequest request = ((FilterInvocation)object).getRequest();
+        Iterator var3 = map.entrySet().iterator();
+        Map.Entry entry;
+        do {
+            if(!var3.hasNext()) {
+                return null;
             }
-        }
-        return null;
+            entry = (Map.Entry)var3.next();
+        } while(!((RequestMatcher)entry.getKey()).matches(request));
+        return (Collection)entry.getValue();
     }
 
 
     //4
     @Override
     public Collection<ConfigAttribute> getAllConfigAttributes() {
-        System.out.println("metadata : getAllConfigAttributes");
-        return null;
+        Set<ConfigAttribute> allAttributes = new HashSet();
+        Map<RequestMatcher, Collection<ConfigAttribute>> all = new HashMap<>(this.moduleMap);
+        all.putAll(this.methodMap);
+        Iterator var2 = all.entrySet().iterator();
+        while(var2.hasNext()) {
+            Map.Entry<RequestMatcher, Collection<ConfigAttribute>> entry = (Map.Entry)var2.next();
+            allAttributes.addAll(entry.getValue());
+        }
+
+        return allAttributes;
     }
 
     //3
     @Override
     public boolean supports(Class<?> clazz) {
-        System.out.println("metadata : supports");
-        return true;
+        return FilterInvocation.class.isAssignableFrom(clazz);
     }
 
 
@@ -104,8 +110,9 @@ public class MySecurityMetadataSource implements FilterInvocationSecurityMetadat
      * 提供一个外部使用方法.获取module权限MAP;
      * @return
      */
-    public Map<String, Collection<ConfigAttribute>> getModuleMap(){
-        return CloneUtils.clone((HashMap<String, Collection<ConfigAttribute>>)moduleMap);
+    public Map<RequestMatcher, Collection<ConfigAttribute>> getModuleMap(){
+        Map<RequestMatcher, Collection<ConfigAttribute>> map = new HashMap<>(moduleMap);
+        return map;
     }
 
 
@@ -137,10 +144,10 @@ public class MySecurityMetadataSource implements FilterInvocationSecurityMetadat
             /**
              * 如果没有设置权限,那么至少需要登录才能访问
              */
-            if(aclRescRoles.isEmpty()){
-                stuff(new SecurityConfig(AuthenticatedVoter.IS_AUTHENTICATED_FULLY),moduleMap,module.getPath());
-                continue;
-            }
+//            if(aclRescRoles.isEmpty()){
+                stuff(new SecurityConfig(SecurityUtil.ADMIN),moduleMap,module.getPath());
+//                continue;
+//            }
 
             for(AclRescRole aclRescRole : aclRescRoles){
                 Integer roleId = aclRescRole.getRoleId();//角色ID
@@ -169,8 +176,8 @@ public class MySecurityMetadataSource implements FilterInvocationSecurityMetadat
         }
     }
 
-    private void stuff(ConfigAttribute ca,Map<String, Collection<ConfigAttribute>> map,String path){
-        Collection<ConfigAttribute> collection = moduleMap.get(path);
+    private void stuff(ConfigAttribute ca,Map<RequestMatcher, Collection<ConfigAttribute>> map,String path){
+        Collection<ConfigAttribute> collection = map.get(path);
         String [] pathArr = path.substring(1,path.length()-1).split(Delimiter.COMMA.getDelimiter());
         for(String item : pathArr){
             if (collection != null) {
@@ -178,7 +185,8 @@ public class MySecurityMetadataSource implements FilterInvocationSecurityMetadat
             }else {
                 collection = new ArrayList<>();
                 collection.add(ca);
-                map.put(StringUtils.trimToEmpty(item)+"/**", collection);
+
+                map.put(new AntPathRequestMatcher(StringUtils.trimToEmpty(item)+"/**"), collection);
             }
         }
     }

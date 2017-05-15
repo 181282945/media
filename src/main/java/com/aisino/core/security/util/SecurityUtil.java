@@ -22,6 +22,10 @@ public class SecurityUtil {
 
     public static final String ADMIN = "ROLE_ADMIN";
 
+    public static final String ACLUSER = "ROLE_ACLUSER";
+
+    public static final String USERINFO = "ROLE_USERINFO";
+
     private static final AuthenticationTrustResolver authenticationTrustResolver = new AuthenticationTrustResolverImpl();
 
 

@@ -773,10 +773,10 @@
 
     $('#doRedBtn').click(function () {
         layer.prompt({title: '请输入冲红原因', formType: 2}, function(text, index){
-            layer.close(index);
             var sel_id = $('#grid-table').jqGrid('getGridParam', 'selrow');
             $.post("/base/invoice/invoiceinfo/u/doRed", 'invoiceId='+sel_id+'&reMarks='+text,function(data) {
                 layerAlertMsg(data.message);
+                layer.close(index);
             });
         });
     });

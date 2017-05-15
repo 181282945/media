@@ -102,7 +102,7 @@ public class UserInvoiceInfoController extends BaseController<InvoiceInfo> {
     @RequestMapping(value = "/billing", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @AclResc(id = 30002, code = "billing", name = "开票")
     public ResultDataDto billing(@RequestParam("orderId") final Integer orderId) {
-        if (invoiceInfoService.requestBilling(SecurityUtil.getCurrentUserNo(), orderId, InvoiceInfo.InvoiceType.NORMAL, KpRequestyl.FpkjxxFptxx.CzdmType.NORMAL) != null) {
+        if (invoiceInfoService.requestBilling(SecurityUtil.getCurrentUserNo(), orderId, InvoiceInfo.InvoiceType.NORMAL, KpRequestyl.FpkjxxFptxx.CzdmType.NORMAL,null) != null) {
             DataSourceContextHolder.user();
             orderInfoService.updateEntityStatus(orderId, OrderInfo.StatusType.ALREADY.getCode().toString());
             return ResultDataDto.addOperationSuccess("开票成功");
@@ -139,7 +139,7 @@ public class UserInvoiceInfoController extends BaseController<InvoiceInfo> {
         });
         DataSourceContextHolder.write();
 
-        final Integer redId = invoiceInfoService.requestBilling(SecurityUtil.getCurrentUserNo(), orderInfo.getId(), InvoiceInfo.InvoiceType.RED, KpRequestyl.FpkjxxFptxx.CzdmType.RETURN_RED);
+        final Integer redId = invoiceInfoService.requestBilling(SecurityUtil.getCurrentUserNo(), orderInfo.getId(), InvoiceInfo.InvoiceType.RED, KpRequestyl.FpkjxxFptxx.CzdmType.RETURN_RED,reMarks);
         ResultDataDto resultDataDto;
         DataSourceContextHolder.user();
 
@@ -157,10 +157,9 @@ public class UserInvoiceInfoController extends BaseController<InvoiceInfo> {
                     invoiceInfoService.updateEntity(red);
                 }
             });
-//            return
         }
 
-        return ResultDataDto.addOperationFailure();
+        return ResultDataDto.addOperationSuccess();
     }
 
 }

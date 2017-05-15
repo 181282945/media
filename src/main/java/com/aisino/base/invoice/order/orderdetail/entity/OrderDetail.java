@@ -33,9 +33,16 @@ public class OrderDetail extends BaseInvoiceEntity {
      */
     private String specMode;
     /**
-     * 单价(含税)
+     * 单价
      */
     private String itemPrice;
+
+    /**
+     * 含税标识 0:不含税,1:含税
+     */
+    @DefaultValue("0")
+    private String taxIncluded;
+
     /**
      * 发票行性质 0:正常 1:折扣 2:被折扣行
      */
@@ -50,7 +57,10 @@ public class OrderDetail extends BaseInvoiceEntity {
      */
     private String taxRate;
 
-
+    /**
+     * 自行编码
+     */
+    private String cuzCode;
 
     //-----------------------------------getter and setter----------------------------------------------------
 
@@ -127,7 +137,25 @@ public class OrderDetail extends BaseInvoiceEntity {
         this.taxRate = taxRate;
     }
 
-    //---------------------------------------------------------枚举--------------
+    public String getTaxIncluded() {
+        return taxIncluded;
+    }
+
+    public void setTaxIncluded(String taxIncluded) {
+        this.taxIncluded = taxIncluded;
+    }
+
+    public String getCuzCode() {
+        return cuzCode;
+    }
+
+    public void setCuzCode(String cuzCode) {
+        this.cuzCode = cuzCode;
+    }
+
+
+
+//---------------------------------------------------------枚举--------------
 
     public enum InvoiceNature {
 
@@ -174,6 +202,67 @@ public class OrderDetail extends BaseInvoiceEntity {
         }
 
         public void setCode(Integer code) {
+            this.code = code;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+    }
+
+
+    /**
+     * 含税标识枚举
+     */
+    public enum TaxIncludedFlag {
+
+        NOT_INCLUDED("0","不含税"),INCLUDE("1","含税");
+
+        //状态代码
+        private String code;
+        //状态名称
+        private String name;
+
+
+        //构造方法
+        TaxIncludedFlag(String code, String name){
+            this.code = code;
+            this.name = name;
+        }
+
+        //根据code获取状态名称
+        public static String getNameByCode(String code){
+            for(TaxIncludedFlag item : TaxIncludedFlag.values()){
+                if(item.getCode().equals(code)){
+                    return item.getName();
+                }
+            }
+            return "";
+        }
+
+        public static ParamDto[] getParams(){
+            ParamDto[] taxIncludedFlagParams = new ParamDto[TaxIncludedFlag.values().length];
+
+            for(int i=0;i<taxIncludedFlagParams.length;i++){
+                taxIncludedFlagParams[i] = new ParamDto(TaxIncludedFlag.values()[i].getCode().toString(),TaxIncludedFlag.values()[i].getName());
+            }
+            return  taxIncludedFlagParams;
+        }
+
+
+
+        //-----------------------------------getter and setter---------------------------------------------------------
+
+
+        public String getCode() {
+            return code;
+        }
+
+        public void setCode(String code) {
             this.code = code;
         }
 

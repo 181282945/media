@@ -1,7 +1,6 @@
 package com.aisino.core.security;
 
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.AccessDecisionVoter;
 import org.springframework.security.access.vote.AbstractAccessDecisionManager;
 import org.springframework.security.access.vote.AffirmativeBased;
@@ -15,11 +14,10 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
 import org.springframework.security.web.access.expression.WebExpressionVoter;
-import org.springframework.security.web.access.intercept.DefaultFilterInvocationSecurityMetadataSource;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
@@ -105,18 +103,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth)
             throws Exception {
-        // 自定义UserDetailsService
-        auth.userDetailsService(userDetailsService);
+        // 自定义UserDetailsService,设置加密算法
+        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+
         //不删除凭据，以便记住用户
         auth.eraseCredentials(false);
-    }
-
-    private FilterSecurityInterceptor filterSecurityInterceptor(){
-        FilterSecurityInterceptor filterSecurityInterceptor = new FilterSecurityInterceptor();
-        filterSecurityInterceptor.setAuthenticationManager(authenticationManagerBean());
-        filterSecurityInterceptor.setAccessDecisionManager(accessDecisionManager());
-        filterSecurityInterceptor.setSecurityMetadataSource(securityMetadataSource);
-        return filterSecurityInterceptor;
     }
 
     UsernamePasswordAuthenticationFilter MyUsernamePasswordAuthenticationFilter() throws Exception {
@@ -144,8 +135,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new org.springframework.security.access.event.LoggerListener();
     }
 
-
-    public AbstractAccessDecisionManager accessDecisionManager(){
+    /**
+     * 投票器
+     *
+     */
+    private AbstractAccessDecisionManager accessDecisionManager(){
         List<AccessDecisionVoter<? extends Object>> decisionVoters = new ArrayList();
         decisionVoters.add(new AuthenticatedVoter());
         decisionVoters.add(new RoleVoter());//角色投票器,默认前缀为ROLE_
@@ -157,26 +151,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         AbstractAccessDecisionManager accessDecisionManager = new AffirmativeBased(decisionVoters);
 
-//        MyAccessDecisionManager accessDecisionManager = new MyAccessDecisionManager(decisionVoters);
         return  accessDecisionManager;
     }
-
-    /**
-     * 这里可以增加自定义的投票器
-     *
-     * @return
-     */
-//    public MyAccessDecisionManager accessDecisionManager() {
-//        List<AccessDecisionVoter<? extends Object>> decisionVoters = new ArrayList();
-//        decisionVoters.add(new AuthenticatedVoter());
-//        decisionVoters.add(new RoleVoter());//角色投票器,默认前缀为ROLE_
-//        RoleVoter AuthVoter = new RoleVoter();
-//        AuthVoter.setRolePrefix("AUTH_");//特殊权限投票器,修改前缀为AUTH_
-//        decisionVoters.add(AuthVoter);
-////        decisionVoters.add(webExpressionVoter());// 启用表达式投票器
-//        MyAccessDecisionManager accessDecisionManager = new MyAccessDecisionManager(decisionVoters);
-//        return accessDecisionManager;
-//    }
 
     @Override
     public AuthenticationManager authenticationManagerBean(){
@@ -195,7 +171,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      *
      * @return
      */
-    public SimpleUrlAuthenticationFailureHandler simpleUrlAuthenticationFailureHandler() {
+    private SimpleUrlAuthenticationFailureHandler simpleUrlAuthenticationFailureHandler() {
         return new SimpleUrlAuthenticationFailureHandler("/getLoginError");
     }
 
@@ -221,12 +197,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return webExpressionVoter;
     }
 
-//    // Code5----------------------------------------------
-//    @Bean
-//    public BCryptPasswordEncoder passwordEncoder() {
-//        return new BCryptPasswordEncoder(4);
-//    }
-//
+    // Code5  官方推荐加密算法
+    @Bean("passwordEncoder")
+    public BCryptPasswordEncoder passwordEncoder() {
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        return bCryptPasswordEncoder;
+    }
+
 //    // Code3----------------------------------------------
 
 
@@ -235,7 +212,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      * 如果需要根据不同的角色做不同的跳转处理,那么继承AuthenticationSuccessHandler重写方法
      * @return
      */
-    public SimpleUrlAuthenticationSuccessHandler authenticationSuccessHandler(){
+    private SimpleUrlAuthenticationSuccessHandler authenticationSuccessHandler(){
         return new SimpleUrlAuthenticationSuccessHandler("/loginSuccess");
     }
 

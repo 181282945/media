@@ -12,6 +12,7 @@ import com.aisino.core.dto.ResultDataDto;
 import com.aisino.core.security.util.SecurityUtil;
 import com.aisino.core.service.BaseServiceImpl;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -27,6 +28,9 @@ public class UserInfoServiceImpl extends BaseServiceImpl<UserInfo,UserInfoMapper
 
     @Resource
     private AclUserRoleService aclUserRoleService;
+
+    @Resource
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
 
     @Override
@@ -49,7 +53,7 @@ public class UserInfoServiceImpl extends BaseServiceImpl<UserInfo,UserInfoMapper
         if(originalPwd == null || newPwd==null || repeatPwd==null)
             return ResultDataDto.addOperationFailure("原始密码,新密码,重复密码不能为空!");
         UserInfo currentUser = SecurityUtil.getCurrentUserInfo();
-        if(!currentUser.getPassword().equals(originalPwd))
+        if(!bCryptPasswordEncoder.matches(originalPwd,currentUser.getPassword()))
             return ResultDataDto.addOperationFailure("原始密码不正确!");
         if(!newPwd.equals(repeatPwd))
             return ResultDataDto.addOperationFailure("两次输入密码不相同!");
@@ -57,7 +61,7 @@ public class UserInfoServiceImpl extends BaseServiceImpl<UserInfo,UserInfoMapper
             return ResultDataDto.addOperationFailure("两次输入密码不相同!");
         if(originalPwd.equals(newPwd))
             return ResultDataDto.addOperationFailure("新密码不能与原始密码相同!");
-        currentUser.setPassword(newPwd);
+        currentUser.setPassword(bCryptPasswordEncoder.encode(newPwd));
         this.updateEntity(currentUser);
         return ResultDataDto.addOperationSuccess("密码修改成功!请重新登录");
     }

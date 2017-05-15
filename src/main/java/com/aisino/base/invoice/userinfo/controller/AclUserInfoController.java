@@ -5,12 +5,16 @@ import com.aisino.base.invoice.userinfo.service.UserInfoService;
 import com.aisino.base.sysmgr.aclresource.annotation.AclResc;
 import com.aisino.base.sysmgr.aclresource.entity.AclResource;
 import com.aisino.base.sysmgr.aclrole.service.AclRoleService;
+import com.aisino.base.sysmgr.acluserrole.entity.AclUserRole;
+import com.aisino.base.sysmgr.acluserrole.service.AclUserRoleService;
 import com.aisino.common.dto.jqgrid.JqgridFilters;
 import com.aisino.common.util.ParamUtil;
 import com.aisino.core.controller.BaseController;
 import com.aisino.core.dto.ResultDataDto;
 import com.aisino.core.mybatis.specification.PageAndSort;
 import org.springframework.http.MediaType;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -34,6 +38,9 @@ public class AclUserInfoController extends BaseController<UserInfo> {
 
     @Resource
     private AclRoleService aclRoleService;
+
+    @Resource
+    private AclUserRoleService aclUserRoleService;
 
     //页面模板路径
     private static final String VIEW_NAME = "/list_userinfo";
@@ -80,9 +87,19 @@ public class AclUserInfoController extends BaseController<UserInfo> {
      */
     @RequestMapping(value = "/update",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @AclResc(id = 9003,code = "update",name = "更新用户")
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public ResultDataDto update(@ModelAttribute("userInfo")UserInfo userInfo){
         userInfoService.updateEntity(userInfo);
-        return ResultDataDto.addUpdateSuccess();
+        AclUserRole aclUserRole = aclUserRoleService.getByUserId(userInfo.getRoleId());
+        if(aclUserRole != null){
+            aclUserRole.setRoleId(userInfo.getRoleId());
+            aclUserRoleService.updateEntity(aclUserRole);
+        }else{
+            aclUserRole = new AclUserRole(userInfo.getId(),userInfo.getRoleId());
+            aclUserRoleService.addEntity(aclUserRole);
+        }
+
+        return ResultDataDto.addOperationSuccess();
     }
 
     /**

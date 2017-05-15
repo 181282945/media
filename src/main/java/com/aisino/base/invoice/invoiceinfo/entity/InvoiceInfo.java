@@ -4,6 +4,7 @@ import com.aisino.common.dto.param.ParamDto;
 import com.aisino.core.entity.BaseInvoiceEntity;
 import com.aisino.core.entity.annotation.BaseEntityMapper;
 import com.aisino.core.entity.annotation.DefaultValue;
+import com.aisino.core.entity.annotation.Transient;
 import org.apache.ibatis.type.Alias;
 
 import java.util.Date;
@@ -72,6 +73,27 @@ public class InvoiceInfo extends BaseInvoiceEntity {
      */
     @DefaultValue("0")
     private Integer redflags;
+
+
+    /**
+     * 清单标志:0：根据项目名称字
+     * 数，自动产生清单，
+     * 保持目前逻辑不变
+     * 1：取清单对应票面
+     * 内容字段打印到发
+     * 票票面上，将项目
+     * 信息 XMXX 打印到清
+     * 单上。
+     * 默认为 0
+     */
+    @DefaultValue("0")
+    private String listFlag;
+
+    /**
+     * 清单标志项目名称
+     */
+    @DefaultValue("项目名称")
+    private String listItemName;
 
     //---------------------------getter and setter---------------------
 
@@ -188,11 +210,27 @@ public class InvoiceInfo extends BaseInvoiceEntity {
         this.redflags = redflags;
     }
 
+    public String getListFlag() {
+        return listFlag;
+    }
+
+    public void setListFlag(String listFlag) {
+        this.listFlag = listFlag;
+    }
+
+    public String getListItemName() {
+        return listItemName;
+    }
+
+    public void setListItemName(String listItemName) {
+        this.listItemName = listItemName;
+    }
+
     //---------------------------------------------------------枚举--------------
 
     public enum InvoiceType {
 
-        NORMAL("1","正票"),RED("2","红票");
+        NORMAL("1", "正票"), RED("2", "红票");
 
         //状态代码
         private String code;
@@ -201,30 +239,29 @@ public class InvoiceInfo extends BaseInvoiceEntity {
 
 
         //构造方法
-        InvoiceType(String code, String name){
+        InvoiceType(String code, String name) {
             this.code = code;
             this.name = name;
         }
 
         //根据code获取状态名称
-        public static String getNameByCode(String code){
-            for(InvoiceType item : InvoiceType.values()){
-                if(item.getCode().equals(code)){
+        public static String getNameByCode(String code) {
+            for (InvoiceType item : InvoiceType.values()) {
+                if (item.getCode().equals(code)) {
                     return item.getName();
                 }
             }
             return "";
         }
 
-        public static ParamDto[] getParams(){
+        public static ParamDto[] getParams() {
             ParamDto[] invoiceTypeParams = new ParamDto[InvoiceType.values().length];
 
-            for(int i=0;i<invoiceTypeParams.length;i++){
-                invoiceTypeParams[i] = new ParamDto(InvoiceType.values()[i].getCode(),InvoiceType.values()[i].getName());
+            for (int i = 0; i < invoiceTypeParams.length; i++) {
+                invoiceTypeParams[i] = new ParamDto(InvoiceType.values()[i].getCode(), InvoiceType.values()[i].getName());
             }
-            return  invoiceTypeParams;
+            return invoiceTypeParams;
         }
-
 
 
         //-----------------------------------getter and setter---------------------------------------------------------
@@ -251,7 +288,7 @@ public class InvoiceInfo extends BaseInvoiceEntity {
      * 冲红类型枚举
      */
     public enum RedflagsType {
-        NOTYET(0,"未冲红"),ALREADY (1,"已冲红");
+        NOTYET(0, "未冲红"), ALREADY(1, "已冲红");
 
         //状态代码
         private Integer code;
@@ -260,30 +297,29 @@ public class InvoiceInfo extends BaseInvoiceEntity {
 
 
         //构造方法
-        RedflagsType(Integer code, String name){
+        RedflagsType(Integer code, String name) {
             this.code = code;
             this.name = name;
         }
 
         //根据code获取状态名称
-        public static String getNameByCode(Integer code){
-            for(InvoiceType item : InvoiceType.values()){
-                if(item.getCode().equals(code)){
+        public static String getNameByCode(Integer code) {
+            for (InvoiceType item : InvoiceType.values()) {
+                if (item.getCode().equals(code)) {
                     return item.getName();
                 }
             }
             return "";
         }
 
-        public static ParamDto[] getParams(){
+        public static ParamDto[] getParams() {
             ParamDto[] redflagsTypeParams = new ParamDto[RedflagsType.values().length];
 
-            for(int i=0;i<redflagsTypeParams.length;i++){
-                redflagsTypeParams[i] = new ParamDto(RedflagsType.values()[i].getCode().toString(),RedflagsType.values()[i].getName());
+            for (int i = 0; i < redflagsTypeParams.length; i++) {
+                redflagsTypeParams[i] = new ParamDto(RedflagsType.values()[i].getCode().toString(), RedflagsType.values()[i].getName());
             }
-            return  redflagsTypeParams;
+            return redflagsTypeParams;
         }
-
 
 
         //-----------------------------------getter and setter---------------------------------------------------------
@@ -294,6 +330,68 @@ public class InvoiceInfo extends BaseInvoiceEntity {
         }
 
         public void setCode(Integer code) {
+            this.code = code;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+    }
+
+    //----------------------------------------枚举--------------------------------------------------------------
+
+
+    /**
+     * 含税标识枚举
+     */
+    public enum ListFlagType {
+
+        AUTO("0", "自动"), LIST("1", "清单");
+
+        //状态代码
+        private String code;
+        //状态名称
+        private String name;
+
+
+        //构造方法
+        ListFlagType(String code, String name) {
+            this.code = code;
+            this.name = name;
+        }
+
+        //根据code获取状态名称
+        public static String getNameByCode(String code) {
+            for (ListFlagType item : ListFlagType.values()) {
+                if (item.getCode().equals(code)) {
+                    return item.getName();
+                }
+            }
+            return "";
+        }
+
+        public static ParamDto[] getParams() {
+            ParamDto[] listFlagTypeParams = new ParamDto[ListFlagType.values().length];
+
+            for (int i = 0; i < listFlagTypeParams.length; i++) {
+                listFlagTypeParams[i] = new ParamDto(ListFlagType.values()[i].getCode().toString(), ListFlagType.values()[i].getName());
+            }
+            return listFlagTypeParams;
+        }
+
+
+        //-----------------------------------getter and setter---------------------------------------------------------
+
+
+        public String getCode() {
+            return code;
+        }
+
+        public void setCode(String code) {
             this.code = code;
         }
 

@@ -21,7 +21,7 @@ public interface InvoiceInfoService extends BaseService<InvoiceInfo,InvoiceInfoM
     /**
      *  请求开票接口并保存结果
      */
-    Integer requestBilling(String usrNo, Integer orderInfoId, InvoiceInfo.InvoiceType invoiceType,KpRequestyl.FpkjxxFptxx.CzdmType czdmType);
+    Integer requestBilling(String usrNo, Integer orderInfoId, InvoiceInfo.InvoiceType invoiceType,KpRequestyl.FpkjxxFptxx.CzdmType czdmType,String reMarks);
 
     /**
      * 下载发票

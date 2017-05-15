@@ -29,6 +29,7 @@ import com.aisino.core.util.CloneUtils;
 import com.aisino.core.util.DateUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
+import org.omg.SendingContext.RunTime;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
@@ -110,8 +111,8 @@ public class InvoiceInfoServiceImpl extends BaseServiceImpl<InvoiceInfo, Invoice
      * @return
      */
     @Override
-    public Integer requestBilling(String usrNo, Integer orderInfoId, InvoiceInfo.InvoiceType invoiceType, KpRequestyl.FpkjxxFptxx.CzdmType czdmType) {
-        KpRequestyl.RequestFpkjxx requestFpkjxx = createKpRequestyl(usrNo, orderInfoId, invoiceType, czdmType);
+    public Integer requestBilling(String usrNo, Integer orderInfoId, InvoiceInfo.InvoiceType invoiceType, KpRequestyl.FpkjxxFptxx.CzdmType czdmType, String reMarks) {
+        KpRequestyl.RequestFpkjxx requestFpkjxx = createKpRequestyl(usrNo, orderInfoId, invoiceType, czdmType, reMarks);
         Requestt requestt = careateRequestt(usrNo, globalInfoParams.getBillingInterfaceCode());
         String xmlContent = XmlModelUtil.beanToXmlStr(requestFpkjxx, KpRequestyl.RequestFpkjxx.class);
         requestt.getData().setContent(AesUtil.encrypt(xmlContent));
@@ -200,7 +201,7 @@ public class InvoiceInfoServiceImpl extends BaseServiceImpl<InvoiceInfo, Invoice
     /**
      * @return
      */
-    private KpRequestyl.RequestFpkjxx createKpRequestyl(final String usrNo, final Integer orderInfoId, final InvoiceInfo.InvoiceType invoiceType, final KpRequestyl.FpkjxxFptxx.CzdmType czdmType) {
+    private KpRequestyl.RequestFpkjxx createKpRequestyl(final String usrNo, final Integer orderInfoId, final InvoiceInfo.InvoiceType invoiceType, final KpRequestyl.FpkjxxFptxx.CzdmType czdmType, String reMarks) {
         //为了节省连接数,尽可能在一次切换里获取需要的数据
         DataSourceContextHolder.user();
         final OrderInfo[] orderInfo = new OrderInfo[1];
@@ -288,11 +289,11 @@ public class InvoiceInfoServiceImpl extends BaseServiceImpl<InvoiceInfo, Invoice
         //开正票
         if (InvoiceInfo.InvoiceType.NORMAL.equals(invoiceType))
             //先构建 折扣行与被折扣行
-            fillXmxxDdmxxx(fpkjxxXmxxList, fpkjxxDdmxxxList, orderDetailMap);
+            fillXmxxDdmxxx(enInfo[0], fpkjxxXmxxList, fpkjxxDdmxxxList, orderDetailMap);
         //开红票
         if (InvoiceInfo.InvoiceType.RED.equals(invoiceType))
             //先构建 折扣行与被折扣行
-            fillXmxxDdmxxxRed(fpkjxxXmxxList, fpkjxxDdmxxxList, orderDetailMap);
+            fillXmxxDdmxxxRed(enInfo[0], fpkjxxXmxxList, fpkjxxDdmxxxList, orderDetailMap);
 
 
         fpkjxxXmxxs.setSize(fpkjxxXmxxList.size() + "");
@@ -333,7 +334,7 @@ public class InvoiceInfoServiceImpl extends BaseServiceImpl<InvoiceInfo, Invoice
 
         requestFpkjxx.setFpkjxxWlxx(fpkjxxWlxx);
 
-        KpRequestyl.FpkjxxFptxx fpkjxxFptxx = createFpkjxxFptxx(authCodeInfo[0],enInfo[0],orderInfo[0],orginalInvoiceInfo[0],fpkjxxXmxxList,invoiceType,czdmType);
+        KpRequestyl.FpkjxxFptxx fpkjxxFptxx = createFpkjxxFptxx(authCodeInfo[0], enInfo[0], orderInfo[0], orginalInvoiceInfo[0], fpkjxxXmxxList, invoiceType, czdmType, reMarks);
         requestFpkjxx.setFpkjxxFptxx(fpkjxxFptxx);
 
         return requestFpkjxx;
@@ -341,6 +342,7 @@ public class InvoiceInfoServiceImpl extends BaseServiceImpl<InvoiceInfo, Invoice
 
     /**
      * 创建请求报文
+     *
      * @param authCodeInfo
      * @param enInfo
      * @param orderInfo
@@ -350,7 +352,7 @@ public class InvoiceInfoServiceImpl extends BaseServiceImpl<InvoiceInfo, Invoice
      * @param czdmType
      * @return
      */
-    private KpRequestyl.FpkjxxFptxx createFpkjxxFptxx(AuthCodeInfo authCodeInfo, EnInfo enInfo, OrderInfo orderInfo, InvoiceInfo orginalInvoiceInfo, List<KpRequestyl.FpkjxxXmxx> fpkjxxXmxxList, InvoiceInfo.InvoiceType invoiceType, KpRequestyl.FpkjxxFptxx.CzdmType czdmType) {
+    private KpRequestyl.FpkjxxFptxx createFpkjxxFptxx(AuthCodeInfo authCodeInfo, EnInfo enInfo, OrderInfo orderInfo, InvoiceInfo orginalInvoiceInfo, List<KpRequestyl.FpkjxxXmxx> fpkjxxXmxxList, InvoiceInfo.InvoiceType invoiceType, KpRequestyl.FpkjxxFptxx.CzdmType czdmType, String reMarks) {
         KpRequestyl.FpkjxxFptxx fpkjxxFptxx = new KpRequestyl.FpkjxxFptxx();
         fpkjxxFptxx.setFpqqlsh(orderInfo.getSerialNo());//发票请求唯一流水号
         fpkjxxFptxx.setDsptbm(authCodeInfo.getPlatformCode());//平台编码
@@ -400,13 +402,18 @@ public class InvoiceInfoServiceImpl extends BaseServiceImpl<InvoiceInfo, Invoice
             /**
              * 0：根据项目名称字数，自动产生清单， 保持目前逻辑不变     1：取清单对应票面内容字段打印到发信息 XMXX 打印到清  单上。默认为 0。
              */
-//        fpkjxxFptxx.setQdbz();  //清单标志
+            fpkjxxFptxx.setQdbz(orginalInvoiceInfo.getListFlag());  //清单标志
             /**
              * 需要打印清单时对 应发票票面项目名 称 清单标识（ QD_BZ） 为 1 时必填。 为 0 不进行   处理
              */
-//        fpkjxxFptxx.setQdxmmc();  //清单发票项目名称
-//        fpkjxxFptxx.setChyy();  //冲红原因 冲红时填写，由企 业定义
+            if (InvoiceInfo.ListFlagType.LIST.getCode().equals(fpkjxxFptxx.getQdbz()))
+                fpkjxxFptxx.setQdxmmc(orginalInvoiceInfo.getListItemName());  //清单发票项目名称
+
+            if (InvoiceInfo.InvoiceType.RED.equals(invoiceType)) {
+                fpkjxxFptxx.setChyy(reMarks);  //冲红原因 冲红时填写，由企 业定义
 //        fpkjxxFptxx.setTschbz();  //特殊冲红标志
+            }
+
         }
 
 
@@ -426,9 +433,20 @@ public class InvoiceInfoServiceImpl extends BaseServiceImpl<InvoiceInfo, Invoice
         BigDecimal hjse = new BigDecimal(0);
 
         for (KpRequestyl.FpkjxxXmxx fpkjxxXmxx : fpkjxxXmxxList) {
-            hjse = hjse.add(new BigDecimal(fpkjxxXmxx.getSe()));
-            hsjehj = hsjehj.add(new BigDecimal(fpkjxxXmxx.getXmje()));
-            bhsjehj = bhsjehj.add(new BigDecimal(TaxCalculationUtil.calcBHSJE(fpkjxxXmxx.getSl(), fpkjxxXmxx.getXmje())));
+            BigDecimal se = new BigDecimal(fpkjxxXmxx.getSe());
+            hjse = hjse.add(se);
+            if (OrderDetail.TaxIncludedFlag.NOT_INCLUDED.getCode().equals(fpkjxxXmxx.getHsbz())) {
+                hsjehj = hsjehj.add(new BigDecimal(fpkjxxXmxx.getXmje()).add(se));
+                bhsjehj = bhsjehj.add(new BigDecimal(fpkjxxXmxx.getXmje()));
+            }
+
+            if (OrderDetail.TaxIncludedFlag.INCLUDE.getCode().equals(fpkjxxXmxx.getHsbz())) {
+                hsjehj = hsjehj.add(new BigDecimal(fpkjxxXmxx.getXmje()));
+                bhsjehj = bhsjehj.add(new BigDecimal(fpkjxxXmxx.getXmje()).subtract(se));
+            }
+//            hjse = hjse.add(new BigDecimal(fpkjxxXmxx.getSe()));
+//            hsjehj = hsjehj.add(new BigDecimal(fpkjxxXmxx.getXmje()));
+//            bhsjehj = bhsjehj.add(new BigDecimal(TaxCalculationUtil.calcBHSJE(fpkjxxXmxx.getSl(), fpkjxxXmxx.getXmje())));
         }
 
         fpkjxxFptxx.setHjbhsje(bhsjehj.setScale(2, BigDecimal.ROUND_HALF_UP).toString());  //合计不含税金额 小数点后 2 位，以     元为单位精确到分（单行商品金额之   和）。 平台处理价税        分离，此值传 0
@@ -445,7 +463,7 @@ public class InvoiceInfoServiceImpl extends BaseServiceImpl<InvoiceInfo, Invoice
      * @param fpkjxxXmxxList
      * @param fpkjxxDdmxxxList
      */
-    private void fillXmxxDdmxxx(List<KpRequestyl.FpkjxxXmxx> fpkjxxXmxxList, List<KpRequestyl.FpkjxxDdmxxx> fpkjxxDdmxxxList, Map<Integer, List<OrderDetail>> orderDetailMap) {
+    private void fillXmxxDdmxxx(EnInfo enInfo, List<KpRequestyl.FpkjxxXmxx> fpkjxxXmxxList, List<KpRequestyl.FpkjxxDdmxxx> fpkjxxDdmxxxList, Map<Integer, List<OrderDetail>> orderDetailMap) {
         for (Integer key : orderDetailMap.keySet()) {
             //不需要处理折扣行,因为处理被折扣行的时候,已作处理
             if (OrderDetail.InvoiceNature.DISCOUNT.getCode().equals(key))
@@ -457,7 +475,7 @@ public class InvoiceInfoServiceImpl extends BaseServiceImpl<InvoiceInfo, Invoice
             if (OrderDetail.InvoiceNature.DISCOUNTLINE.getCode().equals(key)) {
                 while (detailIterator.hasNext()) {
                     OrderDetail orderDetail = detailIterator.next();
-                    fpkjxxXmxxList.add(createFpkjxxXmxx(orderDetail));//1发票明细
+                    fpkjxxXmxxList.add(createFpkjxxXmxx(enInfo, orderDetail));//1发票明细
                     fpkjxxDdmxxxList.add(createFpkjxxDdmxxx(orderDetail));//1订单明细信息,不记录折扣行 一共两次
                     //处理完之后删除折扣行,因为可能存同名多个折扣的问题,所以这里根据同名,同数量,同编号解决
                     if (OrderDetail.InvoiceNature.DISCOUNTLINE.getCode().equals(orderDetail.getInvoiceNature())) {
@@ -473,7 +491,7 @@ public class InvoiceInfoServiceImpl extends BaseServiceImpl<InvoiceInfo, Invoice
                         }
                         if (discountDetail == null)
                             throw new RuntimeException("商品:" + orderDetail.getItemName() + "缺少相关折扣行,开票失败,");
-                        fpkjxxXmxxList.add(createFpkjxxXmxx(discountDetail));//2发票明细
+                        fpkjxxXmxxList.add(createFpkjxxXmxx(enInfo, discountDetail));//2发票明细
                     }
                 }
             }
@@ -481,7 +499,7 @@ public class InvoiceInfoServiceImpl extends BaseServiceImpl<InvoiceInfo, Invoice
             //普通开票
             if (OrderDetail.InvoiceNature.NORMAL.getCode().equals(key)) {
                 for (OrderDetail orderDetail : orderDetails) {
-                    fpkjxxXmxxList.add(createFpkjxxXmxx(orderDetail));//3发票明细
+                    fpkjxxXmxxList.add(createFpkjxxXmxx(enInfo, orderDetail));//3发票明细
                     fpkjxxDdmxxxList.add(createFpkjxxDdmxxx(orderDetail));//2订单明细信息,无论是否折扣处理,都应该添加 订单明细信息 一共三次
                 }
             }
@@ -495,7 +513,7 @@ public class InvoiceInfoServiceImpl extends BaseServiceImpl<InvoiceInfo, Invoice
      * @param fpkjxxXmxxList
      * @param fpkjxxDdmxxxList
      */
-    private void fillXmxxDdmxxxRed(List<KpRequestyl.FpkjxxXmxx> fpkjxxXmxxList, List<KpRequestyl.FpkjxxDdmxxx> fpkjxxDdmxxxList, Map<Integer, List<OrderDetail>> orderDetailMap) {
+    private void fillXmxxDdmxxxRed(EnInfo enInfo, List<KpRequestyl.FpkjxxXmxx> fpkjxxXmxxList, List<KpRequestyl.FpkjxxDdmxxx> fpkjxxDdmxxxList, Map<Integer, List<OrderDetail>> orderDetailMap) {
         for (Integer key : orderDetailMap.keySet()) {
             //不需要处理折扣行,因为处理被折扣行的时候,已作处理
             if (OrderDetail.InvoiceNature.DISCOUNT.getCode().equals(key))
@@ -527,7 +545,7 @@ public class InvoiceInfoServiceImpl extends BaseServiceImpl<InvoiceInfo, Invoice
                         orderDetail.setItemPrice(TaxCalculationUtil.merge(orderDetail.getItemPrice(), discountDetail.getItemPrice()));
                         orderDetail.setItemNum(TaxCalculationUtil.negative(orderDetail.getItemNum()));
                         orderDetail.setInvoiceNature(OrderDetail.InvoiceNature.NORMAL.getCode());
-                        fpkjxxXmxxList.add(createFpkjxxXmxx(orderDetail));
+                        fpkjxxXmxxList.add(createFpkjxxXmxx(enInfo, orderDetail));
                     }
                 }
             }
@@ -537,7 +555,7 @@ public class InvoiceInfoServiceImpl extends BaseServiceImpl<InvoiceInfo, Invoice
                 for (OrderDetail orderDetail : orderDetails) {
                     orderDetail.setItemPrice(TaxCalculationUtil.negative(orderDetail.getItemPrice()));
                     orderDetail.setItemNum(TaxCalculationUtil.negative(orderDetail.getItemNum()));
-                    fpkjxxXmxxList.add(createFpkjxxXmxx(orderDetail));//3发票明细
+                    fpkjxxXmxxList.add(createFpkjxxXmxx(enInfo, orderDetail));//3发票明细
                     fpkjxxDdmxxxList.add(createFpkjxxDdmxxx(orderDetail));//2订单明细信息,无论是否折扣处理,都应该添加 订单明细信息 一共三次
                 }
             }
@@ -550,23 +568,34 @@ public class InvoiceInfoServiceImpl extends BaseServiceImpl<InvoiceInfo, Invoice
      * @param orderDetail
      * @return
      */
-    private KpRequestyl.FpkjxxXmxx createFpkjxxXmxx(OrderDetail orderDetail) {
+    private KpRequestyl.FpkjxxXmxx createFpkjxxXmxx(EnInfo enInfo, OrderDetail orderDetail) {
         KpRequestyl.FpkjxxXmxx fpkjxxXmxx = new KpRequestyl.FpkjxxXmxx();
         fpkjxxXmxx.setXmmc(orderDetail.getItemName());    //项目名称
         fpkjxxXmxx.setXmdw(orderDetail.getItemUnit());   //项目单位
         fpkjxxXmxx.setGgxh(orderDetail.getSpecMode());   //规格型号
         fpkjxxXmxx.setXmsl(orderDetail.getItemNum());   //项目数量
-//            fpkjxxXmxx.setHsbz(orderDetail.get);   //含税标志
-        fpkjxxXmxx.setXmdj(TaxCalculationUtil.scaleVIII(new BigDecimal(orderDetail.getItemPrice()).abs().toString()));   //项目单价(含税) 永远是正数
+        fpkjxxXmxx.setHsbz(orderDetail.getTaxIncluded());   //含税标志
+        fpkjxxXmxx.setXmdj(TaxCalculationUtil.scaleVIII(new BigDecimal(orderDetail.getItemPrice()).abs().toString()));   //项目单价 永远是正数
         fpkjxxXmxx.setFphxz(orderDetail.getInvoiceNature().toString());   //发票行性质
         fpkjxxXmxx.setSpbm(orderDetail.getItemTaxCode());   //商品编码
-//            fpkjxxXmxx.setZxbm();   //自行编码
-//            fpkjxxXmxx.setYhzcbs();   //优惠政策标识
-//            fpkjxxXmxx.setLslbs();   //零税率标识
-//            fpkjxxXmxx.setZzstsgl();   //增值税特殊管理
-        fpkjxxXmxx.setXmje(TaxCalculationUtil.calcItemPrice(orderDetail.getItemPrice(), orderDetail.getItemNum()));   //项目金额(含税)
+        fpkjxxXmxx.setZxbm(orderDetail.getCuzCode());   //自行编码
+        fpkjxxXmxx.setYhzcbs(enInfo.getYhzcbs());   //优惠政策标识
+        fpkjxxXmxx.setLslbs(enInfo.getLslbs());   //零税率标识
+        fpkjxxXmxx.setZzstsgl(enInfo.getZzstsgl());   //增值税特殊管理
+        if (fpkjxxXmxx.getYhzcbs().equals("1") && fpkjxxXmxx.getZzstsgl() == null)
+            throw new RuntimeException("使用优惠政策时,必须设置特殊增值税管理");
+
+        fpkjxxXmxx.setXmje(TaxCalculationUtil.calcItemPrice(orderDetail.getItemPrice(), orderDetail.getItemNum()));   //项目金额
         fpkjxxXmxx.setSl(orderDetail.getTaxRate());   //税率
-        fpkjxxXmxx.setSe(TaxCalculationUtil.calcSE(fpkjxxXmxx.getSl(), fpkjxxXmxx.getXmje()));   //税额
+
+        if (OrderDetail.TaxIncludedFlag.INCLUDE.getCode().equals(orderDetail.getTaxIncluded())) {
+            //计算含税标识为1的税额
+            fpkjxxXmxx.setSe(TaxCalculationUtil.calcIncludeSE(fpkjxxXmxx.getSl(), fpkjxxXmxx.getXmje()));   //税额
+        } else if (OrderDetail.TaxIncludedFlag.NOT_INCLUDED.getCode().equals(orderDetail.getTaxIncluded())) {
+            //计算含税标识为0的税额
+            fpkjxxXmxx.setSe(TaxCalculationUtil.calcNotIncludeSE(fpkjxxXmxx.getSl(), fpkjxxXmxx.getXmje()));   //税额
+        }
+
 //            fpkjxxXmxx.setByzd1();   //备用字段1
 //            fpkjxxXmxx.setByzd2();   //备用字段2
 //            fpkjxxXmxx.setByzd3();   //备用字段3

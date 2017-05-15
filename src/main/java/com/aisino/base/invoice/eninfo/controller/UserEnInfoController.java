@@ -55,7 +55,7 @@ public class UserEnInfoController extends BaseController<EnInfo> {
      * 用户完善企业信息的方法.
      */
     @RequestMapping(value = "/addOrUpdateByCurrentUser",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @AclResc(id = 60001,code = "addOrUpdateByCurrentUser",name = "新增企业")
+    @AclResc(id = 60001,code = "addOrUpdateByCurrentUser",name = "新增或修改企业")
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public ResultDataDto addOrUpdateByCurrentUser(@ModelAttribute("enInfo")EnInfo enInfo){
         UserInfo userInfo = SecurityUtil.getCurrentUserInfo();

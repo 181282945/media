@@ -11,6 +11,15 @@ import org.apache.ibatis.type.Alias;
 @BaseEntityMapper(tableName = "acl_user_role")
 public class AclUserRole extends BaseEntity {
 
+    public AclUserRole(){
+
+    }
+
+    public AclUserRole(Integer userId,Integer roleId){
+        this.userId = userId;
+        this.roleId = roleId;
+    }
+
     /**
      * 用户ID
      */

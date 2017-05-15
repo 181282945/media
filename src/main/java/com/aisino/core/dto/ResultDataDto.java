@@ -324,7 +324,10 @@ public class ResultDataDto {
 		if (ex instanceof BindException) {
 			return "系统异常：控制器参数装配异常!";
 		}
-		return ex.getMessage();
+		if(ex instanceof RuntimeException){
+			return ex.getMessage();
+		}
+		return ex.getClass().getSimpleName();
 	}
 
 	public boolean isSuccessMessage() {

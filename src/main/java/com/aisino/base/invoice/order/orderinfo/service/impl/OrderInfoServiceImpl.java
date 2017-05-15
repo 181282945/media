@@ -66,7 +66,7 @@ public class OrderInfoServiceImpl extends BaseServiceImpl<OrderInfo, OrderInfoMa
             orderInfoMap.put(orderInfos.get(i)[16], orderInfoTransform(orderInfos.get(i)));
         }
 
-        XLSXCovertCSVReader xlsx2csv2 = new XLSXCovertCSVReader(p, System.out, "明细", 9);
+        XLSXCovertCSVReader xlsx2csv2 = new XLSXCovertCSVReader(p, System.out, "明细", 10);
         List<String[]> orderdetails = xlsx2csv2.process();
         Map<String, List<OrderDetail>> orderDetailMap = new HashMap<>();
         //不要表头
@@ -188,7 +188,9 @@ public class OrderInfoServiceImpl extends BaseServiceImpl<OrderInfo, OrderInfoMa
         orderInfo.setBuyerTele(StringUtils.trimToNull(value[8]));
         orderInfo.setBuyerMobile(StringUtils.trimToNull(value[9]));
         orderInfo.setBuyerEmail(StringUtils.trimToNull(value[10]));
-        orderInfo.setBuyerType(StringUtils.trimToNull(value[11]));
+        String buyerTypeCode = StringUtils.trimToNull(value[11]);
+        if (buyerTypeCode != null && OrderInfo.BuyerType.getNameByCode(buyerTypeCode).length() > 0)
+            orderInfo.setBuyerType(StringUtils.trimToNull(value[11]));
         orderInfo.setBuyerBankAcc(StringUtils.trimToNull(value[12]));
         orderInfo.setInduCode(StringUtils.trimToNull(value[13]));
         orderInfo.setInduName(StringUtils.trimToNull(value[14]));

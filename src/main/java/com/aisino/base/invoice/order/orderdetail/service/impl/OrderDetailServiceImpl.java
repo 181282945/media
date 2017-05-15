@@ -45,12 +45,18 @@ public class OrderDetailServiceImpl extends BaseServiceImpl<OrderDetail, OrderDe
         orderDetail.setItemNum(StringUtils.trimToNull(value[3]));
         orderDetail.setSpecMode(StringUtils.trimToNull(value[4]));
         orderDetail.setItemPrice(StringUtils.trimToNull(value[5]));
-        String invoiceNature = StringUtils.trimToNull(value[6]);
+
+        String taxIncluded = StringUtils.trimToNull(value[6]);
+        if (taxIncluded != null && StringUtils.isNumeric(taxIncluded) && OrderDetail.TaxIncludedFlag.getNameByCode(taxIncluded).length() > 0)
+            orderDetail.setTaxIncluded(taxIncluded);
+
+        String invoiceNature = StringUtils.trimToNull(value[7]);
         if (invoiceNature != null && StringUtils.isNumeric(invoiceNature) && OrderDetail.InvoiceNature.getNameByCode(Integer.parseInt(invoiceNature)).length() > 0)
             orderDetail.setInvoiceNature(Integer.parseInt(invoiceNature));
-        orderDetail.setItemTaxCode(StringUtils.trimToNull(value[7]));
 
-        String taxRate = StringUtils.trimToNull(value[8]);
+        orderDetail.setItemTaxCode(StringUtils.trimToNull(value[8]));
+
+        String taxRate = StringUtils.trimToNull(value[9]);
         if (taxRate != null)
             orderDetail.setTaxRate(TaxCalculationUtil.toPercentage(taxRate));
 

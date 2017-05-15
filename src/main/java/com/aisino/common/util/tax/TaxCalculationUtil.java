@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 public class TaxCalculationUtil {
 
     /**
-     *  根据税率,含税金额,计算不含税金额
+     *  转换为 百分数
      */
     public static String toPercentage(String taxRateTem){
         BigDecimal taxPercentage =  new BigDecimal(taxRateTem).divide(new BigDecimal(100));
@@ -37,13 +37,23 @@ public class TaxCalculationUtil {
     }
 
     /**
-     *  计算税额
+     *  计算税额(含税标识为1)
      */
-    public static String calcSE(String taxRateTem,String xmjeTem){
+    public static String calcIncludeSE(String taxRateTem,String xmjeTem){
         //计算不含税金额
         BigDecimal bhsje =  new BigDecimal(calcBHSJE(taxRateTem,xmjeTem));
         //计算税额
         BigDecimal se = new BigDecimal(xmjeTem).subtract(bhsje);
+        se = se.setScale(2, BigDecimal.ROUND_HALF_UP);
+        return se.toString();
+    }
+
+    /**
+     *  根据不含税金额计算税额(含税标识为0)
+     */
+    public static String calcNotIncludeSE(String taxRateTem,String xmjeTem){
+        //计算税额
+        BigDecimal se = new BigDecimal(xmjeTem).multiply(new BigDecimal(taxRateTem));
         se = se.setScale(2, BigDecimal.ROUND_HALF_UP);
         return se.toString();
     }

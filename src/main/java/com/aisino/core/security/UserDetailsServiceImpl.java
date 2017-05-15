@@ -11,6 +11,7 @@ import com.aisino.base.sysmgr.acluser.entity.AclUser;
 import com.aisino.base.sysmgr.acluser.service.AclUserService;
 import com.aisino.base.sysmgr.acluserrole.entity.AclUserRole;
 import com.aisino.base.sysmgr.acluserrole.service.AclUserRoleService;
+import com.aisino.core.security.util.SecurityUtil;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -93,12 +94,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
              */
             routingDataSource.addCuzDataSource(userInfo);
             //权限集加入类名,为区分前后台用户
-            auths.add(new SimpleGrantedAuthority(UserInfo.class.getSimpleName()));
+            auths.add(new SimpleGrantedAuthority(SecurityUtil.USERINFO));
             user = new User(userInfo.getUsrno(), userInfo.getPassword(), !userInfo.getDelflags(), true, true, true, auths);
 
         }else if (entity instanceof AclUser){
             //权限集加入类名,为区分前后台用户
-            auths.add(new SimpleGrantedAuthority(AclUser.class.getSimpleName()));
+            auths.add(new SimpleGrantedAuthority(SecurityUtil.ACLUSER));
             user = new User(aclUser.getUserName(), aclUser.getPassword(), aclUser.getEnabled(), aclUser.getAccountNonExpired(), aclUser.getCredentialsNonExpired(), aclUser.getAccountNonLocked(), auths);
         }
 

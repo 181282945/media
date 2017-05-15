@@ -40,13 +40,13 @@ public class AclMenuServiceImpl extends BaseServiceImpl<AclMenu, AclMenuMapper> 
         //创建完整的菜单,然后删除没有权限的菜单
         Map<AclMenu, List<AclResource>> userMenuModuleMap = findAclMenuModuleMap();
         //获取资源/权限集
-        Map<RequestMatcher, Collection<ConfigAttribute>> moduleMap = securityMetadataSource.getModuleMap();
-        for (RequestMatcher requestMatcher : moduleMap.keySet()) {
-            AntPathRequestMatcher antPathRequestMatcher = (AntPathRequestMatcher) requestMatcher;
-            String path = antPathRequestMatcher.getPattern();
+        Map<String, Collection<ConfigAttribute>> moduleMap = securityMetadataSource.getModuleMap();
+        for (String path : moduleMap.keySet()) {
+//            AntPathRequestMatcher antPathRequestMatcher = (AntPathRequestMatcher) requestMatcher;
+//            String path = antPathRequestMatcher.getPattern();
             path = path.substring(0, path.lastIndexOf("/**"));
             //如果没有权限
-            if (!SecurityUtil.hastAnyAuth(moduleMap.get(antPathRequestMatcher))) {
+            if (!SecurityUtil.hastAnyAuth(moduleMap.get(path))) {
                 Iterator<AclMenu> userMenuModuleMapKey = userMenuModuleMap.keySet().iterator();
                 while (userMenuModuleMapKey.hasNext()) {
                     AclMenu key = userMenuModuleMapKey.next();

@@ -285,7 +285,6 @@
 
                         <div class="row">
                             <div class="col-md-3">
-                                <!--<img src="images/u99.png"><span style="font-size: medium;margin-left: 2px;">个人基本信息</span>-->
                             </div>
                             <div class="col-md-6">
                                 <form id="pwdFrom" method="post" class="form-inline" role="form"
@@ -328,7 +327,7 @@
                                     </fieldset>
                                 </form>
                             </div>
-                            <div class="col-md-1 ">
+                            <div class="col-md-3 ">
                                 <!--<button type="button" class="btn btn-white pull-right">修改</button>-->
                             </div>
                         </div>
@@ -338,44 +337,89 @@
                 <div id="dropdown14" class="tab-pane">
                     <div class="container" style="width: 100%;">
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-12">
                                 <img src="images/u99.png"><span style="font-size: medium;margin-left: 2px;">基本设置</span>
-                            </div>
-                            <div class="col-md-4">
-
-                            </div>
-                            <div class="col-md-4 ">
-                                <button type="button" class="btn btn-white pull-right">保存</button>
                             </div>
                         </div>
 
-                        <div class="space"></div>
-                        <div class="space"></div>
-                        <div class="space"></div>
-                        <div class="space"></div>
                         <div class="space"></div>
 
                         <div class="row">
-                            <div class="col-md-4"></div>
-                            <div class="col-md-2">
-                                <div class="radio">
-                                    <label>
-                                        <input name="form-field-radio" type="radio" class="ace">
-                                        <span class="lbl">手动开票</span>
-                                    </label>
-                                </div>
+                            <div class="col-md-3">
+                                <!--<img src="images/u99.png"><span style="font-size: medium;margin-left: 2px;">个人基本信息</span>-->
                             </div>
-                            <div class="col-md-2">
-                                <div class="radio">
-                                    <label>
-                                        <input name="form-field-radio" type="radio" class="ace">
-                                        <span class="lbl">自动开票</span>
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="col-md-4"></div>
-                        </div>
+                            <div class="col-md-9">
+                                <form id="baseOptionFrom" method="post" class="form-inline" role="form" action="/base/invoice/eninfo/u/addOrUpdateByCurrentUser">
+                                    <fieldset>
+                                        <input name="id"  th:value="${currentEnInfo.id}" type="text" hidden class="ace">
+                                        <div class="form-group">
+                                            <label class="form-label">开&emsp;票&emsp;选&emsp;项&ensp;:&ensp;</label>
+                                            <label class="form-label">
+                                                <input name="billingOption"  th:checked=" ${currentEnInfo.billingOption} == '0' " value="0" type="radio" class="ace">
+                                                <span class="lbl">手动开票</span>
+                                            </label>
+                                            <label class="form-label">
+                                                <input name="billingOption" th:checked=" ${currentEnInfo.billingOption} == '1' " value="1" type="radio" class="ace">
+                                                <span class="lbl">自动开票</span>
+                                            </label>
+                                            <div class="space"></div>
+                                        </div>
+                                        <div class="space"></div>
+                                        <div class="form-group">
+                                            <label class="form-label">优&emsp;惠&emsp;政&emsp;策&ensp;:&ensp;</label>
+                                            <label class="form-label">
+                                                <input name="yhzcbs" th:checked="${currentEnInfo.yhzcbs} == '0'" value="0" type="radio" class="ace">
+                                                <span class="lbl">不使用</span>
+                                            </label>
 
+                                            <label class="form-label">
+                                                <input name="yhzcbs" th:checked="${currentEnInfo.yhzcbs} == '1'" value="1" type="radio" class="ace">
+                                                <span class="lbl">使用</span>
+                                            </label>
+                                            <div class="space"></div>
+                                        </div>
+
+                                        <div class="space"></div>
+                                        <div class="form-group">
+                                            <label class="form-label">零&ensp;税&ensp;率&ensp;标&ensp;识&ensp;:&ensp;</label>
+                                            <label class="form-label">
+                                                <input name="lslbs" th:checked=" ${currentEnInfo.lslbs} == null " value="" type="radio" class="ace">
+                                                <span class="lbl">无</span>
+                                            </label>
+                                            <label class="form-label">
+                                                <input name="lslbs" th:checked=" ${currentEnInfo.lslbs} == '1' " value="1" type="radio" class="ace">
+                                                <span class="lbl">免税</span>
+                                            </label>
+                                            <label class="form-label">
+                                                <input name="lslbs"  th:checked=" ${currentEnInfo.lslbs} == '2' " value="2" type="radio" class="ace">
+                                                <span class="lbl">不征税</span>
+                                            </label>
+                                            <label class="form-label">
+                                                <input name="lslbs"  th:checked=" ${currentEnInfo.lslbs} == '3' " value="3" type="radio" class="ace">
+                                                <span class="lbl">普通零税率</span>
+                                            </label>
+                                            <div class="space"></div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="form-label">增值税特殊管理&ensp;:&ensp;</label>
+                                            <input type="text" class="form-control" name="zzstsgl">
+                                        </div>
+
+                                        <div class="space"></div>
+
+                                        <div class="row">
+                                            <div class="col-md-2 col-md-offset-5">
+                                                <button type="button" id="baseOptionBtn" class="btn btn-white">保存</button>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </form>
+                            </div>
+                            <div class="col-md-3 ">
+                                <!--<button type="button" class="btn btn-white pull-right">修改</button>-->
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -544,20 +588,20 @@
             });
         }
     });
+
+
+    $('#baseOptionBtn').click(function () {
+        jQuery('#baseOptionFrom').ajaxSubmit(function (data) {
+            layerAlertMsg(data.message);
+        });
+    });
 </script>
 <!-- the following scripts are used in demo only for onpage help and you don't need them -->
 <link rel="stylesheet" href="/assets/css/ace.onpage-help.css"/>
-<link rel="stylesheet" href="/docs/assets/js/themes/sunburst.css"/>
 
 <script type="text/javascript"> ace.vars['base'] = '..'; </script>
 <script src="/assets/js/src/elements.onpage-help.js"></script>
 <script src="/assets/js/src/ace.onpage-help.js"></script>
-<script src="/docs/assets/js/rainbow.js"></script>
-<script src="/docs/assets/js/language/generic.js"></script>
-<script src="/docs/assets/js/language/html.js"></script>
-<script src="/docs/assets/js/language/css.js"></script>
-<script src="/docs/assets/js/language/javascript.js"></script>
-
 
 </body>
 </html>

@@ -3,8 +3,8 @@ package com.aisino.common.util;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import org.bouncycastle.util.encoders.Base64;
 
-import com.sun.org.apache.xml.internal.security.utils.Base64;
 public class PasswordUtil {
 
     //生成10位随机数

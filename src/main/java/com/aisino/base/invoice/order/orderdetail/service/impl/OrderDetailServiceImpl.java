@@ -3,6 +3,7 @@ package com.aisino.base.invoice.order.orderdetail.service.impl;
 import com.aisino.base.invoice.order.orderdetail.dao.OrderDeailMapper;
 import com.aisino.base.invoice.order.orderdetail.entity.OrderDetail;
 import com.aisino.base.invoice.order.orderdetail.service.OrderDetailService;
+import com.aisino.common.params.SystemParameter;
 import com.aisino.common.util.tax.TaxCalculationUtil;
 import com.aisino.core.mybatis.specification.PageAndSort;
 import com.aisino.core.mybatis.specification.QueryLike;
@@ -11,6 +12,7 @@ import com.aisino.core.service.BaseServiceImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -19,6 +21,9 @@ import java.util.List;
 @Service("orderDetailService")
 public class OrderDetailServiceImpl extends BaseServiceImpl<OrderDetail, OrderDeailMapper> implements OrderDetailService {
 
+
+    @Resource
+    private SystemParameter systemParameter;
 
     @Override
     public List<OrderDetail> findByOrderNo(String orderNo, PageAndSort pageAndSort) {
@@ -46,19 +51,30 @@ public class OrderDetailServiceImpl extends BaseServiceImpl<OrderDetail, OrderDe
         orderDetail.setSpecMode(StringUtils.trimToNull(value[4]));
         orderDetail.setItemPrice(StringUtils.trimToNull(value[5]));
 
-        String taxIncluded = StringUtils.trimToNull(value[6]);
-        if (taxIncluded != null && StringUtils.isNumeric(taxIncluded) && OrderDetail.TaxIncludedFlag.getNameByCode(taxIncluded).length() > 0)
-            orderDetail.setTaxIncluded(taxIncluded);
+        /**
+         * 因为接口并没有针对 含税标识计算总结,所以这里全部使用 含税计算
+         */
+//        String taxIncluded = StringUtils.trimToNull(value[6]);
+//        if (taxIncluded != null && StringUtils.isNumeric(taxIncluded) && OrderDetail.TaxIncludedFlag.getNameByCode(taxIncluded).length() > 0)
+        orderDetail.setTaxIncluded(OrderDetail.TaxIncludedFlag.INCLUDE.getCode());
 
-        String invoiceNature = StringUtils.trimToNull(value[7]);
+        String invoiceNature = StringUtils.trimToNull(value[6]);
         if (invoiceNature != null && StringUtils.isNumeric(invoiceNature) && OrderDetail.InvoiceNature.getNameByCode(Integer.parseInt(invoiceNature)).length() > 0)
             orderDetail.setInvoiceNature(Integer.parseInt(invoiceNature));
 
-        orderDetail.setItemTaxCode(StringUtils.trimToNull(value[8]));
+        orderDetail.setItemTaxCode(StringUtils.trimToNull(value[7]));
 
-        String taxRate = StringUtils.trimToNull(value[9]);
-        if (taxRate != null)
-            orderDetail.setTaxRate(TaxCalculationUtil.toPercentage(taxRate));
+        String taxRate = StringUtils.trimToNull(value[8]);
+        //判断是否有效税率
+        if (taxRate != null){
+            String taxRateStr = TaxCalculationUtil.toPercentage(taxRate);
+            for(String taxRateTem : systemParameter.getTaxRate()){
+                if (taxRateStr.equals(taxRateTem)){
+                    orderDetail.setTaxRate(taxRateStr);
+                }
+            }
+        }
+
 
         //处理折扣行,无论EXCEL 正负都改成负数
         if (orderDetail.getInvoiceNature().equals(OrderDetail.InvoiceNature.DISCOUNT.getCode())) {

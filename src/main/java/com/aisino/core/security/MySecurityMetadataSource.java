@@ -5,12 +5,10 @@ import java.util.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
-import com.aisino.base.invoice.userinfo.entity.UserInfo;
 import com.aisino.base.sysmgr.aclrescrole.service.AclRescRoleService;
 import com.aisino.base.sysmgr.aclresource.entity.AclResource;
 import com.aisino.base.sysmgr.aclresource.service.AclResourceService;
 import com.aisino.base.sysmgr.aclrole.service.AclRoleService;
-import com.aisino.base.sysmgr.acluser.entity.AclUser;
 import com.aisino.core.security.util.SecurityUtil;
 import com.aisino.core.util.Delimiter;
 import com.aisino.base.sysmgr.aclauth.service.AclAuthService;
@@ -21,7 +19,6 @@ import org.springframework.security.access.SecurityConfig;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,11 +32,6 @@ public class MySecurityMetadataSource implements FilterInvocationSecurityMetadat
     private static Map<String, Collection<ConfigAttribute>> moduleMap = null;
 
     private static Map<String, Collection<ConfigAttribute>> methodMap = null;
-
-    /**
-     * 因源码不是直接保存path,为了以后可能会重写框架源码,所以多此一举,为了让RequestMatcher 作为KEY
-     */
-//    private static Map<String, RequestMatcher> requestMatcherMap = new HashMap<>();
 
     @Resource
     private AclResourceService aclResourceService;
@@ -106,7 +98,7 @@ public class MySecurityMetadataSource implements FilterInvocationSecurityMetadat
     }
 
 
-    @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    @Transactional(readOnly = true)
     private void loadResourceDefine() {
         loadModuleResources();
         loadMethodResources();
@@ -149,6 +141,11 @@ public class MySecurityMetadataSource implements FilterInvocationSecurityMetadat
              */
             List<AclRescRole> aclRescRoles = aclRescRoleService.findByRescId(module.getId());
 
+
+            /**
+             * 无论如何超级管理员拥有所有权限
+             */
+            stuff(new SecurityConfig(SecurityUtil.ADMIN), moduleMap, module.getPath());
             /**
              * 如果没有设置权限,那么做一个前后台用户才能登陆的控制
              */

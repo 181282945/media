@@ -777,6 +777,7 @@
             $.post("/base/invoice/invoiceinfo/u/doRed", 'invoiceId='+sel_id+'&reMarks='+text,function(data) {
                 layerAlertMsg(data.message);
                 layer.close(index);
+                $('#grid-table').trigger("reloadGrid");
             });
         });
     });

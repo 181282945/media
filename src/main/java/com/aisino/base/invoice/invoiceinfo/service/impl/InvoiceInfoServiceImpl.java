@@ -29,7 +29,6 @@ import com.aisino.core.util.CloneUtils;
 import com.aisino.core.util.DateUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
-import org.omg.SendingContext.RunTime;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
@@ -221,7 +220,6 @@ public class InvoiceInfoServiceImpl extends BaseServiceImpl<InvoiceInfo, Invoice
                     orderInfo[0].setSerialNo(String.valueOf(worker.nextId()));//设置发票唯一流水号
                 if (InvoiceInfo.InvoiceType.RED.equals(invoiceType)) {
                     orginalInvoiceInfo[0] = invoiceInfoService.getBySerialNo(orderInfo[0].getSerialNo());//正式环境用这个
-//                    orginalInvoiceInfo[0] = invoiceInfoService.getBySerialNo("3453417744");//测试环境用这个
                     if (orginalInvoiceInfo[0] == null)
                         throw new RuntimeException("没有找到原发票信息,冲红失败!");
                     if (InvoiceInfo.RedflagsType.ALREADY.getCode().equals(orginalInvoiceInfo[0].getRedflags()))

@@ -9,10 +9,7 @@ import com.aisino.base.sysmgr.aclmenu.domain.entity.AclMenu;
 import com.aisino.base.sysmgr.aclmenu.service.AclMenuService;
 import com.aisino.core.service.BaseServiceImpl;
 import com.aisino.core.util.Delimiter;
-import com.google.gson.Gson;
 import org.springframework.security.access.ConfigAttribute;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -42,9 +39,6 @@ public class AclMenuServiceImpl extends BaseServiceImpl<AclMenu, AclMenuMapper> 
         //获取资源/权限集
         Map<String, Collection<ConfigAttribute>> moduleMap = securityMetadataSource.getModuleMap();
         for (String path : moduleMap.keySet()) {
-//            AntPathRequestMatcher antPathRequestMatcher = (AntPathRequestMatcher) requestMatcher;
-//            String path = antPathRequestMatcher.getPattern();
-            path = path.substring(0, path.lastIndexOf("/**"));
             //如果没有权限
             if (!SecurityUtil.hastAnyAuth(moduleMap.get(path))) {
                 Iterator<AclMenu> userMenuModuleMapKey = userMenuModuleMap.keySet().iterator();

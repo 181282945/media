@@ -1010,16 +1010,7 @@
 
                 $("#detailDesc").html(data.response.datas.detailDesc);
 
-//                $("#myModal").modal("hide");
-//                var data = data.response.lstOrderImport;
-//                if (data == undefined) {
-//                    toastr.error('文件格式类型不正确');
-//                    return;
-//                }
-//                //1.初始化表格
-//                var oTable = new TableInit();
-//                oTable.Init(data);
-//                $("#div_startimport").show();
+                $('#grid-table').trigger("reloadGrid");
             });
         }
         return oFile;
@@ -1093,6 +1084,7 @@
         }
         $.post("/base/invoice/invoiceinfo/u/billing", 'orderId='+sel_id,function(result) {
             layerAlertMsg(result.message);
+            $('#grid-table').trigger("reloadGrid");
         },"json");
     });
 

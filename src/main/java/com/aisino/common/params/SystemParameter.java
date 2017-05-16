@@ -7,6 +7,12 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  */
 @ConfigurationProperties(prefix = "SystemParameter")
 public class SystemParameter {
+
+    /**
+     * 规范税率数组
+     */
+    private String [] taxRate;
+
     /**
      * 自动创建数据库,库名前缀
      */
@@ -113,5 +119,13 @@ public class SystemParameter {
 
     public void setInvoiceinfoSql(String invoiceinfoSql) {
         this.invoiceinfoSql = invoiceinfoSql;
+    }
+
+    public String[] getTaxRate() {
+        return taxRate;
+    }
+
+    public void setTaxRate(String[] taxRate) {
+        this.taxRate = taxRate;
     }
 }

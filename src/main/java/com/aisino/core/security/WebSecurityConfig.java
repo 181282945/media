@@ -7,7 +7,6 @@ import org.springframework.security.access.vote.AffirmativeBased;
 import org.springframework.security.access.vote.AuthenticatedVoter;
 import org.springframework.security.access.vote.RoleVoter;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.event.LoggerListener;
 import org.springframework.security.config.annotation.ObjectPostProcessor;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -123,17 +122,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return myUsernamePasswordAuthenticationFilter;
     }
 
-    @Bean
-    public LoggerListener loggerListener() {
-        System.out.println("org.springframework.security.authentication.event.LoggerListener");
-        return new LoggerListener();
-    }
-
-    @Bean
-    public org.springframework.security.access.event.LoggerListener eventLoggerListener() {
-        System.out.println("org.springframework.security.access.event.LoggerListener");
-        return new org.springframework.security.access.event.LoggerListener();
-    }
+//    @Bean
+//    public LoggerListener loggerListener() {
+//        System.out.println("org.springframework.security.authentication.event.LoggerListener");
+//        return new LoggerListener();
+//    }
+//
+//    @Bean
+//    public org.springframework.security.access.event.LoggerListener eventLoggerListener() {
+//        System.out.println("org.springframework.security.access.event.LoggerListener");
+//        return new org.springframework.security.access.event.LoggerListener();
+//    }
 
     /**
      * 投票器

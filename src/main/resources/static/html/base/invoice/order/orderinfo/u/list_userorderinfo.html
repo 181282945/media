@@ -802,6 +802,12 @@
                 afterRedraw: function () {
                     style_search_filters($(this));
                 },
+                loadError : function(xhr,st,err) {
+                    alert(xhr);
+                    alert(st);
+                    alert(err);
+//                    jQuery("#rsperror").html("Type: "+st+"; Response: "+ xhr.status + " "+xhr.statusText);
+                },
                 multipleSearch: true,
 //                multipleGroup:true,
 //                showQuery: true

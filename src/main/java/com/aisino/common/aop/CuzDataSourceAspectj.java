@@ -1,7 +1,6 @@
 package com.aisino.common.aop;
 
 import com.aisino.core.mybatis.DataSourceContextHolder;
-import com.aisino.core.security.util.SecurityUtil;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.springframework.core.annotation.Order;
@@ -22,13 +21,15 @@ public class CuzDataSourceAspectj {
     @Around("cuzDataSource()")
     public Object aroundCuzDataSource(ProceedingJoinPoint joinPoint){
         DataSourceContextHolder.user();
+        Object result = null;
         try {
-            return joinPoint.proceed();
+            result = joinPoint.proceed();
+
         } catch (Throwable throwable) {
             throwable.printStackTrace();
         }finally {
             DataSourceContextHolder.write();
         }
-        return null;
+        return result;
     }
 }

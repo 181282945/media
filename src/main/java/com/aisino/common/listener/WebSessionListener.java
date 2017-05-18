@@ -3,6 +3,7 @@ package com.aisino.common.listener;
 import com.aisino.base.invoice.userinfo.entity.UserInfo;
 import com.aisino.core.mybatis.MyRoutingDataSource;
 import com.aisino.core.security.util.SecurityUtil;
+import com.aisino.core.util.SpringUtils;
 
 import javax.annotation.Resource;
 import javax.servlet.annotation.WebListener;
@@ -14,7 +15,7 @@ import javax.servlet.http.*;
 @WebListener
 public class WebSessionListener implements HttpSessionListener {
 
-    @Resource
+//    @Resource
     private MyRoutingDataSource routingDataSource;
 
     @Override
@@ -23,6 +24,7 @@ public class WebSessionListener implements HttpSessionListener {
 
     @Override
     public void sessionDestroyed(HttpSessionEvent event) {
+        routingDataSource = (MyRoutingDataSource)SpringUtils.getBean("routingDataSource");
         UserInfo userInfo = SecurityUtil.getCurrentUserInfo();
         if (userInfo != null)
             routingDataSource.removeCuzDataSource(userInfo);

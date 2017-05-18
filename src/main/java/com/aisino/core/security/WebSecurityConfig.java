@@ -46,10 +46,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Resource
     private MySecurityMetadataSource  securityMetadataSource;
 
-//    DefaultFilterInvocationSecurityMetadataSource
-//    @Resource
-//    ExpressionUrlAuthorizationConfigurer expressionUrlAuthorizationConfigurer;
-
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers("/js/**");
@@ -71,9 +67,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.headers().frameOptions().disable();
         http.addFilterAt(MyUsernamePasswordAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
-//        http.addFilterAfter(filterSecurityInterceptor(),FilterSecurityInterceptor.class).authorizeRequests().anyRequest().fullyAuthenticated().and().exceptionHandling().authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/index")).and().logout().logoutUrl("/logout").logoutSuccessUrl("/index").permitAll().and().exceptionHandling().accessDeniedPage("/accessDenied");;
-
-//        ExpressionUrlAuthorizationConfigurer expressionUrlAuthorizationConfigurer =new ExpressionUrlAuthorizationConfigurer();
         // 开启默认登录页面
         http.authorizeRequests().anyRequest().authenticated().withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
             public <O extends FilterSecurityInterceptor> O postProcess(O fsi) {

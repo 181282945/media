@@ -10,7 +10,7 @@ import com.aisino.common.annotation.CuzDataSource;
 import com.aisino.common.controller.IndexController;
 import com.aisino.common.dto.jqgrid.JqgridFilters;
 import com.aisino.common.util.ParamUtil;
-import com.aisino.core.controller.BaseController;
+import com.aisino.core.controller.BaseUserInfoController;
 import com.aisino.core.dto.ResultDataDto;
 import com.aisino.core.entity.BaseInvoiceEntity;
 import com.aisino.core.mybatis.specification.PageAndSort;
@@ -41,7 +41,7 @@ import java.util.List;
 @RestController
 @RequestMapping(value = UserOrderInfoController.PATH)
 @AclResc(id = 20000,code = "userOrderInfo", name = UserOrderInfoController.MODULE_NAME,homePage = UserOrderInfoController.HOME_PAGE,target = AclResource.Target.USERINFO)
-public class UserOrderInfoController extends BaseController<OrderInfo> {
+public class UserOrderInfoController extends BaseUserInfoController<OrderInfo> {
 
     final static String PATH = "/base/invoice/order/orderinfo/u";
 
@@ -92,6 +92,7 @@ public class UserOrderInfoController extends BaseController<OrderInfo> {
     @AclResc(id = 20001,code = "list",name = "查询列表")
     @Transactional(readOnly = true)
     public ResultDataDto list(JqgridFilters jqgridFilters, @ModelAttribute("pageAndSort")PageAndSort pageAndSort){
+//            throw new RuntimeException("test loadError");
         jqgridFilters.getRules().add(new JqgridFilters.Rule("delflags", QueryLike.LikeMode.Eq.getCode(), BaseInvoiceEntity.DelflagsType.NORMAL.getCode()));
         List<OrderInfo> orderInfos = orderInfoService.findByJqgridFilters(jqgridFilters,pageAndSort);
         return new ResultDataDto(orderInfos,pageAndSort);

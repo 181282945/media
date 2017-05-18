@@ -4,6 +4,7 @@ import com.aisino.base.sysmgr.dbinfo.dao.DbInfoMapper;
 import com.aisino.base.sysmgr.dbinfo.entity.DbInfo;
 import com.aisino.base.sysmgr.dbinfo.service.DbInfoService;
 import com.aisino.common.params.SystemParameter;
+import com.aisino.core.mybatis.DataSourceContextHolder;
 import com.aisino.core.mybatis.MyRoutingDataSource;
 import com.aisino.core.mybatis.specification.QueryLike;
 import com.aisino.core.mybatis.specification.Specification;
@@ -30,7 +31,7 @@ public class DbInfoServiceImpl extends BaseServiceImpl<DbInfo,DbInfoMapper> impl
     @Resource
     private MyRoutingDataSource routingDataSource;
 
-    private static final String mysqlDriver = "com.mysql.jdbc.Driver";
+    public static final String mysqlDriver = "com.mysql.jdbc.Driver";
 
 
 
@@ -46,9 +47,6 @@ public class DbInfoServiceImpl extends BaseServiceImpl<DbInfo,DbInfoMapper> impl
         specification.addQueryLike(new QueryLike("taxNo", QueryLike.LikeMode.Like.Eq,taxNo));
         return this.getOne(specification);
     }
-
-
-
 
     /**
      * 默认数据库

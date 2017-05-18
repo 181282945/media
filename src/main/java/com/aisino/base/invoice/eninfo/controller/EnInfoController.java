@@ -7,6 +7,7 @@ import com.aisino.base.invoice.userinfo.service.UserInfoService;
 import com.aisino.base.sysmgr.aclresource.annotation.AclResc;
 import com.aisino.base.sysmgr.aclresource.entity.AclResource;
 import com.aisino.common.dto.jqgrid.JqgridFilters;
+import com.aisino.common.util.ParamUtil;
 import com.aisino.core.controller.BaseController;
 import com.aisino.core.dto.ResultDataDto;
 import com.aisino.core.mybatis.specification.PageAndSort;
@@ -51,15 +52,12 @@ public class EnInfoController extends BaseController<EnInfo> {
     private static final String SEARCH_URL = PATH + "/list";
 
 
-    @RequestMapping(value = EnInfoController.HOME_PAGE,method = RequestMethod.GET,produces = MediaType.TEXT_HTML_VALUE)
+    @RequestMapping(value = "/tolist",method = RequestMethod.GET,produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView toList(){
         ModelAndView mav = generalMav(PATH,MODULE_NAME,VIEW_NAME,UPDATE_URL,ADD_URL,DELETE_URL,SEARCH_URL);
-//        ModelAndView mav = new ModelAndView(PATH + VIEW_NAME);
-//        mav.addObject("MODULE_NAME",MODULE_NAME);
-//        mav.addObject("UPDATE_URL",UPDATE_URL);
-//        mav.addObject("ADD_URL",ADD_URL);
-//        mav.addObject("DELETE_URL",DELETE_URL);
-//        mav.addObject("SEARCH_URL",SEARCH_URL);
+        mav.addObject("billingOptionTypeParams", ParamUtil.JqgridSelectVal(EnInfo.BillingOptionType.getParams()));
+        mav.addObject("yhzcbsTypeParams", ParamUtil.JqgridSelectVal(EnInfo.YhzcbsType.getParams()));
+        mav.addObject("lslbsTypeParams", ParamUtil.JqgridSelectVal(EnInfo.LslbsType.getParams()));
         return mav;
     }
 

@@ -343,7 +343,10 @@ public class EnInfo extends BaseInvoiceEntity {
             ParamDto[] lslbsTypeParams = new ParamDto[LslbsType.values().length];
 
             for(int i=0;i<lslbsTypeParams.length;i++){
-                lslbsTypeParams[i] = new ParamDto(LslbsType.values()[i].getCode().toString(),LslbsType.values()[i].getName());
+                if(LslbsType.values()[i].getCode() == null)
+                lslbsTypeParams[i] = new ParamDto(null,LslbsType.values()[i].getName());
+                else
+                    lslbsTypeParams[i] = new ParamDto(LslbsType.values()[i].getCode().toString(),LslbsType.values()[i].getName());
             }
             return  lslbsTypeParams;
         }

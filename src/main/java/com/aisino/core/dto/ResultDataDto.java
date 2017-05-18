@@ -12,6 +12,7 @@ import com.aisino.core.entity.BaseEntity;
 import com.aisino.core.exception.RuntimeFunctionException;
 import com.aisino.core.exception.RuntimeOtherException;
 import com.aisino.core.mybatis.specification.PageAndSort;
+import com.aisino.core.security.exception.VerificationException;
 import com.google.gson.Gson;
 import com.aisino.core.exception.RuntimeServiceException;
 import com.aisino.core.exception.RuntimeWebException;
@@ -324,9 +325,13 @@ public class ResultDataDto {
 		if (ex instanceof BindException) {
 			return "系统异常：控制器参数装配异常!";
 		}
+		if(ex instanceof VerificationException){
+			return ex.getMessage();
+		}
 		if(ex instanceof RuntimeException){
 			return ex.getMessage();
 		}
+
 		return ex.getClass().getSimpleName();
 	}
 

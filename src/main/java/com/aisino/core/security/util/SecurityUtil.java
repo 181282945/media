@@ -10,6 +10,7 @@ import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.authentication.AuthenticationTrustResolver;
 import org.springframework.security.authentication.AuthenticationTrustResolverImpl;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 
@@ -124,8 +125,6 @@ public class SecurityUtil {
             return null;
         return  ((User)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
     }
-
-
 
 
     private static UserInfoService getUserInfoService(){

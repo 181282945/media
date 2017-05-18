@@ -26,10 +26,10 @@ public class MyUsernamePasswordAuthenticationFilter extends UsernamePasswordAuth
             throw new AuthenticationServiceException("Authentication method not supported: " + request.getMethod());
         } else {
             String verificationcode = this.obtainVerificationCode(request);
-            String kaptchaCode = (String)request.getSession().getAttribute(com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY);
+            Object kaptchaCode = request.getSession().getAttribute(com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY);
             if(StringUtils.isBlank(verificationcode))
                 throw new VerificationException("请输入验证码! ");
-            if (!kaptchaCode.toUpperCase().equals(verificationcode.toUpperCase()))
+            if (!verificationcode.toUpperCase().equals(kaptchaCode.toString().toUpperCase()))
                 throw new VerificationException("验证码错误! ");
             String username = this.obtainUsername(request);
             String password = this.obtainPassword(request);

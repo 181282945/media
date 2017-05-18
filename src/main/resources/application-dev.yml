@@ -4,10 +4,22 @@ spring:
 #      name: writeDataSource
       type: com.alibaba.druid.pool.DruidDataSource
       write:
-        url: jdbc:mysql://localhost:3306/springboot_demo?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&useSSL=true
+        url: jdbc:mysql://192.168.55.122:3306/cloudinvoice?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&useSSL=true
         username: root
-        password: 123
+        password: root
         driver-class-name: com.mysql.jdbc.Driver
+        initialSize: 50 #初始化连接池大小
+        minIdle: 50 #最小连接池数量
+        maxActive: 500 #最大连接池数量
+        maxWait: 60000 #获取连接等待超时时间  毫秒
+        timeBetweenEvictionRunsMillis: 300000 #连接最小存活时间 毫秒
+        validationQuery: SELECT 'x' #测试连接
+
+      filters: stat,wall,log4j # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
+      connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000 # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
+      useGlobalDataSourceStat: true # 合并多个DruidDataSource的监控数据
+
+
 
     #thymeleaf开发环境关闭thymeleaf缓存
     thymeleaf:
@@ -27,6 +39,7 @@ server:
   tomcat:
     access_log_enabled: true
     basedir: target/tomcat
+
 #security:
 #  ignored: /**
 
@@ -39,77 +52,83 @@ SystemParameter:
   #自动创建数据库,库名前缀
   dbNamePrefix: Db
   #数据库IP
-  dbaddr: localhost
+  dbaddr: 192.168.55.122
   dbport: 3306
-#  dbUrl: jdbc:mysql://localhost:3306/
   username: root
-  password: 123
+  password: root
+  invoiceinfoSql: CREATE TABLE `invoice_invoiceinfo` (
+                  `id` int(11) NOT NULL AUTO_INCREMENT,
+                  `serialNo` varchar(50) NOT NULL COMMENT '流水号(唯一索引)',
+                  `orderNo` varchar(50) NOT NULL COMMENT '订单号(索引，可重复),如果是红票，则填写蓝票订单号',
+                  `projectName` varchar(255) DEFAULT NULL COMMENT '商品名称',
+                  `taxTotal` decimal(10,2) DEFAULT NULL COMMENT '税额合计',
+                  `noTaxTotal` decimal(10,2) DEFAULT NULL COMMENT '不含税合计',
+                  `priceTotal` decimal(10,2) DEFAULT NULL COMMENT '价税合计',
+                  `invoiceCode` varchar(50) NOT NULL COMMENT '发票代码',
+                  `invoiceNum` varchar(50) NOT NULL COMMENT '发票号码',
+                  `invoiceDate` datetime NOT NULL COMMENT '开票日期',
+                  `pdfUrl` varchar(255) DEFAULT NULL COMMENT 'Pdf下载地址',
+                  `invoiceType` tinyint(4) DEFAULT NULL COMMENT '发票类别(0蓝票，1红票)',
+                  `reMarks` varchar(255) DEFAULT NULL COMMENT '备注(红票时填写冲红原因)',
+                  `usrno` varchar(50) DEFAULT NULL COMMENT '用户账号',
+                  `redflags` tinyint(4) NOT NULL DEFAULT '0' COMMENT '0 未冲红,1 已冲红(默认0)',
+                  `listFlag` tinyint(4) NOT NULL DEFAULT '0' COMMENT '清单标识',
+                  `listItemName` varchar(50) DEFAULT NULL COMMENT '清单标志项目名称',
+                  `insertdate` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+                  `delflags` tinyint(4) NOT NULL DEFAULT '0' COMMENT '0正常，1删除(默认0)',
+                  PRIMARY KEY (`id`),
+                  UNIQUE KEY `idx_uniq_serialNo` (`serialNo`) USING BTREE,
+                  KEY `idx_orderNo` (`orderNo`) USING BTREE
+                ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
   orderinfoSql: CREATE TABLE `invoice_orderinfo` (
                   `id` int(11) NOT NULL AUTO_INCREMENT,
                   `taxno` varchar(50) NOT NULL,
-                  `dkflags` tinyint(4) DEFAULT NULL,
-                  `ticketCode` varchar(10) DEFAULT NULL,
-                  `majorItems` varchar(255) DEFAULT NULL,
-                  `buyerName` varchar(200) DEFAULT NULL,
-                  `buyerTaxno` varchar(20) DEFAULT NULL,
-                  `buyerAddr` varchar(200) DEFAULT NULL,
-                  `buyerProvince` varchar(20) DEFAULT NULL,
-                  `buyerTele` varchar(15) DEFAULT NULL,
-                  `buyerMobile` varchar(30) DEFAULT NULL,
-                  `buyerEmail` varchar(100) DEFAULT NULL,
-                  `buyerType` varchar(10) DEFAULT NULL,
-                  `buyerBankAcc` varchar(100) DEFAULT NULL,
-                  `induCode` varchar(50) DEFAULT NULL,
-                  `induName` varchar(50) DEFAULT NULL,
-                  `remarks` varchar(200) DEFAULT NULL,
+                  `dkflags` tinyint(4) NOT NULL COMMENT '代开标志（0 自开，1 代开）',
+                  `ticketCode` varchar(10) DEFAULT NULL COMMENT '票样代码',
+                  `majorItems` varchar(255) NOT NULL COMMENT '主要开票商品',
+                  `buyerName` varchar(200) NOT NULL COMMENT '购货方名称',
+                  `buyerTaxno` varchar(20) DEFAULT NULL COMMENT '购货方税号(纳税识别号)',
+                  `buyerAddr` varchar(200) DEFAULT NULL COMMENT '购货方地址',
+                  `buyerProvince` varchar(20) DEFAULT NULL COMMENT '购货方省份',
+                  `buyerTele` varchar(15) DEFAULT NULL COMMENT '购货方固定电话',
+                  `buyerMobile` varchar(30) NOT NULL COMMENT '购货方手机',
+                  `buyerEmail` varchar(100) DEFAULT NULL COMMENT '购货方邮箱',
+                  `buyerType` varchar(10) NOT NULL COMMENT '购货方类型（01：企业02：机关事业单位03：个人04：其它）',
+                  `buyerBankAcc` varchar(100) DEFAULT NULL COMMENT '购货方账号(开户行及账号)',
+                  `induCode` varchar(50) DEFAULT NULL COMMENT '行业代码',
+                  `induName` varchar(50) DEFAULT NULL COMMENT '行业名称',
+                  `remarks` varchar(200) DEFAULT NULL COMMENT '备注',
                   `orderNo` varchar(50) DEFAULT NULL,
-                  `status` tinyint(4) DEFAULT '0',
-                  `usrno` varchar(50) DEFAULT NULL,
-                  `orderDate` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+                  `status` tinyint(4) NOT NULL DEFAULT '0' COMMENT '订单状态(0未开，1已开，默认0)',
+                  `usrno` varchar(50) NOT NULL COMMENT '用户账号',
+                  `orderDate` datetime DEFAULT NULL,
                   `serialNo` varchar(50) DEFAULT NULL,
                   `insertDate` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
-                  `delflags` tinyint(4) DEFAULT NULL,
+                  `delflags` tinyint(4) NOT NULL DEFAULT '0' COMMENT '删除标识',
                   PRIMARY KEY (`id`),
                   UNIQUE KEY `idx_uniq_orderNo` (`orderNo`)
                 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
   orderdetailSql: CREATE TABLE `invoice_orderdetail` (
                     `id` int(11) NOT NULL AUTO_INCREMENT,
-                    `orderNo` varchar(50) DEFAULT NULL,
-                    `itemName` varchar(200) DEFAULT NULL,
-                    `itemUnit` varchar(10) DEFAULT NULL,
-                    `itemNum` varchar(30) DEFAULT NULL,
-                    `specMode` varchar(30) DEFAULT NULL,
-                    `itemPrice` decimal(10,2) DEFAULT NULL,
-                    `invoiceNature` tinyint(4) DEFAULT NULL,
-                    `itemTaxCode` varchar(50) DEFAULT NULL,
-                    `taxRate` decimal(10,0) DEFAULT NULL,
+                    `orderNo` varchar(50) NOT NULL COMMENT '订单号(索引，可重复)',
+                    `itemName` varchar(200) NOT NULL COMMENT '商品名称',
+                    `itemUnit` varchar(10) DEFAULT NULL COMMENT '单位',
+                    `itemNum` varchar(30) DEFAULT NULL COMMENT '商品数量，保留两位小数',
+                    `specMode` varchar(30) DEFAULT NULL COMMENT '规格型号',
+                    `itemPrice` decimal(10,2) NOT NULL COMMENT '单价',
+                    `taxIncluded` tinyint(4) NOT NULL COMMENT '含税标识(0:不含税,1:含税)',
+                    `invoiceNature` tinyint(4) NOT NULL COMMENT '发票行性质(0正常，1折扣行，2被折扣行)',
+                    `itemTaxCode` varchar(50) NOT NULL COMMENT '税控分类编码',
+                    `cuzCode` varchar(50) DEFAULT NULL COMMENT '自行编码',
+                    `taxRate` varchar(50) NOT NULL COMMENT '税率',
                     `insertDate` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
-                    `delflags` tinyint(4) DEFAULT NULL,
+                    `delflags` tinyint(4) NOT NULL DEFAULT '0' COMMENT '0正常，1删除(默认0)(注意：订单号改为：订单号-1)',
                     PRIMARY KEY (`id`),
                     KEY `fk_orderNo` (`orderNo`),
                     CONSTRAINT `fk_orderNo` FOREIGN KEY (`orderNo`) REFERENCES `invoice_orderinfo` (`orderNo`) ON DELETE CASCADE ON UPDATE CASCADE
                   ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
-
-  invoiceinfoSql: CREATE TABLE `invoice_invoiceinfo` (
-                    `id` int(11) NOT NULL AUTO_INCREMENT,
-                    `serialNo` varchar(50) DEFAULT NULL,
-                    `orderNo` varchar(50) DEFAULT NULL,
-                    `projectName` varchar(255) DEFAULT NULL,
-                    `taxTotal` decimal(10,0) DEFAULT NULL,
-                    `noTaxTotal` decimal(10,0) DEFAULT NULL,
-                    `priceTotal` decimal(10,0) DEFAULT NULL,
-                    `invoiceCode` varchar(50) DEFAULT NULL,
-                    `invoiceNum` varchar(50) DEFAULT NULL,
-                    `invoiceDate` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
-                    `pdfUrl` varchar(255) DEFAULT NULL,
-                    `invoiceType` tinyint(4) DEFAULT NULL,
-                    `reMarks` varchar(255) DEFAULT NULL,
-                    `usrno` varchar(50) DEFAULT NULL,
-                    `insertdate` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
-                    `delflags` tinyint(4) DEFAULT NULL,
-                    PRIMARY KEY (`id`)
-                  ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 #
 Request:

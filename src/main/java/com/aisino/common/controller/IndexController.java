@@ -1,7 +1,6 @@
 package com.aisino.common.controller;
 
 import com.aisino.base.invoice.eninfo.service.EnInfoService;
-import com.aisino.base.invoice.order.orderinfo.controller.UserOrderInfoController;
 import com.aisino.base.sysmgr.aclmenu.service.AclMenuService;
 import com.aisino.core.controller.BaseController;
 import com.aisino.core.entity.BaseEntity;
@@ -14,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
-import java.awt.*;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Created by 为 on 2017-4-27.
@@ -32,7 +31,7 @@ public class IndexController extends BaseController<BaseEntity> {
 
 
     @RequestMapping(value = "/index",method = RequestMethod.GET,produces = MediaType.TEXT_HTML_VALUE)
-    public ModelAndView toIndex(){
+    public ModelAndView toIndex(HttpServletRequest request){
 
         ModelAndView mav = new ModelAndView("index");
         String userName = SecurityUtil.getCurrentUserName();
@@ -40,7 +39,6 @@ public class IndexController extends BaseController<BaseEntity> {
             return mav;
         if(!SecurityUtil.isAclUser()){//如果是前台用户
             mav.addObject("userName",userName);
-
             if(!enInfoService.isCompleteByUsrno(SecurityUtil.getCurrentUserName()))//如果没有完善企业信息,展开完善企业信息视图
                 mav.addObject("completeEnInfo",false);
             return mav;

@@ -6,7 +6,6 @@ import com.aisino.core.dto.ResultDataDto;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
 
 /**
  * Created by 为 on 2017-4-6.
@@ -14,7 +13,6 @@ import org.springframework.web.servlet.ModelAndView;
  */
 @RestController
 public class AuthSuccessHandler extends BaseController<AclUser> {
-
 
     @RequestMapping(value = "/loginSuccess",method = RequestMethod.GET)
     public ResultDataDto loginSuccess(){

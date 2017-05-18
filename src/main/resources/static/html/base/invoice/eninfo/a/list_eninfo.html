@@ -1,36 +1,36 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta charset="utf-8"/>
     <title th:text="${MODULE_NAME}">htxx</title>
 
-    <meta name="description" content="Dynamic tables and grids using jqGrid plugin" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+    <meta name="description" content="Dynamic tables and grids using jqGrid plugin"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
 
     <!-- bootstrap & fontawesome -->
-    <link rel="stylesheet" href="/assets/css/bootstrap.css" />
-    <link rel="stylesheet" href="/components/font-awesome/css/font-awesome.css" />
+    <link rel="stylesheet" href="/assets/css/bootstrap.css"/>
+    <link rel="stylesheet" href="/components/font-awesome/css/font-awesome.css"/>
 
     <!-- page specific plugin styles -->
-    <link rel="stylesheet" href="/components/_mod/jquery-ui/jquery-ui.css" />
-    <link rel="stylesheet" href="/components/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css" />
-    <link rel="stylesheet" href="/components/_mod/jqgrid/ui.jqgrid.css" />
+    <link rel="stylesheet" href="/components/_mod/jquery-ui/jquery-ui.css"/>
+    <link rel="stylesheet" href="/components/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css"/>
+    <link rel="stylesheet" href="/components/_mod/jqgrid/ui.jqgrid.css"/>
 
     <!-- text fonts -->
-    <link rel="stylesheet" href="/assets/css/ace-fonts.css" />
+    <link rel="stylesheet" href="/assets/css/ace-fonts.css"/>
 
     <!-- ace styles -->
-    <link rel="stylesheet" href="/assets/css/ace.css" class="ace-main-stylesheet" id="main-ace-style" />
+    <link rel="stylesheet" href="/assets/css/ace.css" class="ace-main-stylesheet" id="main-ace-style"/>
 
     <!--[if lte IE 9]>
-    <link rel="stylesheet" href="/assets/css/ace-part2.css" class="ace-main-stylesheet" />
+    <link rel="stylesheet" href="/assets/css/ace-part2.css" class="ace-main-stylesheet"/>
     <![endif]-->
-    <link rel="stylesheet" href="/assets/css/ace-skins.css" />
-    <link rel="stylesheet" href="/assets/css/ace-rtl.css" />
+    <link rel="stylesheet" href="/assets/css/ace-skins.css"/>
+    <link rel="stylesheet" href="/assets/css/ace-rtl.css"/>
 
     <!--[if lte IE 9]>
-    <link rel="stylesheet" href="/assets/css/ace-ie.css" />
+    <link rel="stylesheet" href="/assets/css/ace-ie.css"/>
     <![endif]-->
 
     <!-- inline styles related to this page -->
@@ -94,11 +94,11 @@
 <script src="/components/jquery.1x/dist/jquery.js"></script>
 <![endif]-->
 <script type="text/javascript">
-    if('ontouchstart' in document.documentElement) document.write("<script src='/components/_mod/jquery.mobile.custom/jquery.mobile.custom.js'>"+"<"+"/script>");
+    if ('ontouchstart' in document.documentElement) document.write("<script src='/components/_mod/jquery.mobile.custom/jquery.mobile.custom.js'>" + "<" + "/script>");
 </script>
 <script src="/js/layer/layer.js"></script>
 <script src="/js/base.js"></script>
-<script src="/js/base/invoice/userinfo/list_userinfo.js"></script>
+<script src="/js/base/sysmgr/aclresource/list_aclresource.js"></script>
 <script src="/components/bootstrap/dist/js/bootstrap.js"></script>
 
 <!-- page specific plugin scripts -->
@@ -109,22 +109,22 @@
 <!-- inline scripts related to this page -->
 <script type="text/javascript" th:inline="javascript">
 
-    jQuery(function($) {
+    jQuery(function ($) {
         var grid_selector = "#grid-table";
         var pager_selector = "#grid-pager";
 
         var parent_column = $(grid_selector).closest('[class*="col-"]');
         //resize to fit page size
         $(window).on('resize.jqGrid', function () {
-            $(grid_selector).jqGrid( 'setGridWidth', parent_column.width() );
+            $(grid_selector).jqGrid('setGridWidth', parent_column.width());
         })
 
         //resize on sidebar collapse/expand
-        $(document).on('settings.ace.jqGrid' , function(ev, event_name, collapsed) {
-            if( event_name === 'sidebar_collapsed' || event_name === 'main_container_fixed' ) {
+        $(document).on('settings.ace.jqGrid', function (ev, event_name, collapsed) {
+            if (event_name === 'sidebar_collapsed' || event_name === 'main_container_fixed') {
                 //setTimeout is for webkit only to give time for DOM changes and then redraw!!!
-                setTimeout(function() {
-                    $(grid_selector).jqGrid( 'setGridWidth', parent_column.width() );
+                setTimeout(function () {
+                    $(grid_selector).jqGrid('setGridWidth', parent_column.width());
                 }, 20);
             }
         })
@@ -144,44 +144,48 @@
 				})
          */
 
+
+
+
+
         jQuery(grid_selector).jqGrid({
-            //direction: "rtl",
             shrinkToFit:true,
             autoScroll: true,
-            url:[[${SEARCH_URL}]],
+            url: [[${SEARCH_URL}]],
             datatype: "json",
             jsonReader: {
-                root:"datas",
+                root: "datas",
                 page: "pageAndSort.page",
                 total: "pageAndSort.totalPage",
                 records: "pageAndSort.rowCount",
-                repeatitems : false
+                repeatitems: false
             },
-            prmNames : {
-                page:"pageAndSort.page",    // 表示请求页码的参数名称
-                rows:"pageAndSort.rp",    // 表示请求行数的参数名称
+            prmNames: {
+                page: "pageAndSort.page",    // 表示请求页码的参数名称
+                rows: "pageAndSort.rp",    // 表示请求行数的参数名称
                 sort: "pageAndSort.sortName", // 表示用于排序的列名的参数名称
                 order: "pageAndSort.sortOrder", // 表示采用的排序方式的参数名称
-                search:"_search", // 表示是否是搜索请求的参数名称
+                search: "_search", // 表示是否是搜索请求的参数名称
 //                nd:"nd", // 表示已经发送请求的次数的参数名称
-                id:"id", // 表示当在编辑数据模块中发送数据时，使用的id的名称
-                oper:"oper",    // operation参数名称（我暂时还没用到）
-                editoper:"edit", // 当在edit模式中提交数据时，操作的名称
-                addoper:"add", // 当在add模式中提交数据时，操作的名称
-                deloper:"del", // 当在delete模式中提交数据时，操作的名称
-                subgridid:"id", // 当点击以载入数据到子表时，传递的数据名称
+                id: "id", // 表示当在编辑数据模块中发送数据时，使用的id的名称
+                oper: "oper",    // operation参数名称（我暂时还没用到）
+                editoper: "edit", // 当在edit模式中提交数据时，操作的名称
+                addoper: "add", // 当在add模式中提交数据时，操作的名称
+                deloper: "del", // 当在delete模式中提交数据时，操作的名称
+                subgridid: "id", // 当点击以载入数据到子表时，传递的数据名称
                 npage: null,
 //                totalrows:"rowCount" // 表示需从Server得到总共多少行数据的参数名称，参见jqGrid选项中的rowTotal
             },
             height: 400,
-            colNames:[' ', 'ID','企业税号','用户账号','平台编码','授权码','注册码','开票方电子档案号','税务机构代码','编码表版本号','创建时间','是否生效'],
-            colModel:[
-                {name:'myac',index:'', width:80, fixed:true, sortable:false, resize:false,
-                    formatter:'actions',
-                    formatoptions:{
-                        keys:true,
-                        editbutton : true,
-                        delbutton : false,
+            colNames: [' ', 'id','用户账号', '税号', '企业名称', '银行账号', '企业地址','企业电话','开票人','收款人','复核人','开票选项','优惠政策标识','零税率标识','增值税特殊管理'],
+            colModel: [
+                {
+                    name: 'myac', index: '', width: 80, fixed: true, sortable: false, resize: false,
+                    formatter: 'actions',
+                    formatoptions: {
+                        keys: true,
+                        editbutton: true,
+                        delbutton: false,
                         delbutton : true,
                         delOptions:{
                             url:[[${DELETE_URL}]],
@@ -192,32 +196,37 @@
                     }
                 },
 
-                {name:'id',index:'id',width:50, editable: true,search:true,hidden:true},
-                {name:'taxNo',index:'taxNo', editable: true},
-                {name:'usrno',index:'usrno', editable: true},
-                {name:'platformCode', index: 'platformCode', editable: true},
-                {name:'authCode',index:'authCode', editable: true},
-                {name:'regiCode',index:'regiCode', editable: true},
-                {name:'elecNmber',index:'elecNmber', editable: true},
-                {name:'taxCode',index:'taxCode', editable: true},
-                {name:'codeTableVer',index:'codeTableVer', editable: true},
-                {name:'insertDate',index:'insertDate', editable: false,formatter:'date',formatter:'date', formatoptions: {srcformat: 'u', newformat:'Y-m-d H:i'}},
-                {name:'delflags',index:'delflags', editable: true},
+                {name: 'id', index: 'id', width: 50, editable: false, search: true, hidden: true},
+                {name: 'usrno', index: 'usrno', editable: false},
+                {name: 'taxno', index: 'taxno', editable: false},
+                {name: 'taxname', index: 'taxname', editable: true},
+                {name: 'bankaccount', index: 'bankaccount', editable: true},
+                {name: 'taxaddr', index: 'taxaddr', editable: true},
+                {name: 'taxtel', index: 'taxtel', editable: true},
+                {name: 'drawer', index: 'drawer', editable: true},
+                {name: 'payee', index: 'payee', editable: true},
+                {name: 'reviewer', index: 'reviewer', editable: true},
+                {name: 'billingOption', index: 'billingOption', editable: true,edittype: "select",editoptions: {value: [[${billingOptionTypeParams}]]},formatter: 'select'},
+                {name: 'yhzcbs', index: 'yhzcbs', editable: true,edittype: "select",editoptions: {value: [[${yhzcbsTypeParams}]]},formatter: 'select'},
+                {name: 'lslbs', index: 'lslbs', editable: true,edittype: "select",editoptions: {value: [[${lslbsTypeParams}]]},formatter: 'select'},
+                {name: 'zzstsgl', index: 'zzstsgl', editable: true}
+
             ],
 
-            viewrecords : true,
-            rowNum:10,
-            rowList:[10,20,30],
-            pager : pager_selector,
+            viewrecords: true,
+            rowNum: 10,
+            rowList: [10, 20, 30],
+            pager: pager_selector,
             altRows: true,
             //toppager: true,
+
             multiselect: false,
             //multikey: "ctrlKey",
             multiboxonly: false,
 
-            loadComplete : function() {
+            loadComplete: function () {
                 var table = this;
-                setTimeout(function(){
+                setTimeout(function () {
                     styleCheckbox(table);
                     updateActionIcons(table);
                     updatePagerIcons(table);
@@ -250,103 +259,107 @@
         $(window).triggerHandler('resize.jqGrid');//trigger window resize to make the grid get the correct size
 
 
-
         //enable search/filter toolbar
         //jQuery(grid_selector).jqGrid('filterToolbar',{defaultSearch:true,stringResult:true})
         //jQuery(grid_selector).filterToolbar({});
 
 
         //switch element when editing inline
-        function aceSwitch( cellvalue, options, cell ) {
-            setTimeout(function(){
-                $(cell) .find('input[type=checkbox]')
+        function aceSwitch(cellvalue, options, cell) {
+            setTimeout(function () {
+                $(cell).find('input[type=checkbox]')
                     .addClass('ace ace-switch ace-switch-5')
                     .after('<span class="lbl"></span>');
             }, 0);
         }
+
         //enable datepicker
-        function pickDate( cellvalue, options, cell ) {
-            setTimeout(function(){
-                $(cell) .find('input[type=text]')
-                    .datepicker({format:'yyyy-mm-dd' , autoclose:true});
+        function pickDate(cellvalue, options, cell) {
+            setTimeout(function () {
+                $(cell).find('input[type=text]')
+                    .datepicker({format: 'yyyy-mm-dd', autoclose: true});
             }, 0);
         }
 
+
         //navButtons
-        jQuery(grid_selector).jqGrid('navGrid',pager_selector,
+        jQuery(grid_selector).jqGrid('navGrid', pager_selector,
             { 	//navbar options
                 edit: true,
-                editicon : 'ace-icon fa fa-pencil blue',
+                editicon: 'ace-icon fa fa-pencil blue',
                 add: true,
-                addicon : 'ace-icon fa fa-plus-circle purple',
+                addicon: 'ace-icon fa fa-plus-circle purple',
                 del: true,
-                delicon : 'ace-icon fa fa-trash-o red',
+                delicon: 'ace-icon fa fa-trash-o red',
                 search: true,
-                searchicon : 'ace-icon fa fa-search orange',
+                searchicon: 'ace-icon fa fa-search orange',
                 refresh: true,
-                refreshicon : 'ace-icon fa fa-refresh green',
+                refreshicon: 'ace-icon fa fa-refresh green',
                 view: true,
-                viewicon : 'ace-icon fa fa-search-plus grey',
+                viewicon: 'ace-icon fa fa-search-plus grey',
             },
-            {url: [[${UPDATE_URL}]],
+            {
+                url: [[${UPDATE_URL}]],
                 //edit record form
                 //closeAfterEdit: true,
                 //width: 700,
                 recreateForm: true,
-                beforeShowForm : function(e) {
+                beforeShowForm: function (e) {
                     var form = $(e[0]);
                     form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
                     style_edit_form(form);
                 },
-                afterComplete:afterCompleteCallback
+                afterComplete: afterCompleteCallback
             },
             //add options
-            { url: [[${ADD_URL}]],
+            {
+                url: [[${ADD_URL}]],
                 //new record form
                 //width: 700,
                 closeAfterAdd: true,
                 recreateForm: true,
                 viewPagerButtons: false,
-                beforeShowForm : function(e) {
+                beforeShowForm: function (e) {
                     var form = $(e[0]);
                     form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar')
                         .wrapInner('<div class="widget-header" />')
                     style_edit_form(form);
                 },
-                afterComplete:afterCompleteCallback
+                afterComplete: afterCompleteCallback
             },
             //delete options
-            { url: [[${DELETE_URL}]],
+            {
+                url: [[${DELETE_URL}]],
                 //delete record form
                 recreateForm: true,
-                beforeShowForm : function(e) {
+                beforeShowForm: function (e) {
                     var form = $(e[0]);
-                    if(form.data('styled')) return false;
+                    if (form.data('styled')) return false;
 
                     form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
                     style_delete_form(form);
 
                     form.data('styled', true);
                 },
-                afterComplete:afterCompleteCallback,
-                onClick : function(e) {
+                afterComplete: afterCompleteCallback,
+                onClick: function (e) {
 //                    alert(1);
                 }
             },
             //search
             {
-                url: [[${SEARCH_URL}]],
+                url: [[${SEARCH_MODULE_URL}]],
                 //search form
                 recreateForm: true,
-                afterShowSearch: function(e){
+                afterShowSearch: function (e) {
                     var form = $(e[0]);
                     form.closest('.ui-jqdialog').find('.ui-jqdialog-title').wrap('<div class="widget-header" />')
                     style_search_form(form);
                 },
-                afterRedraw: function(){
+                afterRedraw: function () {
                     style_search_filters($(this));
                 },
-                multipleSearch:true,
+                multipleSearch: true,
 //                multipleGroup:true,
 //                showQuery: true
                 /**
@@ -357,10 +370,9 @@
         )
 
 
-
         function style_edit_form(form) {
             //enable datepicker on "sdate" field and switches for "stock" field
-            form.find('input[name=sdate]').datepicker({format:'yyyy-mm-dd' , autoclose:true})
+            form.find('input[name=sdate]').datepicker({format: 'yyyy-mm-dd', autoclose: true})
 
             form.find('input[name=stock]').addClass('ace ace-switch ace-switch-5').after('<span class="lbl"></span>');
             //don't wrap inside a label element, the checkbox value won't be submitted (POST'ed)
@@ -403,7 +415,7 @@
 
         function beforeDeleteCallback(e) {
             var form = $(e[0]);
-            if(form.data('styled')) return false;
+            if (form.data('styled')) return false;
 
             form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
             style_delete_form(form);
@@ -416,7 +428,6 @@
             form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
             style_edit_form(form);
         }
-
 
 
         //it causes some flicker when reloading or navigating grid
@@ -459,22 +470,22 @@
         function updatePagerIcons(table) {
             var replacement =
                 {
-                    'ui-icon-seek-first' : 'ace-icon fa fa-angle-double-left bigger-140',
-                    'ui-icon-seek-prev' : 'ace-icon fa fa-angle-left bigger-140',
-                    'ui-icon-seek-next' : 'ace-icon fa fa-angle-right bigger-140',
-                    'ui-icon-seek-end' : 'ace-icon fa fa-angle-double-right bigger-140'
+                    'ui-icon-seek-first': 'ace-icon fa fa-angle-double-left bigger-140',
+                    'ui-icon-seek-prev': 'ace-icon fa fa-angle-left bigger-140',
+                    'ui-icon-seek-next': 'ace-icon fa fa-angle-right bigger-140',
+                    'ui-icon-seek-end': 'ace-icon fa fa-angle-double-right bigger-140'
                 };
-            $('.ui-pg-table:not(.navtable) > tbody > tr > .ui-pg-button > .ui-icon').each(function(){
+            $('.ui-pg-table:not(.navtable) > tbody > tr > .ui-pg-button > .ui-icon').each(function () {
                 var icon = $(this);
                 var $class = $.trim(icon.attr('class').replace('ui-icon', ''));
 
-                if($class in replacement) icon.attr('class', 'ui-icon '+replacement[$class]);
+                if ($class in replacement) icon.attr('class', 'ui-icon ' + replacement[$class]);
             })
         }
 
         function enableTooltips(table) {
-            $('.navtable .ui-pg-button').tooltip({container:'body'});
-            $(table).find('.ui-pg-div').tooltip({container:'body'});
+            $('.navtable .ui-pg-button').tooltip({container: 'body'});
+            $(table).find('.ui-pg-div').tooltip({container: 'body'});
         }
 
 
@@ -482,18 +493,18 @@
          * 自定义请求完成后处理事件
          * @param data
          */
-        function afterCompleteCallback(data){
+        function afterCompleteCallback(data) {
             afterCompleteMsg(data)
         }
 
         //var selr = jQuery(grid_selector).jqGrid('getGridParam','selrow');
 
-        $(document).one('ajaxloadstart.page', function(e) {
+        $(document).one('ajaxloadstart.page', function (e) {
             $.jgrid.gridDestroy(grid_selector);
             $('.ui-jqdialog').remove();
         });
 
-        $(grid_selector).closest(".ui-jqgrid-bdiv").css({ 'overflow-x' : 'scroll' });
+        $(grid_selector).closest(".ui-jqgrid-bdiv").css({'overflow-x': 'scroll'});
     });
 
 </script>

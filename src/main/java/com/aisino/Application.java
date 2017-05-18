@@ -5,8 +5,6 @@ import com.aisino.base.invoice.authcodeinfo.params.DataDescriptionParams;
 import com.aisino.base.invoice.authcodeinfo.params.RequestParams;
 import com.aisino.common.listener.WebSessionListener;
 import com.aisino.common.params.SystemParameter;
-import com.aisino.core.listener.StartupListener;
-import com.aisino.core.util.SpringUtils;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -16,15 +14,12 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-
 
 /**
  *	服务启动类
  */
 @SpringBootApplication
-@ServletComponentScan(basePackageClasses = {StartupListener.class, WebSessionListener.class})
+@ServletComponentScan(basePackageClasses = {WebSessionListener.class})
 @EnableConfigurationProperties({SystemParameter.class, RequestParams.class, GlobalInfoParams.class, DataDescriptionParams.class})
 public class Application extends SpringBootServletInitializer implements EmbeddedServletContainerCustomizer {
 	/**
@@ -33,18 +28,6 @@ public class Application extends SpringBootServletInitializer implements Embedde
 	 */
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
-	}
-
-
-	/**
-	 * 添加监听器
-	 * @param servletContext
-	 * @throws ServletException
-	 */
-	@Override
-	public void onStartup(ServletContext servletContext) throws ServletException {
-		super.onStartup(servletContext);
-		servletContext.addListener((StartupListener)SpringUtils.getBean("startupListener"));
 	}
 
 

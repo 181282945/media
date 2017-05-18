@@ -12,10 +12,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(value = Exception.class)
+    @ExceptionHandler(Exception.class)
     @ResponseBody
     public ResultDataDto jsonErrorHandler(Exception ex) throws Exception {
         ResultDataDto resultDataDto = new ResultDataDto(ex);
         return resultDataDto;
     }
+
 }

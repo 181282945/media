@@ -130,6 +130,10 @@ SystemParameter:
                     CONSTRAINT `fk_orderNo` FOREIGN KEY (`orderNo`) REFERENCES `invoice_orderinfo` (`orderNo`) ON DELETE CASCADE ON UPDATE CASCADE
                   ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
+
+
+  taxRate: 0.03,0.04,0.05  #合法税率数组,如果用户导入数据,跟数组税率不匹配,那么将不会导入
+
 #
 Request:
   url: http://ei.szhtxx.com:9001/front/request/4458

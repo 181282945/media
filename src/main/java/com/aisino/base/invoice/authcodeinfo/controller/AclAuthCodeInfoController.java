@@ -5,8 +5,10 @@ import com.aisino.base.invoice.authcodeinfo.service.AuthCodeInfoService;
 import com.aisino.base.sysmgr.aclresource.annotation.AclResc;
 import com.aisino.base.sysmgr.aclresource.entity.AclResource;
 import com.aisino.common.dto.jqgrid.JqgridFilters;
+import com.aisino.common.util.ParamUtil;
 import com.aisino.core.controller.BaseController;
 import com.aisino.core.dto.ResultDataDto;
+import com.aisino.core.entity.BaseBusinessEntity;
 import com.aisino.core.mybatis.specification.PageAndSort;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,6 +49,7 @@ public class AclAuthCodeInfoController extends BaseController<AuthCodeInfo>{
     @RequestMapping(value = "/tolist",method = RequestMethod.GET,produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView toList(){
         ModelAndView mav = generalMav(PATH,MODULE_NAME,VIEW_NAME,UPDATE_URL,ADD_URL,DELETE_URL,SEARCH_URL);
+        mav.addObject("delflagsTypeParams", ParamUtil.JqgridSelectVal(BaseBusinessEntity.DelflagsType.getParams()));
         return mav;
     }
 

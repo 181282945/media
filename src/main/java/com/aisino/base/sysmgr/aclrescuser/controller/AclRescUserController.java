@@ -20,7 +20,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = AclRescUserController.PATH)
-@AclResc(id = 5000,code = "aclRescUser", name = AclRescUserController.MODULE_NAME,homePage = AclRescUserController.HOME_PAGE,target = AclResource.Target.ACLUSER)
+@AclResc(id = 5000,code = "aclRescUser", name = AclRescUserController.MODULE_NAME,homePage = AclRescUserController.HOME_PAGE,target = AclResource.Target.ACLUSER,isMenu = false)
 public class AclRescUserController extends BaseController<AclRescUser> {
     final static String PATH = "/base/sysmgr/aclrescuser";
     final static String HOME_PAGE = PATH + "/tolist";

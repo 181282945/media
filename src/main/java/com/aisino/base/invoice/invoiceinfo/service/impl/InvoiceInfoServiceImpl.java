@@ -217,15 +217,21 @@ public class InvoiceInfoServiceImpl extends BaseServiceImpl<InvoiceInfo, Invoice
                 if (OrderInfo.StatusType.ALREADY.getCode().equals(orderInfo[0].getStatus()) && KpRequestyl.FpkjxxFptxx.CzdmType.NORMAL.equals(czdmType) && InvoiceInfo.InvoiceType.NORMAL.equals(invoiceType))
                     throw new RuntimeException("此订单已经开票,不能重复开票!");
                 if (StringUtils.isBlank(orderInfo[0].getSerialNo()))
+                {
                     orderInfo[0].setSerialNo(String.valueOf(worker.nextId()));//设置发票唯一流水号
+                    orderInfoService.updateEntity(orderInfo[0]);
+                }
                 if (InvoiceInfo.InvoiceType.RED.equals(invoiceType)) {
                     orginalInvoiceInfo[0] = invoiceInfoService.getBySerialNo(orderInfo[0].getSerialNo());//正式环境用这个
                     if (orginalInvoiceInfo[0] == null)
                         throw new RuntimeException("没有找到原发票信息,冲红失败!");
                     if (InvoiceInfo.RedflagsType.ALREADY.getCode().equals(orginalInvoiceInfo[0].getRedflags()))
                         throw new RuntimeException("此发票不能重复冲红!");
+                    if(orginalInvoiceInfo[0].getSerialNoRed() == null){
+                        orginalInvoiceInfo[0].setSerialNoRed(String.valueOf(worker.nextId()));//设置红票唯一流水号
+                        invoiceInfoService.updateEntity(orginalInvoiceInfo[0]);
+                    }
                 }
-                orderInfoService.updateEntity(orderInfo[0]);
                 orderDetails.addAll(orderDetailService.findByOrderNo(orderInfo[0].getOrderNo()));
             }
         });
@@ -385,6 +391,7 @@ public class InvoiceInfoServiceImpl extends BaseServiceImpl<InvoiceInfo, Invoice
         fpkjxxFptxx.setKplx(invoiceType.getCode());  //开票类型    1 正票 2 红票
 
         if (InvoiceInfo.InvoiceType.RED.equals(invoiceType)) {
+            fpkjxxFptxx.setFpqqlsh(orginalInvoiceInfo.getSerialNoRed());//发票请求唯一流水号
             fpkjxxFptxx.setYfpdm(orginalInvoiceInfo.getInvoiceCode());  //原发票代码
             fpkjxxFptxx.setYfphm(orginalInvoiceInfo.getInvoiceNum());  //原发票号码
             /**

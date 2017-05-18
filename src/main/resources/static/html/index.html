@@ -411,9 +411,8 @@
                                 <!-- #section:elements.tooltip -->
                                 <p>
                                     <span class="btn btn-sm" data-rel="tooltip"><a href="/logout"> 退出登录</a></span>
-                                    <span class="btn btn-info btn-sm tooltip-info" style="right: 0px">去开票</span>
+                                    <span class="btn btn-info btn-sm tooltip-info" style="right: 0px"><a href="/base/invoice/order/orderinfo/u/tolist">去开票</a></span>
                                 </p>
-
                                 <!-- /section:elements.tooltip -->
                             </div>
                         </div>
@@ -729,14 +728,15 @@
             jQuery(form).ajaxSubmit(function (data) {
                 if (data.operateCode == "F") {
                     layerAlertMsg(data.message);
+                    refreshCaptcha('verification_code_img2');
                 } else if (data.operateCode == "S") {
                     layer.alert('<h5 style="color: red"><b>恭喜您注册成功,请前往登录,并完善企业信息!</b></h5>', {
                         icon: 1,
                         skin: 'layer-ext-moon'
                     });
-                    $('#logindiv a:first').tab('show')
+                    $('#logindiv a:first').tab('show');
+                    refreshCaptcha('verification_code_img');
                 }
-                refreshCaptcha('verification_code_img2');
             });
         }
     });

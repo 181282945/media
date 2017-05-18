@@ -56,9 +56,9 @@
 
         <!--因配置外部TOMCAT 而配置-->
         <!--<dependency>-->
-        <!--<groupId>org.springframework.boot</groupId>-->
-        <!--<artifactId>spring-boot-starter-tomcat</artifactId>-->
-        <!--<scope>provided</scope>-->
+            <!--<groupId>org.springframework.boot</groupId>-->
+            <!--<artifactId>spring-boot-starter-tomcat</artifactId>-->
+            <!--<scope>provided</scope>-->
         <!--</dependency>-->
 
         <dependency>
@@ -210,12 +210,28 @@
                         <resource>
                             <directory>${project.basedir}/lib/</directory>
                             <targetPath>WEB-INF/lib</targetPath>
-                            <!--<filtering>false</filtering>-->
+                            <filtering>false</filtering>
                             <includes>
                                 <include>**/*.jar</include>
                             </includes>
                         </resource>
                     </webResources>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.6.1</version>
+                <configuration>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                    <!--
+                        将jre/lib/rt.jar添加到maven的compiler里面  编译正常..。
+                    -->
+                    <compilerArguments>
+                        <verbose />
+                        <bootclasspath>${java.home}/lib/rt.jar;${java.home}/lib/jce.jar</bootclasspath>
+                    </compilerArguments>
+
                 </configuration>
             </plugin>
         </plugins>

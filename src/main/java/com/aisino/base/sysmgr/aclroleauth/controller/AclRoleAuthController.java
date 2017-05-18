@@ -22,7 +22,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = AclRoleAuthController.PATH)
-@AclResc(id = 7000,code = "aclroleauth", name = AclRoleAuthController.MODULE_NAME,homePage = AclRoleAuthController.HOME_PAGE,target = AclResource.Target.ACLUSER)
+@AclResc(id = 7000,code = "aclroleauth", name = AclRoleAuthController.MODULE_NAME,homePage = AclRoleAuthController.HOME_PAGE,target = AclResource.Target.ACLUSER,isMenu = false)
 public class AclRoleAuthController extends BaseController<AclRoleAuth> {
     final static String PATH = "/base/sysmgr/aclroleauth";
     final static String HOME_PAGE = PATH + "/tolist";

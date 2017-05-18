@@ -93,7 +93,7 @@ public class UserOrderInfoController extends BaseUserInfoController<OrderInfo> {
     @Transactional(readOnly = true)
     public ResultDataDto list(JqgridFilters jqgridFilters, @ModelAttribute("pageAndSort")PageAndSort pageAndSort){
 //            throw new RuntimeException("test loadError");
-        jqgridFilters.getRules().add(new JqgridFilters.Rule("delflags", QueryLike.LikeMode.Eq.getCode(), BaseInvoiceEntity.DelflagsType.NORMAL.getCode()));
+        jqgridFilters.getRules().add(new JqgridFilters.Rule("delflags", QueryLike.LikeMode.Eq.getCode(), BaseInvoiceEntity.DelflagsType.NORMAL.getCode().toString()));
         List<OrderInfo> orderInfos = orderInfoService.findByJqgridFilters(jqgridFilters,pageAndSort);
         return new ResultDataDto(orderInfos,pageAndSort);
     }

@@ -80,7 +80,7 @@ public class UserOrderDetailController extends BaseController<OrderDetail> {
     @AclResc(id = 50001,code = "list",name = "查询列表")
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public ResultDataDto list(JqgridFilters jqgridFilters, @ModelAttribute("pageAndSort")PageAndSort pageAndSort){
-        jqgridFilters.getRules().add(new JqgridFilters.Rule("delflags", QueryLike.LikeMode.Eq.getCode(), BaseInvoiceEntity.DelflagsType.NORMAL.getCode()));
+        jqgridFilters.getRules().add(new JqgridFilters.Rule("delflags", QueryLike.LikeMode.Eq.getCode(), BaseInvoiceEntity.DelflagsType.NORMAL.getCode().toString()));
         List<OrderInfo> orderInfos = orderInfoService.findByJqgridFilters(jqgridFilters,pageAndSort);
         return new ResultDataDto(orderInfos,pageAndSort);
     }

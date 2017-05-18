@@ -17,6 +17,7 @@ import com.aisino.core.dto.ResultDataDto;
 import com.aisino.core.mybatis.DataSourceContextHolder;
 import com.aisino.core.mybatis.specification.PageAndSort;
 import com.aisino.core.security.util.SecurityUtil;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
@@ -113,7 +114,7 @@ public class UserInvoiceInfoController extends BaseController<InvoiceInfo> {
     /**
      * 下载发票
      */
-    @RequestMapping(value = "/download", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "/download", method = RequestMethod.POST, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     @AclResc(id = 30003, code = "download", name = "下载")
     public void download(@RequestParam("id") Integer id, HttpServletResponse response) {
         String pdfUrl = invoiceInfoService.downloadRequest(id, SecurityUtil.getCurrentUserNo());
@@ -123,7 +124,7 @@ public class UserInvoiceInfoController extends BaseController<InvoiceInfo> {
     /**
      * 冲红
      */
-    @RequestMapping(value = "/doRed", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "/doRed", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @AclResc(id = 30004, code = "doRed", name = "冲红")
     public ResultDataDto doRed(@RequestParam("invoiceId") final Integer invoiceId,@RequestParam("reMarks") final String reMarks) {
         DataSourceContextHolder.user();
@@ -140,11 +141,9 @@ public class UserInvoiceInfoController extends BaseController<InvoiceInfo> {
         DataSourceContextHolder.write();
 
         final Integer redId = invoiceInfoService.requestBilling(SecurityUtil.getCurrentUserNo(), orderInfo.getId(), InvoiceInfo.InvoiceType.RED, KpRequestyl.FpkjxxFptxx.CzdmType.RETURN_RED,reMarks);
-        ResultDataDto resultDataDto;
         DataSourceContextHolder.user();
 
         if (redId != null) {
-            resultDataDto = ResultDataDto.addOperationSuccess("冲红成功");
             invoiceInfo[0].setRedflags(InvoiceInfo.RedflagsType.ALREADY.getCode());
             transactionTemplate = new TransactionTemplate(platformTransactionManager);
             transactionTemplate.setPropagationBehavior(Propagation.REQUIRES_NEW.value());
@@ -158,8 +157,18 @@ public class UserInvoiceInfoController extends BaseController<InvoiceInfo> {
                 }
             });
         }
+        return ResultDataDto.addOperationSuccess("冲红成功");
+    }
 
-        return ResultDataDto.addOperationSuccess();
+    /**
+     * 下载发票
+     */
+    @RequestMapping(value = "/downloadTemplate", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @AclResc(id = 30005, code = "downloadTemplate", name = "下载EXCEL模板")
+    public void downloadTemplate(HttpServletResponse response) {
+//        org.springframework.core.io.Resource fileRource = new ClassPathResource("resources/excelTemplate/order_template.xlsx");
+        String pdfUrl = "excelTemplate/order_template.xlsx";
+        IOUtil.downLoadFile(pdfUrl, response);
     }
 
 }

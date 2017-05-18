@@ -106,31 +106,6 @@
 <script src="/components/jqGrid/js/jquery.jqGrid.js"></script>
 <script src="/components/jqGrid/js/i18n/grid.locale-cn.js"></script>
 
-<!-- ace scripts -->
-<!--<script src="/assets/js/src/elements.scroller.js"></script>-->
-<!--<script src="/assets/js/src/elements.colorpicker.js"></script>-->
-<!--<script src="/assets/js/src/elements.fileinput.js"></script>-->
-<!--<script src="/assets/js/src/elements.typeahead.js"></script>-->
-<!--<script src="/assets/js/src/elements.wysiwyg.js"></script>-->
-<!--<script src="/assets/js/src/elements.spinner.js"></script>-->
-<!--<script src="/assets/js/src/elements.treeview.js"></script>-->
-<!--<script src="/assets/js/src/elements.wizard.js"></script>-->
-<!--<script src="/assets/js/src/elements.aside.js"></script>-->
-<!--<script src="/assets/js/src/ace.js"></script>-->
-<!--<script src="/assets/js/src/ace.basics.js"></script>-->
-<!--<script src="/assets/js/src/ace.scrolltop.js"></script>-->
-<!--<script src="/assets/js/src/ace.ajax-content.js"></script>-->
-<!--<script src="/assets/js/src/ace.touch-drag.js"></script>-->
-<!--<script src="/assets/js/src/ace.sidebar.js"></script>-->
-<!--<script src="/assets/js/src/ace.sidebar-scroll-1.js"></script>-->
-<!--<script src="/assets/js/src/ace.submenu-hover.js"></script>-->
-<!--<script src="/assets/js/src/ace.widget-box.js"></script>-->
-<!--<script src="/assets/js/src/ace.settings.js"></script>-->
-<!--<script src="/assets/js/src/ace.settings-rtl.js"></script>-->
-<!--<script src="/assets/js/src/ace.settings-skin.js"></script>-->
-<!--<script src="/assets/js/src/ace.widget-on-reload.js"></script>-->
-<!--<script src="/assets/js/src/ace.searchbox-autocomplete.js"></script>-->
-
 <!-- inline scripts related to this page -->
 <script type="text/javascript" th:inline="javascript">
 
@@ -259,7 +234,7 @@
 //                totalrows:"rowCount" // 表示需从Server得到总共多少行数据的参数名称，参见jqGrid选项中的rowTotal
             },
             height: 400,
-            colNames: [' ', 'id', '编码', 'type', 'path', 'homePage', 'name', 'menuId', 'seq', 'identify', 'version', 'createByUserCode', 'createByUserName', 'createTime', 'lastModifyByUserName', 'lastModifyByUserCode', 'lastModifyTime'],
+            colNames: [' ', 'id', '编码', '类型', '请求路径', '模块首页', '名称', '所属菜单', '排序号','创建时间'],
             colModel: [
                 {
                     name: 'myac', index: '', width: 80, fixed: true, sortable: false, resize: false,
@@ -286,14 +261,7 @@
                 {name: 'name', index: 'name', editable: false},
                 {name: 'menuId',index: 'menuId',editable: true,edittype: "select",editoptions: {value: [[${aclMenuParams}]]},formatter: 'select'},
                 {name: 'seq', index: 'seq', editable: true},
-                {name: 'identify', index: 'identify', editable: false, hidden: true},
-                {name: 'version', index: 'version', editable: false, hidden: true},
-                {name: 'createByUserCode', index: 'createByUserCode', editable: false, hidden: true},
-                {name: 'createByUserName', index: 'createByUserName', editable: false, hidden: true},
-                {name: 'createTime', index: 'createTime', editable: false, hidden: true},
-                {name: 'lastModifyByUserName', index: 'lastModifyByUserName', editable: false, hidden: true},
-                {name: 'lastModifyByUserCode', index: 'lastModifyByUserCode', editable: false, hidden: true},
-                {name: 'lastModifyTime', index: 'lastModifyTime', editable: false, hidden: true},
+                {name: 'insertDate', index: 'insertDate', editable: false,formatter:'date', formatoptions: {srcformat: 'u', newformat:'Y-m-d H:i'}},
             ],
 
             viewrecords: true,

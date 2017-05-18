@@ -95,6 +95,14 @@ public class InvoiceInfo extends BaseInvoiceEntity {
     @DefaultValue("项目名称")
     private String listItemName;
 
+
+
+    /**
+     * 红票流水号,唯一 冗余字段
+     * (此为红票流水号,避免重复开票,开红票时更新此字段)
+     */
+    private String serialNoRed;
+
     //---------------------------getter and setter---------------------
 
 
@@ -226,7 +234,15 @@ public class InvoiceInfo extends BaseInvoiceEntity {
         this.listItemName = listItemName;
     }
 
-    //---------------------------------------------------------枚举--------------
+    public String getSerialNoRed() {
+        return serialNoRed;
+    }
+
+    public void setSerialNoRed(String serialNoRed) {
+        this.serialNoRed = serialNoRed;
+    }
+
+//---------------------------------------------------------枚举--------------
 
     public enum InvoiceType {
 

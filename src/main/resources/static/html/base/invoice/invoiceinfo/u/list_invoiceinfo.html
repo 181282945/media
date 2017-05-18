@@ -766,14 +766,22 @@
      */
     $('#downloadBtn').click(function(){
         var sel_id = $('#grid-table').jqGrid('getGridParam', 'selrow');
+        if(sel_id == null){
+            layer.alert("请选择下载行!");
+            return;
+        }
         $.post("/base/invoice/invoiceinfo/u/download", 'id='+sel_id,function(data) {
             layerAlertMsg(data.message);
         });
     });
 
     $('#doRedBtn').click(function () {
+        var sel_id = $('#grid-table').jqGrid('getGridParam', 'selrow');
+        if(sel_id == null){
+            layer.alert("请选择红冲行!");
+            return;
+        }
         layer.prompt({title: '请输入冲红原因', formType: 2}, function(text, index){
-            var sel_id = $('#grid-table').jqGrid('getGridParam', 'selrow');
             $.post("/base/invoice/invoiceinfo/u/doRed", 'invoiceId='+sel_id+'&reMarks='+text,function(data) {
                 layerAlertMsg(data.message);
                 layer.close(index);
@@ -781,9 +789,6 @@
             });
         });
     });
-
-
-
 
 </script>
 

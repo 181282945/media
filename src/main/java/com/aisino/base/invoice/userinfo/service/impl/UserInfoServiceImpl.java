@@ -4,13 +4,12 @@ import com.aisino.base.invoice.userinfo.dao.UserInfoMapper;
 import com.aisino.base.invoice.userinfo.dto.EditPasswordDto;
 import com.aisino.base.invoice.userinfo.entity.UserInfo;
 import com.aisino.base.invoice.userinfo.service.UserInfoService;
-import com.aisino.base.sysmgr.aclrole.entity.AclRole;
-import com.aisino.base.sysmgr.aclrole.service.AclRoleService;
 import com.aisino.base.sysmgr.acluserrole.entity.AclUserRole;
 import com.aisino.base.sysmgr.acluserrole.service.AclUserRoleService;
 import com.aisino.core.dto.ResultDataDto;
 import com.aisino.core.security.util.SecurityUtil;
 import com.aisino.core.service.BaseServiceImpl;
+import com.aisino.core.util.ConstraintUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -32,6 +31,16 @@ public class UserInfoServiceImpl extends BaseServiceImpl<UserInfo,UserInfoMapper
     @Resource
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+
+
+    @Override
+    protected void validateAddEntity(UserInfo entity) {
+        ConstraintUtil.setDefaultValue(entity);
+        ConstraintUtil.isNotNullConstraint(entity);
+        if(getUserByUsrno(entity.getUsrno())!=null)
+            throw new RuntimeException("用户名已存在!");
+        entity.setPassword(bCryptPasswordEncoder.encode(entity.getPassword()));
+    }
 
     @Override
     public UserInfo getUserByUsrno(String usrno) {

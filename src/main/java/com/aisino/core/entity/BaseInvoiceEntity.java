@@ -9,22 +9,22 @@ import com.aisino.core.entity.annotation.DefaultValue;
 public class BaseInvoiceEntity  extends BaseEntity {
 
     public enum DelflagsType{
-        NORMAL("0","正常"),DELETED("1","已删除");
+        NORMAL(false,"正常"),DELETED(true,"已删除");
 
         //状态代码
-        private String code;
+        private Boolean code;
         //状态名称
         private String name;
 
 
         //构造方法
-        DelflagsType(String code, String name){
+        DelflagsType(Boolean code, String name){
             this.code = code;
             this.name = name;
         }
 
         //根据code获取状态名称
-        public static String getNameByCode(String code){
+        public static String getNameByCode(Boolean code){
             for(DelflagsType item : DelflagsType.values()){
                 if(item.getCode().equals(code)){
                     return item.getName();
@@ -37,7 +37,7 @@ public class BaseInvoiceEntity  extends BaseEntity {
             ParamDto[] delflagsTypeParams = new ParamDto[DelflagsType.values().length];
 
             for(int i=0;i<delflagsTypeParams.length;i++){
-                delflagsTypeParams[i] = new ParamDto(DelflagsType.values()[i].getCode(),DelflagsType.values()[i].getName());
+                delflagsTypeParams[i] = new ParamDto(DelflagsType.values()[i].getCode().toString(),DelflagsType.values()[i].getName());
             }
             return  delflagsTypeParams;
         }
@@ -47,11 +47,11 @@ public class BaseInvoiceEntity  extends BaseEntity {
         //-----------------------------------getter and setter---------------------------------------------------------
 
 
-        public String getCode() {
+        public Boolean getCode() {
             return code;
         }
 
-        public void setCode(String code) {
+        public void setCode(Boolean code) {
             this.code = code;
         }
 

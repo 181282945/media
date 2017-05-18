@@ -75,7 +75,6 @@ public class OrderDetailServiceImpl extends BaseServiceImpl<OrderDetail, OrderDe
             }
         }
 
-
         //处理折扣行,无论EXCEL 正负都改成负数
         if (orderDetail.getInvoiceNature().equals(OrderDetail.InvoiceNature.DISCOUNT.getCode())) {
             orderDetail.setItemPrice(TaxCalculationUtil.negative(orderDetail.getItemPrice()));

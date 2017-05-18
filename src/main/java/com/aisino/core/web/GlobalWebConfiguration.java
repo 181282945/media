@@ -25,8 +25,11 @@ public class GlobalWebConfiguration extends WebMvcConfigurerAdapter {
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/login").setViewName("login");
+        registry.addViewController("/").setViewName("index");
         super.addViewControllers(registry);
     }
+
+
 
     @Bean
     public ServletRegistrationBean servletRegistrationBean() throws ServletException {

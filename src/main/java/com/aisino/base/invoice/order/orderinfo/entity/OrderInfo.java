@@ -2,7 +2,6 @@ package com.aisino.base.invoice.order.orderinfo.entity;
 
 import com.aisino.common.dto.param.ParamDto;
 import com.aisino.core.entity.BaseBusinessEntity;
-import com.aisino.core.entity.BaseInvoiceEntity;
 import com.aisino.core.entity.annotation.BaseEntityMapper;
 import org.apache.ibatis.type.Alias;
 
@@ -98,7 +97,6 @@ public class OrderInfo extends BaseBusinessEntity {
      * (此为发票流水号,避免重复开票,开票时更新此字段)
      */
     private String serialNo;
-
 
     //---------------------------------getter and setter ------------------------------------------------
 
@@ -263,7 +261,7 @@ public class OrderInfo extends BaseBusinessEntity {
         this.serialNo = serialNo;
     }
 
-//--------------------------------枚举----------------------------------------------
+    //--------------------------------枚举----------------------------------------------
 
     /**
      * 代开标识

@@ -35,7 +35,7 @@
     <Logger name="org.apache.coyote.http11.Http11NioProtocol" level="warn" />
     <Logger name="org.apache.tomcat.util.net.NioSelectorPool" level="warn" />
     <Logger name="org.springframework" level="debug" />
-    <logger name="com.aisino" level="debug" />
+    <logger name="com.lzw" level="debug" />
     <logger name="org.mybatis" level="debug" />
     <logger name="java.sql" level="debug" />
     <logger name="java.sql.Connection" level="debug" />

@@ -31,7 +31,7 @@
         <appender-ref ref="file" />
     </root>
 
-    <logger name="com.aisino" level="warn" />
+    <logger name="com.lzw" level="warn" />
     <Logger name="org.apache.catalina.util.LifecycleBase" level="error" />
     <Logger name="org.apache.coyote.http11.Http11NioProtocol" level="warn" />
     <Logger name="org.apache.tomcat.util.net.NioSelectorPool" level="warn" />

@@ -45,7 +45,7 @@ Duplicate key: name
 	at org.springframework.boot.SpringApplicationRunListeners.environmentPrepared(SpringApplicationRunListeners.java:54)
 	at org.springframework.boot.SpringApplication.prepareEnvironment(SpringApplication.java:336)
 	at org.springframework.boot.SpringApplication.run(SpringApplication.java:307)
-	at com.aisino.Application.main(Application.java:26)
+	at com.lzw.Application.main(Application.java:26)
 2017-04-27 14:47:34,543 ERROR [main] o.s.boot.SpringApplication [SpringApplication.java : 815] Application startup failed
 org.yaml.snakeyaml.parser.ParserException: while parsing MappingNode
  in 'reader', line 3, column 7:
@@ -93,7 +93,7 @@ Duplicate key: name
 	at org.springframework.boot.SpringApplicationRunListeners.environmentPrepared(SpringApplicationRunListeners.java:54)
 	at org.springframework.boot.SpringApplication.prepareEnvironment(SpringApplication.java:336)
 	at org.springframework.boot.SpringApplication.run(SpringApplication.java:307)
-	at com.aisino.Application.main(Application.java:26)
+	at com.lzw.Application.main(Application.java:26)
 2017-04-27 14:47:58,764 ERROR [main] o.s.boot.SpringApplication [SpringApplication.java : 815] Application startup failed
 org.yaml.snakeyaml.parser.ParserException: while parsing MappingNode
  in 'reader', line 3, column 7:
@@ -141,7 +141,7 @@ Duplicate key: name
 	at org.springframework.boot.SpringApplicationRunListeners.environmentPrepared(SpringApplicationRunListeners.java:54)
 	at org.springframework.boot.SpringApplication.prepareEnvironment(SpringApplication.java:336)
 	at org.springframework.boot.SpringApplication.run(SpringApplication.java:307)
-	at com.aisino.Application.main(Application.java:26)
+	at com.lzw.Application.main(Application.java:26)
 2017-04-27 14:49:16,137 ERROR [main] o.s.boot.SpringApplication [SpringApplication.java : 815] Application startup failed
 org.yaml.snakeyaml.parser.ParserException: while parsing MappingNode
  in 'reader', line 3, column 7:
@@ -189,7 +189,7 @@ Duplicate key: name
 	at org.springframework.boot.SpringApplicationRunListeners.environmentPrepared(SpringApplicationRunListeners.java:54)
 	at org.springframework.boot.SpringApplication.prepareEnvironment(SpringApplication.java:336)
 	at org.springframework.boot.SpringApplication.run(SpringApplication.java:307)
-	at com.aisino.Application.main(Application.java:26)
+	at com.lzw.Application.main(Application.java:26)
 2017-04-27 14:50:20,878 ERROR [main] o.s.boot.SpringApplication [SpringApplication.java : 815] Application startup failed
 org.yaml.snakeyaml.parser.ParserException: while parsing MappingNode
  in 'reader', line 4, column 7:
@@ -237,7 +237,7 @@ Duplicate key: name
 	at org.springframework.boot.SpringApplicationRunListeners.environmentPrepared(SpringApplicationRunListeners.java:54)
 	at org.springframework.boot.SpringApplication.prepareEnvironment(SpringApplication.java:336)
 	at org.springframework.boot.SpringApplication.run(SpringApplication.java:307)
-	at com.aisino.Application.main(Application.java:26)
+	at com.lzw.Application.main(Application.java:26)
 2017-04-27 14:50:27,967 ERROR [main] o.s.boot.SpringApplication [SpringApplication.java : 815] Application startup failed
 org.yaml.snakeyaml.parser.ParserException: while parsing MappingNode
  in 'reader', line 4, column 7:
@@ -285,7 +285,7 @@ Duplicate key: name
 	at org.springframework.boot.SpringApplicationRunListeners.environmentPrepared(SpringApplicationRunListeners.java:54)
 	at org.springframework.boot.SpringApplication.prepareEnvironment(SpringApplication.java:336)
 	at org.springframework.boot.SpringApplication.run(SpringApplication.java:307)
-	at com.aisino.Application.main(Application.java:26)
+	at com.lzw.Application.main(Application.java:26)
 2017-04-27 14:50:47,613 ERROR [main] o.s.boot.SpringApplication [SpringApplication.java : 815] Application startup failed
 org.yaml.snakeyaml.parser.ParserException: while parsing MappingNode
  in 'reader', line 4, column 7:
@@ -333,7 +333,7 @@ Duplicate key: name
 	at org.springframework.boot.SpringApplicationRunListeners.environmentPrepared(SpringApplicationRunListeners.java:54)
 	at org.springframework.boot.SpringApplication.prepareEnvironment(SpringApplication.java:336)
 	at org.springframework.boot.SpringApplication.run(SpringApplication.java:307)
-	at com.aisino.Application.main(Application.java:26)
+	at com.lzw.Application.main(Application.java:26)
 2017-04-27 14:51:47,301 ERROR [main] o.s.boot.SpringApplication [SpringApplication.java : 815] Application startup failed
 org.yaml.snakeyaml.parser.ParserException: while parsing MappingNode
  in 'reader', line 4, column 7:
@@ -381,7 +381,7 @@ Duplicate key: name
 	at org.springframework.boot.SpringApplicationRunListeners.environmentPrepared(SpringApplicationRunListeners.java:54)
 	at org.springframework.boot.SpringApplication.prepareEnvironment(SpringApplication.java:336)
 	at org.springframework.boot.SpringApplication.run(SpringApplication.java:307)
-	at com.aisino.Application.main(Application.java:26)
+	at com.lzw.Application.main(Application.java:26)
 2017-04-27 14:52:19,586 ERROR [main] o.s.boot.SpringApplication [SpringApplication.java : 815] Application startup failed
 org.yaml.snakeyaml.parser.ParserException: while parsing MappingNode
  in 'reader', line 4, column 7:
@@ -429,7 +429,7 @@ Duplicate key: name
 	at org.springframework.boot.SpringApplicationRunListeners.environmentPrepared(SpringApplicationRunListeners.java:54)
 	at org.springframework.boot.SpringApplication.prepareEnvironment(SpringApplication.java:336)
 	at org.springframework.boot.SpringApplication.run(SpringApplication.java:307)
-	at com.aisino.Application.main(Application.java:26)
+	at com.lzw.Application.main(Application.java:26)
 2017-04-27 14:54:32,161 ERROR [main] o.s.boot.SpringApplication [SpringApplication.java : 815] Application startup failed
 org.yaml.snakeyaml.parser.ParserException: while parsing MappingNode
  in 'reader', line 4, column 7:
@@ -477,7 +477,7 @@ Duplicate key: name
 	at org.springframework.boot.SpringApplicationRunListeners.environmentPrepared(SpringApplicationRunListeners.java:54)
 	at org.springframework.boot.SpringApplication.prepareEnvironment(SpringApplication.java:336)
 	at org.springframework.boot.SpringApplication.run(SpringApplication.java:307)
-	at com.aisino.Application.main(Application.java:26)
+	at com.lzw.Application.main(Application.java:26)
 2017-04-27 14:55:07,441 ERROR [main] o.s.boot.SpringApplication [SpringApplication.java : 815] Application startup failed
 org.yaml.snakeyaml.parser.ParserException: while parsing MappingNode
  in 'reader', line 4, column 7:
@@ -525,7 +525,7 @@ Duplicate key: name
 	at org.springframework.boot.SpringApplicationRunListeners.environmentPrepared(SpringApplicationRunListeners.java:54)
 	at org.springframework.boot.SpringApplication.prepareEnvironment(SpringApplication.java:336)
 	at org.springframework.boot.SpringApplication.run(SpringApplication.java:307)
-	at com.aisino.Application.main(Application.java:26)
+	at com.lzw.Application.main(Application.java:26)
 2017-04-27 14:55:57,254 ERROR [main] o.s.boot.SpringApplication [SpringApplication.java : 815] Application startup failed
 org.yaml.snakeyaml.parser.ParserException: while parsing MappingNode
  in 'reader', line 2, column 5:
@@ -567,7 +567,7 @@ Duplicate key: datasource
 	at org.springframework.boot.SpringApplicationRunListeners.environmentPrepared(SpringApplicationRunListeners.java:54)
 	at org.springframework.boot.SpringApplication.prepareEnvironment(SpringApplication.java:336)
 	at org.springframework.boot.SpringApplication.run(SpringApplication.java:307)
-	at com.aisino.Application.main(Application.java:26)
+	at com.lzw.Application.main(Application.java:26)
 2017-04-27 14:59:50,028 ERROR [main] o.s.boot.SpringApplication [SpringApplication.java : 815] Application startup failed
 org.yaml.snakeyaml.parser.ParserException: while parsing MappingNode
  in 'reader', line 5, column 7:
@@ -615,7 +615,7 @@ Duplicate key: type
 	at org.springframework.boot.SpringApplicationRunListeners.environmentPrepared(SpringApplicationRunListeners.java:54)
 	at org.springframework.boot.SpringApplication.prepareEnvironment(SpringApplication.java:336)
 	at org.springframework.boot.SpringApplication.run(SpringApplication.java:307)
-	at com.aisino.Application.main(Application.java:26)
+	at com.lzw.Application.main(Application.java:26)
 2017-04-27 15:00:01,017 ERROR [main] o.s.boot.SpringApplication [SpringApplication.java : 815] Application startup failed
 org.yaml.snakeyaml.scanner.ScannerException: mapping values are not allowed here
  in 'reader', line 15, column 12:
@@ -661,4 +661,4 @@ org.yaml.snakeyaml.scanner.ScannerException: mapping values are not allowed here
 	at org.springframework.boot.SpringApplicationRunListeners.environmentPrepared(SpringApplicationRunListeners.java:54)
 	at org.springframework.boot.SpringApplication.prepareEnvironment(SpringApplication.java:336)
 	at org.springframework.boot.SpringApplication.run(SpringApplication.java:307)
-	at com.aisino.Application.main(Application.java:26)
+	at com.lzw.Application.main(Application.java:26)

@@ -110,8 +110,10 @@ public class InvoiceInfoServiceImpl extends BaseServiceImpl<InvoiceInfo, Invoice
      * @return
      */
     @Override
-    public Integer requestBilling(String usrNo, Integer orderInfoId, InvoiceInfo.InvoiceType invoiceType, KpRequestyl.FpkjxxFptxx.CzdmType czdmType, String reMarks) {
-        KpRequestyl.RequestFpkjxx requestFpkjxx = createKpRequestyl(usrNo, orderInfoId, invoiceType, czdmType, reMarks);
+    public Integer requestBilling(String usrNo, Integer orderInfoId, InvoiceInfo.InvoiceType invoiceType, KpRequestyl.FpkjxxFptxx.CzdmType czdmType, String reMarks, final Map<String, String> map) {
+        KpRequestyl.RequestFpkjxx requestFpkjxx = createKpRequestyl(usrNo, orderInfoId, invoiceType, czdmType, reMarks, map);
+        if (requestFpkjxx == null)
+            return null;
         Requestt requestt = careateRequestt(usrNo, globalInfoParams.getBillingInterfaceCode());
         String xmlContent = XmlModelUtil.beanToXmlStr(requestFpkjxx, KpRequestyl.RequestFpkjxx.class);
         requestt.getData().setContent(AesUtil.encrypt(xmlContent));
@@ -132,7 +134,7 @@ public class InvoiceInfoServiceImpl extends BaseServiceImpl<InvoiceInfo, Invoice
         globalInfo.setInterfaceCode(interfaceCode);
         globalInfo.setUserName(authCodeInfo.getPlatformCode());
         globalInfo.setRequestCode(globalInfoParams.getRequestCode());
-        globalInfo.setPassWord(PasswordUtil.getPassword(authCodeInfo.getRegiCode()));
+        globalInfo.setPassWord(PasswordUtil.getPassword(StringUtils.trimToNull(authCodeInfo.getRegiCode())));
         globalInfo.setRequestTime(DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss SS"));
         globalInfo.setDataExchangeId(globalInfoParams.getDataExchangeId());
         globalInfo.setTaxpayerId(authCodeInfo.getTaxNo());
@@ -200,7 +202,8 @@ public class InvoiceInfoServiceImpl extends BaseServiceImpl<InvoiceInfo, Invoice
     /**
      * @return
      */
-    private KpRequestyl.RequestFpkjxx createKpRequestyl(final String usrNo, final Integer orderInfoId, final InvoiceInfo.InvoiceType invoiceType, final KpRequestyl.FpkjxxFptxx.CzdmType czdmType, String reMarks) {
+    private KpRequestyl.RequestFpkjxx createKpRequestyl(final String usrNo, final Integer orderInfoId, final InvoiceInfo.InvoiceType invoiceType, final KpRequestyl.FpkjxxFptxx.CzdmType czdmType, String reMarks, final Map<String, String> map) {
+
         //为了节省连接数,尽可能在一次切换里获取需要的数据
         DataSourceContextHolder.user();
         final OrderInfo[] orderInfo = new OrderInfo[1];
@@ -212,22 +215,33 @@ public class InvoiceInfoServiceImpl extends BaseServiceImpl<InvoiceInfo, Invoice
             @Override
             public void doInTransactionWithoutResult(TransactionStatus status) {
                 orderInfo[0] = orderInfoService.findEntityById(orderInfoId);
-                if (orderInfo[0] == null)
-                    throw new RuntimeException("没有找到该订单!");
-                if (OrderInfo.StatusType.ALREADY.getCode().equals(orderInfo[0].getStatus()) && KpRequestyl.FpkjxxFptxx.CzdmType.NORMAL.equals(czdmType) && InvoiceInfo.InvoiceType.NORMAL.equals(invoiceType))
-                    throw new RuntimeException("此订单已经开票,不能重复开票!");
-                if (StringUtils.isBlank(orderInfo[0].getSerialNo()))
-                {
+                if (orderInfo[0] == null) {
+                    map.put(orderInfo[0].getOrderNo(), "没有找到该订单!");
+                    return;
+                }
+
+                if (OrderInfo.StatusType.ALREADY.getCode().equals(orderInfo[0].getStatus()) && KpRequestyl.FpkjxxFptxx.CzdmType.NORMAL.equals(czdmType) && InvoiceInfo.InvoiceType.NORMAL.equals(invoiceType)) {
+                    map.put(orderInfo[0].getOrderNo(), "单号:" + orderInfo[0].getOrderNo() + "此订单已经开票,不能重复开票!");
+                    return;
+                }
+
+                if (StringUtils.isBlank(orderInfo[0].getSerialNo())) {
                     orderInfo[0].setSerialNo(String.valueOf(worker.nextId()));//设置发票唯一流水号
                     orderInfoService.updateEntity(orderInfo[0]);
                 }
                 if (InvoiceInfo.InvoiceType.RED.equals(invoiceType)) {
                     orginalInvoiceInfo[0] = invoiceInfoService.getBySerialNo(orderInfo[0].getSerialNo());//正式环境用这个
-                    if (orginalInvoiceInfo[0] == null)
-                        throw new RuntimeException("没有找到原发票信息,冲红失败!");
-                    if (InvoiceInfo.RedflagsType.ALREADY.getCode().equals(orginalInvoiceInfo[0].getRedflags()))
-                        throw new RuntimeException("此发票不能重复冲红!");
-                    if(orginalInvoiceInfo[0].getSerialNoRed() == null){
+                    if (orginalInvoiceInfo[0] == null) {
+                        map.put(orderInfo[0].getOrderNo(), "单号:" + orderInfo[0].getOrderNo() + "没有找到原发票信息,冲红失败!");
+                        return;
+                    }
+
+                    if (InvoiceInfo.RedflagsType.ALREADY.getCode().equals(orginalInvoiceInfo[0].getRedflags())) {
+                        map.put(orderInfo[0].getOrderNo(), "发票代码:" + orginalInvoiceInfo[0].getInvoiceCode() + "此发票不能重复冲红!");
+                        return;
+                    }
+
+                    if (orginalInvoiceInfo[0].getSerialNoRed() == null) {
                         orginalInvoiceInfo[0].setSerialNoRed(String.valueOf(worker.nextId()));//设置红票唯一流水号
                         invoiceInfoService.updateEntity(orginalInvoiceInfo[0]);
                     }
@@ -236,6 +250,11 @@ public class InvoiceInfoServiceImpl extends BaseServiceImpl<InvoiceInfo, Invoice
             }
         });
         DataSourceContextHolder.write();
+
+        //此单据异常信息不为空时,返回
+        if (map.get(orderInfoId) != null) {
+            return null;
+        }
 
         final EnInfo[] enInfo = new EnInfo[1];
         final AuthCodeInfo[] authCodeInfo = new AuthCodeInfo[1];
@@ -246,8 +265,9 @@ public class InvoiceInfoServiceImpl extends BaseServiceImpl<InvoiceInfo, Invoice
             @Override
             public void doInTransactionWithoutResult(TransactionStatus status) {
                 enInfo[0] = enInfoService.getByUsrno(usrNo);
-
                 authCodeInfo[0] = authCodeInfoService.getByUsrno(usrNo);
+                if (authCodeInfo[0] == null)
+                    throw new RuntimeException("请设置平台代码!");
             }
         });
 
@@ -279,7 +299,9 @@ public class InvoiceInfoServiceImpl extends BaseServiceImpl<InvoiceInfo, Invoice
 
         //判断折扣行与被折扣行是否匹配
         if (orderDetailMap.get(OrderDetail.InvoiceNature.DISCOUNT.getCode()).size() != orderDetailMap.get(OrderDetail.InvoiceNature.DISCOUNTLINE.getCode()).size()) {
-            throw new RuntimeException("折扣行与被折扣行数量不匹配,开票失败!");
+            map.put(orderInfo[0].getOrderNo(), "单号:" + orderInfo[0].getOrderNo() + "折扣行与被折扣行数量不匹配,开票失败!");
+            return null;
+//            throw new RuntimeException("折扣行与被折扣行数量不匹配,开票失败!");
         }
 
 
@@ -293,11 +315,15 @@ public class InvoiceInfoServiceImpl extends BaseServiceImpl<InvoiceInfo, Invoice
         //开正票
         if (InvoiceInfo.InvoiceType.NORMAL.equals(invoiceType))
             //先构建 折扣行与被折扣行
-            fillXmxxDdmxxx(enInfo[0], fpkjxxXmxxList, fpkjxxDdmxxxList, orderDetailMap);
+            fillXmxxDdmxxx(enInfo[0], fpkjxxXmxxList, fpkjxxDdmxxxList, orderDetailMap, map);
         //开红票
         if (InvoiceInfo.InvoiceType.RED.equals(invoiceType))
             //先构建 折扣行与被折扣行
-            fillXmxxDdmxxxRed(enInfo[0], fpkjxxXmxxList, fpkjxxDdmxxxList, orderDetailMap);
+            fillXmxxDdmxxxRed(enInfo[0], fpkjxxXmxxList, fpkjxxDdmxxxList, orderDetailMap, map);
+
+        //如果此订单错误信息不为null 马上返回空
+        if (map.get(orderInfo[0].getOrderNo()) != null)
+            return null;
 
 
         fpkjxxXmxxs.setSize(fpkjxxXmxxList.size() + "");
@@ -468,7 +494,7 @@ public class InvoiceInfoServiceImpl extends BaseServiceImpl<InvoiceInfo, Invoice
      * @param fpkjxxXmxxList
      * @param fpkjxxDdmxxxList
      */
-    private void fillXmxxDdmxxx(EnInfo enInfo, List<KpRequestyl.FpkjxxXmxx> fpkjxxXmxxList, List<KpRequestyl.FpkjxxDdmxxx> fpkjxxDdmxxxList, Map<Integer, List<OrderDetail>> orderDetailMap) {
+    private void fillXmxxDdmxxx(EnInfo enInfo, List<KpRequestyl.FpkjxxXmxx> fpkjxxXmxxList, List<KpRequestyl.FpkjxxDdmxxx> fpkjxxDdmxxxList, Map<Integer, List<OrderDetail>> orderDetailMap, Map<String, String> map) {
         for (Integer key : orderDetailMap.keySet()) {
             //不需要处理折扣行,因为处理被折扣行的时候,已作处理
             if (OrderDetail.InvoiceNature.DISCOUNT.getCode().equals(key))
@@ -480,7 +506,10 @@ public class InvoiceInfoServiceImpl extends BaseServiceImpl<InvoiceInfo, Invoice
             if (OrderDetail.InvoiceNature.DISCOUNTLINE.getCode().equals(key)) {
                 while (detailIterator.hasNext()) {
                     OrderDetail orderDetail = detailIterator.next();
-                    fpkjxxXmxxList.add(createFpkjxxXmxx(enInfo, orderDetail));//1发票明细
+                    KpRequestyl.FpkjxxXmxx fpkjxxXmxx = createFpkjxxXmxx(enInfo, orderDetail, map);
+                    if (fpkjxxXmxx == null)
+                        return;
+                    fpkjxxXmxxList.add(fpkjxxXmxx);//1发票明细
                     fpkjxxDdmxxxList.add(createFpkjxxDdmxxx(orderDetail));//1订单明细信息,不记录折扣行 一共两次
                     //处理完之后删除折扣行,因为可能存同名多个折扣的问题,所以这里根据同名,同数量,同编号解决
                     if (OrderDetail.InvoiceNature.DISCOUNTLINE.getCode().equals(orderDetail.getInvoiceNature())) {
@@ -494,9 +523,14 @@ public class InvoiceInfoServiceImpl extends BaseServiceImpl<InvoiceInfo, Invoice
                                 break;
                             }
                         }
-                        if (discountDetail == null)
-                            throw new RuntimeException("商品:" + orderDetail.getItemName() + "缺少相关折扣行,开票失败,");
-                        fpkjxxXmxxList.add(createFpkjxxXmxx(enInfo, discountDetail));//2发票明细
+                        if (discountDetail == null) {
+                            map.put(orderDetail.getOrderNo(), "单号:" + orderDetail.getOrderNo() + "商品:" + orderDetail.getItemName() + "缺少相关折扣行,开票失败!");
+                            return;
+                        }
+                        KpRequestyl.FpkjxxXmxx fpkjxxXmxx2 = createFpkjxxXmxx(enInfo, orderDetail, map);
+                        if (fpkjxxXmxx2 == null)
+                            return;
+                        fpkjxxXmxxList.add(fpkjxxXmxx2);//2发票明细
                     }
                 }
             }
@@ -504,7 +538,10 @@ public class InvoiceInfoServiceImpl extends BaseServiceImpl<InvoiceInfo, Invoice
             //普通开票
             if (OrderDetail.InvoiceNature.NORMAL.getCode().equals(key)) {
                 for (OrderDetail orderDetail : orderDetails) {
-                    fpkjxxXmxxList.add(createFpkjxxXmxx(enInfo, orderDetail));//3发票明细
+                    KpRequestyl.FpkjxxXmxx fpkjxxXmxx = createFpkjxxXmxx(enInfo, orderDetail, map);
+                    if (fpkjxxXmxx == null)
+                        return;
+                    fpkjxxXmxxList.add(fpkjxxXmxx);//3发票明细
                     fpkjxxDdmxxxList.add(createFpkjxxDdmxxx(orderDetail));//2订单明细信息,无论是否折扣处理,都应该添加 订单明细信息 一共三次
                 }
             }
@@ -518,7 +555,7 @@ public class InvoiceInfoServiceImpl extends BaseServiceImpl<InvoiceInfo, Invoice
      * @param fpkjxxXmxxList
      * @param fpkjxxDdmxxxList
      */
-    private void fillXmxxDdmxxxRed(EnInfo enInfo, List<KpRequestyl.FpkjxxXmxx> fpkjxxXmxxList, List<KpRequestyl.FpkjxxDdmxxx> fpkjxxDdmxxxList, Map<Integer, List<OrderDetail>> orderDetailMap) {
+    private void fillXmxxDdmxxxRed(EnInfo enInfo, List<KpRequestyl.FpkjxxXmxx> fpkjxxXmxxList, List<KpRequestyl.FpkjxxDdmxxx> fpkjxxDdmxxxList, Map<Integer, List<OrderDetail>> orderDetailMap, Map<String, String> map) {
         for (Integer key : orderDetailMap.keySet()) {
             //不需要处理折扣行,因为处理被折扣行的时候,已作处理
             if (OrderDetail.InvoiceNature.DISCOUNT.getCode().equals(key))
@@ -543,14 +580,20 @@ public class InvoiceInfoServiceImpl extends BaseServiceImpl<InvoiceInfo, Invoice
                                 break;
                             }
                         }
-                        if (discountDetail == null)
-                            throw new RuntimeException("商品:" + orderDetail.getItemName() + "缺少相关折扣行,冲红失败.");
+                        if (discountDetail == null) {
+                            map.put(orderDetail.getOrderNo(), "单号:" + orderDetail.getOrderNo() + "商品:" + orderDetail.getItemName() + "缺少相关折扣行,冲红失败!");
+                            return;
+                        }
+
 
                         //合并正负折扣行
                         orderDetail.setItemPrice(TaxCalculationUtil.merge(orderDetail.getItemPrice(), discountDetail.getItemPrice()));
                         orderDetail.setItemNum(TaxCalculationUtil.negative(orderDetail.getItemNum()));
                         orderDetail.setInvoiceNature(OrderDetail.InvoiceNature.NORMAL.getCode());
-                        fpkjxxXmxxList.add(createFpkjxxXmxx(enInfo, orderDetail));
+                        KpRequestyl.FpkjxxXmxx fpkjxxXmxx = createFpkjxxXmxx(enInfo, orderDetail, map);
+                        if (fpkjxxXmxx == null)
+                            return;
+                        fpkjxxXmxxList.add(fpkjxxXmxx);
                     }
                 }
             }
@@ -560,7 +603,10 @@ public class InvoiceInfoServiceImpl extends BaseServiceImpl<InvoiceInfo, Invoice
                 for (OrderDetail orderDetail : orderDetails) {
                     orderDetail.setItemPrice(TaxCalculationUtil.negative(orderDetail.getItemPrice()));
                     orderDetail.setItemNum(TaxCalculationUtil.negative(orderDetail.getItemNum()));
-                    fpkjxxXmxxList.add(createFpkjxxXmxx(enInfo, orderDetail));//3发票明细
+                    KpRequestyl.FpkjxxXmxx fpkjxxXmxx = createFpkjxxXmxx(enInfo, orderDetail, map);
+                    if (fpkjxxXmxx == null)
+                        return;
+                    fpkjxxXmxxList.add(fpkjxxXmxx);//3发票明细
                     fpkjxxDdmxxxList.add(createFpkjxxDdmxxx(orderDetail));//2订单明细信息,无论是否折扣处理,都应该添加 订单明细信息 一共三次
                 }
             }
@@ -573,7 +619,7 @@ public class InvoiceInfoServiceImpl extends BaseServiceImpl<InvoiceInfo, Invoice
      * @param orderDetail
      * @return
      */
-    private KpRequestyl.FpkjxxXmxx createFpkjxxXmxx(EnInfo enInfo, OrderDetail orderDetail) {
+    private KpRequestyl.FpkjxxXmxx createFpkjxxXmxx(EnInfo enInfo, OrderDetail orderDetail, Map<String, String> map) {
         KpRequestyl.FpkjxxXmxx fpkjxxXmxx = new KpRequestyl.FpkjxxXmxx();
         fpkjxxXmxx.setXmmc(orderDetail.getItemName());    //项目名称
         fpkjxxXmxx.setXmdw(orderDetail.getItemUnit());   //项目单位
@@ -587,8 +633,11 @@ public class InvoiceInfoServiceImpl extends BaseServiceImpl<InvoiceInfo, Invoice
         fpkjxxXmxx.setYhzcbs(enInfo.getYhzcbs());   //优惠政策标识
         fpkjxxXmxx.setLslbs(enInfo.getLslbs());   //零税率标识
         fpkjxxXmxx.setZzstsgl(enInfo.getZzstsgl());   //增值税特殊管理
-        if (fpkjxxXmxx.getYhzcbs().equals("1") && fpkjxxXmxx.getZzstsgl() == null)
-            throw new RuntimeException("使用优惠政策时,必须设置特殊增值税管理");
+        if (fpkjxxXmxx.getYhzcbs().equals("1") && fpkjxxXmxx.getZzstsgl() == null) {
+            map.put(orderDetail.getOrderNo(), "单号:" + orderDetail.getOrderNo() + "使用优惠政策时,必须设置特殊增值税管理");
+            return null;
+        }
+
 
         fpkjxxXmxx.setXmje(TaxCalculationUtil.calcItemPrice(orderDetail.getItemPrice(), orderDetail.getItemNum()));   //项目金额
         fpkjxxXmxx.setSl(orderDetail.getTaxRate());   //税率

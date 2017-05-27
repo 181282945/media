@@ -11,7 +11,12 @@ import org.apache.ibatis.type.Alias;
 @BaseEntityMapper(tableName = "acl_user_role")
 public class AclUserRole extends BaseEntity {
 
-    public AclUserRole(){
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -3124563725997940837L;
+
+	public AclUserRole(){
 
     }
 

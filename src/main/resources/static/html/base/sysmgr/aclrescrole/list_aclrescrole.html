@@ -13,7 +13,6 @@
     <link rel="stylesheet" href="/components/font-awesome/css/font-awesome.css"/>
 
     <!-- page specific plugin styles -->
-    <link rel="stylesheet" href="/components/_mod/jquery-ui/jquery-ui.css"/>
     <link rel="stylesheet" href="/components/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css"/>
     <link rel="stylesheet" href="/components/_mod/jqgrid/ui.jqgrid.css"/>
 
@@ -32,13 +31,6 @@
     <!--[if lte IE 9]>
     <link rel="stylesheet" href="/assets/css/ace-ie.css"/>
     <![endif]-->
-
-    <!-- inline styles related to this page -->
-
-    <!-- ace settings handler -->
-    <!--<script src="/assets/js/ace-extra.js"></script>-->
-
-    <!-- HTML5shiv and Respond.js for IE8 to support HTML5 elements and media queries -->
 
     <!--[if lte IE 8]>
     <script src="/components/html5shiv/dist/html5shiv.min.js"></script>
@@ -105,31 +97,6 @@
 <script src="/components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js"></script>
 <script src="/components/jqGrid/js/jquery.jqGrid.js"></script>
 <script src="/components/jqGrid/js/i18n/grid.locale-cn.js"></script>
-
-<!-- ace scripts -->
-<!--<script src="/assets/js/src/elements.scroller.js"></script>-->
-<!--<script src="/assets/js/src/elements.colorpicker.js"></script>-->
-<!--<script src="/assets/js/src/elements.fileinput.js"></script>-->
-<!--<script src="/assets/js/src/elements.typeahead.js"></script>-->
-<!--<script src="/assets/js/src/elements.wysiwyg.js"></script>-->
-<!--<script src="/assets/js/src/elements.spinner.js"></script>-->
-<!--<script src="/assets/js/src/elements.treeview.js"></script>-->
-<!--<script src="/assets/js/src/elements.wizard.js"></script>-->
-<!--<script src="/assets/js/src/elements.aside.js"></script>-->
-<!--<script src="/assets/js/src/ace.js"></script>-->
-<!--<script src="/assets/js/src/ace.basics.js"></script>-->
-<!--<script src="/assets/js/src/ace.scrolltop.js"></script>-->
-<!--<script src="/assets/js/src/ace.ajax-content.js"></script>-->
-<!--<script src="/assets/js/src/ace.touch-drag.js"></script>-->
-<!--<script src="/assets/js/src/ace.sidebar.js"></script>-->
-<!--<script src="/assets/js/src/ace.sidebar-scroll-1.js"></script>-->
-<!--<script src="/assets/js/src/ace.submenu-hover.js"></script>-->
-<!--<script src="/assets/js/src/ace.widget-box.js"></script>-->
-<!--<script src="/assets/js/src/ace.settings.js"></script>-->
-<!--<script src="/assets/js/src/ace.settings-rtl.js"></script>-->
-<!--<script src="/assets/js/src/ace.settings-skin.js"></script>-->
-<!--<script src="/assets/js/src/ace.widget-on-reload.js"></script>-->
-<!--<script src="/assets/js/src/ace.searchbox-autocomplete.js"></script>-->
 
 <!-- inline scripts related to this page -->
 <script type="text/javascript" th:inline="javascript">
@@ -221,7 +188,7 @@
                     }
                 },
 
-                {name: 'id', index: 'id', width: 50, editable: false, search: true, hidden: true},
+                {name: 'id', index: 'id', width: 50, editable: false, hidden: true},
                 {name: 'rescId', index: 'rescId', editable: false},
                 {name: 'roleId', index: 'roleId', editable: false},
                 {name: 'insertDate', index: 'insertDate', editable: false,formatter:'date',formatter:'date', formatoptions: {srcformat: 'u', newformat:'Y-m-d H:i'}},
@@ -374,6 +341,7 @@
                     style_search_filters($(this));
                 },
                 multipleSearch: true,
+                sopt:['eq', 'ne']
 //                multipleGroup:true,
 //                showQuery: true
                 /**
@@ -520,9 +488,6 @@
 
         $(grid_selector).closest(".ui-jqgrid-bdiv").css({'overflow-x': 'scroll'});
     });
-
-
-
 </script>
 
 </body>

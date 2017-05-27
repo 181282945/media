@@ -3,7 +3,6 @@ package com.aisino.core.security;
 import com.aisino.base.invoice.userinfo.entity.UserInfo;
 import com.aisino.base.invoice.userinfo.service.UserInfoService;
 import com.aisino.core.entity.BaseEntity;
-import com.aisino.core.mybatis.MyRoutingDataSource;
 import com.aisino.base.sysmgr.aclauth.service.AclAuthService;
 import com.aisino.base.sysmgr.aclrole.entity.AclRole;
 import com.aisino.base.sysmgr.aclrole.service.AclRoleService;
@@ -14,7 +13,6 @@ import com.aisino.base.sysmgr.acluserrole.service.AclUserRoleService;
 import com.aisino.core.security.util.SecurityUtil;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -42,8 +40,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Resource
     private AclAuthService aclAuthService;
 
-    @Resource
-    private MyRoutingDataSource routingDataSource;
 
     @Resource
     private UserInfoService userInfoService;
@@ -57,7 +53,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         List<GrantedAuthority> auths = new ArrayList<>();//用户角色集合
         BaseEntity entity;
         UserInfo userInfo;
-        User user = null;
         AclUser aclUser = null;
         userInfo = userInfoService.getUserByUsrno(username);
         entity = userInfo;
@@ -69,14 +64,16 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             }
         }
         List<String> preAuths = new ArrayList<>();//用户权限集合
-        AclUserRole aclUserRole = aclUserRoleService.getByUserId(entity.getId());
-        if(aclUserRole != null){
-            AclRole aclRole = aclRoleService.findEntityById(aclUserRole.getRoleId());
-            List<String> roleAuthTem = aclAuthService.findCodeByRoleId(aclRole.getId());
-            if (!roleAuthTem.isEmpty()) {
-                preAuths.addAll(roleAuthTem);
+        List<AclUserRole> aclUserRoles = aclUserRoleService.findByUserId(entity.getId());
+        if(!aclUserRoles.isEmpty()){
+            for(AclUserRole aclUserRole : aclUserRoles){
+                AclRole aclRole = aclRoleService.findEntityById(aclUserRole.getRoleId());
+                List<String> roleAuthTem = aclAuthService.findCodeByRoleId(aclRole.getId());
+                if (!roleAuthTem.isEmpty()) {
+                    preAuths.addAll(roleAuthTem);
+                }
+                auths.add(new SimpleGrantedAuthority(aclRole.getCode().toUpperCase()));
             }
-            auths.add(new SimpleGrantedAuthority(aclRole.getCode().toUpperCase()));
         }
 
         List<String> userAuthTem = aclAuthService.findCodeByUserId(entity.getId());
@@ -89,20 +86,17 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
 
         if(entity instanceof UserInfo){
-            /**
-             * 加入用户数据源
-             */
-            routingDataSource.addCuzDataSource(userInfo);
             //权限集加入类名,为区分前后台用户
             auths.add(new SimpleGrantedAuthority(SecurityUtil.USERINFO));
-            user = new User(userInfo.getUsrno(), userInfo.getPassword(), !userInfo.getDelflags(), true, true, true, auths);
-
+            userInfo.setAuthorities(auths);
+            return userInfo;
         }else if (entity instanceof AclUser){
             //权限集加入类名,为区分前后台用户
             auths.add(new SimpleGrantedAuthority(SecurityUtil.ACLUSER));
-            user = new User(aclUser.getUserName(), aclUser.getPassword(), aclUser.getEnabled(), aclUser.getAccountNonExpired(), aclUser.getCredentialsNonExpired(), aclUser.getAccountNonLocked(), auths);
+            aclUser.setAuthorities(auths);
+            return aclUser;
         }
 
-        return user;
+        return null;
     }
 }

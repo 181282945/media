@@ -5,6 +5,8 @@ import com.aisino.base.invoice.invoiceinfo.entity.InvoiceInfo;
 import com.aisino.common.model.xml.impl.KpRequestyl;
 import com.aisino.core.service.BaseService;
 
+import java.util.Map;
+
 
 /**
  * Created by 为 on 2017-4-28.
@@ -21,7 +23,7 @@ public interface InvoiceInfoService extends BaseService<InvoiceInfo,InvoiceInfoM
     /**
      *  请求开票接口并保存结果
      */
-    Integer requestBilling(String usrNo, Integer orderInfoId, InvoiceInfo.InvoiceType invoiceType,KpRequestyl.FpkjxxFptxx.CzdmType czdmType,String reMarks);
+    Integer requestBilling(String usrNo, Integer orderInfoId, InvoiceInfo.InvoiceType invoiceType,KpRequestyl.FpkjxxFptxx.CzdmType czdmType,String reMarks,final Map<String,String> map);
 
     /**
      * 下载发票

@@ -1,6 +1,5 @@
 package com.aisino.base.sysmgr.aclrescuser.dao;
 
-import com.aisino.base.sysmgr.aclrescrole.entity.AclRescRole;
 import com.aisino.core.dao.BaseMapper;
 import com.aisino.base.sysmgr.aclrescuser.entity.AclRescUser;
 import org.apache.ibatis.annotations.Delete;

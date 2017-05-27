@@ -86,12 +86,12 @@ public class HttpRequestor {
      * @return
      * @throws Exception
      */
-    public String doPost(String url, Map parameterMap) throws Exception {
+    public String doPost(String url, Map<?, ?> parameterMap) throws Exception {
 
         /* Translate parameter map to parameter date string */
         StringBuffer parameterBuffer = new StringBuffer();
         if (parameterMap != null) {
-            Iterator iterator = parameterMap.keySet().iterator();
+            Iterator<?> iterator = parameterMap.keySet().iterator();
             String key = null;
             Object value = null;
             while (iterator.hasNext()) {

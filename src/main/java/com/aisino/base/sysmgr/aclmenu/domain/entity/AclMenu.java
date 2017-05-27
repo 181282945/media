@@ -13,7 +13,9 @@ import java.util.Objects;
 @BaseEntityMapper(tableName = "acl_menu")
 public class AclMenu extends BaseEntity implements Comparable<AclMenu> {
 
-    public AclMenu(){}
+	private static final long serialVersionUID = -8068868830716284472L;
+
+	public AclMenu(){}
 
     public AclMenu(String code,String name,Integer seq){
         this.code = code;

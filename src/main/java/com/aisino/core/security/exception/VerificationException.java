@@ -7,7 +7,10 @@ import org.springframework.security.core.AuthenticationException;
  * 自定义验证码异常
  */
 public class VerificationException extends AuthenticationException {
-    public VerificationException(String msg) {
+	
+	private static final long serialVersionUID = 355680329604361176L;
+
+	public VerificationException(String msg) {
         super(msg);
     }
 

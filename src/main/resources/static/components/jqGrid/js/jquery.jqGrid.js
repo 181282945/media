@@ -2818,23 +2818,23 @@
                         }
                     }
                     ts.p.sortorder = sortord[ len -1 ];
-					/*
-					 $.each(cm, function(i){
-					 if(this.lso) {
-					 if(i>0 && fs) {
-					 sort += ", ";
-					 }
-					 splas = this.lso.split("-");
-					 sort += cm[i].index || cm[i].name;
-					 sort += " "+splas[splas.length-1];
-					 fs = true;
-					 ts.p.sortorder = splas[splas.length-1];
-					 }
-					 });
-					 ls = sort.lastIndexOf(ts.p.sortorder);
-					 sort = sort.substring(0, ls);
-					 ts.p.sortname = sort;
-					 */
+                    /*
+                     $.each(cm, function(i){
+                     if(this.lso) {
+                     if(i>0 && fs) {
+                     sort += ", ";
+                     }
+                     splas = this.lso.split("-");
+                     sort += cm[i].index || cm[i].name;
+                     sort += " "+splas[splas.length-1];
+                     fs = true;
+                     ts.p.sortorder = splas[splas.length-1];
+                     }
+                     });
+                     ls = sort.lastIndexOf(ts.p.sortorder);
+                     sort = sort.substring(0, ls);
+                     ts.p.sortname = sort;
+                     */
                 },
                 sortData = function (index, idxcol,reload,sor, obj){
                     if(!ts.p.colModel[idxcol].sortable) { return; }
@@ -6357,10 +6357,10 @@
             if(this.p.showQuery) {
                 $(this).append("<table class='queryresult " + classes.table_widget + "' style='display:block;max-width:440px;border:0px none;' dir='"+this.p.direction+"'><tbody><tr><td class='query'></td></tr></tbody></table>");
             }
-			/*
-			 *Perform checking.
-			 *
-			 */
+            /*
+             *Perform checking.
+             *
+             */
             var checkData = function(val, colModelItem) {
                 var ret = [true,""], $t = getGrid();
                 if($.isFunction(colModelItem.searchrules)) {
@@ -6375,11 +6375,11 @@
                     p.errmsg = ret[1];
                 }
             };
-			/* moving to common
-			 randId = function() {
-			 return Math.floor(Math.random()*10000).toString();
-			 };
-			 */
+            /* moving to common
+             randId = function() {
+             return Math.floor(Math.random()*10000).toString();
+             };
+             */
 
             this.onchange = function (  ){
                 // clear any error
@@ -6387,10 +6387,10 @@
                 this.p.errmsg="";
                 return $.isFunction(this.p.onChange) ? this.p.onChange.call( this, this.p ) : false;
             };
-			/*
-			 * Redraw the filter every time when new field is added/deleted
-			 * and field is  changed
-			 */
+            /*
+             * Redraw the filter every time when new field is added/deleted
+             * and field is  changed
+             */
             this.reDraw = function() {
                 $("table.group:first",this).remove();
                 var t = this.createTableForGroup(p.filter, null);
@@ -6399,11 +6399,11 @@
                     this.p.afterRedraw.call(this, this.p);
                 }
             };
-			/*
-			 * Creates a grouping data for the filter
-			 * @param group - object
-			 * @param parentgroup - object
-			 */
+            /*
+             * Creates a grouping data for the filter
+             * @param group - object
+             * @param parentgroup - object
+             */
             this.createTableForGroup = function(group, parentgroup) {
                 var that = this,  i;
                 // this table will hold all the group (tables) and rules (rows)
@@ -6553,9 +6553,9 @@
 
                 return table;
             };
-			/*
-			 * Create the rule data for the filter
-			 */
+            /*
+             * Create the rule data for the filter
+             */
             this.createTableRowForRule = function(rule, group ) {
                 // save current entity in a variable so that it could
                 // be referenced in anonimous method calls
@@ -6904,9 +6904,9 @@
         });
     };
     $.extend($.fn.jqFilter,{
-		/*
-		 * Return SQL like string. Can be used directly
-		 */
+        /*
+         * Return SQL like string. Can be used directly
+         */
         toSQLString : function()
         {
             var s ="";
@@ -6915,9 +6915,9 @@
             });
             return s;
         },
-		/*
-		 * Return filter data as object.
-		 */
+        /*
+         * Return filter data as object.
+         */
         filterData : function()
         {
             var s;
@@ -11406,7 +11406,11 @@
                                 try {
                                     $.jgrid.info_dialog(errors.errcap,'<div class="'+error+'">'+ rT +'</div>', edit.bClose, {buttonalign:'right', styleUI : $t.p.styleUI });
                                 } catch(e) {
-                                    alert(rT);
+                                    /**
+                                     * zhenweilai,这个东西坑爹,直接alert出503的错误.重写这里
+                                     * 但是重写了AJAX 的错误提示,注释了为了避免两次提示
+                                     */
+                                    // alert(rT);
                                 }
                             }
                             if(o.restoreAfterError === true) {
@@ -11848,30 +11852,30 @@
                 height : 240,
                 classname : null,
                 done : function(perm) { if (perm) { self.jqGrid("remapColumns", perm, true); } },
-				/* msel is either the name of a ui widget class that
-				 extends a multiselect, or a function that supports
-				 creating a multiselect object (with no argument,
-				 or when passed an object), and destroying it (when
-				 passed the string "destroy"). */
+                /* msel is either the name of a ui widget class that
+                 extends a multiselect, or a function that supports
+                 creating a multiselect object (with no argument,
+                 or when passed an object), and destroying it (when
+                 passed the string "destroy"). */
                 msel : "multiselect",
-				/* "msel_opts" : {}, */
+                /* "msel_opts" : {}, */
 
-				/* dlog is either the name of a ui widget class that
-				 behaves in a dialog-like way, or a function, that
-				 supports creating a dialog (when passed dlog_opts)
-				 or destroying a dialog (when passed the string
-				 "destroy")
-				 */
+                /* dlog is either the name of a ui widget class that
+                 behaves in a dialog-like way, or a function, that
+                 supports creating a dialog (when passed dlog_opts)
+                 or destroying a dialog (when passed the string
+                 "destroy")
+                 */
                 dlog : "dialog",
                 dialog_opts : {
                     minWidth: 470,
                     dialogClass: "ui-jqdialog"
                 },
-				/* dlog_opts is either an option object to be passed
-				 to "dlog", or (more likely) a function that creates
-				 the options object.
-				 The default produces a suitable options object for
-				 ui.dialog */
+                /* dlog_opts is either an option object to be passed
+                 to "dlog", or (more likely) a function that creates
+                 the options object.
+                 The default produces a suitable options object for
+                 ui.dialog */
                 dlog_opts : function(options) {
                     var buttons = {};
                     buttons[options.bSubmit] = function() {
@@ -11904,8 +11908,8 @@
                         }
                     }, options.dialog_opts || {});
                 },
-				/* Function to get the permutation array, and pass it to the
-				 "done" function */
+                /* Function to get the permutation array, and pass it to the
+                 "done" function */
                 apply_perm : function() {
                     var perm = [];
                     $('option',select).each(function() {
@@ -11928,9 +11932,9 @@
                     }
                     self.jqGrid("setGridWidth", self[0].p.width, self[0].p.shrinkToFit);
                 },
-				/* Function to cleanup the dialog, and select. Also calls the
-				 done function with no permutation (to indicate that the
-				 columnChooser was aborted */
+                /* Function to cleanup the dialog, and select. Also calls the
+                 done function with no permutation (to indicate that the
+                 columnChooser was aborted */
                 cleanup : function(calldone) {
                     call(opts.dlog, selector, 'destroy');
                     call(opts.msel, select, 'destroy');
@@ -12262,7 +12266,7 @@
 
 //module begin
     function _pivotfilter (fn, context) {
-		/*jshint validthis: true */
+        /*jshint validthis: true */
         var i,
             value,
             result = [],
@@ -12339,21 +12343,21 @@
                     newObj,
                     r=0;
                 // utility funcs
-				/*
-				 * Filter the data to a given criteria. Return the firt occurance
-				 */
+                /*
+                 * Filter the data to a given criteria. Return the firt occurance
+                 */
                 function find(ar, fun, extra) {
                     var res;
                     res = _pivotfilter.call(ar, fun, extra);
                     return res.length > 0 ? res[0] : null;
                 }
-				/*
-				 * Check if the grouped row column exist (See find)
-				 * If the row is not find in pivot rows retun null,
-				 * otherviese the column
-				 */
+                /*
+                 * Check if the grouped row column exist (See find)
+                 * If the row is not find in pivot rows retun null,
+                 * otherviese the column
+                 */
                 function findGroup(item, index) {
-					/*jshint validthis: true */
+                    /*jshint validthis: true */
                     var j = 0, ret = true, i;
                     for(i in item) {
                         if( item.hasOwnProperty(i) ) {
@@ -12372,9 +12376,9 @@
                     }
                     return ret;
                 }
-				/*
-				 * Perform calculations of the pivot values.
-				 */
+                /*
+                 * Perform calculations of the pivot values.
+                 */
                 function calculation(oper, v, field, rc, _cnt)  {
                     var ret;
                     switch (oper) {
@@ -12413,10 +12417,10 @@
                     }
                     return ret;
                 }
-				/*
-				 * The function agragates the values of the pivot grid.
-				 * Return the current row with pivot summary values
-				 */
+                /*
+                 * The function agragates the values of the pivot grid.
+                 * Return the current row with pivot summary values
+                 */
                 function agregateFunc ( row, aggr, value, curr) {
                     // default is sum
                     var arrln = aggr.length, i, label, j, jv, mainval="",swapvals=[];
@@ -12582,10 +12586,10 @@
                 if(ylen>0) {
                     headers[ylen-1] = {	useColSpanStyle: false,	groupHeaders: []};
                 }
-				/*
-				 * Recursive function which uses the tree to build the
-				 * columns from the pivot values and set the group Headers
-				 */
+                /*
+                 * Recursive function which uses the tree to build the
+                 * columns from the pivot values and set the group Headers
+                 */
                 function list(items) {
                     var l, j, key, k, col;
                     for (key in items) {	 // iterate
@@ -13973,13 +13977,13 @@
         },
         f=function(k){return parseInt(E.css(k),10)||false;},
         f1=function(k){return parseInt(E1.css(k),10)||false;};
-	/*
-	 jQuery tinyDraggable v1.0.2
-	 Copyright (c) 2014 Simon Steinberger / Pixabay
-	 GitHub: https://github.com/Pixabay/jQuery-tinyDraggable
-	 More info: https://pixabay.com/blog/posts/p-52/
-	 License: http://www.opensource.org/licenses/mit-license.php
-	 */
+    /*
+     jQuery tinyDraggable v1.0.2
+     Copyright (c) 2014 Simon Steinberger / Pixabay
+     GitHub: https://github.com/Pixabay/jQuery-tinyDraggable
+     More info: https://pixabay.com/blog/posts/p-52/
+     License: http://www.opensource.org/licenses/mit-license.php
+     */
     $.fn.tinyDraggable = function(options){
         var settings = $.extend({ handle: 0, exclude: 0 }, options);
         return this.each(function(){

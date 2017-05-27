@@ -17,12 +17,27 @@ public class DataSourceConfig {
     @Value("${spring.datasource.type}")
     private Class<? extends DataSource> dataSourceType;
 
+    /**
+     * 主库
+     * @return
+     */
     @Bean(name = "writeDataSource")
     @Primary
     @ConfigurationProperties(prefix = "spring.datasource.write")
     public DataSource writeDataSource() {
         return DataSourceBuilder.create().type(dataSourceType).build();
     }
+
+    /**
+     * 信息库
+     * @return
+     */
+    @Bean(name = "inforSchemaDataSource")
+    @ConfigurationProperties(prefix = "spring.datasource.inforSchema")
+    public DataSource inforSchemaDataSource() {
+        return DataSourceBuilder.create().type(dataSourceType).build();
+    }
+
 
     /**
      * 有多少个从库就要配置多少个

@@ -31,7 +31,8 @@ public class BaseServiceImpl<T extends BaseEntity,M extends BaseMapper<T>> imple
     @Resource(name="sqlSessionTemplate")
     private SqlSession sqlSession;
 
-    protected M getMapper() {
+    @SuppressWarnings("unchecked")
+	protected M getMapper() {
         return (M) sqlSession.getMapper(mapperClass);
     }
 

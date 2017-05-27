@@ -9,7 +9,6 @@ import com.aisino.base.sysmgr.aclresource.annotation.AclResc;
 import com.aisino.common.dto.jqgrid.JqgridFilters;
 import com.aisino.core.controller.BaseController;
 import org.springframework.http.MediaType;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;

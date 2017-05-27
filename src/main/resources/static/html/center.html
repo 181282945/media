@@ -9,14 +9,6 @@
     <link rel="stylesheet" href="/assets/css/bootstrap.css"/>
     <link rel="stylesheet" href="/components/font-awesome/css/font-awesome.css"/>
 
-    <!-- page specific plugin styles -->
-    <link rel="stylesheet" href="/components/_mod/jquery-ui/jquery-ui.css"/>
-    <link rel="stylesheet" href="/components/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css"/>
-    <link rel="stylesheet" href="/components/_mod/jqgrid/ui.jqgrid.css"/>
-
-    <!-- page specific plugin styles -->
-    <link rel="stylesheet" href="/components/_mod/jquery-ui.custom/jquery-ui.custom.css"/>
-    <link rel="stylesheet" href="/components/jquery.gritter/css/jquery.gritter.css"/>
 
     <!-- text fonts -->
     <link rel="stylesheet" href="/assets/css/ace-fonts.css"/>
@@ -27,15 +19,10 @@
     <!--[if lte IE 9]>
     <link rel="stylesheet" href="/assets/css/ace-part2.css" class="ace-main-stylesheet"/>
     <![endif]-->
-    <link rel="stylesheet" href="/assets/css/ace-skins.css"/>
-    <link rel="stylesheet" href="/assets/css/ace-rtl.css"/>
 
     <!--[if lte IE 9]>
     <link rel="stylesheet" href="/assets/css/ace-ie.css"/>
     <![endif]-->
-
-    <!-- ace settings handler -->
-    <script src="/assets/js/ace-extra.js"></script>
 
     <!-- HTML5shiv and Respond.js for IE8 to support HTML5 elements and media queries -->
 
@@ -212,16 +199,16 @@
                                 <!--<img src="images/u99.png"><span style="font-size: medium;margin-left: 2px;">个人基本信息</span>-->
                             </div>
                             <div class="col-md-4">
-                                <p><span>用户账号&ensp;:&ensp;</span><span th:text="${currentUserInfo.usrno}">XXXX</span>
+                                <p><span>用户账号&ensp;:&ensp;</span><span th:text="${currentUserInfo}? ${currentUserInfo.usrno}">XXXX</span>
                                 </p>
-                                <p><span>昵&emsp;&emsp;称&ensp;:&ensp;</span><span th:text="${currentUserInfo.usrname}">XXXX</span>
+                                <p><span>昵&emsp;&emsp;称&ensp;:&ensp;</span><span th:text="${currentUserInfo}? ${currentUserInfo.usrname}">XXXX</span>
                                 </p>
                                 <p><span>手&emsp;&emsp;机&ensp;:&ensp;</span><span
-                                        th:text="${currentUserInfo.mobilePhone}">XXXX</span></p>
+                                        th:text="${currentUserInfo}? ${currentUserInfo.mobilePhone}">XXXX</span></p>
                                 <p><span>固定电话&ensp;:&ensp;</span><span
-                                        th:text="${currentUserInfo.telephone}">XXXX</span></p>
+                                        th:text="${currentUserInfo}? ${currentUserInfo.telephone}">XXXX</span></p>
                                 <p><span>邮&emsp;&emsp;箱&ensp;:&ensp;</span><span
-                                        th:text="${currentUserInfo.email}">XXXX</span></p>
+                                        th:text="${currentUserInfo}? ${currentUserInfo.email}">XXXX</span></p>
                             </div>
                             <div class="col-md-4 ">
                                 <!--<button type="button" class="btn btn-white pull-right">修改</button>-->
@@ -251,19 +238,19 @@
                                 <!--<img src="images/u99.png"><span style="font-size: medium;margin-left: 2px;">个人基本信息</span>-->
                             </div>
                             <div class="col-md-4">
-                                <p><span>企业税号&ensp;:&ensp;</span><span th:text="${currentEnInfo.taxno}">XXXX</span></p>
-                                <p><span>企业名称&ensp;:&ensp;</span><span th:text="${currentEnInfo.taxname}">XXXX</span>
+                                <p><span>企业税号&ensp;:&ensp;</span><span th:text="${currentEnInfo}? ${currentEnInfo.taxno}">XXXX</span></p>
+                                <p><span>企业名称&ensp;:&ensp;</span><span th:text="${currentEnInfo}? ${currentEnInfo.taxname}">XXXX</span>
                                 </p>
                                 <p><span>银行账号&ensp;:&ensp;</span><span
-                                        th:text="${currentEnInfo.bankaccount}">XXXX</span></p>
-                                <p><span>企业地址&ensp;:&ensp;</span><span th:text="${currentEnInfo.taxaddr}">XXXX</span>
+                                        th:text="${currentEnInfo}? ${currentEnInfo.bankaccount}">XXXX</span></p>
+                                <p><span>企业地址&ensp;:&ensp;</span><span th:text="${currentEnInfo}? ${currentEnInfo.taxaddr}">XXXX</span>
                                 </p>
                                 <p><span>收&ensp;款&ensp;人&ensp;:&ensp;</span><span
-                                        th:text="${currentEnInfo.payee}">XXXX</span></p>
+                                        th:text="${currentEnInfo}? ${currentEnInfo.payee}">XXXX</span></p>
                                 <p><span>开&ensp;票&ensp;人&ensp;:&ensp;</span><span
-                                        th:text="${currentEnInfo.drawer}">XXXX</span></p>
-                                <p><span>企业电话&ensp;:&ensp;</span><span th:text="${currentEnInfo.taxtel}">XXXX</span></p>
-                                <p><span>复&ensp;核&ensp;人&ensp;:&ensp;</span><span th:text="${currentEnInfo.reviewer}">XXXX</span>
+                                        th:text="${currentEnInfo}? ${currentEnInfo.drawer}">XXXX</span></p>
+                                <p><span>企业电话&ensp;:&ensp;</span><span th:text="${currentEnInfo}? ${currentEnInfo.taxtel}">XXXX</span></p>
+                                <p><span>复&ensp;核&ensp;人&ensp;:&ensp;</span><span th:text="${currentEnInfo}? ${currentEnInfo.reviewer}">XXXX</span>
                                 </p>
                             </div>
                             <div class="col-md-4 ">
@@ -351,15 +338,15 @@
                             <div class="col-md-9">
                                 <form id="baseOptionFrom" method="post" class="form-inline" role="form" action="/base/invoice/eninfo/u/addOrUpdateByCurrentUser">
                                     <fieldset>
-                                        <input name="id"  th:value="${currentEnInfo.id}" type="text" hidden class="ace">
+                                        <input name="id"  th:value="${currentEnInfo}? ${currentEnInfo.id}" type="text" hidden class="ace">
                                         <div class="form-group">
                                             <label class="form-label">开&emsp;票&emsp;选&emsp;项&ensp;:&ensp;</label>
                                             <label class="form-label">
-                                                <input name="billingOption"  th:checked=" ${currentEnInfo.billingOption} == '0' " value="0" type="radio" class="ace">
+                                                <input name="billingOption"  th:checked="${currentEnInfo}? ${currentEnInfo.billingOption} == '0' " value="0" type="radio" class="ace">
                                                 <span class="lbl">手动开票</span>
                                             </label>
                                             <label class="form-label">
-                                                <input name="billingOption" th:checked=" ${currentEnInfo.billingOption} == '1' " value="1" type="radio" class="ace">
+                                                <input name="billingOption" th:checked="${currentEnInfo}? ${currentEnInfo.billingOption} == '1' " value="1" type="radio" class="ace">
                                                 <span class="lbl">自动开票</span>
                                             </label>
                                             <div class="space"></div>
@@ -368,12 +355,12 @@
                                         <div class="form-group">
                                             <label class="form-label">优&emsp;惠&emsp;政&emsp;策&ensp;:&ensp;</label>
                                             <label class="form-label">
-                                                <input name="yhzcbs" th:checked="${currentEnInfo.yhzcbs} == '0'" value="0" type="radio" class="ace">
+                                                <input name="yhzcbs" th:checked="${currentEnInfo}? ${currentEnInfo.yhzcbs} == '0'" value="0" type="radio" class="ace">
                                                 <span class="lbl">不使用</span>
                                             </label>
 
                                             <label class="form-label">
-                                                <input name="yhzcbs" th:checked="${currentEnInfo.yhzcbs} == '1'" value="1" type="radio" class="ace">
+                                                <input name="yhzcbs" th:checked="${currentEnInfo}? ${currentEnInfo.yhzcbs} == '1'" value="1" type="radio" class="ace">
                                                 <span class="lbl">使用</span>
                                             </label>
                                             <div class="space"></div>
@@ -383,19 +370,19 @@
                                         <div class="form-group">
                                             <label class="form-label">零&ensp;税&ensp;率&ensp;标&ensp;识&ensp;:&ensp;</label>
                                             <label class="form-label">
-                                                <input name="lslbs" th:checked=" ${currentEnInfo.lslbs} == null " value="" type="radio" class="ace">
+                                                <input name="lslbs" th:checked="${currentEnInfo}?  ${currentEnInfo.lslbs} == null " value="" type="radio" class="ace">
                                                 <span class="lbl">无</span>
                                             </label>
                                             <label class="form-label">
-                                                <input name="lslbs" th:checked=" ${currentEnInfo.lslbs} == '1' " value="1" type="radio" class="ace">
+                                                <input name="lslbs" th:checked="${currentEnInfo}?  ${currentEnInfo.lslbs} == '1' " value="1" type="radio" class="ace">
                                                 <span class="lbl">免税</span>
                                             </label>
                                             <label class="form-label">
-                                                <input name="lslbs"  th:checked=" ${currentEnInfo.lslbs} == '2' " value="2" type="radio" class="ace">
+                                                <input name="lslbs"  th:checked="${currentEnInfo}? ${currentEnInfo.lslbs} == '2' " value="2" type="radio" class="ace">
                                                 <span class="lbl">不征税</span>
                                             </label>
                                             <label class="form-label">
-                                                <input name="lslbs"  th:checked=" ${currentEnInfo.lslbs} == '3' " value="3" type="radio" class="ace">
+                                                <input name="lslbs"  th:checked="${currentEnInfo}? ${currentEnInfo.lslbs} == '3' " value="3" type="radio" class="ace">
                                                 <span class="lbl">普通零税率</span>
                                             </label>
                                             <div class="space"></div>
@@ -449,38 +436,6 @@
 <!--[if lte IE 8]>
 <script src="/components/ExplorerCanvas/excanvas.js"></script>
 <![endif]-->
-<script src="/components/_mod/jquery-ui.custom/jquery-ui.custom.js"></script>
-<script src="/components/jqueryui-touch-punch/jquery.ui.touch-punch.js"></script>
-<script src="/components/bootbox.js/bootbox.js"></script>
-<script src="/components/_mod/easypiechart/jquery.easypiechart.js"></script>
-<script src="/components/jquery.gritter/js/jquery.gritter.js"></script>
-<script src="/components/spin.js/spin.js"></script>
-
-<!-- ace scripts -->
-<script src="/assets/js/src/elements.scroller.js"></script>
-<script src="/assets/js/src/elements.colorpicker.js"></script>
-<script src="/assets/js/src/elements.fileinput.js"></script>
-<script src="/assets/js/src/elements.typeahead.js"></script>
-<script src="/assets/js/src/elements.wysiwyg.js"></script>
-<script src="/assets/js/src/elements.spinner.js"></script>
-<script src="/assets/js/src/elements.treeview.js"></script>
-<script src="/assets/js/src/elements.wizard.js"></script>
-<script src="/assets/js/src/elements.aside.js"></script>
-<script src="/assets/js/src/ace.js"></script>
-<script src="/assets/js/src/ace.basics.js"></script>
-<script src="/assets/js/src/ace.scrolltop.js"></script>
-<script src="/assets/js/src/ace.ajax-content.js"></script>
-<script src="/assets/js/src/ace.touch-drag.js"></script>
-<script src="/assets/js/src/ace.sidebar.js"></script>
-<script src="/assets/js/src/ace.sidebar-scroll-1.js"></script>
-<script src="/assets/js/src/ace.submenu-hover.js"></script>
-<script src="/assets/js/src/ace.widget-box.js"></script>
-<script src="/assets/js/src/ace.settings.js"></script>
-<script src="/assets/js/src/ace.settings-rtl.js"></script>
-<script src="/assets/js/src/ace.settings-skin.js"></script>
-<script src="/assets/js/src/ace.widget-on-reload.js"></script>
-<script src="/assets/js/src/ace.searchbox-autocomplete.js"></script>
-
 
 <!-- 自定义JS -->
 <script src="/js/jquery.form.min.js"></script>
@@ -489,11 +444,6 @@
 <script src="/js/layer/layer.js"></script>
 <script src="/js/base.js"></script>
 
-
-<!-- page specific plugin scripts -->
-<script src="/components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js"></script>
-<script src="/components/jqGrid/js/jquery.jqGrid.js"></script>
-<script src="/components/jqGrid/js/i18n/grid.locale-cn.js"></script>
 
 <script th:inline="javascript">
 
@@ -596,12 +546,5 @@
         });
     });
 </script>
-<!-- the following scripts are used in demo only for onpage help and you don't need them -->
-<link rel="stylesheet" href="/assets/css/ace.onpage-help.css"/>
-
-<script type="text/javascript"> ace.vars['base'] = '..'; </script>
-<script src="/assets/js/src/elements.onpage-help.js"></script>
-<script src="/assets/js/src/ace.onpage-help.js"></script>
-
 </body>
 </html>

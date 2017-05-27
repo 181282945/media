@@ -1,7 +1,5 @@
 package com.aisino.core.properties;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
-
 /**
  * Created by ZhenWeiLai on 2017/1/4.
  */

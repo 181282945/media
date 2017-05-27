@@ -5,6 +5,7 @@ import sun.misc.BASE64Encoder;
 
 import java.io.UnsupportedEncodingException;
 
+@SuppressWarnings("restriction")
 public class Base64 {
     // 加密
     public static String getBase64(String str) {

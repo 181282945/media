@@ -4,15 +4,18 @@ import com.aisino.base.invoice.order.orderdetail.dao.OrderDeailMapper;
 import com.aisino.base.invoice.order.orderdetail.entity.OrderDetail;
 import com.aisino.base.invoice.order.orderdetail.service.OrderDetailService;
 import com.aisino.common.params.SystemParameter;
+import com.aisino.common.util.RegexUtil;
 import com.aisino.common.util.tax.TaxCalculationUtil;
 import com.aisino.core.mybatis.specification.PageAndSort;
 import com.aisino.core.mybatis.specification.QueryLike;
 import com.aisino.core.mybatis.specification.Specification;
 import com.aisino.core.service.BaseServiceImpl;
+import com.aisino.core.util.ConstraintUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -40,6 +43,38 @@ public class OrderDetailServiceImpl extends BaseServiceImpl<OrderDetail, OrderDe
         specification.addQueryLike(new QueryLike("orderNo", QueryLike.LikeMode.Eq, orderNo));
         return this.findByLike(specification);
     }
+
+
+    /**
+     * 子类可以重写新增验证方法
+     */
+    protected void validateAddEntity(OrderDetail entity) {
+        ConstraintUtil.setDefaultValue(entity);
+        ConstraintUtil.isNotNullConstraint(entity);
+        commonValidateOrderDetail(entity);
+    }
+
+
+    /**
+     * 子类可以重写更新验证方法
+     */
+    protected void validateUpdateEntity(OrderDetail entity) {
+        commonValidateOrderDetail(entity);
+    }
+
+    /**
+     * 订单明细字段规则检验
+     * @param entity
+     */
+    private void commonValidateOrderDetail(OrderDetail entity){
+//        if(entity.getItemNum()!=null && !RegexUtil.isNumber(entity.getItemNum()))
+//            throw new RuntimeException("不合法数量!");
+//        if(entity.getItemPrice()!=null && !RegexUtil.isNumber(entity.getItemPrice()))
+//            throw new RuntimeException("不合法价格!");
+//        if(entity.getTaxRate()!=null && !RegexUtil.isNumber(entity.getTaxRate()))
+//            throw new RuntimeException("不合法税率!");
+    }
+
 
     @Override
     public OrderDetail orderDetailTransform(String[] value) {

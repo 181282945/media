@@ -27,6 +27,8 @@ public class MyUsernamePasswordAuthenticationFilter extends UsernamePasswordAuth
         } else {
             String verificationcode = this.obtainVerificationCode(request);
             Object kaptchaCode = request.getSession().getAttribute(com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY);
+            if(kaptchaCode == null)
+                throw new VerificationException("请刷新页面重试! ");
             if(StringUtils.isBlank(verificationcode))
                 throw new VerificationException("请输入验证码! ");
             if (!verificationcode.toUpperCase().equals(kaptchaCode.toString().toUpperCase()))

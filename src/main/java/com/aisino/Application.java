@@ -3,7 +3,6 @@ package com.aisino;
 import com.aisino.base.invoice.authcodeinfo.params.GlobalInfoParams;
 import com.aisino.base.invoice.authcodeinfo.params.DataDescriptionParams;
 import com.aisino.base.invoice.authcodeinfo.params.RequestParams;
-import com.aisino.common.listener.WebSessionListener;
 import com.aisino.common.params.SystemParameter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -11,7 +10,6 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.embedded.ConfigurableEmbeddedServletContainer;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 
 
@@ -19,7 +17,7 @@ import org.springframework.boot.web.support.SpringBootServletInitializer;
  *	服务启动类
  */
 @SpringBootApplication
-@ServletComponentScan(basePackageClasses = {WebSessionListener.class})
+//@ServletComponentScan(basePackageClasses = {})
 @EnableConfigurationProperties({SystemParameter.class, RequestParams.class, GlobalInfoParams.class, DataDescriptionParams.class})
 public class Application extends SpringBootServletInitializer implements EmbeddedServletContainerCustomizer {
 	/**
@@ -37,6 +35,7 @@ public class Application extends SpringBootServletInitializer implements Embedde
 	 */
 	@Override
 	public void customize(ConfigurableEmbeddedServletContainer container) {
+		container.setSessionTimeout(600);//单位为S
 		container.setPort(80);
 	}
 

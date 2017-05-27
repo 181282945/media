@@ -11,7 +11,9 @@ import org.apache.ibatis.type.Alias;
 @BaseEntityMapper(tableName = "sysmgr_dbinfo")
 public class DbInfo extends BaseInvoiceEntity {
 
-    /**
+	private static final long serialVersionUID = 3131307042836505388L;
+	
+	/**
      * 企业税号
      */
     private String taxNo;

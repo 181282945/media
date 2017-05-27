@@ -45,19 +45,8 @@ public class AclResourceServiceImpl extends BaseServiceImpl<AclResource, AclReso
     private AclRescUserService aclRescUserService;
 
     @Override
-    public AclResource findByIdentify(String identify) {
-        return getMapper().findByIdentify(identify);
-    }
-
-    @Override
     public List<AclResource> findAllModule() {
         return getMapper().findAllModule();
-    }
-
-
-    @Override
-    public List<AclResource> findAllAclModule() {
-        return getMapper().findAllAclModule();
     }
 
     @Override
@@ -73,6 +62,16 @@ public class AclResourceServiceImpl extends BaseServiceImpl<AclResource, AclReso
         specification.addQueryLike(new QueryLike("isMenu", QueryLike.LikeMode.Eq, "1"));
         return this.findByLike(specification);
     }
+
+    @Override
+    public List<AclResource> findModulePage(String target,PageAndSort pageAndSort){
+        Specification<AclResource> specification = new Specification<>(AclResource.class);
+        specification.addQueryLike(new QueryLike("type", QueryLike.LikeMode.Eq, AclResource.Type.MODULE.getCode()));
+        specification.addQueryLike(new QueryLike("target", QueryLike.LikeMode.Eq, target));
+        specification.setPageAndSort(pageAndSort);
+        return this.findByPage(specification);
+    }
+
 
     @Override
     public List<AclResource> findModuleByFilters(JqgridFilters jqgridFilters, PageAndSort pageAndSort) {

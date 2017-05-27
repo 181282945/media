@@ -10,10 +10,6 @@
     <link rel="stylesheet" href="/assets/css/bootstrap.css"/>
     <link rel="stylesheet" href="/components/font-awesome/css/font-awesome.css"/>
 
-    <!-- page specific plugin styles -->
-    <link rel="stylesheet" href="/components/_mod/jquery-ui.custom/jquery-ui.custom.css"/>
-    <link rel="stylesheet" href="/components/jquery.gritter/css/jquery.gritter.css"/>
-
     <!-- text fonts -->
     <link rel="stylesheet" href="/assets/css/ace-fonts.css"/>
 
@@ -23,8 +19,6 @@
     <!--[if lte IE 9]>
     <link rel="stylesheet" href="/assets/css/ace-part2.css" class="ace-main-stylesheet"/>
     <![endif]-->
-    <link rel="stylesheet" href="/assets/css/ace-skins.css"/>
-    <link rel="stylesheet" href="/assets/css/ace-rtl.css"/>
 
     <!--[if lte IE 9]>
     <link rel="stylesheet" href="/assets/css/ace-ie.css"/>
@@ -148,11 +142,11 @@
             </div>
         </div>
         <div id="nav" style="vertical-align:bottom;display:inline;">
-            <img class="inline" style="width: 167px;height: 39px;" src="images/u73.png"><img src="images/u83.png"><span
+            <img class="inline" style="width: 167px;height: 39px;" src="/images/u73.png"><img src="/images/u83.png"><span
                 class="inline" style="font-family: 微软雅黑;font-weight: bold;color: black;font-size: larger">云开票</span>
             <a href="/center">
                 <div class="inline" style="float:right;margin-right:50px;position: relative;">
-                    <img src="images/u75.png" class="navimg" id="memberCentre">
+                    <img src="/images/u75.png" class="navimg" id="memberCentre">
                     <div style="position: absolute;left: 15px;top: 10px;color: black">
                         <span style="font-family: 微软雅黑;font-weight: bold;font-size: medium;"
                               onmouseout="mouseOutBgImg('memberCentre')" onmouseover="mouseOverBgImg('memberCentre')">个人中心</span>
@@ -161,7 +155,7 @@
             </a>
             <a href="/base/invoice/invoiceinfo/u/tolist">
                 <div class="inline" style="float:right;margin-right:50px;position: relative;">
-                    <img src="images/u75.png" class="navimg" id="invoiceMgr">
+                    <img src="/images/u75.png" class="navimg" id="invoiceMgr">
                     <div style="position: absolute;left: 15px;top: 10px;color: black">
                         <span style="font-family: 微软雅黑;font-weight: bold;font-size: medium;"
                               onmouseout="mouseOutBgImg('invoiceMgr')"
@@ -171,7 +165,7 @@
             </a>
             <a href="/base/invoice/order/orderinfo/u/tolist">
                 <div class="inline" style="float:right;margin-right:50px;position: relative;">
-                    <img src="images/u75.png" class="navimg" id="order">
+                    <img src="/images/u75.png" class="navimg" id="order">
                     <div style="position: absolute;left: 15px;top: 10px;color: black">
                         <span style="font-family: 微软雅黑;font-weight: bold;font-size: medium;"
                               onmouseout="mouseOutBgImg('order')" onmouseover="mouseOverBgImg('order')">订单仓库</span>
@@ -180,7 +174,7 @@
             </a>
             <a href="/index">
                 <div class="inline" style="float:right;margin-right:50px;position: relative;">
-                    <img src="images/u75.png">
+                    <img src="/images/u75.png">
                     <div style="position: absolute;left: 30px;top: 10px;color: black">
                         <span style="font-family: 微软雅黑;font-weight: bold;font-size: medium;">首  页</span>
                     </div>
@@ -194,7 +188,7 @@
 
     <div id="content" style="margin-top: 20px;">
         <div class="inline" style="float:left;margin-left: 8px">
-            <img src="images/u89.png">
+            <img src="/images/u89.png">
         </div>
 
         <div class="inline" style="float:left;margin-left: 10px;height: 346px;overflow:hidden">
@@ -360,24 +354,18 @@
 
                                 <label class="block">
                                     <input type="checkbox" onclick="onClickHander(this)" class="ace"/>
-                                    <span class="lbl" style="color: black">
-															我已阅读并同意
-
-															<a href="#">《注册协议》</a>
-														</span>
+                                    <span class="lbl" style="color: black">我已阅读并同意<a href="#">《注册协议》</a></span>
                                 </label>
 
                                 <!--<div class="space-24"></div>-->
 
                                 <div class="clearfix">
-                                    <button type="reset" class="width-30 pull-left btn btn-sm">
+                                    <button type="reset" onclick="disabledRegBtn()" class="width-30 pull-left btn btn-sm">
                                         <i class="ace-icon fa fa-refresh"></i>
                                         <span class="bigger-110">重置</span>
                                     </button>
 
-                                    <button type="button" id="BtnRegSubmit" name="BtnRegSubmit"
-                                            class="width-50 pull-right btn btn-sm btn-success btn disabled"
-                                            style="margin-right: 5px">
+                                    <button type="button" id="BtnRegSubmit" name="BtnRegSubmit" class="width-50 pull-right btn btn-sm btn-success btn disabled" style="margin-right: 5px">
                                         <span class="bigger-110">注册</span>
 
                                         <i class="ace-icon fa fa-arrow-right icon-on-right"></i>
@@ -411,7 +399,7 @@
                                 <!-- #section:elements.tooltip -->
                                 <p>
                                     <span class="btn btn-sm" data-rel="tooltip"><a href="/logout"> 退出登录</a></span>
-                                    <span class="btn btn-info btn-sm tooltip-info" style="right: 0px"><a href="/base/invoice/order/orderinfo/u/tolist">去开票</a></span>
+                                    <span class="btn btn-info btn-sm tooltip-info" style="right: 0px"><a th:href="${completeEnInfo} ? '/base/invoice/order/orderinfo/u/tolist':'javascript:openAddEninfo();'" th:text="${completeEnInfo} ? '去开票' : '完善信息'" ></a></span>
                                 </p>
                                 <!-- /section:elements.tooltip -->
                             </div>
@@ -427,7 +415,7 @@
 
     <div class="news inline" style="position:relative;margin-left: 8px;color: black;">
         <div class=" u0_div inline">
-            <img style="margin-left: 10px;margin-top: 10px " src="images/u99.png">
+            <img style="margin-left: 10px;margin-top: 10px " src="/images/u99.png">
             <span style="position: relative;top: 6px;left: 10px;color: black;font-family: 微软雅黑;font-weight: 600;font-size: medium">新闻动态</span>
         </div>
 
@@ -448,7 +436,7 @@
 
     <div class="news inline" style="position:relative;margin-left: 45px;color: black;">
         <div class="u0_div inline">
-            <img style="margin-left: 10px;margin-top: 10px " src="images/u99.png">
+            <img style="margin-left: 10px;margin-top: 10px " src="/images/u99.png">
             <span style="position: relative;top: 6px;left: 10px;color: black;font-family: 微软雅黑;font-weight: 600;font-size: medium">政策动态</span>
         </div>
 
@@ -477,7 +465,7 @@
          style="position:relative;background-color: rgba(107, 107, 107, 1);  height:277px; margin-top: 50px ">
         <div class="inline" style="float: left;height: 100%;width: 210px;">
             <div style=" position:absolute; left:50px;  top:50px;  width:128px;  height:128px;">
-                <img style=" position:absolute; width:128px;  height:128px;" src="images/u109.jpg">
+                <img style=" position:absolute; width:128px;  height:128px;" src="/images/u109.jpg">
             </div>
             <div style=" position:absolute; left:55px;  top:185px; font-weight: bold ">
                 <span>深圳航天信息微服务</span>
@@ -524,7 +512,7 @@
             </div>
             <div style="margin-top: 10px;margin-left: 20px;">
                 <span style="font-size: 13px;font-weight: bold">法律声明</span><img
-                    style="margin-left: 5px;margin-bottom: 2px" src="images/u123.png"><span
+                    style="margin-left: 5px;margin-bottom: 2px" src="/images/u123.png"><span
                     style="margin-left: 5px;font-size: 13px;font-weight: bold">联系我们</span>
             </div>
 
@@ -546,9 +534,6 @@
 <!--[if IE]>
 <script src="/components/jquery.1x/dist/jquery.js"></script>
 <![endif]-->
-<script type="text/javascript">
-    if ('ontouchstart' in document.documentElement) document.write("<script src='/components/_mod/jquery.mobile.custom/jquery.mobile.custom.js'>" + "<" + "/script>");
-</script>
 <script src="/components/bootstrap/dist/js/bootstrap.js"></script>
 
 <!-- page specific plugin scripts -->
@@ -556,38 +541,6 @@
 <!--[if lte IE 8]>
 <script src="/components/ExplorerCanvas/excanvas.js"></script>
 <![endif]-->
-<script src="/components/_mod/jquery-ui.custom/jquery-ui.custom.js"></script>
-<script src="/components/jqueryui-touch-punch/jquery.ui.touch-punch.js"></script>
-<script src="/components/bootbox.js/bootbox.js"></script>
-<script src="/components/_mod/easypiechart/jquery.easypiechart.js"></script>
-<script src="/components/jquery.gritter/js/jquery.gritter.js"></script>
-<script src="/components/spin.js/spin.js"></script>
-
-<!-- ace scripts -->
-<script src="/assets/js/src/elements.scroller.js"></script>
-<script src="/assets/js/src/elements.colorpicker.js"></script>
-<script src="/assets/js/src/elements.fileinput.js"></script>
-<script src="/assets/js/src/elements.typeahead.js"></script>
-<script src="/assets/js/src/elements.wysiwyg.js"></script>
-<script src="/assets/js/src/elements.spinner.js"></script>
-<script src="/assets/js/src/elements.treeview.js"></script>
-<script src="/assets/js/src/elements.wizard.js"></script>
-<script src="/assets/js/src/elements.aside.js"></script>
-<script src="/assets/js/src/ace.js"></script>
-<script src="/assets/js/src/ace.basics.js"></script>
-<script src="/assets/js/src/ace.scrolltop.js"></script>
-<script src="/assets/js/src/ace.ajax-content.js"></script>
-<script src="/assets/js/src/ace.touch-drag.js"></script>
-<script src="/assets/js/src/ace.sidebar.js"></script>
-<script src="/assets/js/src/ace.sidebar-scroll-1.js"></script>
-<script src="/assets/js/src/ace.submenu-hover.js"></script>
-<script src="/assets/js/src/ace.widget-box.js"></script>
-<script src="/assets/js/src/ace.settings.js"></script>
-<script src="/assets/js/src/ace.settings-rtl.js"></script>
-<script src="/assets/js/src/ace.settings-skin.js"></script>
-<script src="/assets/js/src/ace.widget-on-reload.js"></script>
-<script src="/assets/js/src/ace.searchbox-autocomplete.js"></script>
-
 
 <!-- 自定义JS -->
 
@@ -613,13 +566,20 @@
         }
     };
 
+    //勾选协议事件
     function onClickHander(obj) {
         if (obj.checked) {
             $("#BtnRegSubmit").removeClass("btn disabled").attr("type", "submit");
         } else {
-            $("#BtnRegSubmit").addClass("btn disabled").attr("type", "button")
+            disabledRegBtn();
         }
     }
+
+    //禁用注册按钮
+    function disabledRegBtn(){
+        $("#BtnRegSubmit").addClass("btn disabled").attr("type", "button");
+    }
+
 
     //登录JS验证
     $("#loginForm").validate({
@@ -627,7 +587,7 @@
         rules: { //配置验证规则，key就是被验证的dom对象，value就是调用验证的方法(也是json格式)
             name_key: {
                 required: true, //必填。如果验证方法不需要参数，则配置为true
-                rangelength: [8, 20]
+                rangelength: [6, 20]
             },
             pwd_key: {
                 required: true,
@@ -640,14 +600,14 @@
         messages: {
             name_key: {
                 required: "必填",
-                rangelength: "长度8-20"
+                rangelength: "长度6-20"
             },
             pwd_key: {
-                required: "不能为空",
+                required: "必填",
                 rangelength: "长度8-20"
             },
             verification_code: {
-                required: "不能为空"
+                required: "必填"
             }
         },
         submitHandler: function (form) {
@@ -663,12 +623,11 @@
             usrno: {
                 required: true, //必填。如果验证方法不需要参数，则配置为true
                 username: true,
-                rangelength: [8, 20],
+                rangelength: [6, 20],
             },
             usrname: {
                 required: true, //必填。如果验证方法不需要参数，则配置为true
-                username: true,
-                rangelength: [3, 10]
+                rangelength: [1, 15]
             },
             password: {
                 required: true,
@@ -681,7 +640,10 @@
             },
             mobilePhone: {
                 required: true,
-                isMobile: true
+                rangelength: [11, 15],
+                digits:true
+//                isMobile: true
+
             },
             verification_code: {
                 required: true
@@ -689,39 +651,49 @@
             },
             telephone: {
                 required: false,
-                isTel: true
+                rangelength: [1, 15]
             },
             email: {
                 required: false,
+                rangelength: [1, 20],
                 email: true
             }
         },
         messages: {
             usrno: {
-                required: "必填",
-                rangelength: "长度8-20"
+                required: "长度6-20个字符，由数字、字母组成，可插入特殊符号（仅限“下划线”、“短划线”、“长划线”）",
+                username: "长度6-20个字符，由数字、字母组成，可插入特殊符号（仅限“下划线”、“短划线”、“长划线”）",
+                rangelength: "长度6-20个字符，由数字、字母组成，可插入特殊符号（仅限“下划线”、“短划线”、“长划线”）"
             },
             usrname: {
-                required: "必填",
-                rangelength: "长度3-10"
+                required: "昵称长度为1-15个字符",
+                rangelength: "昵称长度为1-15个字符"
             },
             password: {
-                required: "不能为空",
-                rangelength: "长度8-16"
+                required: "长度8-16个字符，由数字、字母、特殊符号组合而成，至少两种以上不同字符组合。",
+                password: "长度8-16个字符，由数字、字母、特殊符号组合而成，至少两种以上不同字符组合。",
+                rangelength: "长度8-16个字符，由数字、字母、特殊符号组合而成，至少两种以上不同字符组合。"
             },
             repeatPassword: {
-                required: "不能为空",
+                required: "长度8-16个字符，由数字、字母、特殊符号组合而成，至少两种以上不同字符组合。",
                 equalTo: "密码输入不一致"
             },
             mobilePhone: {
-                required: "必填"
+                required: "手机号码长度为11-15个字符",
+                rangelength: "手机号码长度为11-15个字符",
+                digits: "只能为数字"
             },
             verification_code: {
-                required: "不能为空"
+                required: "必填"
 //                    email:true
             },
+            telephone: {
+                required: false,
+                rangelength: "固定电话不超过15个字符"
+            },
             email: {
-                email: "邮箱格式不正确"
+                email: "邮箱用户名+分隔符@+邮箱注册的网站域名地址",
+                rangelength: "长度不得超过20",
             }
         },
         submitHandler: function (form) {
@@ -730,6 +702,7 @@
                     layerAlertMsg(data.message);
                     refreshCaptcha('verification_code_img2');
                 } else if (data.operateCode == "S") {
+                    document.getElementById("regForm").reset();
                     layer.alert('<h5 style="color: red"><b>恭喜您注册成功,请前往登录,并完善企业信息!</b></h5>', {
                         icon: 1,
                         skin: 'layer-ext-moon'
@@ -765,35 +738,36 @@
 
 
     $(function () {
-
-
         /*<![CDATA[*/
         var completeEnInfo =  /*[[${completeEnInfo}]]*/;
         /*]]>*/
-
-        if (completeEnInfo != null && !completeEnInfo) {
-            layer.open({
-                type: 2,
-                title: '完善企业信息',
-                shadeClose: true,
-                shade: false,
-                maxmin: true, //开启最大化最小化按钮
-                area: ['893px', '600px'],
-                content: '/base/invoice/eninfo/u/addEnInfoMav'
-            });
+        if(completeEnInfo==null)
+            return;
+        if (!completeEnInfo) {
+            openAddEninfo();
+        }else{
+            /*<![CDATA[*/
+            var eninfoCheck =  /*[[${eninfoCheck}]]*/;
+            /*]]>*/
+            if (!eninfoCheck) {
+                layer.alert("您的企业信息尚在审核中,审核通过前无法进行</br>开票操作,请您耐心等候!");
+            }
         }
     });
 
+    function openAddEninfo(){
+        layer.open({
+            type: 2,
+            title: '完善企业信息',
+            shadeClose: true,
+            shade: false,
+            maxmin: true, //开启最大化最小化按钮
+            area: ['893px', '600px'],
+            content: '/base/invoice/eninfo/u/addEnInfoMav'
+        });
+    }
+
 
 </script>
-
-<!-- the following scripts are used in demo only for onpage help and you don't need them -->
-<link rel="stylesheet" href="/assets/css/ace.onpage-help.css"/>
-
-<script type="text/javascript"> ace.vars['base'] = '..'; </script>
-<script src="/assets/js/src/elements.onpage-help.js"></script>
-<script src="/assets/js/src/ace.onpage-help.js"></script>
-
-
 </body>
 </html>

@@ -11,7 +11,11 @@ import org.apache.ibatis.type.Alias;
 @Alias("AuthCodeInfo")
 @BaseEntityMapper(tableName = "invoice_authcodeinfo")
 public class AuthCodeInfo extends BaseInvoiceEntity {
-    //企业税号
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -7683611911435462963L;
+	//企业税号
     @IsNotNull(description = "企业税号")
     private String taxNo;
     //平台编码 - DSPTBM

@@ -10,10 +10,6 @@
     <link rel="stylesheet" href="/assets/css/bootstrap.css"/>
     <link rel="stylesheet" href="/components/font-awesome/css/font-awesome.css"/>
 
-    <!-- page specific plugin styles -->
-    <link rel="stylesheet" href="/components/_mod/jquery-ui.custom/jquery-ui.custom.css"/>
-    <link rel="stylesheet" href="/components/jquery.gritter/css/jquery.gritter.css"/>
-
     <!-- text fonts -->
     <link rel="stylesheet" href="/assets/css/ace-fonts.css"/>
 
@@ -23,8 +19,6 @@
     <!--[if lte IE 9]>
     <link rel="stylesheet" href="/assets/css/ace-part2.css" class="ace-main-stylesheet"/>
     <![endif]-->
-    <link rel="stylesheet" href="/assets/css/ace-skins.css"/>
-    <link rel="stylesheet" href="/assets/css/ace-rtl.css"/>
 
     <!--[if lte IE 9]>
     <link rel="stylesheet" href="/assets/css/ace-ie.css"/>
@@ -148,38 +142,6 @@
 <!--[if lte IE 8]>
 <script src="/components/ExplorerCanvas/excanvas.js"></script>
 <![endif]-->
-<script src="/components/_mod/jquery-ui.custom/jquery-ui.custom.js"></script>
-<script src="/components/jqueryui-touch-punch/jquery.ui.touch-punch.js"></script>
-<script src="/components/bootbox.js/bootbox.js"></script>
-<script src="/components/_mod/easypiechart/jquery.easypiechart.js"></script>
-<script src="/components/jquery.gritter/js/jquery.gritter.js"></script>
-<script src="/components/spin.js/spin.js"></script>
-
-<!-- ace scripts -->
-<script src="/assets/js/src/elements.scroller.js"></script>
-<script src="/assets/js/src/elements.colorpicker.js"></script>
-<script src="/assets/js/src/elements.fileinput.js"></script>
-<script src="/assets/js/src/elements.typeahead.js"></script>
-<script src="/assets/js/src/elements.wysiwyg.js"></script>
-<script src="/assets/js/src/elements.spinner.js"></script>
-<script src="/assets/js/src/elements.treeview.js"></script>
-<script src="/assets/js/src/elements.wizard.js"></script>
-<script src="/assets/js/src/elements.aside.js"></script>
-<script src="/assets/js/src/ace.js"></script>
-<script src="/assets/js/src/ace.basics.js"></script>
-<script src="/assets/js/src/ace.scrolltop.js"></script>
-<script src="/assets/js/src/ace.ajax-content.js"></script>
-<script src="/assets/js/src/ace.touch-drag.js"></script>
-<script src="/assets/js/src/ace.sidebar.js"></script>
-<script src="/assets/js/src/ace.sidebar-scroll-1.js"></script>
-<script src="/assets/js/src/ace.submenu-hover.js"></script>
-<script src="/assets/js/src/ace.widget-box.js"></script>
-<script src="/assets/js/src/ace.settings.js"></script>
-<script src="/assets/js/src/ace.settings-rtl.js"></script>
-<script src="/assets/js/src/ace.settings-skin.js"></script>
-<script src="/assets/js/src/ace.widget-on-reload.js"></script>
-<script src="/assets/js/src/ace.searchbox-autocomplete.js"></script>
-
 
 <!-- 自定义JS -->
 
@@ -197,31 +159,44 @@
     //让当前表单调用validate方法，实现表单验证功能
     $("#addForm").validate({
 //            debug:true, //调试模式，即使验证成功也不会跳转到目标页面
-        rules:{ //配置验证规则，key就是被验证的dom对象，value就是调用验证的方法(也是json格式)
-            usrname:{
-                required:true, //必填。如果验证方法不需要参数，则配置为true
-                username:true,
-                rangelength:[3,10]
+        rules: { //配置验证规则，key就是被验证的dom对象，value就是调用验证的方法(也是json格式)
+            usrname: {
+                required: true, //必填。如果验证方法不需要参数，则配置为true
+                rangelength: [1, 15]
             },
-            telephone:{
-                required:false,
-                isTel:true
+            mobilePhone: {
+                required: true,
+                rangelength: [11, 15],
+                digits:true
+//                isMobile: true
             },
-            email:{
-                required:false,
-                email:true
+            telephone: {
+                required: false,
+                rangelength: [1, 15]
+            },
+            email: {
+                required: false,
+                rangelength: [1, 20],
+                email: true
             }
         },
-        messages:{
-            usrname:{
-                required:"必填",
-                rangelength:"长度3-10"
+        messages: {
+            usrname: {
+                required: "昵称长度为1-15个字符",
+                rangelength: "昵称长度为1-15个字符"
             },
-            mobilePhone:{
-                required:"必填"
+            mobilePhone: {
+                required: "手机号码长度为11-15个字符",
+                rangelength: "手机号码长度为11-15个字符",
+                digits: "只能为数字"
             },
-            email:{
-                email:"邮箱格式不正确"
+            telephone: {
+                required: false,
+                rangelength: "固定电话不超过15个字符"
+            },
+            email: {
+                email: "邮箱用户名+分隔符@+邮箱注册的网站域名地址",
+                rangelength: "长度不得超过20",
             }
         },
         submitHandler: function(form) {
@@ -229,24 +204,15 @@
                 if(data.operateCode == "F"){
                     layerAlertMsg(data.message);
                 }else if(data.operateCode == "S"){
-                    parent.location.href = "/index"
+                    layer.msg('修改成功', {icon: 1});
+                    setTimeout(function(){
+                        parent.location.href = "/center";
+                    }, 2000);
                 }
             });
         }
     });
+
 </script>
-
-<!-- the following scripts are used in demo only for onpage help and you don't need them -->
-<link rel="stylesheet" href="/assets/css/ace.onpage-help.css"/>
-<link rel="stylesheet" href="/docs/assets/js/themes/sunburst.css"/>
-
-<script type="text/javascript"> ace.vars['base'] = '..'; </script>
-<script src="/assets/js/src/elements.onpage-help.js"></script>
-<script src="/assets/js/src/ace.onpage-help.js"></script>
-<script src="/docs/assets/js/rainbow.js"></script>
-<script src="/docs/assets/js/language/generic.js"></script>
-<script src="/docs/assets/js/language/html.js"></script>
-<script src="/docs/assets/js/language/css.js"></script>
-<script src="/docs/assets/js/language/javascript.js"></script>
 </body>
 </html>

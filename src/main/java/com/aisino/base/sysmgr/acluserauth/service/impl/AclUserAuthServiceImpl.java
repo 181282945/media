@@ -2,7 +2,6 @@ package com.aisino.base.sysmgr.acluserauth.service.impl;
 
 import com.aisino.base.sysmgr.aclauth.entity.AclAuth;
 import com.aisino.base.sysmgr.aclauth.service.AclAuthService;
-import com.aisino.base.sysmgr.aclroleauth.entity.AclRoleAuth;
 import com.aisino.base.sysmgr.acluserauth.service.AclUserAuthService;
 import com.aisino.base.sysmgr.acluserauth.dao.AclUserAuthMapper;
 import com.aisino.base.sysmgr.acluserauth.entity.AclUserAuth;

@@ -5,16 +5,13 @@ import com.google.gson.Gson;
 import com.aisino.common.dto.jqgrid.JqgridFilters;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
  * Created by ZhenWeiLai on 2017/4/1.
  */
 public abstract class BaseController<T extends BaseEntity> {
-
 
     protected ModelAndView generalMav(String PATH,String MODULE_NAME,String VIEW_NAME,String UPDATE_URL,String ADD_URL,String DELETE_URL,String SEARCH_URL){
         ModelAndView mav = new ModelAndView(PATH + VIEW_NAME);

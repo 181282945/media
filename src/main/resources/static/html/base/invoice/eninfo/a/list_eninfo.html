@@ -13,7 +13,6 @@
     <link rel="stylesheet" href="/components/font-awesome/css/font-awesome.css"/>
 
     <!-- page specific plugin styles -->
-    <link rel="stylesheet" href="/components/_mod/jquery-ui/jquery-ui.css"/>
     <link rel="stylesheet" href="/components/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css"/>
     <link rel="stylesheet" href="/components/_mod/jqgrid/ui.jqgrid.css"/>
 
@@ -26,8 +25,6 @@
     <!--[if lte IE 9]>
     <link rel="stylesheet" href="/assets/css/ace-part2.css" class="ace-main-stylesheet"/>
     <![endif]-->
-    <link rel="stylesheet" href="/assets/css/ace-skins.css"/>
-    <link rel="stylesheet" href="/assets/css/ace-rtl.css"/>
 
     <!--[if lte IE 9]>
     <link rel="stylesheet" href="/assets/css/ace-ie.css"/>
@@ -177,7 +174,7 @@
 //                totalrows:"rowCount" // 表示需从Server得到总共多少行数据的参数名称，参见jqGrid选项中的rowTotal
             },
             height: 400,
-            colNames: [' ', 'id','用户账号', '税号', '企业名称', '银行账号', '企业地址','企业电话','开票人','收款人','复核人','开票选项','优惠政策标识','零税率标识','增值税特殊管理'],
+            colNames: [' ','', 'id','用户账号', '税号', '企业名称', '银行账号', '企业地址','企业电话','开票人','收款人','复核人','开票选项','优惠政策标识','零税率标识','增值税特殊管理','是否失效'],
             colModel: [
                 {
                     name: 'myac', index: '', width: 80, fixed: true, sortable: false, resize: false,
@@ -191,12 +188,15 @@
                             url:[[${DELETE_URL}]],
                             recreateForm: true,
                             beforeShowForm:beforeDeleteCallback,
-                            afterComplete:afterCompleteCallback
-                        },onSuccess : afterCompleteMsg
+//                            afterComplete:afterCompleteCallback
+                        }
                     }
                 },
-
-                {name: 'id', index: 'id', width: 50, editable: false, search: true, hidden: true},
+                {
+                    name: 'check', index: '', width: 80, fixed: true, sortable: false, resize: false,search:false,editable:false,
+                    formatter: function (value, grid, rows, state) { return '<a href="javascript:doCheck('+rows.delflags+','+rows.id+');">'+getBtnName(rows.delflags)+'</a>'}
+                },
+                {name: 'id', index: 'id', width: 50, editable: false,hidden: true},
                 {name: 'usrno', index: 'usrno', editable: false},
                 {name: 'taxno', index: 'taxno', editable: false},
                 {name: 'taxname', index: 'taxname', editable: true},
@@ -209,7 +209,8 @@
                 {name: 'billingOption', index: 'billingOption', editable: true,edittype: "select",editoptions: {value: [[${billingOptionTypeParams}]]},formatter: 'select'},
                 {name: 'yhzcbs', index: 'yhzcbs', editable: true,edittype: "select",editoptions: {value: [[${yhzcbsTypeParams}]]},formatter: 'select'},
                 {name: 'lslbs', index: 'lslbs', editable: true,edittype: "select",editoptions: {value: [[${lslbsTypeParams}]]},formatter: 'select'},
-                {name: 'zzstsgl', index: 'zzstsgl', editable: true}
+                {name: 'zzstsgl', index: 'zzstsgl', editable: true},
+                {name:'delflags',index:'delflags', editable: true,edittype: "select",editoptions: {value: [[${delflagsTypeParams}]]},formatter: 'select'}
 
             ],
 
@@ -309,7 +310,7 @@
                     form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
                     style_edit_form(form);
                 },
-                afterComplete: afterCompleteCallback
+//                afterComplete: afterCompleteCallback
             },
             //add options
             {
@@ -325,7 +326,7 @@
                         .wrapInner('<div class="widget-header" />')
                     style_edit_form(form);
                 },
-                afterComplete: afterCompleteCallback
+//                afterComplete: afterCompleteCallback
             },
             //delete options
             {
@@ -341,7 +342,7 @@
 
                     form.data('styled', true);
                 },
-                afterComplete: afterCompleteCallback,
+//                afterComplete: afterCompleteCallback,
                 onClick: function (e) {
 //                    alert(1);
                 }
@@ -360,6 +361,7 @@
                     style_search_filters($(this));
                 },
                 multipleSearch: true,
+                sopt:['eq', 'ne']
 //                multipleGroup:true,
 //                showQuery: true
                 /**
@@ -489,13 +491,13 @@
         }
 
 
-        /**
-         * 自定义请求完成后处理事件
-         * @param data
-         */
-        function afterCompleteCallback(data) {
-            afterCompleteMsg(data)
-        }
+//        /**
+//         * 自定义请求完成后处理事件
+//         * @param data
+//         */
+//        function afterCompleteCallback(data) {
+//            afterCompleteMsg(data)
+//        }
 
         //var selr = jQuery(grid_selector).jqGrid('getGridParam','selrow');
 
@@ -506,6 +508,32 @@
 
         $(grid_selector).closest(".ui-jqgrid-bdiv").css({'overflow-x': 'scroll'});
     });
+
+
+    function doCheck(flag,id){
+        if(flag){
+            $.post("/base/invoice/eninfo/a/effective", 'id='+id,function(result) {
+//                layerAlertMsg(result.message);
+                $('#grid-table').trigger("reloadGrid");
+            },"json");
+        }else{
+            $.post("/base/invoice/eninfo/a/invalid", 'id='+id,function(result) {
+//                layerAlertMsg(result.message);
+                $('#grid-table').trigger("reloadGrid");
+            },"json");
+        }
+    }
+
+
+    //判断按钮名称
+    function getBtnName(flag){
+        if(flag){
+            return '审核';
+        }else{
+            return '失效';
+        }
+    }
+
 
 </script>
 

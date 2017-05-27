@@ -1,6 +1,6 @@
 package com.aisino.common.controller;
 
-import com.aisino.base.invoice.eninfo.service.EnInfoService;
+import com.aisino.base.invoice.userinfo.service.impl.CuzSessionAttributes;
 import com.aisino.base.sysmgr.aclmenu.service.AclMenuService;
 import com.aisino.core.controller.BaseController;
 import com.aisino.core.entity.BaseEntity;
@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * Created by 为 on 2017-4-27.
@@ -25,28 +24,27 @@ public class IndexController extends BaseController<BaseEntity> {
     private AclMenuService aclMenuService;
 
     @Resource
-    private EnInfoService enInfoService;
+    private CuzSessionAttributes cuzSessionAttributes;
 
     public final static String HOME_PAGE = "/index";
 
 
-    @RequestMapping(value = "/index",method = RequestMethod.GET,produces = MediaType.TEXT_HTML_VALUE)
-    public ModelAndView toIndex(HttpServletRequest request){
-
+    @RequestMapping(value = "/index", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
+    public ModelAndView toIndex() {
         ModelAndView mav = new ModelAndView("index");
         String userName = SecurityUtil.getCurrentUserName();
-        if(StringUtils.isBlank(userName))//如果没有登录
+        if (StringUtils.isBlank(userName))//如果没有登录
             return mav;
-        if(!SecurityUtil.isAclUser()){//如果是前台用户
-            mav.addObject("userName",userName);
-            if(!enInfoService.isCompleteByUsrno(SecurityUtil.getCurrentUserName()))//如果没有完善企业信息,展开完善企业信息视图
-                mav.addObject("completeEnInfo",false);
+        if (!SecurityUtil.isAclUser()) {//如果是前台用户
+            mav.addObject("eninfoCheck", cuzSessionAttributes.eninfoCheck());
+            mav.addObject("userName", cuzSessionAttributes.getUsername());
+            mav.addObject("completeEnInfo", cuzSessionAttributes.eninfoExist());
             return mav;
         }
 
         mav = new ModelAndView("main");//如果是后台用户,那么跳转到后台页面
-        mav.addObject("userName",userName);
-        mav.addObject("menus",aclMenuService.getAclUserMenus());
+        mav.addObject("userName", userName);
+        mav.addObject("menus", aclMenuService.getAclUserMenus());
         return mav;
     }
 }

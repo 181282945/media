@@ -11,7 +11,9 @@ import org.apache.ibatis.type.Alias;
 @BaseEntityMapper(tableName = "acl_user_auth")
 public class AclUserAuth extends BaseEntity {
 
-    public AclUserAuth(){}
+	private static final long serialVersionUID = 6284472053452930627L;
+
+	public AclUserAuth(){}
     public AclUserAuth(Integer authId,Integer userId){
         this.authId = authId;
         this.userId = userId;

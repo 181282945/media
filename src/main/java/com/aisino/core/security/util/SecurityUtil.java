@@ -4,15 +4,13 @@ import com.aisino.base.invoice.eninfo.entity.EnInfo;
 import com.aisino.base.invoice.eninfo.service.EnInfoService;
 import com.aisino.base.invoice.userinfo.entity.UserInfo;
 import com.aisino.base.invoice.userinfo.service.UserInfoService;
-import com.aisino.base.sysmgr.acluser.entity.AclUser;
 import com.aisino.core.util.SpringUtils;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.authentication.AuthenticationTrustResolver;
 import org.springframework.security.authentication.AuthenticationTrustResolverImpl;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
@@ -21,11 +19,11 @@ import java.util.Collection;
  */
 public class SecurityUtil {
 
-    public static final String ADMIN = "ROLE_ADMIN";
+    public static final String ADMIN = "ROLE_ADMIN";//超级管理员
 
-    public static final String ACLUSER = "ROLE_ACLUSER";
+    public static final String ACLUSER = "ROLE_ACLUSER";//后台用户
 
-    public static final String USERINFO = "ROLE_USERINFO";
+    public static final String USERINFO = "ROLE_USERINFO";//前台用户
 
     private static final AuthenticationTrustResolver authenticationTrustResolver = new AuthenticationTrustResolverImpl();
 
@@ -89,7 +87,7 @@ public class SecurityUtil {
     public static String getCurrentUserName(){
         if(isAnonymous())
             return null;
-        String userName = ((User)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
+        String userName = ((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
         return userName;
     }
 
@@ -101,7 +99,7 @@ public class SecurityUtil {
     public static UserInfo getCurrentUserInfo(){
         if(isAnonymous()||isAclUser())
             return null;
-        String usrno = ((User)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
+        String usrno = ((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
         return  getUserInfoService().getUserByUsrno(usrno);
     }
 
@@ -109,22 +107,22 @@ public class SecurityUtil {
      * 获取当前用户
      * @return
      */
-    public static EnInfo getCurrentEnInfo(){
-        if(isAnonymous()||isAclUser())
-            return null;
-        String usrno = ((User)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
-        return  getEnInfoService().getByUsrno(usrno);
-    }
+//    public static EnInfo getCurrentEnInfo(){
+//        if(isAnonymous()||isAclUser())
+//            return null;
+//        String usrno = ((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
+//        return  getEnInfoService().getByUsrno(usrno);
+//    }
 
     /**
      * 获取当前用户账号
      * @return
      */
-    public static String getCurrentUserNo(){
-        if(isAnonymous()||isAclUser())
-            return null;
-        return  ((User)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
-    }
+//    public static String getCurrentUserNo(){
+//        if(isAnonymous()||isAclUser())
+//            return null;
+//        return  ((UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
+//    }
 
 
     private static UserInfoService getUserInfoService(){

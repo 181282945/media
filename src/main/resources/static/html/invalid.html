@@ -1,0 +1,31 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>登录超时</title>
+
+    <meta name="keywords" content="keyword1,keyword2,keyword3">
+    <meta name="description" content="this is my page">
+    <meta name="content-type" content="text/html; charset=UTF-8">
+
+    <!--<link rel="stylesheet" type="text/css" href="./styles.css">-->
+
+</head>
+
+<body>
+<h1>错误信息:</h1>
+<p th:text="${message}? ${message}"></p>
+
+
+<script src="/components/jquery/dist/jquery.js"></script>
+
+<script type="text/javascript">
+    $(function(){
+        setTimeout(function(){
+            parent.location.href = "/index";
+        }, 5000);
+    });
+
+</script>
+
+</body>
+</html>

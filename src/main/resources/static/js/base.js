@@ -1,4 +1,6 @@
-
+$(document).ajaxError(function(e,xhr,opt){
+    layer.alert($.parseJSON(xhr.responseText).message);
+});
 
 /**
  * 请求完成如果操作失败,提示信息

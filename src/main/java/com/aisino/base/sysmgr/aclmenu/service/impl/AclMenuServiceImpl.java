@@ -95,7 +95,7 @@ public class AclMenuServiceImpl extends BaseServiceImpl<AclMenu, AclMenuMapper> 
 
         List<AclResource> moduleTargetAList = aclResourceService.findModuleByTargetA();
 
-        for (AclMenu key : aclMenus) {
+        for (AclMenu key : aclMenuModuleMap.keySet()) {
             Iterator<AclResource> iterator = moduleTargetAList.iterator();
 
             while (iterator.hasNext()) {

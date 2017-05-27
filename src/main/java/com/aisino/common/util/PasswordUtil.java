@@ -5,7 +5,13 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import com.sun.org.apache.xml.internal.security.utils.Base64;
 
+@SuppressWarnings("restriction")
 public class PasswordUtil {
+
+
+    /**
+     * @param
+     */
 
     //生成10位随机数
     private static String getRandom(){
@@ -21,7 +27,7 @@ public class PasswordUtil {
 
     //密码生成规则:10位随机数+Base64({（10位随机数+注册码）MD5})
     /**
-     * @param regCode
+     * @param
      * @return
      */
     public static String getPassword(String regCode){
@@ -86,8 +92,9 @@ public class PasswordUtil {
 		System.out.println(ss.substring(0, 10));*/
 //		boolean iss=isPermit("572718588897hh94dLi2tElQENlI22aQ==", "123456");
 //		System.out.println(iss);
-        System.out.println(isPermit("4312345663+lMkmCbX8MtjKPnNY1FZrw==", "2897287575"));
-        System.out.println(getPassword("94511388"));
+//		System.out.println(isPermit("4312345663+lMkmCbX8MtjKPnNY1FZrw==", "2897287575"));
+        System.out.println(getPassword("123456"));
     }
+
 
 }

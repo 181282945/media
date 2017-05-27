@@ -53,7 +53,8 @@ public class EntityColumnUtil {
      * 反射设置对象属性
      * @return
      */
-    public static Annotation getEntityPropertyAnnotation(Class entityClass, String propertyName, Class annotationClass) {
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+	public static Annotation getEntityPropertyAnnotation(Class entityClass, String propertyName, Class annotationClass) {
 
         try {
             // 获取实体类的所有属性，返回Field数组
@@ -152,7 +153,7 @@ public class EntityColumnUtil {
     }
 
     // 获取实体所有Field，排除静态变量
-    private static List<Field> getClassAllFields(BaseEntity entity, Class cls) {
+    public static List<Field> getClassAllFields(BaseEntity entity, Class<?> cls) {
 
         if (Object.class.getName().equals(cls.getName())) {
             return new ArrayList<>();
@@ -174,7 +175,7 @@ public class EntityColumnUtil {
         return list;
     }
 
-    private static List<QueryLike> generateEntityQueryLike(BaseEntity entity, Class cls) {
+    private static List<QueryLike> generateEntityQueryLike(BaseEntity entity, Class<?> cls) {
 
         // 获取实体类的所有属性，返回Field数组
         Field[] declaredFields = cls.getDeclaredFields();
@@ -182,13 +183,14 @@ public class EntityColumnUtil {
         return generateEntityQueryLike(entity, cls, fields);
     }
 
-    private static List<QueryLike> generateEntityQueryLike(BaseEntity entity, Class cls, List<Field> fields) {
+    private static List<QueryLike> generateEntityQueryLike(BaseEntity entity, Class<?> cls, List<Field> fields) {
 
         if (Object.class.getName().equals(cls.getName())) {
             return new ArrayList<>();
         }
 
         List<QueryLike> list = new ArrayList<>();
+
         try {
 
             for (Field field : fields) {
@@ -256,9 +258,10 @@ public class EntityColumnUtil {
                         queryLike.setIsTransient(isTransient);
                         list.add(queryLike);
                     }
-                }else{
-                    throw new RuntimeException("考虑数据库null值,所以只支持包装类型!不支持基本类型!");
                 }
+//                else{
+//                    throw new RuntimeException("考虑数据库null值,所以只支持包装类型!不支持基本类型!");
+//                }
             }
 
             list.addAll(generateEntityQueryLike(entity, cls.getSuperclass()));
@@ -269,7 +272,7 @@ public class EntityColumnUtil {
     }
 
     // 把一个字符串的第一个字母大写、效率是最高的
-    private static String getMethodName(String fildeName) throws Exception {
+    public static String getMethodName(String fildeName) throws Exception {
         byte[] items = fildeName.getBytes();
         items[0] = (byte) ((char) items[0] - 'a' + 'A');
         return new String(items);

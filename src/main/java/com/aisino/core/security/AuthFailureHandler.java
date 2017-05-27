@@ -1,7 +1,5 @@
 package com.aisino.core.security;
 
-import com.aisino.base.sysmgr.acluser.entity.AclUser;
-import com.aisino.core.controller.BaseController;
 import com.aisino.core.dto.ResultDataDto;
 import com.aisino.core.security.exception.VerificationException;
 import org.springframework.http.MediaType;
@@ -19,7 +17,7 @@ import javax.servlet.http.HttpSession;
  * 登录失败处理类
  */
 @RestController
-public class AuthFailureHandler extends BaseController<AclUser> {
+public class AuthFailureHandler{
 
     // 登录异常
     @RequestMapping(value = "/getLoginError",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)

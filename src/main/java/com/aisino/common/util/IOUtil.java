@@ -1,7 +1,5 @@
 package com.aisino.common.util;
 
-import org.springframework.core.io.ClassPathResource;
-
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URL;
@@ -56,15 +54,13 @@ public class IOUtil {
     /**
      * 从URL 读取文件流
      */
-    public static byte[] fileConverBytes(org.springframework.core.io.Resource fileRource) {
-//        File file = new File("filePath");
+    public static byte[] fileConverBytes(File file) {
         BufferedInputStream in = null;
         ByteArrayOutputStream out = null;
 
         try {
-            if (fileRource != null) {
-
-                InputStream inputStream = fileRource.getInputStream();
+            if (file != null) {
+                InputStream inputStream = new FileInputStream(file);
                 in = new BufferedInputStream(inputStream);
                 out = new ByteArrayOutputStream(1024);
                 byte[] temp = new byte[1024];
@@ -111,13 +107,12 @@ public class IOUtil {
         }
     }
 
-    public static void downLoadFile(String filePath, HttpServletResponse response) {
-        org.springframework.core.io.Resource fileRource = new ClassPathResource(filePath);
+    public static void downLoadFile(File file, HttpServletResponse response) {
         BufferedOutputStream bf = null;
         try {
-            response.addHeader("Content-Disposition", "attachment; filename=" + fileRource.getFilename());
+            response.addHeader("Content-Disposition", "attachment; filename=" + file.getName());
             bf = new BufferedOutputStream(response.getOutputStream());
-            bf.write(IOUtil.fileConverBytes(fileRource));
+            bf.write(IOUtil.fileConverBytes(file));
         } catch (Exception e) {
             throw new RuntimeException("下载失败,资源失效!");
         } finally {

@@ -12,7 +12,7 @@ public interface DbInfoService extends BaseService<DbInfo,DbInfoMapper> {
     /**
      * 根据企业税号创建数据库
      */
-    Integer addByTaxNo(String taxNo);
+    boolean addByTaxNo(String taxNo);
 
 
     /**

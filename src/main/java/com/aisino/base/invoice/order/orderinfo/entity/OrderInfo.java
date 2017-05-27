@@ -3,6 +3,7 @@ package com.aisino.base.invoice.order.orderinfo.entity;
 import com.aisino.common.dto.param.ParamDto;
 import com.aisino.core.entity.BaseBusinessEntity;
 import com.aisino.core.entity.annotation.BaseEntityMapper;
+import com.aisino.core.entity.annotation.Transient;
 import org.apache.ibatis.type.Alias;
 
 import java.util.Date;
@@ -14,6 +15,10 @@ import java.util.Date;
 @BaseEntityMapper(tableName = "invoice_orderinfo")
 public class OrderInfo extends BaseBusinessEntity {
 
+    /**
+     *
+     */
+    private static final long serialVersionUID = -4751310311034671696L;
     /**
      * 企业税号
      */
@@ -97,6 +102,12 @@ public class OrderInfo extends BaseBusinessEntity {
      * (此为发票流水号,避免重复开票,开票时更新此字段)
      */
     private String serialNo;
+
+    /**
+     * 用户昵称
+     */
+    @Transient
+    private String usrName;
 
     //---------------------------------getter and setter ------------------------------------------------
 
@@ -261,13 +272,21 @@ public class OrderInfo extends BaseBusinessEntity {
         this.serialNo = serialNo;
     }
 
+    public String getUsrName() {
+        return usrName;
+    }
+
+    public void setUsrName(String usrName) {
+        this.usrName = usrName;
+    }
+
     //--------------------------------枚举----------------------------------------------
 
     /**
      * 代开标识
      */
-    public enum DkflagsType{
-        SELF(0,"自开"),PROXY(1,"代开");
+    public enum DkflagsType {
+        SELF(0, "自开"), PROXY(1, "代开");
 
         //状态代码
         private Integer code;
@@ -276,31 +295,29 @@ public class OrderInfo extends BaseBusinessEntity {
 
 
         //构造方法
-        DkflagsType(Integer code, String name){
+        DkflagsType(Integer code, String name) {
             this.code = code;
             this.name = name;
         }
 
         //根据code获取状态名称
-        public static String getNameByCode(Integer code){
-            for(DkflagsType item : DkflagsType.values()){
-                if(item.getCode().equals(code)){
+        public static String getNameByCode(Integer code) {
+            for (DkflagsType item : DkflagsType.values()) {
+                if (item.getCode().equals(code)) {
                     return item.getName();
                 }
             }
             return "";
         }
 
-        public static ParamDto[] getParams(){
+        public static ParamDto[] getParams() {
             ParamDto[] dkflagsTypeParams = new ParamDto[DkflagsType.values().length];
 
-            for(int i=0;i<dkflagsTypeParams.length;i++){
-                dkflagsTypeParams[i] = new ParamDto(DkflagsType.values()[i].getCode().toString(),DkflagsType.values()[i].getName());
+            for (int i = 0; i < dkflagsTypeParams.length; i++) {
+                dkflagsTypeParams[i] = new ParamDto(DkflagsType.values()[i].getCode().toString(), DkflagsType.values()[i].getName());
             }
-            return  dkflagsTypeParams;
+            return dkflagsTypeParams;
         }
-
-
 
 
         //-----------------------------------getter and setter---------------------------------------------------------
@@ -384,8 +401,8 @@ public class OrderInfo extends BaseBusinessEntity {
     /**
      * 订单状态
      */
-    public enum StatusType{
-        NOTYET("0","未开"),ALREADY ("1","已开");
+    public enum StatusType {
+        NOTYET("0", "未开"), ALREADY("1", "已开");
 
         //状态代码
         private String code;
@@ -394,28 +411,35 @@ public class OrderInfo extends BaseBusinessEntity {
 
 
         //构造方法
-        StatusType(String code, String name){
+        StatusType(String code, String name) {
             this.code = code;
             this.name = name;
         }
 
         //根据code获取状态名称
-        public static String getNameByCode(String code){
-            for(StatusType item : StatusType.values()){
-                if(item.getCode().equals(code)){
+        public static String getNameByCode(String code) {
+            for (StatusType item : StatusType.values()) {
+                if (item.getCode().equals(code)) {
                     return item.getName();
                 }
             }
             return "";
         }
 
-        public static ParamDto[] getParams(){
+        public static ParamDto[] getParams() {
             ParamDto[] statusTypeParams = new ParamDto[StatusType.values().length];
-
-            for(int i=0;i<statusTypeParams.length;i++){
+            for (int i = 0; i < statusTypeParams.length; i++) {
                 statusTypeParams[i] = new ParamDto(StatusType.values()[i].getCode().toString(), StatusType.values()[i].getName());
             }
-            return  statusTypeParams;
+            return statusTypeParams;
+        }
+
+        public static String getSelect() {
+            StringBuilder selectString = new StringBuilder("<option role=\"option\" value=\"\">全部</option>");
+            for (StatusType item : StatusType.values()) {
+                selectString.append("<option role=\"option\" value=\"" + item.getCode() + "\">" + item.getName() + "</option>");
+            }
+            return selectString.toString();
         }
 
 

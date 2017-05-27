@@ -2,6 +2,8 @@ package com.aisino.base.sysmgr.aclrole.service.impl;
 
 import com.aisino.base.sysmgr.aclrole.service.AclRoleService;
 import com.aisino.common.dto.param.ParamDto;
+import static com.aisino.core.mybatis.specification.QueryLike.LikeMode;
+
 import com.aisino.core.mybatis.specification.QueryLike;
 import com.aisino.core.mybatis.specification.Specification;
 import com.aisino.core.service.BaseServiceImpl;
@@ -19,11 +21,6 @@ import java.util.List;
 @Service("aclRoleService")
 public class AclRoleServiceImpl extends BaseServiceImpl<AclRole,AclRoleMapper> implements AclRoleService {
 
-
-
-
-
-
     @Override
     protected void validateAddEntity(AclRole entity) {
         ConstraintUtil.setDefaultValue(entity);
@@ -34,6 +31,21 @@ public class AclRoleServiceImpl extends BaseServiceImpl<AclRole,AclRoleMapper> i
     @Override
     protected void validateUpdateEntity(AclRole entity) {
         setRolePrefix(entity);
+    }
+
+    @Override
+    public List<AclRole> findByTargetDef(AclRole.Target target,AclRole.DefType defType){
+        Specification<AclRole> specification = new Specification<>(AclRole.class);
+        specification.addQueryLike(new QueryLike("target", LikeMode.Eq,target.getCode().toString()));
+        specification.addQueryLike(new QueryLike("def", LikeMode.Eq,defType.getCode().toString()));
+        return this.findByLike(specification);
+    }
+
+    public AclRole getDefRoleByTarget(AclRole.Target target){
+        Specification<AclRole> specification = new Specification<>(AclRole.class);
+        specification.addQueryLike(new QueryLike("target", LikeMode.Eq,target.getCode().toString()));
+        specification.addQueryLike(new QueryLike("def", LikeMode.Eq, AclRole.DefType.YES.getCode().toString()));
+        return this.getOne(specification);
     }
 
 

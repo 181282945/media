@@ -6,15 +6,11 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
     <meta name="apple-mobile-web-app-capable" content="yes"/>
 
-    <!--上面是产品原型图生成的莫名其妙的东西-->
-
-
     <!-- bootstrap & fontawesome -->
     <link rel="stylesheet" href="/assets/css/bootstrap.css"/>
     <link rel="stylesheet" href="/components/font-awesome/css/font-awesome.css"/>
 
     <!-- page specific plugin styles -->
-    <link rel="stylesheet" href="/components/_mod/jquery-ui.custom/jquery-ui.custom.css"/>
     <link rel="stylesheet" href="/components/jquery.gritter/css/jquery.gritter.css"/>
 
     <!-- text fonts -->
@@ -26,13 +22,10 @@
     <!--[if lte IE 9]>
     <link rel="stylesheet" href="/assets/css/ace-part2.css" class="ace-main-stylesheet"/>
     <![endif]-->
-    <link rel="stylesheet" href="/assets/css/ace-skins.css"/>
-    <link rel="stylesheet" href="/assets/css/ace-rtl.css"/>
 
     <!--[if lte IE 9]>
     <link rel="stylesheet" href="/assets/css/ace-ie.css"/>
     <![endif]-->
-
 
     <!-- ace settings handler -->
     <script src="/assets/js/ace-extra.js"></script>
@@ -169,38 +162,6 @@
 <!--[if lte IE 8]>
 <script src="/components/ExplorerCanvas/excanvas.js"></script>
 <![endif]-->
-<script src="/components/_mod/jquery-ui.custom/jquery-ui.custom.js"></script>
-<script src="/components/jqueryui-touch-punch/jquery.ui.touch-punch.js"></script>
-<script src="/components/bootbox.js/bootbox.js"></script>
-<script src="/components/_mod/easypiechart/jquery.easypiechart.js"></script>
-<script src="/components/jquery.gritter/js/jquery.gritter.js"></script>
-<script src="/components/spin.js/spin.js"></script>
-
-<!-- ace scripts -->
-<script src="/assets/js/src/elements.scroller.js"></script>
-<script src="/assets/js/src/elements.colorpicker.js"></script>
-<script src="/assets/js/src/elements.fileinput.js"></script>
-<script src="/assets/js/src/elements.typeahead.js"></script>
-<script src="/assets/js/src/elements.wysiwyg.js"></script>
-<script src="/assets/js/src/elements.spinner.js"></script>
-<script src="/assets/js/src/elements.treeview.js"></script>
-<script src="/assets/js/src/elements.wizard.js"></script>
-<script src="/assets/js/src/elements.aside.js"></script>
-<script src="/assets/js/src/ace.js"></script>
-<script src="/assets/js/src/ace.basics.js"></script>
-<script src="/assets/js/src/ace.scrolltop.js"></script>
-<script src="/assets/js/src/ace.ajax-content.js"></script>
-<script src="/assets/js/src/ace.touch-drag.js"></script>
-<script src="/assets/js/src/ace.sidebar.js"></script>
-<script src="/assets/js/src/ace.sidebar-scroll-1.js"></script>
-<script src="/assets/js/src/ace.submenu-hover.js"></script>
-<script src="/assets/js/src/ace.widget-box.js"></script>
-<script src="/assets/js/src/ace.settings.js"></script>
-<script src="/assets/js/src/ace.settings-rtl.js"></script>
-<script src="/assets/js/src/ace.settings-skin.js"></script>
-<script src="/assets/js/src/ace.widget-on-reload.js"></script>
-<script src="/assets/js/src/ace.searchbox-autocomplete.js"></script>
-
 
 <!-- 自定义JS -->
 
@@ -221,41 +182,71 @@
         rules:{ //配置验证规则，key就是被验证的dom对象，value就是调用验证的方法(也是json格式)
             taxno:{
                 required:true, //必填。如果验证方法不需要参数，则配置为true
+                rangelength: [15, 18]
             },
             taxname:{
                 required:true, //必填。如果验证方法不需要参数，则配置为true
+                rangelength: [0, 100]
             },
             bankaccount:{
                 required:true,
+                digits:true,
+                rangelength: [0, 20]
             },
             taxaddr:{
                 required:true,
+                rangelength: [0, 150]
             },
             taxtel:{
                 required:true,
+                rangelength: [0, 20]
             },
             drawer:{
                 required:true,
+                rangelength: [0, 15]
+            },
+            payee:{
+                required:true,
+                rangelength: [0, 15]
+            },
+            reviewer:{
+                required:true,
+                rangelength: [0, 15]
             }
         },
         messages:{
             taxno:{
                 required:"必填",
+                rangelength: '税号长度15-18'
             },
             taxname:{
                 required:"必填",
+                rangelength: '企业名称不超过100个字符'
             },
             bankaccount:{
                 required:"必填",
+                digits:"只能输入数字",
+                rangelength: '银行账号不超过20个字符'
             },
             taxaddr:{
                 required:"必填",
+                rangelength: '企业地址不超过150个字符'
             },
             taxtel:{
                 required:"必填",
+                rangelength: '业电话不超过20个字符'
             },
             drawer:{
                 required:"必填",
+                rangelength: '开票人名称不超过15个字符'
+            },
+            payee:{
+                required:"必填",
+                rangelength: '收款人名称不超过15个字符'
+            },
+            reviewer:{
+                required:"必填",
+                rangelength: '复核人名称不超过15个字符'
             }
 
         },
@@ -264,18 +255,20 @@
                 if(data.operateCode == "F"){
                     layerAlertMsg(data.message);
                 }else if(data.operateCode == "S"){
-                    parent.location.href = "/index"
+                    layer.confirm('您的企业信息已经提交审核,我们将在三个工作日内完成审核.', {
+                        title:'企业信息提交成功',
+                        btn: ['确定'] //按钮
+                    }, function(){
+                        layer.msg('修改成功', {icon: 1});
+                        setTimeout(function(){
+                            parent.location.href = "/center";
+                        }, 2000);
+                    });
                 }
             });
         }
     });
 </script>
 
-<!-- the following scripts are used in demo only for onpage help and you don't need them -->
-<link rel="stylesheet" href="/assets/css/ace.onpage-help.css"/>
-
-<script type="text/javascript"> ace.vars['base'] = '..'; </script>
-<script src="/assets/js/src/elements.onpage-help.js"></script>
-<script src="/assets/js/src/ace.onpage-help.js"></script>
 </body>
 </html>

@@ -11,13 +11,10 @@
     <link rel="stylesheet" href="/components/font-awesome/css/font-awesome.css"/>
 
     <!-- page specific plugin styles -->
-    <link rel="stylesheet" href="/components/_mod/jquery-ui/jquery-ui.css"/>
     <link rel="stylesheet" href="/components/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css"/>
     <link rel="stylesheet" href="/components/_mod/jqgrid/ui.jqgrid.css"/>
 
     <!-- page specific plugin styles -->
-    <link rel="stylesheet" href="/components/_mod/jquery-ui.custom/jquery-ui.custom.css"/>
-    <link rel="stylesheet" href="/components/jquery.gritter/css/jquery.gritter.css"/>
     <link rel="stylesheet" href="/css/bootstrap/bootstrap-datetimepicker.min.css">
 
     <!-- text fonts -->
@@ -29,8 +26,6 @@
     <!--[if lte IE 9]>
     <link rel="stylesheet" href="/assets/css/ace-part2.css" class="ace-main-stylesheet"/>
     <![endif]-->
-    <link rel="stylesheet" href="/assets/css/ace-skins.css"/>
-    <link rel="stylesheet" href="/assets/css/ace-rtl.css"/>
 
     <!--[if lte IE 9]>
     <link rel="stylesheet" href="/assets/css/ace-ie.css"/>
@@ -267,8 +262,23 @@
                         <div class="row" style="margin-bottom: 5px">
                             <div class="col-md-6">
                                 <div class="form-group">
+                                    <label class="form-label">&emsp;&emsp;流水号:&ensp;</label>
+                                    <input type="text" name="serialNo" class="form-control" placeholder="流水号"/>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
                                     <label class="form-label">&emsp;&emsp;订单号:&ensp;</label>
                                     <input type="text" name="orderNo" class="form-control" placeholder="订单号"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row" style="margin-bottom: 5px">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">&emsp;发票号码:&ensp;</label>
+                                    <input type="text" name="invoiceNum" class="form-control" placeholder="发票号码"/>
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -287,14 +297,12 @@
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="form-label">&emsp;订单状态:&ensp;</label>
-                                    <input type="text" name="status" class="form-control" placeholder="订单状态"/>
-                                </div>
+                                <!--<div class="form-group">-->
+                                <!--<label class="form-label">&emsp;订单状态:&ensp;</label>-->
+                                <!--<input type="text" name="status" class="form-control" placeholder="订单状态"/>-->
+                                <!--</div>-->
                             </div>
                         </div>
-
-
                     </fieldset>
                 </form>
 
@@ -327,38 +335,6 @@
 <!--[if lte IE 8]>
 <script src="/components/ExplorerCanvas/excanvas.js"></script>
 <![endif]-->
-<script src="/components/_mod/jquery-ui.custom/jquery-ui.custom.js"></script>
-<script src="/components/jqueryui-touch-punch/jquery.ui.touch-punch.js"></script>
-<script src="/components/bootbox.js/bootbox.js"></script>
-<script src="/components/_mod/easypiechart/jquery.easypiechart.js"></script>
-<script src="/components/jquery.gritter/js/jquery.gritter.js"></script>
-<script src="/components/spin.js/spin.js"></script>
-
-<!-- ace scripts -->
-<script src="/assets/js/src/elements.scroller.js"></script>
-<script src="/assets/js/src/elements.colorpicker.js"></script>
-<script src="/assets/js/src/elements.fileinput.js"></script>
-<script src="/assets/js/src/elements.typeahead.js"></script>
-<script src="/assets/js/src/elements.wysiwyg.js"></script>
-<script src="/assets/js/src/elements.spinner.js"></script>
-<script src="/assets/js/src/elements.treeview.js"></script>
-<script src="/assets/js/src/elements.wizard.js"></script>
-<script src="/assets/js/src/elements.aside.js"></script>
-<script src="/assets/js/src/ace.js"></script>
-<script src="/assets/js/src/ace.basics.js"></script>
-<script src="/assets/js/src/ace.scrolltop.js"></script>
-<script src="/assets/js/src/ace.ajax-content.js"></script>
-<script src="/assets/js/src/ace.touch-drag.js"></script>
-<script src="/assets/js/src/ace.sidebar.js"></script>
-<script src="/assets/js/src/ace.sidebar-scroll-1.js"></script>
-<script src="/assets/js/src/ace.submenu-hover.js"></script>
-<script src="/assets/js/src/ace.widget-box.js"></script>
-<script src="/assets/js/src/ace.settings.js"></script>
-<script src="/assets/js/src/ace.settings-rtl.js"></script>
-<script src="/assets/js/src/ace.settings-skin.js"></script>
-<script src="/assets/js/src/ace.widget-on-reload.js"></script>
-<script src="/assets/js/src/ace.searchbox-autocomplete.js"></script>
-
 
 <!-- 自定义JS -->
 <script src="/js/jquery.form.min.js"></script>
@@ -470,20 +446,20 @@
 //            '用户昵称','购方类型',
             colNames: ['id', '流水号', '订单号', '商品名称', '税额合计', '不含税合计', '价税合计', '发票代码', '发票号码', '开票日期','PDF下载地址','发票类型','备注','用户账号'],
             colModel: [
-                {name: 'id', index: 'id', width: 50, editable: false, search: true, hidden: true},
+                {name: 'id', index: 'id', width: 50, editable: true, hidden: true},
                 {name: 'serialNo', index: 'serialNo', editable: false},
-                {name: 'orderNo', index: 'orderNo', editable: false,},
+                {name: 'orderNo', index: 'orderNo', editable: false, search: true},
                 {name: 'projectName', index: 'projectName', editable: false},
                 {name: 'taxTotal', index: 'taxTotal', editable: false},
-                {name: 'noTaxTotal', index: 'noTaxTotal', editable: false,},
-                {name: 'priceTotal', index: 'priceTotal', editable: false,},
-                {name: 'invoiceCode', index: 'invoiceCode', editable: false,},
-                {name: 'invoiceNum', index: 'invoiceNum', editable: false,},
-                {name: 'invoiceDate', index: 'invoiceDate', editable: false,formatter:'date', formatoptions: {srcformat: 'u', newformat:'Y-m-d H:i'}},
-                {name: 'pdfUrl', index: 'pdfUrl', editable: false,formatter:downloadPdf},
+                {name: 'noTaxTotal', index: 'noTaxTotal', editable: false},
+                {name: 'priceTotal', index: 'priceTotal', editable: false},
+                {name: 'invoiceCode', index: 'invoiceCode', editable: false},
+                {name: 'invoiceNum', index: 'invoiceNum', editable: false},
+                {name: 'invoiceDate', index: 'invoiceDate', editable: false,formatter:'date',search:false, formatoptions: {srcformat: 'u', newformat:'Y-m-d H:i'}},
+                {name: 'pdfUrl', index: 'pdfUrl', editable: false,formatter:downloadPdf,search:false},
                 {name: 'invoiceType', index: 'invoiceType', editable: false,edittype: "select",editoptions: {value: [[${invoiceTypeParams}]]},formatter: 'select'},
-                {name: 'reMarks', index: 'reMarks', editable: false,},
-                {name: 'usrno', index: 'usrno', editable: false,}
+                {name: 'reMarks', index: 'reMarks', editable: false,search:false},
+                {name: 'usrno', index: 'usrno', editable: false}
             ],
 
             viewrecords: true,
@@ -496,7 +472,6 @@
             multiselect: false,
             //multikey: "ctrlKey",
             multiboxonly: false,
-
             loadComplete: function () {
                 var table = this;
                 setTimeout(function () {
@@ -561,13 +536,14 @@
                 edit:false,
                 del:false,
                 add:false,
-                search: true,
+
                 searchicon: 'ace-icon fa fa-search orange',
                 refresh: true,
                 refreshicon: 'ace-icon fa fa-refresh green',
                 view: true,
                 viewicon: 'ace-icon fa fa-search-plus grey',
             },
+            {},{},{},
             //search
             {
                 url: [[${SEARCH_URL}]],
@@ -582,6 +558,7 @@
                     style_search_filters($(this));
                 },
                 multipleSearch: true,
+                sopt: ['eq', 'ne']
 //                multipleGroup:true,
 //                showQuery: true
                 /**
@@ -744,13 +721,12 @@
         var rulesStr = '{"field":"insertDate","op":"gt","data":"' + formData.insertDate + '"},{"field":"insertDate","op":"lt","data":"' + formData.insertDateEnd + '"}';
         $.each(formData, function (k, v) {
             if (k != "insertDate" && k != "insertDateEnd")
-                rulesStr += ',{"field":"' + k + '","op":"eq","data":"' + v + '"}'
+                rulesStr += ',{"field":"' + k + '","op":"like","data":"' + v + '"}'
         });
         var filtersStr = '{"groupOp":"AND","rules":[' + rulesStr + ']}';
         var postData = $("#grid-table").jqGrid("getGridParam", "postData");
         $.extend(postData, {filters: filtersStr});
         $("#grid-table").jqGrid('setGridParam', {search: true}).trigger("reloadGrid");
-        console.log(filtersStr)
     });
 
 
@@ -777,28 +753,32 @@
 
     $('#doRedBtn').click(function () {
         var sel_id = $('#grid-table').jqGrid('getGridParam', 'selrow');
+
+
         if(sel_id == null){
             layer.alert("请选择红冲行!");
             return;
         }
-        layer.prompt({title: '请输入冲红原因', formType: 2}, function(text, index){
-            $.post("/base/invoice/invoiceinfo/u/doRed", 'invoiceId='+sel_id+'&reMarks='+text,function(data) {
-                layerAlertMsg(data.message);
-                layer.close(index);
-                $('#grid-table').trigger("reloadGrid");
+
+        var rowData = $("#grid-table").getRowData(sel_id);
+
+        layer.confirm('发票代码:'+rowData.invoiceCode+'</br>发票号码:'+rowData.invoiceNum+'</br>开具金额:'+rowData.priceTotal+'元</br>开票日期:'+rowData.invoiceDate, {
+            title:'红冲发票信息',
+            btn: ['取消','确定'] //按钮
+        }, function(index){
+            layer.close(index);
+        }, function(){
+            layer.prompt({title: '请输入冲红原因,必填!', formType: 2}, function(text, index){
+                $.post("/base/invoice/invoiceinfo/u/doRed", 'invoiceId='+sel_id+'&reMarks='+text,function(data) {
+                    layerAlertMsg(data.message);
+                    layer.close(index);
+                    $('#grid-table').trigger("reloadGrid");
+                });
             });
         });
+
     });
 
 </script>
-
-<!-- the following scripts are used in demo only for onpage help and you don't need them -->
-<link rel="stylesheet" href="/assets/css/ace.onpage-help.css"/>
-
-<script type="text/javascript"> ace.vars['base'] = '..'; </script>
-<script src="/assets/js/src/elements.onpage-help.js"></script>
-<script src="/assets/js/src/ace.onpage-help.js"></script>
-
-
 </body>
 </html>

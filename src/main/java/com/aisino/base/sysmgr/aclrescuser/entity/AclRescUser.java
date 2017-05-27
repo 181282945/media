@@ -11,7 +11,9 @@ import org.apache.ibatis.type.Alias;
 @BaseEntityMapper(tableName = "acl_resc_user")
 public class AclRescUser extends BaseEntity {
 
-    /**
+	private static final long serialVersionUID = -7832451817031807006L;
+	
+	/**
      * 资源ID
      */
     private Integer rescId;

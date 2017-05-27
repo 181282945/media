@@ -1,9 +1,10 @@
 package com.aisino.core.mybatis;
 
 import com.aisino.base.invoice.userinfo.entity.UserInfo;
+import com.aisino.base.invoice.userinfo.service.impl.CuzSessionAttributes;
 import com.aisino.base.sysmgr.dbinfo.entity.DbInfo;
 import com.aisino.base.sysmgr.dbinfo.service.DbInfoService;
-import com.aisino.base.sysmgr.dbinfo.service.impl.DbInfoServiceImpl;
+import com.aisino.base.sysmgr.infoschema.schemata.service.SchemataService;
 import com.alibaba.druid.pool.DruidDataSource;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
@@ -11,9 +12,6 @@ import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 import javax.annotation.Resource;
 import javax.sql.DataSource;
 import java.lang.reflect.Field;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.Map;
 
 /**
@@ -35,6 +33,12 @@ public class MyRoutingDataSource extends AbstractRoutingDataSource {
     @Resource
     private DbInfoService dbInfoService;
 
+    @Resource
+    private SchemataService schemataService;
+
+    @Resource
+    private CuzSessionAttributes cuzSessionAttributes;
+
 
     /**
      * 这个方法会根据返回的key去配置文件查找数据源
@@ -50,15 +54,17 @@ public class MyRoutingDataSource extends AbstractRoutingDataSource {
     /**
      * 根据用户创建数据源
      */
-    public void addCuzDataSource(UserInfo userInfo) {
+    @SuppressWarnings("unchecked")
+	public void addCuzDataSource(UserInfo userInfo) {
 
         if (StringUtils.isBlank(userInfo.getTaxNo()))
             return;
+
+        if(!cuzSessionAttributes.isDbexist())
+            return;
+
         DbInfo dbInfo = dbInfoService.getDbInfoByTaxNo(userInfo.getTaxNo());
 
-        String url = "jdbc:mysql://" + dbInfo.getDbaddr() + ":" + dbInfo.getDbport() + "/" + dbInfo.getDbname() + "?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&useSSL=true";
-        if (!getCuzDataSourceExist(url,dbInfo.getDbusr(),dbInfo.getDbpwd()))
-            return;
         try {
             Field targetDataSources = AbstractRoutingDataSource.class.getDeclaredField("targetDataSources");
             Field resolvedDataSources = AbstractRoutingDataSource.class.getDeclaredField("resolvedDataSources");
@@ -86,7 +92,8 @@ public class MyRoutingDataSource extends AbstractRoutingDataSource {
     /**
      * 根据用户删除数据源
      */
-    public void removeCuzDataSource(UserInfo userInfo) {
+    @SuppressWarnings("unchecked")
+	public void removeCuzDataSource(UserInfo userInfo) {
         if (StringUtils.isBlank(userInfo.getTaxNo()))
             return;
         try {
@@ -104,27 +111,6 @@ public class MyRoutingDataSource extends AbstractRoutingDataSource {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
             e.printStackTrace();
-        }
-    }
-
-
-    /**
-     * 判断数据源是否有效
-     */
-    private boolean getCuzDataSourceExist(String url,String username,String password) {
-        Connection conn;
-        try {
-            Class.forName(DbInfoServiceImpl.mysqlDriver);
-            conn = DriverManager.getConnection(url,username,password);
-            if (conn!=null){
-                conn.close();
-                return true;
-            }
-            return false;
-        } catch (SQLException e) {
-            return false;
-        } catch (ClassNotFoundException e) {
-            return false;
         }
     }
 }

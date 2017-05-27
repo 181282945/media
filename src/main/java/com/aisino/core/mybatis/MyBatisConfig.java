@@ -27,12 +27,20 @@ public class MyBatisConfig implements TransactionManagementConfigurer {
     @Resource(name = "writeDataSource")
     private DataSource writeDataSource;
 
+
+    @Resource(name = "inforSchemaDataSource")
+    private DataSource inforSchemaDataSource;
+
 //    @Resource(name = "readDataSource")
 //    private DataSource readDataSource;
 
     //直接点属性,说我没初始化,加个get方法就可以,这是在逗我
     private DataSource getWriteDataSource(){
         return writeDataSource;
+    }
+
+    private DataSource getInforSchemaDataSource(){
+        return inforSchemaDataSource;
     }
 
     /**
@@ -45,10 +53,13 @@ public class MyBatisConfig implements TransactionManagementConfigurer {
 //        int size = Integer.parseInt(dataSourceSize);
         MyRoutingDataSource proxy = new MyRoutingDataSource();
         Map<Object,Object> dataSourceMap = new HashMap<>();
-        DataSource writeSource = getWriteDataSource();
+        DataSource writeSource = getWriteDataSource(); //主库
+
+        DataSource infoSchemaSource = getInforSchemaDataSource(); //库信息
 //        DataSource readSource = getReadDataSource();
 
         dataSourceMap.put(TargetDataSource.WRITE.getCode(),writeSource);
+        dataSourceMap.put(TargetDataSource.INFO.getCode(),infoSchemaSource);
 //        dataSourceMap.put(TargetDataSource.READ.getCode(),readSource);
 
         proxy.setDefaultTargetDataSource(writeDataSource);

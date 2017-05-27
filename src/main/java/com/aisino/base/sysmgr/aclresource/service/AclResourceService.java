@@ -13,18 +13,17 @@ import java.util.List;
  */
 public interface AclResourceService extends BaseService<AclResource,AclResourceMapper> {
 
-    AclResource findByIdentify(String identify);
-
     /**
      * 查询所有模块
      * @return
      */
     List<AclResource> findAllModule();
 
+
     /**
-     *  查询所有目标为后台用户的模块
+     * 查询模块
      */
-    List<AclResource> findAllAclModule();
+    List<AclResource> findModulePage(String target,PageAndSort pageAndSort);
 
 
     /**

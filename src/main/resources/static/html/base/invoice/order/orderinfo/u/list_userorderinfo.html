@@ -11,12 +11,10 @@
     <link rel="stylesheet" href="/components/font-awesome/css/font-awesome.css"/>
 
     <!-- page specific plugin styles -->
-    <link rel="stylesheet" href="/components/_mod/jquery-ui/jquery-ui.css"/>
     <link rel="stylesheet" href="/components/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css"/>
     <link rel="stylesheet" href="/components/_mod/jqgrid/ui.jqgrid.css"/>
 
     <!-- page specific plugin styles -->
-    <link rel="stylesheet" href="/components/_mod/jquery-ui.custom/jquery-ui.custom.css"/>
     <link rel="stylesheet" href="/components/jquery.gritter/css/jquery.gritter.css"/>
     <link rel="stylesheet" href="/css/bootstrap/bootstrap-datetimepicker.min.css">
 
@@ -96,16 +94,12 @@
     <div id="top">
         <div style="height: 5px"></div>
         <div id="logo" style="text-align:right;">
-            <div th:style="${userName}!=null? '':'display: none'"><span th:text="${userName}"
-                                                                        style="position:relative;right: 3px;bottom:3px;font-size: small">XXXXX</span><img
-                    src="/images/u963.png" style="margin-bottom: 5px"><a href="/logout"><span
+            <div th:style="${userName}!=null? '':'display: none'"><span th:text="${userName}" style="position:relative;right: 3px;bottom:3px;font-size: small">XXXXX</span><img src="/images/u963.png" style="margin-bottom: 5px"><a href="/logout"><span
                     style="position:relative;left:3px;bottom:3px;font-size: small;margin-right: 10px">退出登录</span></a>
             </div>
         </div>
         <div id="nav" style="vertical-align:bottom;display:inline;">
-            <img class="inline" style="width: 167px;height: 39px;" src="/images/u73.png"><img
-                src="/images/u83.png"><span class="inline"
-                                            style="font-family: 微软雅黑;font-weight: bold;color: black;font-size: larger">云开票</span>
+            <img class="inline" style="width: 167px;height: 39px;" src="/images/u73.png"><img src="/images/u83.png"><span class="inline" style="font-family: 微软雅黑;font-weight: bold;color: black;font-size: larger">云开票</span>
             <a href="/center">
                 <div class="inline" style="float:right;margin-right:50px;position: relative;">
                     <img src="/images/u75.png" class="navimg" id="memberCentre">
@@ -137,8 +131,7 @@
                 <div class="inline" style="float:right;margin-right:50px;position: relative;">
                     <img src="/images/u75.png" class="navimg" id="index">
                     <div style="position: absolute;left: 30px;top: 10px;color: black">
-                        <span style="font-family: 微软雅黑;font-weight: bold;font-size: medium;"
-                              onmouseout="mouseOutBgImg('index')" onmouseover="mouseOverBgImg('index')">首  页</span>
+                        <span style="font-family: 微软雅黑;font-weight: bold;font-size: medium;" onmouseout="mouseOutBgImg('index')" onmouseover="mouseOverBgImg('index')">首  页</span>
                     </div>
                 </div>
             </a>
@@ -287,7 +280,8 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="form-label">&emsp;订单状态:&ensp;</label>
-                                    <input type="text" name="status" class="form-control" placeholder="订单状态"/>
+                                    <select role="select" name="status" size="1" class="form-control" th:utext="${selectString}"></select>
+                                    <!--<input type="text" name="status" class="form-control" placeholder="订单状态"/>-->
                                 </div>
                             </div>
                         </div>
@@ -306,7 +300,7 @@
 </div>
 
 <!-- 模态框（Modal） -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="myModal"  data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -375,12 +369,7 @@
 <!--[if lte IE 8]>
 <script src="/components/ExplorerCanvas/excanvas.js"></script>
 <![endif]-->
-<script src="/components/_mod/jquery-ui.custom/jquery-ui.custom.js"></script>
-<script src="/components/jqueryui-touch-punch/jquery.ui.touch-punch.js"></script>
-<script src="/components/bootbox.js/bootbox.js"></script>
-<script src="/components/_mod/easypiechart/jquery.easypiechart.js"></script>
 <script src="/components/jquery.gritter/js/jquery.gritter.js"></script>
-<script src="/components/spin.js/spin.js"></script>
 
 <!-- ace scripts -->
 <script src="/assets/js/src/elements.scroller.js"></script>
@@ -514,10 +503,10 @@
                 $("#" + subgridDivId).html("<table id='" + subgridTableId + "'></table><div id='" + pager_id + "'></div>");
                 $("#" + subgridTableId).jqGrid({
                     url: "/base/invoice/order/orderdetail/u/listByOrderInfoId?orderInfoId=" + rowId,
-                    editurl: [[${UPDATE_URL}]],
+                    editurl: '/base/invoice/order/orderdetail/u/update',
                     datatype: 'json',
 //                    data: subgrid_data,
-                    colNames: [' ', 'id', '订单号', '商品名', '单位', '数量', '规格型号', '含税单价', '发票行性质', '税控分类编码', '税率'],
+                    colNames: [' ', 'id', '订单号', '商品名称', '单位', '商品数量', '规格型号', '单价(含税)', '发票行性质', '税控分类编码', '税率'],
                     colModel: [
                         {
                             name: 'myac', index: '', width: 80, fixed: true, sortable: false, resize: false,
@@ -534,16 +523,16 @@
 //                        },onSuccess : afterCompleteMsg
                             }
                         },
-                        {name: 'id', index: 'id', width: 50, editable: false, search: true, hidden: true},
+                        {name: 'id', index: 'id', width: 50, editable: false,hidden: true},
                         {name: 'orderNo', index: 'orderNo', editable: false},
-                        {name: 'itemName', index: 'itemName', editable: false,},
-                        {name: 'itemUnit', index: 'itemUnit', editable: false},
-                        {name: 'itemNum', index: 'itemNum', editable: false},
-                        {name: 'specMode', index: 'specMode', editable: false,},
-                        {name: 'itemPrice', index: 'itemPrice', editable: false,},
-                        {name: 'invoiceNature', index: 'invoiceNature', editable: false,},
-                        {name: 'itemTaxCode', index: 'itemTaxCode', editable: false,},
-                        {name: 'taxRate', index: 'taxRate', editable: false,},
+                        {name: 'itemName', index: 'itemName', editable: true},
+                        {name: 'itemUnit', index: 'itemUnit', editable: true},
+                        {name: 'itemNum', index: 'itemNum', editable: true},
+                        {name: 'specMode', index: 'specMode', editable: true},
+                        {name: 'itemPrice', index: 'itemPrice', editable: true},
+                        {name: 'invoiceNature', index: 'invoiceNature', editable: true,edittype: "select",editoptions: {value: [[${invoiceNatureParams}]]},formatter: 'select'},
+                        {name: 'itemTaxCode',width:200, index: 'itemTaxCode', editable: true},
+                        {name: 'taxRate', index: 'taxRate', editable: true},
 
                     ],
                     jsonReader: {
@@ -617,8 +606,8 @@
             },
             height: 400,
 //            '用户昵称','购方类型',
-            colNames: [' ', 'id', '订单号', '订单状态', '企业税', '票样代码', '商品名称', '购方税号', '购方名称', '购方地址', '购方省份', '购方固定电话', '购方手机',
-                '购方邮箱', '购方账号', '行业代码', '行业名称', '备注'],
+            colNames: [' ', 'id', '订单号', '订单状态','用户昵称', '企业税号', '票样代码', '商品名称', '购方类型', '购方税号', '购方名称', '购方地址', '购方省份', '购方固定电话', '购方手机',
+                '购方邮箱', '购方账号', '行业代码', '行业名称', '备注','创建日期'],
             colModel: [
                 {
                     name: 'myac', index: '', width: 80, fixed: true, sortable: false, resize: false,
@@ -632,17 +621,19 @@
                             url: [[${DELETE_URL}]],
                             recreateForm: true,
                             beforeShowForm: beforeDeleteCallback,
-                            afterComplete: afterCompleteCallback
-                        }, onSuccess: afterCompleteMsg
+//                            afterComplete: afterCompleteCallback
+                        }
                     }
                 },
 
-                {name: 'id', index: 'id', editable: false, search: true, hidden: true},
-                {name: 'orderNo', index: 'orderNo', editable: false},
+                {name: 'id', index: 'id', editable: false, hidden: true},
+                {name: 'orderNo', index: 'orderNo', editable: false,},
                 {name: 'status', index: 'status', editable: false,edittype: "select",editoptions: {value: [[${orderInfoStatusParams}]]},formatter: 'select'},
+                {name: 'usrName', index: 'usrName', editable: false},
                 {name: 'taxno', index: 'taxno', editable: true},
                 {name: 'ticketCode', index: 'ticketCode', editable: true},
                 {name: 'majorItems', index: 'majorItems', editable: true},
+                {name: 'buyerType', index: 'buyerType', editable: true,edittype: "select",editoptions: {value: [[${orderInfoBuyerTypeParams}]]},formatter: 'select'},
                 {name: 'buyerTaxno', index: 'buyerTaxno', editable: true},
                 {name: 'buyerName', index: 'buyerName', editable: true},
                 {name: 'buyerAddr', index: 'buyerAddr', editable: true},
@@ -654,6 +645,7 @@
                 {name: 'induCode', index: 'induCode', editable: true},
                 {name: 'induName', index: 'induName', editable: true},
                 {name: 'remarks', index: 'remarks', editable: true},
+                {name:'insertDate',index:'insertDate', editable: false,formatter:'date',formatter:'date', formatoptions: {srcformat: 'u', newformat:'Y-m-d H:i'}}
             ],
 
             viewrecords: true,
@@ -661,9 +653,11 @@
             rowList: [10, 20, 30],
             pager: pager_selector,
             altRows: true,
+            sortname:"insertDate",
+            sortorder: "desc",
             //toppager: true,
 
-            multiselect: false,
+            multiselect: true,
             //multikey: "ctrlKey",
             multiboxonly: false,
 
@@ -730,15 +724,15 @@
             { 	//navbar options
                 edit: true,
                 editicon: 'ace-icon fa fa-pencil blue',
-                add: true,
+                add: false,
                 addicon: 'ace-icon fa fa-plus-circle purple',
-                del: true,
+                del: false,
                 delicon: 'ace-icon fa fa-trash-o red',
-                search: true,
+                search: false,
                 searchicon: 'ace-icon fa fa-search orange',
                 refresh: true,
                 refreshicon: 'ace-icon fa fa-refresh green',
-                view: true,
+                view: false,
                 viewicon: 'ace-icon fa fa-search-plus grey',
             },
             {
@@ -752,7 +746,7 @@
                     form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
                     style_edit_form(form);
                 },
-                afterComplete: afterCompleteCallback
+//                afterComplete: afterCompleteCallback
             },
             //add options
             {
@@ -768,7 +762,7 @@
                         .wrapInner('<div class="widget-header" />')
                     style_edit_form(form);
                 },
-                afterComplete: afterCompleteCallback
+//                afterComplete: afterCompleteCallback
             },
             //delete options
             {
@@ -784,7 +778,7 @@
 
                     form.data('styled', true);
                 },
-                afterComplete: afterCompleteCallback,
+//                afterComplete: afterCompleteCallback,
                 onClick: function (e) {
 //                    alert(1);
                 }
@@ -802,13 +796,14 @@
                 afterRedraw: function () {
                     style_search_filters($(this));
                 },
-                loadError : function(xhr,st,err) {
-                    alert(xhr);
-                    alert(st);
-                    alert(err);
-//                    jQuery("#rsperror").html("Type: "+st+"; Response: "+ xhr.status + " "+xhr.statusText);
-                },
+//                loadError : function(xhr,st,err) {
+//                    alert(xhr);
+//                    alert(st);
+//                    alert(err);
+////                    jQuery("#rsperror").html("Type: "+st+"; Response: "+ xhr.status + " "+xhr.statusText);
+//                },
                 multipleSearch: true,
+                sopt:['eq', 'ne']
 //                multipleGroup:true,
 //                showQuery: true
                 /**
@@ -938,13 +933,13 @@
         }
 
 
-        /**
-         * 自定义请求完成后处理事件
-         * @param data
-         */
-        function afterCompleteCallback(data) {
-            afterCompleteMsg(data)
-        }
+//        /**
+//         * 自定义请求完成后处理事件
+//         * @param data
+//         */
+//        function afterCompleteCallback(data) {
+//            afterCompleteMsg(data)
+//        }
 
         //var selr = jQuery(grid_selector).jqGrid('getGridParam','selrow');
 
@@ -970,6 +965,8 @@
         //0.初始化fileinput
         var oFileInput = new FileInput();
         oFileInput.Init("txt_file", "/base/invoice/order/orderinfo/u/upload");
+
+        $('#edit_grid-table').hide();
     });
 
     //初始化fileinput
@@ -994,10 +991,6 @@
 
             //导入文件上传完成之后的事件
             $("#txt_file").on("fileuploaded", function (event, data, previewId, index) {
-                console.log(event);
-                console.log(data);
-                console.log(previewId);
-                console.log(index);
 
                 $("#orderTotal").html(data.response.datas.orderInfoTotal);
 
@@ -1054,19 +1047,17 @@
         $("#grid-table").jqGrid('setGridParam', {search: true}).trigger("reloadGrid");
     });
 
-
     $('#btnQuery').click(function () {
         var formData = $('#queryForm').serializeJSON();
         var rulesStr = '{"field":"insertDate","op":"gt","data":"' + formData.insertDate + '"},{"field":"insertDate","op":"lt","data":"' + formData.insertDateEnd + '"}';
         $.each(formData, function (k, v) {
             if (k != "insertDate" && k != "insertDateEnd")
-                rulesStr += ',{"field":"' + k + '","op":"eq","data":"' + v + '"}'
+                rulesStr += ',{"field":"' + k + '","op":"like","data":"' + v + '"}'
         });
         var filtersStr = '{"groupOp":"AND","rules":[' + rulesStr + ']}';
         var postData = $("#grid-table").jqGrid("getGridParam", "postData");
         $.extend(postData, {filters: filtersStr});
         $("#grid-table").jqGrid('setGridParam', {search: true}).trigger("reloadGrid");
-        console.log(filtersStr)
     });
 
     /**
@@ -1080,33 +1071,38 @@
      * 自定义的删除按钮
      */
     $('#delBtn').click(function () {
-        $('#del_grid-table').click();
+
+
+        layer.confirm('确定删除改订单吗？', {
+            btn: ['确定','取消'] //按钮
+        }, function(){
+            var ids = $("#grid-table").jqGrid("getGridParam", "selarrrow");
+            if(ids == '' || ids == null || ids == 'undefined' || ids == undefined){
+                layer.alert("请选择删除行!");
+                return;
+            }
+            $.post("/base/invoice/order/orderinfo/u/invalidBatch", 'orderIds='+ids,function(result) {
+                layerAlertMsg(result.message);
+                $('#grid-table').trigger("reloadGrid");
+            },"json");
+        });
     });
 
     /**
      * 开票按钮事件
      */
     $('#billingBtn').click(function(){
-        var sel_id = $('#grid-table').jqGrid('getGridParam', 'selrow');
-        if(sel_id == null){
+        var ids = $("#grid-table").jqGrid("getGridParam", "selarrrow");
+        if(ids == '' || ids == null || ids == 'undefined' || ids == undefined){
             layer.alert("请选择开票行!");
             return;
         }
-        $.post("/base/invoice/invoiceinfo/u/billing", 'orderId='+sel_id,function(result) {
+        $.post("/base/invoice/invoiceinfo/u/billing", 'orderIds='+ids,function(result) {
             layerAlertMsg(result.message);
             $('#grid-table').trigger("reloadGrid");
         },"json");
     });
-
 </script>
-
-<!-- the following scripts are used in demo only for onpage help and you don't need them -->
-<link rel="stylesheet" href="/assets/css/ace.onpage-help.css"/>
-
-<script type="text/javascript"> ace.vars['base'] = '..'; </script>
-<script src="/assets/js/src/elements.onpage-help.js"></script>
-<script src="/assets/js/src/ace.onpage-help.js"></script>
-
 
 </body>
 </html>

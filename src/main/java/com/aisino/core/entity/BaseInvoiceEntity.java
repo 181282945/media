@@ -8,7 +8,12 @@ import com.aisino.core.entity.annotation.DefaultValue;
  */
 public class BaseInvoiceEntity  extends BaseEntity {
 
-    public enum DelflagsType{
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -1681945657840643608L;
+
+	public enum DelflagsType{
         NORMAL(false,"正常"),DELETED(true,"已删除");
 
         //状态代码

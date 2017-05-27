@@ -14,7 +14,9 @@ import org.apache.ibatis.type.Alias;
 @BaseEntityMapper(tableName = "acl_resource")
 public class AclResource extends BaseEntity implements Comparable<AclResource> {
 
-    public AclResource() {
+	private static final long serialVersionUID = 8107352187353629512L;
+
+	public AclResource() {
     }
 
     public AclResource(Integer id,String code, String name, String path, String type,Boolean isMenu) {

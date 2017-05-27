@@ -13,7 +13,10 @@ import org.apache.ibatis.type.Alias;
 @Alias("EnInfo")
 @BaseEntityMapper(tableName = "invoice_eninfo")
 public class EnInfo extends BaseInvoiceEntity {
-    /**
+
+	private static final long serialVersionUID = 6622105776718304343L;
+	
+	/**
      * 税号
      */
     @IsNotNull(description = "税号")
@@ -331,6 +334,9 @@ public class EnInfo extends BaseInvoiceEntity {
 
         //根据code获取状态名称
         public static String getNameByCode(Integer code){
+            if(code == null)
+                return NOT_ZERO_TAX.name;
+
             for(LslbsType item : LslbsType.values()){
                 if(item.getCode().equals(code)){
                     return item.getName();
@@ -344,7 +350,7 @@ public class EnInfo extends BaseInvoiceEntity {
 
             for(int i=0;i<lslbsTypeParams.length;i++){
                 if(LslbsType.values()[i].getCode() == null)
-                lslbsTypeParams[i] = new ParamDto(null,LslbsType.values()[i].getName());
+                lslbsTypeParams[i] = new ParamDto("",LslbsType.values()[i].getName());
                 else
                     lslbsTypeParams[i] = new ParamDto(LslbsType.values()[i].getCode().toString(),LslbsType.values()[i].getName());
             }

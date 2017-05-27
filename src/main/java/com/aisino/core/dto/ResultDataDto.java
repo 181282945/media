@@ -18,6 +18,7 @@ import com.aisino.core.exception.RuntimeServiceException;
 import com.aisino.core.exception.RuntimeWebException;
 import org.springframework.dao.NonTransientDataAccessException;
 import org.springframework.validation.BindException;
+import org.springframework.web.HttpMediaTypeNotAcceptableException;
 
 public class ResultDataDto {
 
@@ -329,6 +330,9 @@ public class ResultDataDto {
 			return ex.getMessage();
 		}
 		if(ex instanceof RuntimeException){
+			return ex.getMessage();
+		}
+		if(ex instanceof HttpMediaTypeNotAcceptableException){
 			return ex.getMessage();
 		}
 

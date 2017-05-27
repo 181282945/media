@@ -8,6 +8,7 @@ import com.aisino.base.sysmgr.aclroleauth.service.AclRoleAuthService;
 import com.aisino.common.dto.jqgrid.JqgridFilters;
 import com.aisino.core.controller.BaseController;
 import com.aisino.core.dto.ResultDataDto;
+import com.aisino.core.security.MySecurityMetadataSource;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,6 +32,9 @@ public class AclRoleAuthController extends BaseController<AclRoleAuth> {
 
     @Resource
     private AclRoleAuthService aclRoleAuthService;
+
+    @Resource
+    private MySecurityMetadataSource securityMetadataSource;
 
 
     //页面模板路径
@@ -115,8 +119,11 @@ public class AclRoleAuthController extends BaseController<AclRoleAuth> {
     @AclResc(id = 7005,code = "addByRescIdRoleId",name = "新增角色权限")
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public ResultDataDto addByRescIdRoleId(@ModelAttribute("rescId")Integer rescId,@ModelAttribute("roleId")Integer roleId){
-        if(aclRoleAuthService.addByRescIdRoleId(rescId, roleId)!=null)
+        if(aclRoleAuthService.addByRescIdRoleId(rescId, roleId)!=null){
+            securityMetadataSource.doLoadResourceDefine();
             return ResultDataDto.addAddSuccess();
+        }
+
         return ResultDataDto.addOperationFailure("保存失败!");
     }
 
@@ -130,6 +137,7 @@ public class AclRoleAuthController extends BaseController<AclRoleAuth> {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public ResultDataDto deleteByRescIdRoleId(@ModelAttribute("rescId")Integer rescId,@ModelAttribute("roleId")Integer roleId){
         aclRoleAuthService.deleteByRescIdRoleId(rescId,roleId);
+        securityMetadataSource.doLoadResourceDefine();
         return ResultDataDto.addDeleteSuccess();
     }
 }

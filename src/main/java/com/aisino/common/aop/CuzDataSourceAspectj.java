@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Aspect
-@Order(0)
+@Order(1)
 public class CuzDataSourceAspectj {
 
     //定义切点

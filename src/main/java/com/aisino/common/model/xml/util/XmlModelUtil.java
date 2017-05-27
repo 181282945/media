@@ -59,7 +59,8 @@ public class XmlModelUtil {
      * @param <T>
      * @return
      */
-    public static <T extends BaseXmlModel> T xmlStrToBean(String info, Class<T> clz) {
+    @SuppressWarnings("unchecked")
+	public static <T extends BaseXmlModel> T xmlStrToBean(String info, Class<T> clz) {
         try {
             JAXBContext context = JAXBContext.newInstance(clz);
             Unmarshaller unmarshaller = context.createUnmarshaller();

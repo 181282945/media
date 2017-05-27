@@ -2,6 +2,7 @@ package com.aisino.base.invoice.authcodeinfo.controller;
 
 import com.aisino.base.invoice.authcodeinfo.entity.AuthCodeInfo;
 import com.aisino.base.invoice.authcodeinfo.service.AuthCodeInfoService;
+import com.aisino.base.invoice.eninfo.entity.EnInfo;
 import com.aisino.base.sysmgr.aclresource.annotation.AclResc;
 import com.aisino.base.sysmgr.aclresource.entity.AclResource;
 import com.aisino.common.dto.jqgrid.JqgridFilters;
@@ -10,6 +11,7 @@ import com.aisino.core.controller.BaseController;
 import com.aisino.core.dto.ResultDataDto;
 import com.aisino.core.entity.BaseBusinessEntity;
 import com.aisino.core.mybatis.specification.PageAndSort;
+import com.aisino.core.mybatis.specification.QueryLike;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -57,6 +59,7 @@ public class AclAuthCodeInfoController extends BaseController<AuthCodeInfo>{
     @AclResc(id = 70001,code = "list",name = "菜单列表")
     @Transactional(readOnly = true)
     public ResultDataDto list(JqgridFilters jqgridFilters, @ModelAttribute("pageAndSort")PageAndSort pageAndSort){
+        jqgridFilters.getRules().add(new JqgridFilters.Rule("delflags", QueryLike.LikeMode.Eq.getCode(), EnInfo.DelflagsType.NORMAL.getCode().toString()));
         List<AuthCodeInfo> authCodeInfos = authCodeInfoService.findByJqgridFilters(jqgridFilters,pageAndSort);
         return new ResultDataDto(authCodeInfos,pageAndSort);
     }

@@ -1,6 +1,6 @@
 package com.aisino.base.sysmgr.aclauth.entity;
 
-import com.aisino.core.entity.BaseBusinessEntity;
+import com.aisino.core.entity.BaseEntity;
 import com.aisino.core.entity.annotation.BaseEntityMapper;
 import org.apache.ibatis.type.Alias;
 
@@ -9,9 +9,14 @@ import org.apache.ibatis.type.Alias;
  */
 @Alias("AclAuth")
 @BaseEntityMapper(tableName = "acl_auth")
-public class AclAuth extends BaseBusinessEntity {
+public class AclAuth extends BaseEntity {
 
     /**
+	 * 
+	 */
+	private static final long serialVersionUID = -2131469069122888070L;
+
+	/**
      * RequestMapping 里面的映射地址 value/path
      */
     private Integer resourceId;

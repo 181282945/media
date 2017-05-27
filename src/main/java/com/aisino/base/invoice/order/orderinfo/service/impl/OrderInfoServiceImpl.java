@@ -4,9 +4,14 @@ import com.aisino.base.invoice.order.orderdetail.entity.OrderDetail;
 import com.aisino.base.invoice.order.orderdetail.service.OrderDetailService;
 import com.aisino.base.invoice.order.orderinfo.dao.OrderInfoMapper;
 import com.aisino.base.invoice.order.orderinfo.entity.OrderInfo;
+import com.aisino.base.invoice.order.orderinfo.entity.OrderInfo.StatusType;
 import com.aisino.base.invoice.order.orderinfo.service.OrderInfoService;
+import com.aisino.base.invoice.userinfo.entity.UserInfo;
+import com.aisino.base.invoice.userinfo.service.UserInfoService;
+import com.aisino.base.invoice.userinfo.service.impl.CuzSessionAttributes;
+import com.aisino.common.annotation.CuzDataSource;
 import com.aisino.common.util.excel.reader.XLSXCovertCSVReader;
-import com.aisino.core.mybatis.DataSourceContextHolder;
+import com.aisino.core.entity.BaseInvoiceEntity.DelflagsType;
 import com.aisino.core.mybatis.specification.QueryLike;
 import com.aisino.core.mybatis.specification.Specification;
 import com.aisino.core.service.BaseServiceImpl;
@@ -16,7 +21,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.poi.openxml4j.exceptions.OpenXML4JException;
 import org.apache.poi.openxml4j.opc.OPCPackage;
+import org.springframework.aop.framework.AopContext;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.xml.sax.SAXException;
 
 import javax.annotation.Resource;
@@ -33,14 +41,22 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class OrderInfoServiceImpl extends BaseServiceImpl<OrderInfo, OrderInfoMapper> implements OrderInfoService {
 
     @Resource
+    private OrderInfoService orderInfoService;
+
+    @Resource
     private OrderDetailService orderDetailService;
 
+    @Resource
+    private UserInfoService userInfoService;
+
+    @Resource
+    private CuzSessionAttributes cuzSessionAttributes;
 
     @Override
     protected void validateAddEntity(OrderInfo entity) {
         ConstraintUtil.setDefaultValue(entity);
         ConstraintUtil.isNotNullConstraint(entity);
-        //设置订单状态默认为未开票
+        // 设置订单状态默认为未开票
         if (StringUtils.isBlank(entity.getStatus()))
             entity.setStatus(OrderInfo.StatusType.NOTYET.getCode().toString());
     }
@@ -53,16 +69,51 @@ public class OrderInfoServiceImpl extends BaseServiceImpl<OrderInfo, OrderInfoMa
     }
 
 
+    @Transactional(readOnly = true)
+    @Override
+    public void fillUsrname(List<OrderInfo> orderInfos) {
+        for (OrderInfo orderInfo : orderInfos) {
+            UserInfo userInfo = userInfoService.getUserByUsrno(orderInfo.getUsrno());
+            if (userInfo != null)
+                orderInfo.setUsrName(userInfo.getUsrname());
+        }
+    }
+
+    public Map<Integer, String> invalidBatch(final Integer[] orderIds) {
+        if (orderIds.length == 0)
+            throw new RuntimeException("请选择删除订单!");
+        Map<Integer, String> map = new HashMap<>();
+        for (Integer orderId : orderIds) {
+            OrderInfo orderInfo = orderInfoService.findEntityById(orderId);
+            if (StatusType.ALREADY.getCode().equals(orderInfo.getStatus())) {
+                map.put(orderId, "单号:" + orderInfo.getOrderNo() + "已开票,无法删除改订单!");
+                continue;
+            }
+            String delOrderNo = orderInfo.getOrderNo() + "_" + System.currentTimeMillis();
+            // 作废订单
+            orderInfo.setOrderNo(orderInfo.getOrderNo() + "_" + System.currentTimeMillis());
+            orderInfo.setDelflags(DelflagsType.DELETED.getCode());
+            orderInfoService.updateEntity(orderInfo);
+            // 作废明细
+            List<OrderDetail> orderDetails = orderDetailService.findByOrderNo(delOrderNo);
+            for (OrderDetail orderDetail : orderDetails) {
+                orderDetailService.updateEntityInvalid(orderDetail.getId());
+            }
+        }
+        return map;
+    }
+
     /**
      * 读取Excel
      */
     @Override
-    public ImportResultDto importExcel(InputStream inputStream) throws IOException, OpenXML4JException, ParserConfigurationException, SAXException {
+    public ImportResultDto importExcel(InputStream inputStream)
+            throws IOException, OpenXML4JException, ParserConfigurationException, SAXException {
         OPCPackage p = OPCPackage.open(inputStream);
         XLSXCovertCSVReader xlsx2csv = new XLSXCovertCSVReader(p, System.out, "订单", 19);
         List<String[]> orderInfos = xlsx2csv.process();
         Map<String, OrderInfo> orderInfoMap = new HashMap<>();
-        //不要表头
+        // 不要表头
         for (int i = 1; i < orderInfos.size(); i++) {
             orderInfoMap.put(orderInfos.get(i)[16], orderInfoTransform(orderInfos.get(i)));
         }
@@ -70,25 +121,38 @@ public class OrderInfoServiceImpl extends BaseServiceImpl<OrderInfo, OrderInfoMa
         XLSXCovertCSVReader xlsx2csv2 = new XLSXCovertCSVReader(p, System.out, "明细", 9);
         List<String[]> orderdetails = xlsx2csv2.process();
         Map<String, List<OrderDetail>> orderDetailMap = new HashMap<>();
-        //不要表头
+        // 不要表头
         for (int i = 1; i < orderdetails.size(); i++) {
             if (orderDetailMap.get(orderdetails.get(i)[0]) == null) {
                 List<OrderDetail> list = new ArrayList<>();
                 list.add(orderDetailService.orderDetailTransform(orderdetails.get(i)));
                 orderDetailMap.put(orderdetails.get(i)[0], list);
             } else {
-                orderDetailMap.get(orderdetails.get(i)[0]).add(orderDetailService.orderDetailTransform(orderdetails.get(i)));
+                orderDetailMap.get(orderdetails.get(i)[0])
+                        .add(orderDetailService.orderDetailTransform(orderdetails.get(i)));
             }
         }
+
         p.close();
 
+        return ((OrderInfoService) AopContext.currentProxy()).insertToDb(orderInfos.size(), orderdetails.size(),
+                orderInfoMap, orderDetailMap);
+    }
 
+    /**
+     * 为了保证事务正确运行,所以把用户数据库操作独立出一个方法.
+     */
+    @CuzDataSource
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Override
+    public ImportResultDto insertToDb(int orderInfoCount, int orderDetailCount, Map<String, OrderInfo> orderInfoMap,
+                                      Map<String, List<OrderDetail>> orderDetailMap) {
         /**
          * 保存到数据库
          */
         Iterator<String> orderInfoKeyIte = orderInfoMap.keySet().iterator();
 
-        ImportResultDto importResultDto = new ImportResultDto(orderInfos.size(), orderdetails.size());//导入结果dto
+        ImportResultDto importResultDto = new ImportResultDto(orderInfoCount, orderDetailCount);// 导入结果dto
         while (orderInfoKeyIte.hasNext()) {
             String orderNo = orderInfoKeyIte.next();
             if (orderDetailMap.get(orderNo) != null && !orderDetailMap.get(orderNo).isEmpty()) {
@@ -98,18 +162,18 @@ public class OrderInfoServiceImpl extends BaseServiceImpl<OrderInfo, OrderInfoMa
                  */
                 Specification<OrderInfo> specification = new Specification<>(OrderInfo.class);
                 specification.addQueryLike(new QueryLike("orderNo", QueryLike.LikeMode.Eq, orderNo));
-                Long resultCount = this.findRowCount(specification);
-                if (resultCount > 0) {
+                OrderInfo exist = this.getOne(specification);
+                if (exist != null) {
                     importResultDto.getRepeatOrderNo().add(orderNo);
                     continue;
                 }
 
                 this.addEntity(orderInfoMap.get(orderNo));
-                orderInfoKeyIte.remove();//删除已经成功添加的主档
+                orderInfoKeyIte.remove();// 删除已经成功添加的主档
                 for (OrderDetail orderDetail : orderDetailMap.get(orderNo)) {
                     orderDetailService.addEntity(orderDetail);
                 }
-                orderDetailMap.remove(orderNo);//删除已经成功添加的明细
+                orderDetailMap.remove(orderNo);// 删除已经成功添加的明细
             }
         }
 
@@ -117,22 +181,24 @@ public class OrderInfoServiceImpl extends BaseServiceImpl<OrderInfo, OrderInfoMa
         return importResultDto;
     }
 
-
-    private void calculateImportResultDto(Map<String, OrderInfo> orderInfoMap, Map<String, List<OrderDetail>> orderDetailMap, ImportResultDto importResultDto) {
-        //统计缺少明细的失败主档数量,不包括重复单号
+    private void calculateImportResultDto(Map<String, OrderInfo> orderInfoMap,
+                                          Map<String, List<OrderDetail>> orderDetailMap, ImportResultDto importResultDto) {
+        // 统计缺少明细的失败主档数量,不包括重复单号
         importResultDto.getOrderInfofaultQty().set(orderInfoMap.keySet().size());
-        importResultDto.getOrderInfoSuccessQty().set(importResultDto.getOrderInfoTotal() - importResultDto.getOrderInfofaultQty().get());
-        //统计缺少主档的失败明细
+        importResultDto.getOrderInfoSuccessQty()
+                .set(importResultDto.getOrderInfoTotal() - importResultDto.getOrderInfofaultQty().get());
+        // 统计缺少主档的失败明细
         for (String key : orderDetailMap.keySet()) {
             importResultDto.getDetailFaultQty().getAndAdd(orderDetailMap.get(key).size());
         }
-        importResultDto.getDetailSuccessQty().set(importResultDto.getDetailTotal() - importResultDto.getDetailFaultQty().get());
+        importResultDto.getDetailSuccessQty()
+                .set(importResultDto.getDetailTotal() - importResultDto.getDetailFaultQty().get());
 
         if (importResultDto.getOrderInfofaultQty().get() > 0) {
             String msg = "主档缺少明细,放弃导入,主档单号(部分):";
             int i = 0;
             for (String key : orderInfoMap.keySet()) {
-                //如果不是重复单号的,就是缺少明细
+                // 如果不是重复单号的,就是缺少明细
                 if (!importResultDto.getRepeatOrderNo().contains(key)) {
                     msg += key + Delimiter.COMMA.getDelimiter();
                     if (i == 10)
@@ -164,8 +230,6 @@ public class OrderInfoServiceImpl extends BaseServiceImpl<OrderInfo, OrderInfoMa
             }
             importResultDto.setRepeatOrderNoDesc(msg);
         }
-
-
     }
 
     /**
@@ -178,7 +242,8 @@ public class OrderInfoServiceImpl extends BaseServiceImpl<OrderInfo, OrderInfoMa
         OrderInfo orderInfo = new OrderInfo();
         orderInfo.setTaxno(StringUtils.trimToNull(value[0]));
         String dkflags = StringUtils.trimToNull(value[1]);
-        if (dkflags != null && StringUtils.isNumeric(dkflags) && OrderInfo.DkflagsType.getNameByCode(Integer.parseInt(dkflags)).length() > 0)
+        if (dkflags != null && StringUtils.isNumeric(dkflags)
+                && OrderInfo.DkflagsType.getNameByCode(Integer.parseInt(dkflags)).length() > 0)
             orderInfo.setDkflags(Integer.parseInt(dkflags));
         orderInfo.setTicketCode(StringUtils.trimToNull(value[2]));
         orderInfo.setMajorItems(StringUtils.trimToNull(value[3]));
@@ -197,9 +262,8 @@ public class OrderInfoServiceImpl extends BaseServiceImpl<OrderInfo, OrderInfoMa
         orderInfo.setInduName(StringUtils.trimToNull(value[14]));
         orderInfo.setRemarks(StringUtils.trimToNull(value[15]));
         orderInfo.setOrderNo(StringUtils.trimToNull(value[16]));
-        orderInfo.setUsrno(StringUtils.trimToNull(value[17]));
-
-        String orderDateStr = StringUtils.trimToNull(value[18]);
+        String orderDateStr = StringUtils.trimToNull(value[17]);
+        orderInfo.setUsrno(cuzSessionAttributes.getUserInfo().getUsrno());
 
         if (orderDateStr.indexOf("-") != -1 && orderDateStr.indexOf(":") != -1) {
             try {
@@ -230,9 +294,7 @@ public class OrderInfoServiceImpl extends BaseServiceImpl<OrderInfo, OrderInfoMa
         return orderInfo;
     }
 
-
-    //--------------------------导入结果类-----------------------------------
-
+    // --------------------------导入结果类-----------------------------------
 
     public static class ImportResultDto {
         public ImportResultDto() {
@@ -242,7 +304,6 @@ public class OrderInfoServiceImpl extends BaseServiceImpl<OrderInfo, OrderInfoMa
             this.detailFaultQty = new AtomicInteger(0);
             this.repeatOrderNo = new ArrayList<>();
         }
-
 
         public ImportResultDto(int orderInfoTotal, int detailTotal) {
             this.orderInfoTotal = orderInfoTotal;
@@ -301,8 +362,8 @@ public class OrderInfoServiceImpl extends BaseServiceImpl<OrderInfo, OrderInfoMa
          */
         private String repeatOrderNoDesc;
 
-        //------------------------------getter and setter ---------------------------------------------
-
+        // ------------------------------getter and setter
+        // ---------------------------------------------
 
         public int getOrderInfoTotal() {
             return orderInfoTotal;
@@ -384,6 +445,4 @@ public class OrderInfoServiceImpl extends BaseServiceImpl<OrderInfo, OrderInfoMa
             this.repeatOrderNoDesc = repeatOrderNoDesc;
         }
     }
-
-
 }

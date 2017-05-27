@@ -59,6 +59,7 @@ public class AclResourceController extends BaseController<AclResource> {
         mav.addObject("SEARCH_MODULE_URL",SEARCH_MODULE_URL);
         mav.addObject("SEARCH_METHOD_URL",SEARCH_METHOD_URL);
         mav.addObject("aclResrouceTypeParams",ParamUtil.JqgridSelectVal(AclResource.Type.getParams()));
+        mav.addObject("aclResrouceTargetParams",ParamUtil.JqgridSelectVal(AclResource.Target.getParams()));
         mav.addObject("aclMenuParams",ParamUtil.JqgridSelectVal(Params.getAclMenuParams()));
         return mav;
     }
@@ -80,10 +81,10 @@ public class AclResourceController extends BaseController<AclResource> {
     @RequestMapping(value = "/listModuleAuthByAclUserId",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @AclResc(id= 1002,code = "listModuleAuthByAclUserId",name = "后台用户模块权限查询")
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
-    public ResultDataDto listModuleAuthByAclUserId(@RequestParam("aclUserId")Integer aclUserId){
-        List<AclResource> aclResources = aclResourceService.findAllModule();
+    public ResultDataDto listModuleAuthByAclUserId(@RequestParam("aclUserId")Integer aclUserId, @ModelAttribute("pageAndSort")PageAndSort pageAndSort){
+        List<AclResource> aclResources = aclResourceService.findByPage(new AclResource(),pageAndSort);
         aclResourceService.fillIsAuthByRescUser(aclResources,aclUserId);
-        return new ResultDataDto(aclResources);
+        return new ResultDataDto(aclResources,pageAndSort);
     }
 
     /**
@@ -107,10 +108,10 @@ public class AclResourceController extends BaseController<AclResource> {
     @RequestMapping(value = "/listModuleAuthByRoleId",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @AclResc(id= 1004,code = "listModuleAuthByRoleId",name = "角色模块权限查询")
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
-    public ResultDataDto listModuleAuthByRoleId(@RequestParam("roleId")Integer roleId){
-        List<AclResource> aclResources = aclResourceService.findAllModule();
+    public ResultDataDto listModuleAuthByRoleId(@RequestParam("roleId")Integer roleId,@RequestParam("target")String target, @ModelAttribute("pageAndSort")PageAndSort pageAndSort){
+        List<AclResource> aclResources = aclResourceService.findModulePage(target,pageAndSort);
         aclResourceService.fillIsAuthByRescRole(aclResources,roleId);
-        return new ResultDataDto(aclResources);
+        return new ResultDataDto(aclResources,pageAndSort);
     }
 
     /**

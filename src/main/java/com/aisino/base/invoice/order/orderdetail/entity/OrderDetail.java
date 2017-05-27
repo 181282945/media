@@ -13,6 +13,10 @@ import org.apache.ibatis.type.Alias;
 @BaseEntityMapper(tableName = "invoice_orderdetail")
 public class OrderDetail extends BaseInvoiceEntity {
     /**
+	 * 
+	 */
+	private static final long serialVersionUID = 6028664853086899110L;
+	/**
      * 订单号
      */
     private String orderNo;

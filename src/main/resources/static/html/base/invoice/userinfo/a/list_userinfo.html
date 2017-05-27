@@ -1,36 +1,33 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta charset="utf-8"/>
     <title th:text="${MODULE_NAME}">htxx</title>
 
-    <meta name="description" content="Dynamic tables and grids using jqGrid plugin" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+    <meta name="description" content="Dynamic tables and grids using jqGrid plugin"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
 
     <!-- bootstrap & fontawesome -->
-    <link rel="stylesheet" href="/assets/css/bootstrap.css" />
-    <link rel="stylesheet" href="/components/font-awesome/css/font-awesome.css" />
+    <link rel="stylesheet" href="/assets/css/bootstrap.css"/>
+    <link rel="stylesheet" href="/components/font-awesome/css/font-awesome.css"/>
 
     <!-- page specific plugin styles -->
-    <link rel="stylesheet" href="/components/_mod/jquery-ui/jquery-ui.css" />
-    <link rel="stylesheet" href="/components/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css" />
-    <link rel="stylesheet" href="/components/_mod/jqgrid/ui.jqgrid.css" />
+    <link rel="stylesheet" href="/components/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css"/>
+    <link rel="stylesheet" href="/components/_mod/jqgrid/ui.jqgrid.css"/>
 
     <!-- text fonts -->
-    <link rel="stylesheet" href="/assets/css/ace-fonts.css" />
+    <link rel="stylesheet" href="/assets/css/ace-fonts.css"/>
 
     <!-- ace styles -->
-    <link rel="stylesheet" href="/assets/css/ace.css" class="ace-main-stylesheet" id="main-ace-style" />
+    <link rel="stylesheet" href="/assets/css/ace.css" class="ace-main-stylesheet" id="main-ace-style"/>
 
     <!--[if lte IE 9]>
-    <link rel="stylesheet" href="/assets/css/ace-part2.css" class="ace-main-stylesheet" />
+    <link rel="stylesheet" href="/assets/css/ace-part2.css" class="ace-main-stylesheet"/>
     <![endif]-->
-    <link rel="stylesheet" href="/assets/css/ace-skins.css" />
-    <link rel="stylesheet" href="/assets/css/ace-rtl.css" />
 
     <!--[if lte IE 9]>
-    <link rel="stylesheet" href="/assets/css/ace-ie.css" />
+    <link rel="stylesheet" href="/assets/css/ace-ie.css"/>
     <![endif]-->
 
     <!-- inline styles related to this page -->
@@ -53,7 +50,79 @@
     <!--<script type="text/javascript">-->
     <!--try{ace.settings.loadState('main-container')}catch(e){}-->
     <!--</script>-->
+    <div class="container">
+        <div class="row">
+            <div class="col-md-2">
+            </div>
+            <div class="col-md-2 ">
+            </div>
+            <div class="col-md-2 "></div>
+            <div class="col-md-5 ">
+                <div class="row">
+                    <div class="col-md-2 "></div>
+                    <div class="col-md-2 "></div>
+                    <div class="col-md-2 ">
+                        <button class="btn btn-white btn-sm btn-primary" type="button" data-toggle="modal"
+                                data-target="#queryModal">查询
+                        </button>
+                    </div>
+                    <div class="col-md-2 ">
+                        <button class="btn btn-white btn-sm btn-primary" id="billingBtn">新增</button>
+                    </div>
+                    <div class="col-md-2 ">
+                        <button class="btn btn-white btn-sm btn-primary" id="editBtn">修改</button>
+                    </div>
+                    <div class="col-md-2 ">
+                        <button class="btn btn-white btn-sm btn-primary" id="delBtn">删除</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
+    <div class="modal fade" id="queryModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" style="width:300px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="queryModalLabel">
+                        用户信息查询
+                    </h4>
+                </div>
+                <div class="modal-body" style="margin: 5px">
+                    <form class="form-inline" id="queryForm">
+                        <fieldset>
+                            <div class="row" style="margin-bottom: 5px">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="form-label">企业税号:&ensp;</label>
+                                        <input type="text" name="taxNo" class="form-control" placeholder="企业税号"/>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row" style="margin-bottom: 5px">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="form-label">企业名称:&ensp;</label>
+                                        <input type="text" name="taxname" class="form-control" placeholder="企业名称"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" id="btnQuery" class="btn btn-info" data-dismiss="modal">查询</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
 
     <!-- /section:basics/sidebar -->
     <div class="main-content">
@@ -94,62 +163,38 @@
 <script src="/components/jquery.1x/dist/jquery.js"></script>
 <![endif]-->
 <script type="text/javascript">
-    if('ontouchstart' in document.documentElement) document.write("<script src='/components/_mod/jquery.mobile.custom/jquery.mobile.custom.js'>"+"<"+"/script>");
+    if ('ontouchstart' in document.documentElement) document.write("<script src='/components/_mod/jquery.mobile.custom/jquery.mobile.custom.js'>" + "<" + "/script>");
 </script>
 <script src="/js/layer/layer.js"></script>
 <script src="/js/base.js"></script>
 <script src="/js/base/invoice/userinfo/list_userinfo.js"></script>
 <script src="/components/bootstrap/dist/js/bootstrap.js"></script>
+<script src="/js/jquery.serializejson.min.js"></script>
 
 <!-- page specific plugin scripts -->
 <script src="/components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js"></script>
 <script src="/components/jqGrid/js/jquery.jqGrid.js"></script>
 <script src="/components/jqGrid/js/i18n/grid.locale-cn.js"></script>
 
-<!-- ace scripts -->
-<!--<script src="/assets/js/src/elements.scroller.js"></script>-->
-<!--<script src="/assets/js/src/elements.colorpicker.js"></script>-->
-<!--<script src="/assets/js/src/elements.fileinput.js"></script>-->
-<!--<script src="/assets/js/src/elements.typeahead.js"></script>-->
-<!--<script src="/assets/js/src/elements.wysiwyg.js"></script>-->
-<!--<script src="/assets/js/src/elements.spinner.js"></script>-->
-<!--<script src="/assets/js/src/elements.treeview.js"></script>-->
-<!--<script src="/assets/js/src/elements.wizard.js"></script>-->
-<!--<script src="/assets/js/src/elements.aside.js"></script>-->
-<!--<script src="/assets/js/src/ace.js"></script>-->
-<!--<script src="/assets/js/src/ace.basics.js"></script>-->
-<!--<script src="/assets/js/src/ace.scrolltop.js"></script>-->
-<!--<script src="/assets/js/src/ace.ajax-content.js"></script>-->
-<!--<script src="/assets/js/src/ace.touch-drag.js"></script>-->
-<!--<script src="/assets/js/src/ace.sidebar.js"></script>-->
-<!--<script src="/assets/js/src/ace.sidebar-scroll-1.js"></script>-->
-<!--<script src="/assets/js/src/ace.submenu-hover.js"></script>-->
-<!--<script src="/assets/js/src/ace.widget-box.js"></script>-->
-<!--<script src="/assets/js/src/ace.settings.js"></script>-->
-<!--<script src="/assets/js/src/ace.settings-rtl.js"></script>-->
-<!--<script src="/assets/js/src/ace.settings-skin.js"></script>-->
-<!--<script src="/assets/js/src/ace.widget-on-reload.js"></script>-->
-<!--<script src="/assets/js/src/ace.searchbox-autocomplete.js"></script>-->
-
 <!-- inline scripts related to this page -->
 <script type="text/javascript" th:inline="javascript">
 
-    jQuery(function($) {
+    jQuery(function ($) {
         var grid_selector = "#grid-table";
         var pager_selector = "#grid-pager";
 
         var parent_column = $(grid_selector).closest('[class*="col-"]');
         //resize to fit page size
         $(window).on('resize.jqGrid', function () {
-            $(grid_selector).jqGrid( 'setGridWidth', parent_column.width() );
+            $(grid_selector).jqGrid('setGridWidth', parent_column.width());
         })
 
         //resize on sidebar collapse/expand
-        $(document).on('settings.ace.jqGrid' , function(ev, event_name, collapsed) {
-            if( event_name === 'sidebar_collapsed' || event_name === 'main_container_fixed' ) {
+        $(document).on('settings.ace.jqGrid', function (ev, event_name, collapsed) {
+            if (event_name === 'sidebar_collapsed' || event_name === 'main_container_fixed') {
                 //setTimeout is for webkit only to give time for DOM changes and then redraw!!!
-                setTimeout(function() {
-                    $(grid_selector).jqGrid( 'setGridWidth', parent_column.width() );
+                setTimeout(function () {
+                    $(grid_selector).jqGrid('setGridWidth', parent_column.width());
                 }, 20);
             }
         })
@@ -175,205 +220,251 @@
 
         jQuery(grid_selector).jqGrid({
             //direction: "rtl",
-            shrinkToFit:true,
+            shrinkToFit: true,
             autoScroll: true,
-            subGrid : true,
+            subGrid: true,
 //            subGridModel: [{
 //                name : ['No','Item Name','Qty'], width : [55,200,80]
 //            }],
             //datatype: "xml",
-            subGridOptions : {
-                plusicon : "ace-icon fa fa-key center bigger-110 blue",
-                minusicon  : "ace-icon fa fa-minus center bigger-110 blue",
-                openicon : "ace-icon fa fa-chevron-right center orange"
+            subGridOptions: {
+                plusicon: "ace-icon fa fa-key center bigger-110 blue",
+                minusicon: "ace-icon fa fa-minus center bigger-110 blue",
+                openicon: "ace-icon fa fa-chevron-right center orange"
             },
             //for this example we are using local data
             subGridRowExpanded: function (subgridDivId, userId) {
                 var moduleSubgrid = subgridDivId + "_t";
-                var pager_id = "p_"+moduleSubgrid;
+                var pager_id = "p_" + moduleSubgrid;
                 $("#" + subgridDivId).html("<table id='" + moduleSubgrid + "' ></table><div id='" + pager_id + "'></div>");
                 $("#" + moduleSubgrid).jqGrid({
 //                    shrinkToFit:false,
 //                    autoScroll: true,
-                    subGrid : true,
-                    subGridOptions : {
-                        plusicon : "ace-icon fa fa-plus center bigger-110 blue",
-                        minusicon  : "ace-icon fa fa-minus center bigger-110 blue",
-                        openicon : "ace-icon fa fa-chevron-right center orange"
+                    subGrid: true,
+                    subGridOptions: {
+                        plusicon: "ace-icon fa fa-plus center bigger-110 blue",
+                        minusicon: "ace-icon fa fa-minus center bigger-110 blue",
+                        openicon: "ace-icon fa fa-chevron-right center orange"
                     },
                     subGridRowExpanded: function (subgridDivId, rowId) {
                         var methodSubgrid = subgridDivId + "_t";
-                        var pager_id = "p_"+methodSubgrid;
+                        var pager_id = "p_" + methodSubgrid;
                         $("#" + subgridDivId).html("<table id='" + methodSubgrid + "' ></table><div id='" + pager_id + "'></div>");
                         $("#" + methodSubgrid).jqGrid({
 //                            shrinkToFit:false,
 //                            autoScroll: true,
-                            url:'/base/sysmgr/aclresource/listMethodAuthByUserId?userId=' + userId + '&moduleId=' +rowId,
+                            url: '/base/sysmgr/aclresource/listMethodAuthByUserId?userId=' + userId + '&moduleId=' + rowId,
                             datatype: 'json',
-                            colNames:['id','编码','名称','类型', '映射URL','精确权限'],
-                            colModel:[
-                                {name:'id',index:'id',width:0, editable: false,search:true,hidden:true},
-                                {name:'code',index:'code', editable: false},
-                                {name:'name',index:'name', editable: false},
-                                {name: 'type', index: 'type', editable: false,edittype: "select",editoptions: {value: [[${aclResrouceTypeParams}]]},formatter: 'select'},
-                                {name:'path',index:'path', editable: false},
-                                {name:'auth',index:'auth',formatter: methodSwitch,formatoptions:{value: userId,subgridTableId:methodSubgrid}},
+                            colNames: ['id', '编码', '名称', '类型', '映射URL', '精确权限'],
+                            colModel: [
+                                {name: 'id', index: 'id', width: 0, editable: false, hidden: true},
+                                {name: 'code', index: 'code', editable: false},
+                                {name: 'name', index: 'name', editable: false},
+                                {
+                                    name: 'type',
+                                    index: 'type',
+                                    editable: false,
+                                    edittype: "select",
+                                    editoptions: {value: [[${aclResrouceTypeParams}]]},
+                                    formatter: 'select'
+                                },
+                                {name: 'path', index: 'path', editable: false},
+                                {
+                                    name: 'auth',
+                                    index: 'auth',
+                                    formatter: methodSwitch,
+                                    formatoptions: {value: userId, subgridTableId: methodSubgrid}
+                                },
                             ],
                             jsonReader: {
-                                root:"datas",
+                                root: "datas",
                                 page: "pageAndSort.page",
                                 total: "pageAndSort.totalPage",
                                 records: "pageAndSort.rowCount",
-                                repeatitems : false
+                                repeatitems: false
                             },
-                            prmNames : {
-                                page:"pageAndSort.page",    // 表示请求页码的参数名称
-                                rows:"pageAndSort.rp",    // 表示请求行数的参数名称
+                            prmNames: {
+                                page: "pageAndSort.page",    // 表示请求页码的参数名称
+                                rows: "pageAndSort.rp",    // 表示请求行数的参数名称
                                 sort: "pageAndSort.sortName", // 表示用于排序的列名的参数名称
                                 order: "pageAndSort.sortOrder", // 表示采用的排序方式的参数名称
-                                search:"_search", // 表示是否是搜索请求的参数名称
+                                search: "_search", // 表示是否是搜索请求的参数名称
 //                nd:"nd", // 表示已经发送请求的次数的参数名称
-                                id:"id", // 表示当在编辑数据模块中发送数据时，使用的id的名称
-                                oper:"oper",    // operation参数名称（我暂时还没用到）
-                                editoper:"edit", // 当在edit模式中提交数据时，操作的名称
-                                addoper:"add", // 当在add模式中提交数据时，操作的名称
-                                deloper:"del", // 当在delete模式中提交数据时，操作的名称
-                                subgridid:"id", // 当点击以载入数据到子表时，传递的数据名称
+                                id: "id", // 表示当在编辑数据模块中发送数据时，使用的id的名称
+                                oper: "oper",    // operation参数名称（我暂时还没用到）
+                                editoper: "edit", // 当在edit模式中提交数据时，操作的名称
+                                addoper: "add", // 当在add模式中提交数据时，操作的名称
+                                deloper: "del", // 当在delete模式中提交数据时，操作的名称
+                                subgridid: "id", // 当点击以载入数据到子表时，传递的数据名称
                                 npage: null,
 //                totalrows:"rowCount" // 表示需从Server得到总共多少行数据的参数名称，参见jqGrid选项中的rowTotal
                             },
 
-                            viewrecords : true,
-                            rowNum:10,
-                            rowList:[10,20,30],
-                            pager : pager_id,
+                            viewrecords: true,
+                            rowNum: 10,
+                            rowList: [10, 20, 30],
+                            pager: pager_id,
                             height: '100%', //自动适应行高
                             width: '100%',
 //                            altRows: true,
-                            loadComplete : function() {
-                                $("#gbox_"+methodSubgrid).removeClass("ui-jqgrid").height(350).css("cssText","position: relative;");
+                            loadComplete: function () {
+                                $("#gbox_" + methodSubgrid).removeClass("ui-jqgrid").height(350).css("cssText", "position: relative;");
                             },
                         });
 //                        jQuery("#"+methodSubgrid).jqGrid('navGrid',"#"+pager_id,{edit:false,add:false,del:false});
                     },
-                    url:'/base/sysmgr/aclresource/listModuleAuthByUserId?userId=' + userId,
+                    url: '/base/sysmgr/aclresource/listModuleAuthByUserId?userId=' + userId,
                     datatype: 'json',
-                    colNames:['id','编码','名称','类型', '映射URL','模块首页','权限'],
-                    colModel:[
-                        {name:'id',index:'id',width:0, editable: false,search:true,hidden:true},
-                        {name:'code',index:'code', editable: false},
-                        {name:'name',index:'name', editable: false},
-                        {name: 'type', index: 'type',editable: false,edittype: "select",editoptions: {value: [[${aclResrouceTypeParams}]]},formatter: 'select'},
-                        {name:'path',index:'path',width:300, editable: false},
-                        {name:'homePage',index:'homePage',width:300, editable: false},
-                        {name:'auth',index:'auth',formatter: moduleSwitch,formatoptions:{value: userId,subgridTableId:moduleSubgrid}},
+                    colNames: ['id', '编码', '名称', '类型', '映射URL', '模块首页', '权限'],
+                    colModel: [
+                        {name: 'id', index: 'id', width: 0, editable: false, hidden: true},
+                        {name: 'code', index: 'code', editable: false},
+                        {name: 'name', index: 'name', editable: false},
+                        {
+                            name: 'type',
+                            index: 'type',
+                            editable: false,
+                            edittype: "select",
+                            editoptions: {value: [[${aclResrouceTypeParams}]]},
+                            formatter: 'select'
+                        },
+                        {name: 'path', index: 'path', width: 300, editable: false},
+                        {name: 'homePage', index: 'homePage', width: 300, editable: false},
+                        {
+                            name: 'auth',
+                            index: 'auth',
+                            formatter: moduleSwitch,
+                            formatoptions: {value: userId, subgridTableId: moduleSubgrid}
+                        },
                     ],
                     jsonReader: {
-                        root:"datas",
+                        root: "datas",
                         page: "pageAndSort.page",
                         total: "pageAndSort.totalPage",
                         records: "pageAndSort.rowCount",
-                        repeatitems : false
+                        repeatitems: false
                     },
-                    prmNames : {
-                        page:"pageAndSort.page",    // 表示请求页码的参数名称
-                        rows:"pageAndSort.rp",    // 表示请求行数的参数名称
+                    prmNames: {
+                        page: "pageAndSort.page",    // 表示请求页码的参数名称
+                        rows: "pageAndSort.rp",    // 表示请求行数的参数名称
                         sort: "pageAndSort.sortName", // 表示用于排序的列名的参数名称
                         order: "pageAndSort.sortOrder", // 表示采用的排序方式的参数名称
-                        search:"_search", // 表示是否是搜索请求的参数名称
+                        search: "_search", // 表示是否是搜索请求的参数名称
 //                nd:"nd", // 表示已经发送请求的次数的参数名称
-                        id:"id", // 表示当在编辑数据模块中发送数据时，使用的id的名称
-                        oper:"oper",    // operation参数名称（我暂时还没用到）
-                        editoper:"edit", // 当在edit模式中提交数据时，操作的名称
-                        addoper:"add", // 当在add模式中提交数据时，操作的名称
-                        deloper:"del", // 当在delete模式中提交数据时，操作的名称
-                        subgridid:"id", // 当点击以载入数据到子表时，传递的数据名称
+                        id: "id", // 表示当在编辑数据模块中发送数据时，使用的id的名称
+                        oper: "oper",    // operation参数名称（我暂时还没用到）
+                        editoper: "edit", // 当在edit模式中提交数据时，操作的名称
+                        addoper: "add", // 当在add模式中提交数据时，操作的名称
+                        deloper: "del", // 当在delete模式中提交数据时，操作的名称
+                        subgridid: "id", // 当点击以载入数据到子表时，传递的数据名称
                         npage: null,
 //                totalrows:"rowCount" // 表示需从Server得到总共多少行数据的参数名称，参见jqGrid选项中的rowTotal
                     },
-                    viewrecords : true,
-                    rowNum:10,
-                    rowList:[10,20,30],
-                    pager : pager_id,
+                    viewrecords: true,
+                    rowNum: 10,
+                    rowList: [10, 20, 30],
+                    pager: pager_id,
                     height: '100%', //自动适应行高
                     width: '100%',
 //                    altRows: true,
-                    loadComplete : function() {
-                        $("#gbox_"+moduleSubgrid).removeClass("ui-jqgrid").height(350).css("cssText","position: relative;");
+                    loadComplete: function () {
+                        $("#gbox_" + moduleSubgrid).removeClass("ui-jqgrid").height(350).css("cssText", "position: relative;");
                     },
                 });
 //                jQuery("#"+moduleSubgrid).jqGrid('navGrid',"#"+pager_id,{edit:false,add:false,del:false});
             },
 
-            url:[[${SEARCH_URL}]],
+            url: [[${SEARCH_URL}]],
             datatype: "json",
             jsonReader: {
-                root:"datas",
+                root: "datas",
                 page: "pageAndSort.page",
                 total: "pageAndSort.totalPage",
                 records: "pageAndSort.rowCount",
-                repeatitems : false
+                repeatitems: false
             },
-            prmNames : {
-                page:"pageAndSort.page",    // 表示请求页码的参数名称
-                rows:"pageAndSort.rp",    // 表示请求行数的参数名称
+            prmNames: {
+                page: "pageAndSort.page",    // 表示请求页码的参数名称
+                rows: "pageAndSort.rp",    // 表示请求行数的参数名称
                 sort: "pageAndSort.sortName", // 表示用于排序的列名的参数名称
                 order: "pageAndSort.sortOrder", // 表示采用的排序方式的参数名称
-                search:"_search", // 表示是否是搜索请求的参数名称
+                search: "_search", // 表示是否是搜索请求的参数名称
 //                nd:"nd", // 表示已经发送请求的次数的参数名称
-                id:"id", // 表示当在编辑数据模块中发送数据时，使用的id的名称
-                oper:"oper",    // operation参数名称（我暂时还没用到）
-                editoper:"edit", // 当在edit模式中提交数据时，操作的名称
-                addoper:"add", // 当在add模式中提交数据时，操作的名称
-                deloper:"del", // 当在delete模式中提交数据时，操作的名称
-                subgridid:"id", // 当点击以载入数据到子表时，传递的数据名称
+                id: "id", // 表示当在编辑数据模块中发送数据时，使用的id的名称
+                oper: "oper",    // operation参数名称（我暂时还没用到）
+                editoper: "edit", // 当在edit模式中提交数据时，操作的名称
+                addoper: "add", // 当在add模式中提交数据时，操作的名称
+                deloper: "del", // 当在delete模式中提交数据时，操作的名称
+                subgridid: "id", // 当点击以载入数据到子表时，传递的数据名称
                 npage: null,
 //                totalrows:"rowCount" // 表示需从Server得到总共多少行数据的参数名称，参见jqGrid选项中的rowTotal
             },
             height: 400,
-            colNames:[' ', 'id','账户','用户名','角色','税号','固话','手机号','电邮地址','创建时间','是否生效'],
-            colModel:[
-                {name:'myac',index:'', width:80, fixed:true, sortable:false, resize:false,
-                    formatter:'actions',
-                    formatoptions:{
-                        keys:true,
-                        editbutton : true,
-                        delbutton : false,
-                        delbutton : true,
-                        delOptions:{
-                            url:[[${DELETE_URL}]],
+            colNames: [' ', 'id', '账户', '用户名', '角色', '税号', '固话', '手机号', '电邮地址', '创建时间', '是否失效'],
+            colModel: [
+                {
+                    name: 'myac', index: '', width: 80, fixed: true, sortable: false, resize: false,
+                    formatter: 'actions',
+                    formatoptions: {
+                        keys: true,
+                        editbutton: true,
+                        delbutton: false,
+                        delbutton: true,
+                        delOptions: {
+                            url: [[${DELETE_URL}]],
                             recreateForm: true,
-                            beforeShowForm:beforeDeleteCallback,
-                            afterComplete:afterCompleteCallback
-                        },onSuccess : afterCompleteMsg
+                            beforeShowForm: beforeDeleteCallback,
+//                            afterComplete:afterCompleteCallback
+                        }
                     }
                 },
 
-                {name:'id',index:'id',width:50, editable: false,search:true,hidden:true},
-                {name:'usrno',index:'usrno', editable: true},
-                {name:'usrname',index:'usrname', editable: true},
-                {name: 'roleId', index: 'roleId', editable: true,edittype: "select",editoptions: {value: [[${userInfoRoleParams}]]},formatter: 'select'},
-                {name:'taxno',index:'taxno', editable: true},
-                {name:'telephone',index:'telephone', editable: true},
-                {name:'mobilephone',index:'mobilephone', editable: true},
-                {name:'email',index:'email', editable: true},
-                {name:'insertDate',index:'insertDate', editable: false,formatter:'date',formatter:'date', formatoptions: {srcformat: 'u', newformat:'Y-m-d H:i'}},
-                {name:'delflags',index:'delflags', editable: true},
+                {name: 'id', index: 'id', width: 50, editable: false, hidden: true},
+                {name: 'usrno', index: 'usrno', editable: false},
+                {name: 'usrname', index: 'usrname', editable: true, editrules: {required: true}},
+                {
+                    name: 'roleId',
+                    index: 'roleId',
+                    editable: true,
+                    edittype: "select",
+                    editoptions: {value: [[${userInfoRoleParamsEdit}]]},
+                    formatter: 'select'
+                },
+                {name: 'taxNo', index: 'taxNo', editable: true},
+                {name: 'telephone', index: 'telephone', editable: true},
+                {name: 'mobilephone', index: 'mobilephone', editable: true, editrules: {minValue: 11}},
+                {name: 'email', index: 'email', editable: true, editrules: {email: true}},
+                {
+                    name: 'insertDate',
+                    index: 'insertDate',
+                    editable: false,
+                    formatter: 'date',
+                    formatter: 'date',
+                    formatoptions: {srcformat: 'u', newformat: 'Y-m-d H:i'}
+                },
+                {
+                    name: 'delflags',
+                    index: 'delflags',
+                    editable: true,
+                    edittype: "select",
+                    editoptions: {value: [[${delflagsTypeParams}]]},
+                    formatter: 'select'
+                }
             ],
 
-            viewrecords : true,
-            rowNum:10,
-            rowList:[10,20,30],
-            pager : pager_selector,
+            viewrecords: true,
+            rowNum: 10,
+            rowList: [10, 20, 30],
+            pager: pager_selector,
             altRows: true,
             //toppager: true,
             multiselect: false,
             //multikey: "ctrlKey",
             multiboxonly: false,
 
-            loadComplete : function() {
+            loadComplete: function () {
                 var table = this;
-                setTimeout(function(){
+                setTimeout(function () {
                     styleCheckbox(table);
                     updateActionIcons(table);
                     updatePagerIcons(table);
@@ -406,86 +497,89 @@
         $(window).triggerHandler('resize.jqGrid');//trigger window resize to make the grid get the correct size
 
 
-
         //enable search/filter toolbar
         //jQuery(grid_selector).jqGrid('filterToolbar',{defaultSearch:true,stringResult:true})
         //jQuery(grid_selector).filterToolbar({});
 
 
         //switch element when editing inline
-        function aceSwitch( cellvalue, options, cell ) {
-            setTimeout(function(){
-                $(cell) .find('input[type=checkbox]')
+        function aceSwitch(cellvalue, options, cell) {
+            setTimeout(function () {
+                $(cell).find('input[type=checkbox]')
                     .addClass('ace ace-switch ace-switch-5')
                     .after('<span class="lbl"></span>');
             }, 0);
         }
+
         //enable datepicker
-        function pickDate( cellvalue, options, cell ) {
-            setTimeout(function(){
-                $(cell) .find('input[type=text]')
-                    .datepicker({format:'yyyy-mm-dd' , autoclose:true});
+        function pickDate(cellvalue, options, cell) {
+            setTimeout(function () {
+                $(cell).find('input[type=text]')
+                    .datepicker({format: 'yyyy-mm-dd', autoclose: true});
             }, 0);
         }
 
         //navButtons
-        jQuery(grid_selector).jqGrid('navGrid',pager_selector,
+        jQuery(grid_selector).jqGrid('navGrid', pager_selector,
             { 	//navbar options
-                edit: true,
-                editicon : 'ace-icon fa fa-pencil blue',
-                add: true,
-                addicon : 'ace-icon fa fa-plus-circle purple',
-                del: true,
-                delicon : 'ace-icon fa fa-trash-o red',
-                search: true,
-                searchicon : 'ace-icon fa fa-search orange',
+                edit: false,
+                editicon: 'ace-icon fa fa-pencil blue',
+                add: false,
+                addicon: 'ace-icon fa fa-plus-circle purple',
+                del: false,
+                delicon: 'ace-icon fa fa-trash-o red',
+                search: false,
+                searchicon: 'ace-icon fa fa-search orange',
                 refresh: true,
-                refreshicon : 'ace-icon fa fa-refresh green',
+                refreshicon: 'ace-icon fa fa-refresh green',
                 view: true,
-                viewicon : 'ace-icon fa fa-search-plus grey',
+                viewicon: 'ace-icon fa fa-search-plus grey',
             },
-            {url: [[${UPDATE_URL}]],
+            {
+                url: [[${UPDATE_URL}]],
                 //edit record form
                 //closeAfterEdit: true,
                 //width: 700,
                 recreateForm: true,
-                beforeShowForm : function(e) {
+                beforeShowForm: function (e) {
                     var form = $(e[0]);
                     form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
                     style_edit_form(form);
                 },
-                afterComplete:afterCompleteCallback
+//                afterComplete:afterCompleteCallback
             },
             //add options
-            { url: [[${ADD_URL}]],
+            {
+                url: [[${ADD_URL}]],
                 //new record form
                 //width: 700,
                 closeAfterAdd: true,
                 recreateForm: true,
                 viewPagerButtons: false,
-                beforeShowForm : function(e) {
+                beforeShowForm: function (e) {
                     var form = $(e[0]);
                     form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar')
-                        .wrapInner('<div class="widget-header" />')
+                        .wrapInner('<div class="widget-header" />');
                     style_edit_form(form);
                 },
-                afterComplete:afterCompleteCallback
+//                afterComplete:afterCompleteCallback
             },
             //delete options
-            { url: [[${DELETE_URL}]],
+            {
+                url: [[${DELETE_URL}]],
                 //delete record form
                 recreateForm: true,
-                beforeShowForm : function(e) {
+                beforeShowForm: function (e) {
                     var form = $(e[0]);
-                    if(form.data('styled')) return false;
+                    if (form.data('styled')) return false;
 
                     form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
                     style_delete_form(form);
 
                     form.data('styled', true);
                 },
-                afterComplete:afterCompleteCallback,
-                onClick : function(e) {
+//                afterComplete:afterCompleteCallback,
+                onClick: function (e) {
 //                    alert(1);
                 }
             },
@@ -494,15 +588,16 @@
                 url: [[${SEARCH_URL}]],
                 //search form
                 recreateForm: true,
-                afterShowSearch: function(e){
+                afterShowSearch: function (e) {
                     var form = $(e[0]);
                     form.closest('.ui-jqdialog').find('.ui-jqdialog-title').wrap('<div class="widget-header" />')
                     style_search_form(form);
                 },
-                afterRedraw: function(){
+                afterRedraw: function () {
                     style_search_filters($(this));
                 },
-                multipleSearch:true,
+                multipleSearch: true,
+                sopt: ['eq', 'ne']
 //                multipleGroup:true,
 //                showQuery: true
                 /**
@@ -513,10 +608,9 @@
         )
 
 
-
         function style_edit_form(form) {
             //enable datepicker on "sdate" field and switches for "stock" field
-            form.find('input[name=sdate]').datepicker({format:'yyyy-mm-dd' , autoclose:true})
+            form.find('input[name=sdate]').datepicker({format: 'yyyy-mm-dd', autoclose: true})
 
             form.find('input[name=stock]').addClass('ace ace-switch ace-switch-5').after('<span class="lbl"></span>');
             //don't wrap inside a label element, the checkbox value won't be submitted (POST'ed)
@@ -559,7 +653,7 @@
 
         function beforeDeleteCallback(e) {
             var form = $(e[0]);
-            if(form.data('styled')) return false;
+            if (form.data('styled')) return false;
 
             form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
             style_delete_form(form);
@@ -572,7 +666,6 @@
             form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
             style_edit_form(form);
         }
-
 
 
         //it causes some flicker when reloading or navigating grid
@@ -615,41 +708,60 @@
         function updatePagerIcons(table) {
             var replacement =
                 {
-                    'ui-icon-seek-first' : 'ace-icon fa fa-angle-double-left bigger-140',
-                    'ui-icon-seek-prev' : 'ace-icon fa fa-angle-left bigger-140',
-                    'ui-icon-seek-next' : 'ace-icon fa fa-angle-right bigger-140',
-                    'ui-icon-seek-end' : 'ace-icon fa fa-angle-double-right bigger-140'
+                    'ui-icon-seek-first': 'ace-icon fa fa-angle-double-left bigger-140',
+                    'ui-icon-seek-prev': 'ace-icon fa fa-angle-left bigger-140',
+                    'ui-icon-seek-next': 'ace-icon fa fa-angle-right bigger-140',
+                    'ui-icon-seek-end': 'ace-icon fa fa-angle-double-right bigger-140'
                 };
-            $('.ui-pg-table:not(.navtable) > tbody > tr > .ui-pg-button > .ui-icon').each(function(){
+            $('.ui-pg-table:not(.navtable) > tbody > tr > .ui-pg-button > .ui-icon').each(function () {
                 var icon = $(this);
                 var $class = $.trim(icon.attr('class').replace('ui-icon', ''));
 
-                if($class in replacement) icon.attr('class', 'ui-icon '+replacement[$class]);
+                if ($class in replacement) icon.attr('class', 'ui-icon ' + replacement[$class]);
             })
         }
 
         function enableTooltips(table) {
-            $('.navtable .ui-pg-button').tooltip({container:'body'});
-            $(table).find('.ui-pg-div').tooltip({container:'body'});
+            $('.navtable .ui-pg-button').tooltip({container: 'body'});
+            $(table).find('.ui-pg-div').tooltip({container: 'body'});
         }
 
 
-        /**
-         * 自定义请求完成后处理事件
-         * @param data
-         */
-        function afterCompleteCallback(data){
-            afterCompleteMsg(data)
-        }
+//        /**
+//         * 自定义请求完成后处理事件
+//         * @param data
+//         */
+//        function afterCompleteCallback(data){
+//            afterCompleteMsg(data)
+//        }
 
         //var selr = jQuery(grid_selector).jqGrid('getGridParam','selrow');
 
-        $(document).one('ajaxloadstart.page', function(e) {
+        $(document).one('ajaxloadstart.page', function (e) {
             $.jgrid.gridDestroy(grid_selector);
             $('.ui-jqdialog').remove();
         });
 
-        $(grid_selector).closest(".ui-jqgrid-bdiv").css({ 'overflow-x' : 'scroll' });
+        $(grid_selector).closest(".ui-jqgrid-bdiv").css({'overflow-x': 'scroll'});
+    });
+
+
+    /**
+     * 自定义查询按钮
+     */
+    $('#btnQuery').click(function () {
+        var formData = $('#queryForm').serializeJSON();
+//        var rulesStr = '';
+//        $.each(formData, function (k, v) {
+//            rulesStr += ',{"field":"' + k + '","op":"like","data":"' + v + '"}';
+//        });
+//
+//        if (rulesStr != '')
+//            rulesStr = rulesStr.substring(1, rulesStr.length);
+//        var filtersStr = '{"groupOp":"AND","rules":[' + rulesStr + ']}';
+        var postData = $("#grid-table").jqGrid("getGridParam", "postData");
+        $.extend(postData, formData);
+        $("#grid-table").jqGrid('setGridParam', {search: true}).trigger("reloadGrid");
     });
 
 </script>

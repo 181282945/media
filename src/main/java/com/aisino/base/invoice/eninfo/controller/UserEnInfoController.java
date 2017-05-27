@@ -4,19 +4,19 @@ import com.aisino.base.invoice.eninfo.entity.EnInfo;
 import com.aisino.base.invoice.eninfo.service.EnInfoService;
 import com.aisino.base.invoice.userinfo.entity.UserInfo;
 import com.aisino.base.invoice.userinfo.service.UserInfoService;
+import com.aisino.base.invoice.userinfo.service.impl.CuzSessionAttributes;
 import com.aisino.base.sysmgr.aclresource.annotation.AclResc;
 import com.aisino.base.sysmgr.aclresource.entity.AclResource;
 import com.aisino.base.sysmgr.dbinfo.service.DbInfoService;
 import com.aisino.core.controller.BaseController;
 import com.aisino.core.dto.ResultDataDto;
+import com.aisino.core.entity.BaseInvoiceEntity;
+import com.aisino.core.mybatis.MyRoutingDataSource;
 import com.aisino.core.security.util.SecurityUtil;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
@@ -40,23 +40,27 @@ public class UserEnInfoController extends BaseController<EnInfo> {
     @Resource
     private UserInfoService userInfoService;
 
+    @Resource
+    private CuzSessionAttributes cuzSessionAttributes;
+
+
+    @Resource
+    private MyRoutingDataSource routingDataSource;
 
     @RequestMapping(value = "/addEnInfoMav",method = RequestMethod.GET,produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView addEnfo(){
         ModelAndView mav = new ModelAndView(PATH + "/add_enifo");
-        EnInfo currentEnInfo = SecurityUtil.getCurrentEnInfo();
+        EnInfo currentEnInfo = cuzSessionAttributes.getEnInfo();
         mav.addObject("currentEnInfo",currentEnInfo);
         return mav;
     }
-
-
 
     /**
      * 用户完善企业信息的方法.
      */
     @RequestMapping(value = "/addOrUpdateByCurrentUser",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @AclResc(id = 60001,code = "addOrUpdateByCurrentUser",name = "新增或修改企业")
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor = Exception.class)
     public ResultDataDto addOrUpdateByCurrentUser(@ModelAttribute("enInfo")EnInfo enInfo){
         UserInfo userInfo = SecurityUtil.getCurrentUserInfo();
         enInfo.setUsrno(userInfo.getUsrno());
@@ -64,12 +68,18 @@ public class UserEnInfoController extends BaseController<EnInfo> {
         if(enInfo.getId()==null){
             if(enInfoService.addEntity(enInfo)!=null){
                 userInfoService.updateEntity(userInfo);//更新用户税号
-                if(dbInfoService.addByTaxNo(enInfo.getTaxno()) != null)
+                if(dbInfoService.addByTaxNo(enInfo.getTaxno())){
+                    cuzSessionAttributes.setDbexist(true);
+                    routingDataSource.addCuzDataSource(userInfo);
+                    cuzSessionAttributes.setEnInfo(enInfo);
                     return ResultDataDto.addAddSuccess();
+                }
                 return ResultDataDto.addOperationFailure("保存失败!原因:建库失败");
             }
         }else{
+            enInfo.setDelflags(BaseInvoiceEntity.DelflagsType.DELETED.getCode());
             enInfoService.updateEntity(enInfo);
+            cuzSessionAttributes.getEnInfo().setDelflags(true);
             return ResultDataDto.addUpdateSuccess();
         }
 

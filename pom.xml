@@ -22,7 +22,10 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.7</java.version>
+
     </properties>
+
+
 
     <dependencies>
         <dependency>
@@ -199,7 +202,6 @@
                 <configuration>
                     <skip>true</skip>
                 </configuration>
-
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -225,13 +227,13 @@
                 <configuration>
                     <encoding>${project.build.sourceEncoding}</encoding>
                     <!--
+                        因为接口需要的加密方式使用了JDK 内部的BASE 64,所以编译时,必须把这些JAR 添加到项目里
                         将jre/lib/rt.jar添加到maven的compiler里面  编译正常..。
                     -->
                     <compilerArguments>
                         <verbose />
                         <bootclasspath>${java.home}/lib/rt.jar;${java.home}/lib/jce.jar</bootclasspath>
                     </compilerArguments>
-
                 </configuration>
             </plugin>
         </plugins>

@@ -10,7 +10,9 @@ import com.aisino.common.dto.jqgrid.JqgridFilters;
 import com.aisino.common.util.ParamUtil;
 import com.aisino.core.controller.BaseController;
 import com.aisino.core.dto.ResultDataDto;
+import com.aisino.core.entity.BaseInvoiceEntity;
 import com.aisino.core.mybatis.specification.PageAndSort;
+import com.aisino.core.mybatis.specification.QueryLike;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,7 +27,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = EnInfoController.PATH)
-@AclResc(id = 40000,code = "eninfo", name = EnInfoController.MODULE_NAME,homePage = EnInfoController.HOME_PAGE,target = AclResource.Target.ACLUSER)
+@AclResc(id = 40000, code = "eninfo", name = EnInfoController.MODULE_NAME, homePage = EnInfoController.HOME_PAGE, target = AclResource.Target.ACLUSER)
 public class EnInfoController extends BaseController<EnInfo> {
     final static String PATH = "/base/invoice/eninfo/a";
     final static String HOME_PAGE = PATH + "/tolist";
@@ -37,7 +39,6 @@ public class EnInfoController extends BaseController<EnInfo> {
 
     @Resource
     private UserInfoService userInfoService;
-
 
 
     //页面模板路径
@@ -52,33 +53,32 @@ public class EnInfoController extends BaseController<EnInfo> {
     private static final String SEARCH_URL = PATH + "/list";
 
 
-    @RequestMapping(value = "/tolist",method = RequestMethod.GET,produces = MediaType.TEXT_HTML_VALUE)
-    public ModelAndView toList(){
-        ModelAndView mav = generalMav(PATH,MODULE_NAME,VIEW_NAME,UPDATE_URL,ADD_URL,DELETE_URL,SEARCH_URL);
+    @RequestMapping(value = "/tolist", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
+    public ModelAndView toList() {
+        ModelAndView mav = generalMav(PATH, MODULE_NAME, VIEW_NAME, UPDATE_URL, ADD_URL, DELETE_URL, SEARCH_URL);
         mav.addObject("billingOptionTypeParams", ParamUtil.JqgridSelectVal(EnInfo.BillingOptionType.getParams()));
         mav.addObject("yhzcbsTypeParams", ParamUtil.JqgridSelectVal(EnInfo.YhzcbsType.getParams()));
         mav.addObject("lslbsTypeParams", ParamUtil.JqgridSelectVal(EnInfo.LslbsType.getParams()));
+        mav.addObject("delflagsTypeParams", ParamUtil.JqgridSelectVal(BaseInvoiceEntity.DelflagsType.getParams()));
         return mav;
     }
 
 
-
-
-    @RequestMapping(value = "/list",method = RequestMethod.GET)
-    @AclResc(id = 40001,code = "list",name = "企业列表")
-    public ResultDataDto list(JqgridFilters jqgridFilters, @ModelAttribute("pageAndSort")PageAndSort pageAndSort){
-        List<EnInfo> enInfos = enInfoService.findByJqgridFilters(jqgridFilters,pageAndSort);
-        return new ResultDataDto(enInfos,pageAndSort);
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    @AclResc(id = 40001, code = "list", name = "企业列表")
+    public ResultDataDto list(JqgridFilters jqgridFilters, @ModelAttribute("pageAndSort") PageAndSort pageAndSort) {
+        List<EnInfo> enInfos = enInfoService.findByJqgridFilters(jqgridFilters, pageAndSort);
+        return new ResultDataDto(enInfos, pageAndSort);
     }
 
 
     /**
      * 新增
      */
-    @RequestMapping(value = "/add",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @AclResc(id = 40002,code = "add",name = "新增企业")
-    public ResultDataDto add(@ModelAttribute("enInfo")EnInfo enInfo){
-        if(enInfoService.addEntity(enInfo)!=null)
+    @RequestMapping(value = "/add", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @AclResc(id = 40002, code = "add", name = "新增企业")
+    public ResultDataDto add(@ModelAttribute("enInfo") EnInfo enInfo) {
+        if (enInfoService.addEntity(enInfo) != null)
             return ResultDataDto.addAddSuccess();
         return ResultDataDto.addOperationFailure("保存失败!");
     }
@@ -87,23 +87,25 @@ public class EnInfoController extends BaseController<EnInfo> {
     /**
      * 更新
      */
-    @RequestMapping(value = "/update",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @AclResc(id = 40003,code = "update",name = "更新企业")
+    @RequestMapping(value = "/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @AclResc(id = 40003, code = "update", name = "更新企业")
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public ResultDataDto update(@ModelAttribute("enInfo")EnInfo enInfo){
+    public ResultDataDto update(@ModelAttribute("enInfo") EnInfo enInfo) {
         enInfoService.updateEntity(enInfo);
-        UserInfo userInfo = userInfoService.getUserByUsrno(enInfo.getUsrno());
-        userInfo.setTaxNo(enInfo.getTaxno());
-        userInfoService.updateEntity(userInfo);
+        if (null != enInfo.getTaxno()) {
+            UserInfo userInfo = userInfoService.getUserByUsrno(enInfo.getUsrno());
+            userInfo.setTaxNo(enInfo.getTaxno());
+            userInfoService.updateEntity(userInfo);
+        }
         return ResultDataDto.addUpdateSuccess();
     }
 
     /**
      * 生效
      */
-    @RequestMapping(value = "/effective",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @AclResc(id = 40004,code = "effective",name = "企业生效")
-    public ResultDataDto effective(@RequestParam("id") Integer id){
+    @RequestMapping(value = "/effective", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @AclResc(id = 40004, code = "effective", name = "企业生效")
+    public ResultDataDto effective(@RequestParam("id") Integer id) {
         enInfoService.updateEntityEffective(id);
         return ResultDataDto.addOperationSuccess();
     }
@@ -111,9 +113,9 @@ public class EnInfoController extends BaseController<EnInfo> {
     /**
      * 失效
      */
-    @RequestMapping(value = "/invalid",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @AclResc(id = 40005,code = "invalid",name = "企业生效")
-    public ResultDataDto invalid(@RequestParam("id") Integer id){
+    @RequestMapping(value = "/invalid", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @AclResc(id = 40005, code = "invalid", name = "企业生效")
+    public ResultDataDto invalid(@RequestParam("id") Integer id) {
         enInfoService.updateEntityInvalid(id);
         return ResultDataDto.addOperationSuccess();
     }

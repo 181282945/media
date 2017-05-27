@@ -4,17 +4,19 @@ import com.aisino.base.invoice.order.orderdetail.entity.OrderDetail;
 import com.aisino.base.invoice.order.orderdetail.service.OrderDetailService;
 import com.aisino.base.invoice.order.orderinfo.entity.OrderInfo;
 import com.aisino.base.invoice.order.orderinfo.service.OrderInfoService;
+import com.aisino.base.invoice.userinfo.service.impl.CuzSessionAttributes;
 import com.aisino.base.sysmgr.aclresource.annotation.AclResc;
 import com.aisino.base.sysmgr.aclresource.entity.AclResource;
 import com.aisino.common.annotation.CuzDataSource;
 import com.aisino.common.controller.IndexController;
 import com.aisino.common.dto.jqgrid.JqgridFilters;
+import com.aisino.common.util.ParamUtil;
 import com.aisino.core.controller.BaseController;
 import com.aisino.core.dto.ResultDataDto;
 import com.aisino.core.entity.BaseInvoiceEntity;
+import com.aisino.core.mybatis.DataSourceContextHolder;
 import com.aisino.core.mybatis.specification.PageAndSort;
 import com.aisino.core.mybatis.specification.QueryLike;
-import com.aisino.core.security.util.SecurityUtil;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,11 +58,13 @@ public class UserOrderDetailController extends BaseController<OrderDetail> {
     @Resource
     private OrderInfoService orderInfoService;
 
+    @Resource
+    private CuzSessionAttributes cuzSessionAttributes;
 
     @RequestMapping(value = "/tolist",method = RequestMethod.GET,produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView toList(){
         ModelAndView mav = new ModelAndView(PATH + VIEW_NAME);
-        mav.addObject("userName", SecurityUtil.getCurrentUserName());
+        mav.addObject("userName", cuzSessionAttributes.getUserInfo().getUsrname());
         mav.addObject("INDEX_HOME_PAGE", IndexController.HOME_PAGE);
         mav.addObject("USERORDERINFO_HOME_PAGE", UserOrderDetailController.HOME_PAGE);
         mav.addObject("MODULE_NAME",MODULE_NAME);
@@ -112,10 +116,11 @@ public class UserOrderDetailController extends BaseController<OrderDetail> {
     /**
      * 更新
      */
-    @CuzDataSource
+//    @CuzDataSource
     @RequestMapping(value = "/update",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @AclResc(id = 50004,code = "update",name = "更新订单明细")
     public ResultDataDto update(@ModelAttribute("orderDetail")OrderDetail orderDetail){
+        DataSourceContextHolder.user();
         orderDetailService.updateEntity(orderDetail);
         return ResultDataDto.addUpdateSuccess();
     }

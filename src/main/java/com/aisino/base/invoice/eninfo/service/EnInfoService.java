@@ -17,4 +17,11 @@ public interface EnInfoService extends BaseService<EnInfo,EnInfoMapper> {
      * 根据用户账户查询企业信息
      */
     EnInfo getByUsrno(String usrno);
+
+    /**
+     * 根据税号查询
+     * @param taxNo
+     * @return
+     */
+    EnInfo getByTaxNo(String taxNo);
 }

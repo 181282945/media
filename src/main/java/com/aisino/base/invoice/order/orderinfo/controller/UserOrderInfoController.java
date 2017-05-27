@@ -1,21 +1,22 @@
 package com.aisino.base.invoice.order.orderinfo.controller;
 
-import com.aisino.base.invoice.authcodeinfo.service.AuthCodeInfoService;
+import com.aisino.base.invoice.order.orderdetail.entity.OrderDetail;
 import com.aisino.base.invoice.order.orderinfo.entity.OrderInfo;
 import com.aisino.base.invoice.order.orderinfo.service.OrderInfoService;
 import com.aisino.base.invoice.order.orderinfo.service.impl.OrderInfoServiceImpl;
+import com.aisino.base.invoice.userinfo.service.impl.CuzSessionAttributes;
 import com.aisino.base.sysmgr.aclresource.annotation.AclResc;
 import com.aisino.base.sysmgr.aclresource.entity.AclResource;
 import com.aisino.common.annotation.CuzDataSource;
 import com.aisino.common.controller.IndexController;
 import com.aisino.common.dto.jqgrid.JqgridFilters;
 import com.aisino.common.util.ParamUtil;
-import com.aisino.core.controller.BaseUserInfoController;
+import com.aisino.core.controller.BaseController;
 import com.aisino.core.dto.ResultDataDto;
 import com.aisino.core.entity.BaseInvoiceEntity;
+import com.aisino.core.mybatis.DataSourceContextHolder;
 import com.aisino.core.mybatis.specification.PageAndSort;
 import com.aisino.core.mybatis.specification.QueryLike;
-import com.aisino.core.security.util.SecurityUtil;
 import org.apache.poi.openxml4j.exceptions.OpenXML4JException;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Propagation;
@@ -33,15 +34,15 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
- * Created by 为 on 2017-4-27.
- * 前台用户用的订单信息控制器
+ * Created by 为 on 2017-4-27. 前台用户用的订单信息控制器
  */
 @RestController
 @RequestMapping(value = UserOrderInfoController.PATH)
-@AclResc(id = 20000,code = "userOrderInfo", name = UserOrderInfoController.MODULE_NAME,homePage = UserOrderInfoController.HOME_PAGE,target = AclResource.Target.USERINFO)
-public class UserOrderInfoController extends BaseUserInfoController<OrderInfo> {
+@AclResc(id = 20000, code = "userOrderInfo", name = UserOrderInfoController.MODULE_NAME, homePage = UserOrderInfoController.HOME_PAGE, target = AclResource.Target.USERINFO)
+public class UserOrderInfoController extends BaseController<OrderInfo> {
 
     final static String PATH = "/base/invoice/order/orderinfo/u";
 
@@ -49,65 +50,69 @@ public class UserOrderInfoController extends BaseUserInfoController<OrderInfo> {
 
     final static String MODULE_NAME = "订单仓库";
 
-
-    //页面模板路径
+    // 页面模板路径
     private static final String VIEW_NAME = "/list_userorderinfo";
-    //修改更新
+    // 修改更新
     private static final String UPDATE_URL = PATH + "/update";
-    //新增
+    // 新增
     private static final String ADD_URL = PATH + "/add";
-    //删除
+    // 删除
     private static final String DELETE_URL = PATH + "/invalid";
-    //查询
+    // 查询
     private static final String SEARCH_URL = PATH + "/list";
 
     @Resource
     private OrderInfoService orderInfoService;
 
     @Resource
-    private AuthCodeInfoService authCodeInfoService;
+    private CuzSessionAttributes cuzSessionAttributes;
 
-
-    @RequestMapping(value = "/tolist",method = RequestMethod.GET,produces = MediaType.TEXT_HTML_VALUE)
-    public ModelAndView toList(){
+    @RequestMapping(value = "/tolist", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
+    public ModelAndView toList() {
+        if (!cuzSessionAttributes.eninfoCheck())
+            return new ModelAndView("redirect:/index");
         ModelAndView mav = new ModelAndView(PATH + VIEW_NAME);
-        mav.addObject("userName", SecurityUtil.getCurrentUserName());
+        mav.addObject("userName", cuzSessionAttributes.getUserInfo().getUsrname());
         mav.addObject("INDEX_HOME_PAGE", IndexController.HOME_PAGE);
         mav.addObject("USERORDERINFO_HOME_PAGE", UserOrderInfoController.HOME_PAGE);
-        mav.addObject("MODULE_NAME",MODULE_NAME);
-        mav.addObject("UPDATE_URL",UPDATE_URL);
-        mav.addObject("ADD_URL",ADD_URL);
-        mav.addObject("DELETE_URL",DELETE_URL);
-        mav.addObject("SEARCH_URL",SEARCH_URL);
+        mav.addObject("MODULE_NAME", MODULE_NAME);
+        mav.addObject("UPDATE_URL", UPDATE_URL);
+        mav.addObject("ADD_URL", ADD_URL);
+        mav.addObject("DELETE_URL", DELETE_URL);
+        mav.addObject("SEARCH_URL", SEARCH_URL);
         mav.addObject("orderInfoStatusParams", ParamUtil.JqgridSelectVal(OrderInfo.StatusType.getParams()));
+        mav.addObject("orderInfoBuyerTypeParams", ParamUtil.JqgridSelectVal(OrderInfo.BuyerType.getParams()));
+        mav.addObject("invoiceNatureParams", ParamUtil.JqgridSelectVal(OrderDetail.InvoiceNature.getParams()));
+        mav.addObject("selectString", OrderInfo.StatusType.getSelect());
         return mav;
     }
-
 
     /**
      * 用户订单查询列表
      */
-    @CuzDataSource
-    @RequestMapping(value = "/list",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @AclResc(id = 20001,code = "list",name = "查询列表")
-    @Transactional(readOnly = true)
-    public ResultDataDto list(JqgridFilters jqgridFilters, @ModelAttribute("pageAndSort")PageAndSort pageAndSort){
-//            throw new RuntimeException("test loadError");
-        jqgridFilters.getRules().add(new JqgridFilters.Rule("delflags", QueryLike.LikeMode.Eq.getCode(), BaseInvoiceEntity.DelflagsType.NORMAL.getCode().toString()));
-        List<OrderInfo> orderInfos = orderInfoService.findByJqgridFilters(jqgridFilters,pageAndSort);
-        return new ResultDataDto(orderInfos,pageAndSort);
+//    @CuzDataSource
+    @RequestMapping(value = "/list", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @AclResc(id = 20001, code = "list", name = "查询列表")
+//    @Transactional(readOnly = true)
+    public ResultDataDto list(JqgridFilters jqgridFilters, @ModelAttribute("pageAndSort") PageAndSort pageAndSort) {
+        jqgridFilters.getRules().add(new JqgridFilters.Rule("delflags", QueryLike.LikeMode.Eq.getCode(),
+                BaseInvoiceEntity.DelflagsType.NORMAL.getCode().toString()));
+        DataSourceContextHolder.user();
+        List<OrderInfo> orderInfos = orderInfoService.findByJqgridFilters(jqgridFilters, pageAndSort);
+        DataSourceContextHolder.write();
+        orderInfoService.fillUsrname(orderInfos);
+        return new ResultDataDto(orderInfos, pageAndSort);
     }
-
 
     /**
      * 新增
      */
     @CuzDataSource
-    @RequestMapping(value = "/add",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @AclResc(id = 20002,code = "add",name = "新增订单")
+    @RequestMapping(value = "/add", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @AclResc(id = 20002, code = "add", name = "新增订单")
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public ResultDataDto add(@ModelAttribute("orderInfo")OrderInfo orderInfo){
-        if(orderInfoService.addEntity(orderInfo)!=null)
+    public ResultDataDto add(@ModelAttribute("orderInfo") OrderInfo orderInfo) {
+        if (orderInfoService.addEntity(orderInfo) != null)
             return ResultDataDto.addAddSuccess();
         return ResultDataDto.addOperationFailure("保存失败!");
     }
@@ -116,10 +121,10 @@ public class UserOrderInfoController extends BaseUserInfoController<OrderInfo> {
      * 查询方法
      */
     @CuzDataSource
-    @RequestMapping(value = "/view",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @AclResc(id = 20003,code = "view",name = "查看")
+    @RequestMapping(value = "/view", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @AclResc(id = 20003, code = "view", name = "查看")
     @Transactional(readOnly = true)
-    public ResultDataDto view(@RequestParam("id")Integer id){
+    public ResultDataDto view(@RequestParam("id") Integer id) {
         return new ResultDataDto(orderInfoService.findEntityById(id));
     }
 
@@ -127,10 +132,10 @@ public class UserOrderInfoController extends BaseUserInfoController<OrderInfo> {
      * 更新
      */
     @CuzDataSource
-    @RequestMapping(value = "/update",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @AclResc(id = 20004,code = "update",name = "更新订单")
+    @RequestMapping(value = "/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @AclResc(id = 20004, code = "update", name = "更新订单")
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public ResultDataDto update(@ModelAttribute("orderInfo")OrderInfo orderInfo){
+    public ResultDataDto update(@ModelAttribute("orderInfo") OrderInfo orderInfo) {
         orderInfoService.updateEntity(orderInfo);
         return ResultDataDto.addUpdateSuccess();
     }
@@ -138,28 +143,23 @@ public class UserOrderInfoController extends BaseUserInfoController<OrderInfo> {
     /**
      * 上传导入订单
      */
-    @CuzDataSource
-    @RequestMapping(value = "/upload",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @AclResc(id = 20005,code = "upload",name = "上传订单")
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public ResultDataDto upload(HttpServletRequest request){
-        CommonsMultipartResolver multipartResolver=new CommonsMultipartResolver(
+    @RequestMapping(value = "/upload", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @AclResc(id = 20005, code = "upload", name = "上传订单")
+    public ResultDataDto upload(HttpServletRequest request) {
+        CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(
                 request.getSession().getServletContext());
         OrderInfoServiceImpl.ImportResultDto importResultDto = null;
-        //检查form中是否有enctype="multipart/form-data"
-        if(multipartResolver.isMultipart(request))
-        {
-            //将request变成多部分request
-            MultipartHttpServletRequest multiRequest=(MultipartHttpServletRequest)request;
-            //获取multiRequest 中所有的文件名
-            Iterator iter=multiRequest.getFileNames();
+        // 检查form中是否有enctype="multipart/form-data"
+        if (multipartResolver.isMultipart(request)) {
+            // 将request变成多部分request
+            MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
+            // 获取multiRequest 中所有的文件名
+            Iterator<String> iter = multiRequest.getFileNames();
 
-            while(iter.hasNext())
-            {
-                //一次遍历所有文件
-                MultipartFile file=multiRequest.getFile(iter.next().toString());
-                if(file!=null)
-                {
+            while (iter.hasNext()) {
+                // 一次遍历所有文件
+                MultipartFile file = multiRequest.getFile(iter.next().toString());
+                if (file != null) {
                     try {
                         importResultDto = orderInfoService.importExcel(file.getInputStream());
                     } catch (IOException e) {
@@ -181,24 +181,34 @@ public class UserOrderInfoController extends BaseUserInfoController<OrderInfo> {
      * 生效
      */
     @CuzDataSource
-    @RequestMapping(value = "/effective",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @AclResc(id = 20006,code = "effective",name = "订单生效")
+    @RequestMapping(value = "/effective", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @AclResc(id = 20006, code = "effective", name = "订单生效")
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public ResultDataDto effective(@RequestParam("id") Integer id){
+    public ResultDataDto effective(@RequestParam("id") Integer id) {
         orderInfoService.updateEntityEffective(id);
         return ResultDataDto.addOperationSuccess();
     }
 
     /**
-     * 失效
+     * 批量失效
      */
+    @RequestMapping(value = "/invalidBatch", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @AclResc(id = 20007, code = "invalidBatch", name = "订单失效")
     @CuzDataSource
-    @RequestMapping(value = "/invalid",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @AclResc(id = 20007,code = "invalid",name = "订单失效")
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public ResultDataDto invalid(@RequestParam("id") Integer id){
-        orderInfoService.updateEntityInvalid(id);
-        return ResultDataDto.addOperationSuccess();
+    public ResultDataDto invalidBatch(@RequestParam("orderIds") Integer[] orderIds) {
+
+        Map<Integer, String> map = orderInfoService.invalidBatch(orderIds);
+
+        ResultDataDto resultDataDto = ResultDataDto.addOperationSuccess();
+        StringBuilder stringBuilder = new StringBuilder();
+        if (map.size() > 0) {
+            for (Map.Entry<Integer, String> entry : map.entrySet()) {
+                stringBuilder.append(entry.getValue() + "</br>");
+            }
+            resultDataDto.setMessage("错误信息:</br>" + stringBuilder.toString());
+        }
+        return resultDataDto;
     }
 
 }

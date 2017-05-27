@@ -1,15 +1,19 @@
 package com.aisino.common.dto.jqgrid;
 
 
+import com.aisino.core.entity.BaseEntity;
 import com.aisino.core.mybatis.specification.QueryLike;
+import com.aisino.core.util.EntityColumnUtil;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by 为 on 2017-4-12.
  */
-public class JqgridFilters{
+public class JqgridFilters {
     private String groupOp = QueryLike.OPERATOR_AND;
 
     private List<Rule> rules = new ArrayList<>();
@@ -41,9 +45,9 @@ public class JqgridFilters{
         this.rules = rules;
     }
 
-    public static class Rule{
+    public static class Rule {
 
-        public Rule(String field,String op,String data){
+        public Rule(String field, String op, String data) {
             this.field = field;
             this.op = op;
             this.data = data;
@@ -86,4 +90,36 @@ public class JqgridFilters{
             this.data = data;
         }
     }
+
+    /**
+     * 转换为实体
+     */
+    public static <T extends BaseEntity> T parseEntity(JqgridFilters jqgridFilters, Class<T> clz) {
+
+        try {
+            T t = clz.newInstance();
+            List<Field> fields = EntityColumnUtil.getClassAllFields(t, clz);
+            for (Rule rule : jqgridFilters.rules) {
+                if (rule.data != null) {
+                    for (Field field : fields) {
+                        if (field.getName().equals(rule.field)) {
+                            field.setAccessible(true);
+                            field.set(t, rule.data);
+                        }
+
+                    }
+                }
+            }
+            return t;
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
 }

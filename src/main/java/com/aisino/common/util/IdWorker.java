@@ -21,7 +21,7 @@ public class IdWorker {
     public synchronized long nextId() {
         long timestamp = this.timeGen();
         if (this.lastTimestamp == timestamp) {
-            this.sequence = (this.sequence + 1) & this.sequenceMask;
+            this.sequence = (this.sequence + 1) & sequenceMask;
             if (this.sequence == 0) {
                 System.out.println("###########" + sequenceMask);
                 timestamp = this.tilNextMillis(this.lastTimestamp);
@@ -42,7 +42,7 @@ public class IdWorker {
 
         this.lastTimestamp = timestamp;
         long nextId = ((timestamp - twepoch << timestampLeftShift))
-                | (this.workerId << this.workerIdShift) | (this.sequence);
+                | (this.workerId << workerIdShift) | (sequence);
 //        System.out.println("timestamp:" + timestamp + ",timestampLeftShift:"
 //                + timestampLeftShift + ",nextId:" + nextId + ",workerId:"
 //                + workerId + ",sequence:" + sequence);

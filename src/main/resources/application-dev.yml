@@ -4,9 +4,9 @@ spring:
 #      name: writeDataSource
       type: com.alibaba.druid.pool.DruidDataSource
       write:
-        url: jdbc:mysql://192.168.55.122:3306/cloudinvoice?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&useSSL=true
-        username: root
-        password: root
+        url: jdbc:mysql://${SystemParameter.dbaddr}:${SystemParameter.dbport}/cloudinvoice?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&useSSL=true
+        username: ${SystemParameter.username}
+        password: ${SystemParameter.password}
         driver-class-name: com.mysql.jdbc.Driver
         initialSize: 50 #初始化连接池大小
         minIdle: 50 #最小连接池数量
@@ -14,6 +14,21 @@ spring:
         maxWait: 60000 #获取连接等待超时时间  毫秒
         timeBetweenEvictionRunsMillis: 300000 #连接最小存活时间 毫秒
         validationQuery: SELECT 'x' #测试连接
+
+
+      inforSchema:
+        url: jdbc:mysql://${SystemParameter.dbaddr}:${SystemParameter.dbport}/information_schema?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&useSSL=true
+        username: ${SystemParameter.username}
+        password: ${SystemParameter.password}
+        driver-class-name: com.mysql.jdbc.Driver
+        initialSize: 50 #初始化连接池大小
+        minIdle: 50 #最小连接池数量
+        maxActive: 500 #最大连接池数量
+        maxWait: 60000 #获取连接等待超时时间  毫秒
+        timeBetweenEvictionRunsMillis: 300000 #连接最小存活时间 毫秒
+        validationQuery: SELECT 'x' #测试连接
+
+
 
       filters: stat,wall,log4j # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
       connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000 # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
@@ -52,34 +67,35 @@ SystemParameter:
   #自动创建数据库,库名前缀
   dbNamePrefix: Db
   #数据库IP
-  dbaddr: 192.168.55.122
+  dbaddr: 192.168.55.225
   dbport: 3306
   username: root
   password: root
   invoiceinfoSql: CREATE TABLE `invoice_invoiceinfo` (
-                  `id` int(11) NOT NULL AUTO_INCREMENT,
-                  `serialNo` varchar(50) NOT NULL COMMENT '流水号(唯一索引)',
-                  `orderNo` varchar(50) NOT NULL COMMENT '订单号(索引，可重复),如果是红票，则填写蓝票订单号',
-                  `projectName` varchar(255) DEFAULT NULL COMMENT '商品名称',
-                  `taxTotal` decimal(10,2) DEFAULT NULL COMMENT '税额合计',
-                  `noTaxTotal` decimal(10,2) DEFAULT NULL COMMENT '不含税合计',
-                  `priceTotal` decimal(10,2) DEFAULT NULL COMMENT '价税合计',
-                  `invoiceCode` varchar(50) NOT NULL COMMENT '发票代码',
-                  `invoiceNum` varchar(50) NOT NULL COMMENT '发票号码',
-                  `invoiceDate` datetime NOT NULL COMMENT '开票日期',
-                  `pdfUrl` varchar(255) DEFAULT NULL COMMENT 'Pdf下载地址',
-                  `invoiceType` tinyint(4) DEFAULT NULL COMMENT '发票类别(0蓝票，1红票)',
-                  `reMarks` varchar(255) DEFAULT NULL COMMENT '备注(红票时填写冲红原因)',
-                  `usrno` varchar(50) DEFAULT NULL COMMENT '用户账号',
-                  `redflags` tinyint(4) NOT NULL DEFAULT '0' COMMENT '0 未冲红,1 已冲红(默认0)',
-                  `listFlag` tinyint(4) NOT NULL DEFAULT '0' COMMENT '清单标识',
-                  `listItemName` varchar(50) DEFAULT NULL COMMENT '清单标志项目名称',
-                  `insertdate` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
-                  `delflags` tinyint(4) NOT NULL DEFAULT '0' COMMENT '0正常，1删除(默认0)',
-                  PRIMARY KEY (`id`),
-                  UNIQUE KEY `idx_uniq_serialNo` (`serialNo`) USING BTREE,
-                  KEY `idx_orderNo` (`orderNo`) USING BTREE
-                ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+                    `id` int(11) NOT NULL AUTO_INCREMENT,
+                    `serialNo` varchar(50) NOT NULL COMMENT '流水号(唯一索引)',
+                    `orderNo` varchar(50) NOT NULL COMMENT '订单号(索引，可重复),如果是红票，则填写蓝票订单号',
+                    `projectName` varchar(255) DEFAULT NULL COMMENT '商品名称',
+                    `taxTotal` decimal(10,2) DEFAULT NULL COMMENT '税额合计',
+                    `noTaxTotal` decimal(10,2) DEFAULT NULL COMMENT '不含税合计',
+                    `priceTotal` decimal(10,2) DEFAULT NULL COMMENT '价税合计',
+                    `invoiceCode` varchar(50) NOT NULL COMMENT '发票代码',
+                    `invoiceNum` varchar(50) NOT NULL COMMENT '发票号码',
+                    `invoiceDate` datetime NOT NULL COMMENT '开票日期',
+                    `pdfUrl` varchar(255) DEFAULT NULL COMMENT 'Pdf下载地址',
+                    `invoiceType` tinyint(4) DEFAULT NULL COMMENT '发票类别(0蓝票，1红票)',
+                    `reMarks` varchar(255) DEFAULT NULL COMMENT '备注(红票时填写冲红原因)',
+                    `usrno` varchar(50) DEFAULT NULL COMMENT '用户账号',
+                    `redflags` tinyint(4) NOT NULL DEFAULT '0' COMMENT '0 未冲红,1 已冲红(默认0)',
+                    `serialNoRed` varchar(50) DEFAULT NULL COMMENT '红票流水号(避免重复开票)',
+                    `listFlag` tinyint(4) NOT NULL DEFAULT '0' COMMENT '清单标识',
+                    `listItemName` varchar(50) DEFAULT NULL COMMENT '清单标志项目名称',
+                    `insertdate` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+                    `delflags` tinyint(4) NOT NULL DEFAULT '0' COMMENT '0正常，1删除(默认0)',
+                    PRIMARY KEY (`id`),
+                    UNIQUE KEY `idx_uniq_serialNo` (`serialNo`) USING BTREE,
+                    KEY `idx_orderNo` (`orderNo`) USING BTREE
+                  ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
   orderinfoSql: CREATE TABLE `invoice_orderinfo` (
                   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -132,7 +148,7 @@ SystemParameter:
 
 
 
-  taxRate: 0.03,0.04,0.05  #合法税率数组,如果用户导入数据,跟数组税率不匹配,那么将不会导入
+  taxRate: 0,0.015,0.03,0.04,0.05,0.06,0.11,0.13,0.17  #合法税率数组,如果用户导入数据,跟数组税率不匹配,那么将不会导入
 
 #
 Request:

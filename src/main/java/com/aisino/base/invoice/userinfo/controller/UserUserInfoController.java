@@ -9,6 +9,8 @@ import com.aisino.core.controller.BaseController;
 import com.aisino.core.dto.ResultDataDto;
 import com.aisino.core.security.util.SecurityUtil;
 import org.springframework.http.MediaType;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -50,6 +52,7 @@ public class UserUserInfoController extends BaseController<UserInfo> {
      */
     @RequestMapping(value = "/reg",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @AclResc(id = 10001,code = "reg",name = "注册")
+    @Transactional(propagation = Propagation.REQUIRES_NEW,rollbackFor = Exception.class)
     public ResultDataDto reg(@ModelAttribute("userInfo")UserInfo userInfo,@ModelAttribute("repeatPassword")String repeatPassword, @ModelAttribute("verification_code")String verificationcode, HttpServletRequest request){
         return userInfoService.regByUser(userInfo,repeatPassword,verificationcode,request);
     }

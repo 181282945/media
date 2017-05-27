@@ -4,7 +4,6 @@ import com.aisino.common.dto.param.ParamDto;
 import com.aisino.core.entity.BaseInvoiceEntity;
 import com.aisino.core.entity.annotation.BaseEntityMapper;
 import com.aisino.core.entity.annotation.DefaultValue;
-import com.aisino.core.entity.annotation.Transient;
 import org.apache.ibatis.type.Alias;
 
 import java.util.Date;
@@ -16,6 +15,10 @@ import java.util.Date;
 @BaseEntityMapper(tableName = "invoice_invoiceinfo")
 public class InvoiceInfo extends BaseInvoiceEntity {
     /**
+	 * 
+	 */
+	private static final long serialVersionUID = -2133910898412272311L;
+	/**
      * 流水号,唯一
      */
     private String serialNo;

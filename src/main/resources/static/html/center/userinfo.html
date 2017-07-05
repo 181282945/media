@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>云开票-个人信息</title>
+    <link rel="stylesheet" href="/components/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/components/font-awesome-4.7.0/css/font-awesome.min.css">
+    <!--[if lt IE 9]>
+    <script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <style>
+        .div-border-top {
+            border: 0px;
+            border-top: 1px;
+            border-style: solid;
+            border-color: #fcf4f2;
+        }
+
+        .margin-top-5 {
+            margin-top: 5px;
+        }
+
+        .margin-top-10 {
+            margin-top: 15px;
+        }
+
+        /*.bottomline-btn {*/
+        /*border: none #FFFFFF;*/
+        /*border-bottom: #777777 solid 1px;*/
+        /*background: transparent;*/
+        /*width: 100%;*/
+        /*}*/
+    </style>
+</head>
+<body>
+<div class="container" style="padding-top: 10px;">
+    <div class="row" style="height: 100%;margin: 0px;padding: 0px">
+        <div class="col-md-2" onclick="toIndex()">
+            <img src="/img/logo.png">
+        </div>
+        <div class="col-md-2 text-center" onclick="toIndex()">
+            <div class="row">
+                <div class="col-md-2"
+                     style="border: 0px;border-right: 1px;border-style: solid;border-color: #1B6AAA;margin: 0px;">
+                    <h3>&emsp;</h3>
+                </div>
+                <div class="col-md-10">
+                    <h3>云开票系统</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8" style="height: 100%;margin: 0px;padding: 0px">
+            <div class="row" style="height: 100%;margin: 0px;padding: 0px">
+                <div class="col-md-2"></div>
+                <a th:href="${USERORDERINFO_HOME_PAGE}">
+                    <div class="col-md-2 text-center center-menu" style="padding-top: 10px;height: 56px;"><h4>订单管理</h4>
+                    </div>
+                </a>
+                <a th:href="${USERINVOICEINFO_HOME_PAGE}">
+                    <div class="col-md-2 text-center center-menu" style="padding-top: 10px;height: 56px;"><h4>发票管理</h4>
+                    </div>
+                </a>
+                <a th:href="${USERCENTER_HOME_PAGE}">
+                    <div class="col-md-2 text-center" style="padding-top: 10px;height: 56px;background-color:#ffbc42">
+                        <h4>
+                            用户中心</h4></div>
+                </a>
+                <div class="col-md-1"></div>
+                <div class="col-md-3 text-center" style="padding-top: 10px;">
+                    <ul class="nav nav-tabs" style="border: 0px">
+                        <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#"><span
+                                th:text="${currentUserInfo}? ${currentUserInfo.usrname}">用户名</span><b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/logout">退出登录</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div style="background-color: #F4F4F4">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row" style="padding-top: 30px">
+                    <div class="col-md-2" style="background-color: white">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label><h3>用户中心</h3></label>
+                            </div>
+
+                        </div>
+                        <div class="row" style="background-color: #F4F4F4;height: 10px;">
+
+                        </div>
+                        <a th:href="${USERCENTER_HOME_PAGE}">
+                            <div class="row" style="background-color:#ffbc42">
+                                <div class="col-md-10 div-border-top">
+                                    <label class="margin-top-5"><h4>个人信息</h4></label>
+                                </div>
+                                <div class="col-md-2 div-border-top">
+                                    <label class="margin-top-5"><h4> > </h4></label>
+                                </div>
+                            </div>
+                        </a>
+                        <a th:href="${ENINFO_PAGE}">
+                            <div class="row center-menu">
+                                <div class="col-md-10 div-border-top">
+                                    <label class="margin-top-5"><h4>企业信息</h4></label>
+                                </div>
+                                <div class="col-md-2 div-border-top">
+                                    <label class="margin-top-5"><h4> > </h4></label>
+                                </div>
+                            </div>
+                        </a>
+                        <a th:href="${EDITPASSWORD_PAGE}">
+                            <div class="row center-menu">
+                                <div class="col-md-10 div-border-top">
+                                    <label class="margin-top-5"><h4>密码修改</h4></label>
+                                </div>
+                                <div class="col-md-2 div-border-top">
+                                    <label class="margin-top-5"><h4> > </h4></label>
+                                </div>
+                            </div>
+                        </a>
+                        <a th:href="${SETTING_PAGE}">
+                            <div class="row center-menu">
+                                <div class="col-md-10  div-border-top">
+                                    <label class="margin-top-5"><h4>基本设置</h4></label>
+                                </div>
+                                <div class="col-md-2  div-border-top">
+                                    <label class="margin-top-5"><h4> > </h4></label>
+                                </div>
+                            </div>
+                        </a>
+                        <div class="row">
+                            <div class="col-md-10 ">
+                                <label class="margin-top-5"><h4>&emsp;</h4></label>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="margin-top-5"><h4> &emsp; </h4></label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-10 ">
+                                <label class="margin-top-5"><h4>&emsp;</h4></label>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="margin-top-5"><h4> &emsp; </h4></label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-10 ">
+                                <label class="margin-top-5"><h4>&emsp;</h4></label>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="margin-top-5"><h4> &emsp; </h4></label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-10 ">
+                                <label class="margin-top-5"><h4>&emsp;</h4></label>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="margin-top-5"><h4> &emsp; </h4></label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-10 ">
+                                <label class="margin-top-5"><h4>&emsp;</h4></label>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="margin-top-5"><h4> &emsp; </h4></label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-10 ">
+                                <label class="margin-top-5"><h4>&emsp;</h4></label>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="margin-top-5"><h4> &emsp; </h4></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-9 col-md-offset-1" style="background-color: white;margin-left: 20px">
+                        <div class="row">
+                            <div class="col-md-12">&emsp;</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="row">
+                                    <div class="col-md-2"></div>
+                                    <div class="col-md-10"
+                                         style="border: 0px;border-left: 2px;border-style: solid;border-color: #ffbc42;">
+                                        <span>个人信息</span></div>
+                                </div>
+                            </div>
+                            <div class="col-md-9">
+                                <div class="row">
+                                    <div class="col-md-12 text-right">
+                                        <button type="button" class="btn btn-default" onclick="enableEdit()">
+                                            <span class="fa fa-pencil-square-o fa-lg"></span> 编辑
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <hr/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-10 col-md-offset-1">
+                                <form id="editForm" method="post" class="form-horizontal" role="form"
+                                      action="/base/invoice/userinfo/u/update">
+                                    <fieldset>
+                                        <div class="row">
+                                            <div class="col-md-3 text-right"><h5>用户账号</h5></div>
+                                            <div class="col-md-6">
+                                                <input disabled type="text" class="form-control " name="usrno"
+                                                       th:value="${currentUserInfo}? ${currentUserInfo.usrno}">
+                                            </div>
+                                            <div class="col-md-3"></div>
+                                        </div>
+                                        <div class="row margin-top-10">
+                                            <div class="col-md-3 text-right"><h5>昵&emsp;&emsp;称</h5></div>
+                                            <div class="col-md-6">
+                                                <input disabled type="text" class="form-control editItem" name="usrname"
+                                                       th:value="${currentUserInfo}? ${currentUserInfo.usrname}">
+                                            </div>
+                                            <div class="col-md-3"></div>
+                                        </div>
+                                        <div class="row margin-top-10">
+                                            <div class="col-md-3 text-right"><h5>手&emsp;&emsp;机</h5></div>
+                                            <div class="col-md-6">
+                                                <input disabled type="text" class="form-control editItem"
+                                                       name="mobilePhone"
+                                                       th:value="${currentUserInfo}? ${currentUserInfo.mobilePhone}">
+                                            </div>
+                                            <div class="col-md-3"></div>
+                                        </div>
+                                        <div class="row margin-top-10">
+                                            <div class="col-md-3 text-right"><h5>固定电话</h5></div>
+                                            <div class="col-md-6">
+                                                <input disabled type="text" class="form-control editItem"
+                                                       name="telephone"
+                                                       th:value="${currentUserInfo}? ${currentUserInfo.telephone}">
+                                            </div>
+                                            <div class="col-md-3"></div>
+                                        </div>
+                                        <div class="row margin-top-10">
+                                            <div class="col-md-3 text-right"><h5>邮&emsp;&emsp;箱</h5></div>
+                                            <div class="col-md-6">
+                                                <input disabled type="text" class="form-control editItem" name="email"
+                                                       th:value="${currentUserInfo}? ${currentUserInfo.email}">
+                                            </div>
+                                            <div class="col-md-3"></div>
+                                        </div>
+
+                                        <div class="row margin-top-10">
+                                            <div class="col-md-12">&emsp;&emsp;&emsp;&emsp;</div>
+                                        </div>
+                                        <div class="row margin-top-10">
+                                            <div class="col-md-12">
+                                                <button disabled id="baseOptionBtn"
+                                                        class="btn btn-primary btn-block editItem">保存
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="row margin-top-10">
+                                            <div class="col-md-12">&emsp;&emsp;&emsp;&emsp;</div>
+                                        </div>
+                                        <div class="row margin-top-10">
+                                            <div class="col-md-12">&emsp;&emsp;&emsp;&emsp;</div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">&emsp;&emsp;&emsp;&emsp;</div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">&emsp;&emsp;&emsp;&emsp;</div>
+                                        </div>
+                                    </fieldset>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<div style="padding-top: 20px"></div>
+<div style="background-color: #2f3438;height: 140px">
+    <div class="col-md-12" style="margin-top: 30px">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4 text-center" style="height: 20%;color: #8c8c8c">
+                地址:深圳市福田区梅林街道下梅林北环大道7018号701航天信息
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12" style="margin-top: 30px">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4 text-center" style="height: 20%;color: #8c8c8c">
+                版权所有©2017&emsp;深圳航天信息有限公司&emsp;保留一切权利&emsp;粤ICP备14036066号
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="/js/jquery-1.9.1.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="/components/bootstrap/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="/js/jquery.form.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="/js/jquery.validate.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="/js/jquery.validate.extend.js" type="text/javascript" charset="utf-8"></script>
+<script src="/components/layer/layer.js" type="text/javascript" charset="utf-8"></script>
+<script src="/js/base.js"></script>
+<script type="text/javascript" charset="utf-8">
+
+    $().ready(function () {
+        addFocusin();
+        addFocusout();
+    });
+
+    function enableEdit() {
+        $(".editItem").removeAttr('disabled');
+    }
+
+    function addFocusin() {
+        var menus = $('.center-menu');
+        $.each(menus, function (k, v) {
+            $(v).mouseover(function () {
+                $(v).css('background-color', '#ffbc42');
+            })
+        });
+    }
+
+    function addFocusout() {
+        var menus = $('.center-menu');
+        $.each(menus, function (k, v) {
+            $(v).mouseout(function () {
+                $(v).css('background-color', 'white');
+            })
+        });
+    }
+
+
+    //让当前表单调用validate方法，实现表单验证功能
+    $("#editForm").validate({
+//            debug:true, //调试模式，即使验证成功也不会跳转到目标页面
+        rules: { //配置验证规则，key就是被验证的dom对象，value就是调用验证的方法(也是json格式)
+            usrname: {
+                required: true, //必填。如果验证方法不需要参数，则配置为true
+                rangelength: [1, 15]
+            },
+            mobilePhone: {
+                required: true,
+                rangelength: [11, 15],
+                digits: true
+//                isMobile: true
+            },
+            telephone: {
+                required: false,
+                rangelength: [1, 15]
+            },
+            email: {
+                required: false,
+                rangelength: [1, 20],
+                email: true
+            }
+        },
+        messages: {
+            usrname: {
+                required: "昵称长度为1-15个字符",
+                rangelength: "昵称长度为1-15个字符"
+            },
+            mobilePhone: {
+                required: "手机号码长度为11-15个字符",
+                rangelength: "手机号码长度为11-15个字符",
+                digits: "只能为数字"
+            },
+            telephone: {
+                required: false,
+                rangelength: "固定电话不超过15个字符"
+            },
+            email: {
+                email: "邮箱用户名+分隔符@+邮箱注册的网站域名地址",
+                rangelength: "长度不得超过20",
+            }
+        },
+        errorClass: "error",
+        success: 'valid',
+        unhighlight: function (element, errorClass, validClass) { //验证通过
+            $(element).tooltip('destroy').removeClass(errorClass);
+        },
+        errorPlacement: function (error, element) {
+            if ($(element).next("div").hasClass("tooltip")) {
+                $(element).attr("data-original-title", $(error).text()).tooltip("show");
+            } else {
+                $(element).attr("title",
+                    $(error).text()).tooltip("show");
+            }
+        },
+        submitHandler: function (form) {
+            jQuery(form).ajaxSubmit(function (data) {
+                if (data.operateCode == "F") {
+                    layerAlertMsg(data.message);
+                } else if (data.operateCode == "S") {
+                    layer.msg('修改成功', {icon: 1});
+                    setTimeout(function () {
+                        window.location.href = "/center/userinfo";
+                    }, 2000);
+                }
+            });
+        }
+    });
+
+
+</script>
+</html>

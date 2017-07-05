@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aisino.e9.dao.invoice.order.orderinfo.OrderInfoMapper">
+
+
+    <select id="findPageOrderInfoCount" resultType="Long">
+        SELECT count(0) FROM invoice_orderinfo WHERE shardingId = #{orderInfoVo.shardingId}
+
+        <if test="orderInfoVo.usrno != null and orderInfoVo.usrno != ''">
+            AND usrno =#{orderInfoVo.usrno}
+        </if>
+
+        <if test="orderInfoVo.taxno != null and orderInfoVo.taxno != ''">
+            AND taxno =#{orderInfoVo.taxno}
+        </if>
+
+        <if test="orderInfoVo.orderNo != null and orderInfoVo.orderNo != ''">
+            AND orderNo like concat('%',#{orderInfoVo.orderNo},'%')
+        </if>
+
+        <if test="orderInfoVo.taxno != null and orderInfoVo.taxno != ''">
+            AND taxno like concat('%',#{orderInfoVo.taxno},'%')
+        </if>
+
+        <if test="orderInfoVo.status != null and orderInfoVo.status != ''">
+            AND status like concat('%',#{orderInfoVo.status},'%')
+        </if>
+
+        <if test="orderInfoVo.buyerName != null and orderInfoVo.buyerName != ''">
+            AND buyerName like concat('%',#{orderInfoVo.buyerName},'%')
+        </if>
+
+        <if test="orderInfoVo.insertDate != null">
+            AND insertdate >= #{orderInfoVo.insertDate}
+        </if>
+
+        <if test="orderInfoVo.endDate != null ">
+            AND insertdate &lt;= #{orderInfoVo.endDate}
+        </if>
+
+    </select>
+
+    <select id="findPageOrderInfo" resultType="OrderInfoVo">
+        SELECT * FROM invoice_orderinfo WHERE shardingId = #{orderInfoVo.shardingId}
+
+        <if test="orderInfoVo.usrno != null and orderInfoVo.usrno != ''">
+            AND usrno =#{orderInfo.usrno}
+        </if>
+
+        <if test="orderInfoVo.taxno != null and orderInfoVo.taxno != ''">
+            AND taxno =#{orderInfoVo.taxno}
+        </if>
+
+        <if test="orderInfoVo.orderNo != null and orderInfoVo.orderNo != ''">
+            AND orderNo like concat('%',#{orderInfoVo.orderNo},'%')
+        </if>
+
+        <if test="orderInfoVo.taxno != null and orderInfoVo.taxno != ''">
+            AND taxno like concat('%',#{orderInfoVo.taxno},'%')
+        </if>
+
+        <if test="orderInfoVo.status != null and orderInfoVo.status != ''">
+            AND status like concat('%',#{orderInfoVo.status},'%')
+        </if>
+
+        <if test="orderInfoVo.buyerName != null and orderInfoVo.buyerName != ''">
+            AND buyerName like concat('%',#{orderInfoVo.buyerName},'%')
+        </if>
+
+        <if test="orderInfoVo.insertDate != null">
+            AND insertdate >= #{orderInfoVo.insertDate}
+        </if>
+
+        <if test="orderInfoVo.endDate != null ">
+            AND insertdate &lt;= #{orderInfoVo.endDate}
+        </if>
+
+        order by insertdate desc
+        <if test="pageAndSort != null and pageAndSort.startIndex != null and pageAndSort.rp != null">
+            LIMIT #{pageAndSort.startIndex},#{pageAndSort.rp}
+        </if>
+
+    </select>
+
+</mapper>

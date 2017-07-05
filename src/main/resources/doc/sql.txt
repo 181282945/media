@@ -1,0 +1,79 @@
+SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for acl_user
+-- ----------------------------
+DROP TABLE IF EXISTS `acl_user`;
+CREATE TABLE `acl_user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `userName` varchar(50) NOT NULL COMMENT '用户名',
+  `password` varchar(50) NOT NULL COMMENT '密码',
+  `enabled` tinyint(4) DEFAULT NULL,
+  `accountNonExpired` tinyint(4) DEFAULT NULL,
+  `credentialsNonExpired` tinyint(4) DEFAULT NULL,
+  `accountNonLocked` tinyint(4) DEFAULT NULL,
+  `desc` varchar(255) DEFAULT NULL COMMENT '描述',
+  `insertDate` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+DROP TRIGGER IF EXISTS `InsertAclUser`;
+DELIMITER ;;
+CREATE TRIGGER `InsertAclUser` BEFORE INSERT ON `acl_user` FOR EACH ROW Begin   
+SET session  auto_increment_offset=1;
+SET session  auto_increment_increment=2;
+end
+;;
+DELIMITER ;
+
+-- ----------------------------
+-- Records of acl_user
+-- ----------------------------
+INSERT INTO `acl_user` VALUES ( NULL,'adminstrator', '123456aa', '1', '1', '1', '1', null, '2017-04-14 10:51:45');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for invoice_userinfo
+-- ----------------------------
+DROP TABLE IF EXISTS `invoice_userinfo`;
+CREATE TABLE `invoice_userinfo` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `usrno` varchar(10) COLLATE utf8_general_mysql500_ci NOT NULL,
+  `usrname` varchar(15) COLLATE utf8_general_mysql500_ci NOT NULL,
+  `password` varchar(20) COLLATE utf8_general_mysql500_ci NOT NULL,
+  `taxno` varchar(20) COLLATE utf8_general_mysql500_ci DEFAULT NULL,
+  `telephone` varchar(15) COLLATE utf8_general_mysql500_ci DEFAULT NULL,
+  `mobilephone` varchar(15) COLLATE utf8_general_mysql500_ci NOT NULL,
+  `email` varchar(20) COLLATE utf8_general_mysql500_ci DEFAULT NULL,
+  `insertdate` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `delflags` tinyint(4) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `idx_uniq_usrno` (`usrno`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_mysql500_ci;
+
+-- ----------------------------
+-- Records of invoice_userinfo
+-- ----------------------------
+DROP TRIGGER IF EXISTS `InsertUser`;
+DELIMITER ;;
+CREATE TRIGGER `InsertUser` BEFORE INSERT ON `invoice_userinfo` FOR EACH ROW Begin   
+SET session  auto_increment_offset=2;
+SET session  auto_increment_increment=2;
+end
+;;
+DELIMITER ;

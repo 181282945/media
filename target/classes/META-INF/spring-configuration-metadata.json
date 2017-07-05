@@ -1,0 +1,173 @@
+{
+  "hints": [],
+  "groups": [
+    {
+      "sourceType": "com.aisino.base.invoice.authcodeinfo.params.RequestParams",
+      "name": "Request",
+      "type": "com.aisino.base.invoice.authcodeinfo.params.RequestParams"
+    },
+    {
+      "sourceType": "com.aisino.base.invoice.authcodeinfo.params.GlobalInfoParams",
+      "name": "Request.GlobalInfo",
+      "type": "com.aisino.base.invoice.authcodeinfo.params.GlobalInfoParams"
+    },
+    {
+      "sourceType": "com.aisino.base.invoice.authcodeinfo.params.DataDescriptionParams",
+      "name": "Requestt.DataDescription",
+      "type": "com.aisino.base.invoice.authcodeinfo.params.DataDescriptionParams"
+    },
+    {
+      "sourceType": "com.aisino.common.params.SystemParameter",
+      "name": "SystemParameter",
+      "type": "com.aisino.common.params.SystemParameter"
+    },
+    {
+      "sourceType": "com.aisino.common.params.Kdniao",
+      "name": "kdniao",
+      "type": "com.aisino.common.params.Kdniao"
+    },
+    {
+      "sourceType": "com.aisino.core.mybatis.DataSourceConfig",
+      "name": "spring.datasource",
+      "sourceMethod": "dataSource()",
+      "type": "javax.sql.DataSource"
+    }
+  ],
+  "properties": [
+    {
+      "sourceType": "com.aisino.base.invoice.authcodeinfo.params.GlobalInfoParams",
+      "name": "Request.GlobalInfo.app-id",
+      "description": "应用标识 固定为： DZFP 表示普通发票。 ZZS_PT_DZFP 表示增值税普通电子发票",
+      "type": "java.lang.String"
+    },
+    {
+      "sourceType": "com.aisino.base.invoice.authcodeinfo.params.GlobalInfoParams",
+      "name": "Request.GlobalInfo.billing-interface-code",
+      "description": "开票接口代码",
+      "type": "java.lang.String"
+    },
+    {
+      "sourceType": "com.aisino.base.invoice.authcodeinfo.params.GlobalInfoParams",
+      "name": "Request.GlobalInfo.data-exchange-id",
+      "description": "数据交换流水号",
+      "type": "java.lang.String"
+    },
+    {
+      "sourceType": "com.aisino.base.invoice.authcodeinfo.params.GlobalInfoParams",
+      "name": "Request.GlobalInfo.download-interface-code",
+      "description": "下载开票接口代码",
+      "type": "java.lang.String"
+    },
+    {
+      "sourceType": "com.aisino.base.invoice.authcodeinfo.params.GlobalInfoParams",
+      "name": "Request.GlobalInfo.request-code",
+      "description": "数据交换请求发出方代码",
+      "type": "java.lang.String"
+    },
+    {
+      "sourceType": "com.aisino.base.invoice.authcodeinfo.params.GlobalInfoParams",
+      "name": "Request.GlobalInfo.response-code",
+      "description": "数据交换请求接受方代码",
+      "type": "java.lang.String"
+    },
+    {
+      "sourceType": "com.aisino.base.invoice.authcodeinfo.params.GlobalInfoParams",
+      "name": "Request.GlobalInfo.stock-interface-code",
+      "description": "库存查询接口代码",
+      "type": "java.lang.String"
+    },
+    {
+      "sourceType": "com.aisino.base.invoice.authcodeinfo.params.GlobalInfoParams",
+      "name": "Request.GlobalInfo.terminal-code",
+      "description": "终端类型标识代码 0:B\/S 请求来源 1:C\/S 请求来源",
+      "type": "java.lang.String"
+    },
+    {
+      "sourceType": "com.aisino.base.invoice.authcodeinfo.params.GlobalInfoParams",
+      "name": "Request.GlobalInfo.version",
+      "description": "接口版本",
+      "type": "java.lang.String"
+    },
+    {
+      "sourceType": "com.aisino.base.invoice.authcodeinfo.params.RequestParams",
+      "name": "Request.url",
+      "description": "请求地址",
+      "type": "java.lang.String"
+    },
+    {
+      "sourceType": "com.aisino.base.invoice.authcodeinfo.params.DataDescriptionParams",
+      "name": "Requestt.DataDescription.code-type",
+      "description": "加密方式 0 、 AES 加密 、 CA 加密",
+      "type": "java.lang.String"
+    },
+    {
+      "sourceType": "com.aisino.base.invoice.authcodeinfo.params.DataDescriptionParams",
+      "name": "Requestt.DataDescription.encrypt-code",
+      "description": "加密标识 0:不加密 1: AES 加密 2:CA 加密",
+      "type": "java.lang.String"
+    },
+    {
+      "sourceType": "com.aisino.base.invoice.authcodeinfo.params.DataDescriptionParams",
+      "name": "Requestt.DataDescription.zip-code",
+      "description": "压缩标识 0：不压缩 1：压缩 (用 GZip 压缩) 企业调 用时数据包大于 10k 要求自动压缩",
+      "type": "java.lang.String"
+    },
+    {
+      "sourceType": "com.aisino.common.params.SystemParameter",
+      "name": "SystemParameter.dbaddr",
+      "description": "建库目标数据库IP地址",
+      "type": "java.lang.String"
+    },
+    {
+      "sourceType": "com.aisino.common.params.SystemParameter",
+      "name": "SystemParameter.dbport",
+      "description": "建库目标数据库端口",
+      "type": "java.lang.String"
+    },
+    {
+      "sourceType": "com.aisino.common.params.SystemParameter",
+      "name": "SystemParameter.default-user-info-pwd",
+      "description": "系统默认的UserInfo密码",
+      "type": "java.lang.String"
+    },
+    {
+      "sourceType": "com.aisino.common.params.SystemParameter",
+      "name": "SystemParameter.password",
+      "description": "建库目标数据库密码",
+      "type": "java.lang.String"
+    },
+    {
+      "sourceType": "com.aisino.common.params.SystemParameter",
+      "name": "SystemParameter.qrcode-url",
+      "description": "二维码开票请求接口地址",
+      "type": "java.lang.String"
+    },
+    {
+      "sourceType": "com.aisino.common.params.SystemParameter",
+      "name": "SystemParameter.tax-rate",
+      "description": "规范税率数组",
+      "type": "java.lang.String[]"
+    },
+    {
+      "sourceType": "com.aisino.common.params.SystemParameter",
+      "name": "SystemParameter.username",
+      "description": "建库目标数据库用户名",
+      "type": "java.lang.String"
+    },
+    {
+      "sourceType": "com.aisino.common.params.Kdniao",
+      "name": "kdniao.app-key",
+      "type": "java.lang.String"
+    },
+    {
+      "sourceType": "com.aisino.common.params.Kdniao",
+      "name": "kdniao.e-business-i-d",
+      "type": "java.lang.String"
+    },
+    {
+      "sourceType": "com.aisino.common.params.Kdniao",
+      "name": "kdniao.req-u-r-l",
+      "type": "java.lang.String"
+    }
+  ]
+}

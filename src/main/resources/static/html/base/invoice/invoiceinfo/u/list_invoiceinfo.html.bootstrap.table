@@ -1,0 +1,1162 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <title></title>
+
+
+    <!-- bootstrap & fontawesome -->
+    <link rel="stylesheet" href="/assets/css/bootstrap.css"/>
+
+    <!-- page specific plugin styles -->
+    <link rel="stylesheet" href="/components/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css"/>
+
+    <!-- page specific plugin styles -->
+    <link rel="stylesheet" href="/css/bootstrap/bootstrap-datetimepicker.min.css">
+    <link rel="stylesheet" href="/css/bootstrap/bootstrap-table.min.css">
+
+
+    <!-- HTML5shiv and Respond.js for IE8 to support HTML5 elements and media queries -->
+
+    <!--[if lte IE 8]>
+    <script src="/components/html5shiv/dist/html5shiv.min.js"></script>
+    <script src="/components/respond/dest/respond.min.js"></script>
+    <![endif]-->
+
+    <link href="/css/base.css" type="text/css" rel="stylesheet"/>
+
+
+    <style>
+        #main {
+            width: 970px;
+            height: auto;
+            margin: 0 auto;
+            color: #FFF;
+        }
+
+        #top {
+            width: 100%;
+            height: auto;
+            margin: 0 auto;
+            color: #FFF;
+        }
+
+        #content {
+            width: 100%;
+            height: 370px;
+            margin: 0 auto;
+            color: #FFF;
+        }
+
+        #logo {
+            width: 100%;
+            height: 30px;
+            color: black
+        }
+
+        #nav {
+            width: 100%;
+            height: 100px;
+        }
+
+        .navimg {
+            visibility: hidden
+        }
+
+        .row-margin {
+            margin: 2px;
+        }
+
+        .bottom-right-border {
+            border: 0px;
+            border-right: 1px;
+            border-bottom: 1px;
+            border-style: solid;
+            border-color: #4a5c63;
+            padding: 0px;
+            margin: 0px;
+        }
+
+        .input-table {
+            background-color: transparent !important;
+            width: 100%;
+            height: 24px;
+        }
+
+        body {
+            overflow: auto !important;
+        }
+
+        .modal {
+            overflow: auto !important;
+        }
+
+
+    </style>
+</head>
+<body class="no-skin">
+<div id="main" style="background: white">
+    <!-- 头部导航 -->
+
+    <div id="top">
+        <div style="height: 5px"></div>
+        <div id="logo" style="text-align:right;">
+            <div th:style="${userName}!=null? '':'display: none'"><span th:text="${userName}"
+                                                                        style="position:relative;right: 3px;bottom:3px;font-size: small">XXXXX</span><img
+                    src="/images/u963.png" style="margin-bottom: 5px"><a href="/logout"><span
+                    style="position:relative;left:3px;bottom:3px;font-size: small;margin-right: 10px">退出登录</span></a>
+            </div>
+        </div>
+        <div id="nav" style="vertical-align:bottom;display:inline;">
+            <img class="inline" style="width: 167px;height: 39px;" src="/images/u73.png"><img
+                src="/images/u83.png"><span class="inline"
+                                            style="font-family: 微软雅黑;font-weight: bold;color: black;font-size: larger">云开票</span>
+            <a href="/center">
+                <div class="inline" style="float:right;margin-right:50px;position: relative;">
+                    <img src="/images/u75.png" class="navimg" id="memberCentre">
+                    <div style="position: absolute;left: 15px;top: 10px;color: black">
+                        <span style="font-family: 微软雅黑;font-weight: bold;font-size: medium;"
+                              onmouseout="mouseOutBgImg('memberCentre')" onmouseover="mouseOverBgImg('memberCentre')">个人中心</span>
+                    </div>
+                </div>
+            </a>
+            <a href="/base/invoice/invoiceinfo/u/tolist">
+                <div class="inline" style="float:right;margin-right:50px;position: relative;">
+                    <img src="/images/u75.png">
+                    <div style="position: absolute;left: 15px;top: 10px;color: black">
+                    <span style="font-family: 微软雅黑;font-weight: bold;font-size: medium;"
+                          onmouseout="mouseOutBgImg('invoiceMgr')"
+                          onmouseover="mouseOverBgImg('invoiceMgr')">发票管理</span>
+                    </div>
+                </div>
+            </a>
+            <a href="/base/invoice/order/orderinfo/u/tolist">
+                <div class="inline" style="float:right;margin-right:50px;position: relative;">
+                    <img src="/images/u75.png" class="navimg" id="order">
+                    <div style="position: absolute;left: 15px;top: 10px;color: black">
+                        <span style="font-family: 微软雅黑;font-weight: bold;font-size: medium;"
+                              onmouseout="mouseOutBgImg('order')" onmouseover="mouseOverBgImg('order')">订单仓库</span>
+                    </div>
+                </div>
+            </a>
+            <a href="/index">
+                <div class="inline" style="float:right;margin-right:50px;position: relative;">
+                    <img src="/images/u75.png" class="navimg" id="index">
+                    <div style="position: absolute;left: 30px;top: 10px;color: black">
+                        <span style="font-family: 微软雅黑;font-weight: bold;font-size: medium;"
+                              onmouseout="mouseOutBgImg('index')" onmouseover="mouseOverBgImg('index')">首  页</span>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <hr width="100%" style="margin-top: 0px; "/>
+
+    <!-- 头部导航 -->
+
+    <div id="content" style="margin-top: 20px;color: black">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="row">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-10">当前位置：<span th:text="${MODULE_NAME}"></span></div>
+                    </div>
+                </div>
+                <div class="col-md-5 col-md-offset-3">
+                    <div class="row">
+                        <div class="col-md-2 ">
+                            <button class="btn btn-xs btn-info" data-toggle="modal" data-target="#queryModal">查询
+                            </button>
+                            <!--<button class="btn btn-xs btn-info" id="editBtn">查询</button>-->
+                        </div>
+                        <div class="col-md-2 ">
+                            <button class="btn btn-xs btn-info" data-toggle="modal" data-target="#manualModal">开票
+                            </button>
+                            <!--<button class="btn btn-xs btn-info" id="editBtn">查询</button>-->
+                        </div>
+                        <div class="col-md-2 ">
+                            <button class="btn btn-xs btn-info" id="doRedBtn">红冲</button>
+                        </div>
+                        <div class="col-md-2 ">
+                            <button class="btn btn-xs btn-info" id="downloadBtn">下载</button>
+                        </div>
+
+                        <div class="col-md-2 ">
+                            <button class="btn btn-xs btn-info" id="sendBtn">发送邮件</button>
+                        </div>
+
+                        <div class="col-md-2 "></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- /section:basics/sidebar -->
+        <div class="main-content">
+
+            <div class="main-content-inner">
+
+                <!-- /section:basics/content.breadcrumbs -->
+                <div class="page-content">
+
+
+                    <!--<div class="row">-->
+                    <!--<div class="col-xs-12">-->
+
+                    <!--<table id="grid-table"></table>-->
+
+                    <!--<div id="grid-pager"></div>-->
+
+                    <!--&lt;!&ndash; PAGE CONTENT ENDS &ndash;&gt;-->
+                    <!--</div>&lt;!&ndash; /.col &ndash;&gt;-->
+                    <!--</div>&lt;!&ndash; /.row &ndash;&gt;-->
+                </div><!-- /.page-content -->
+            </div>
+        </div><!-- /.main-content -->
+
+
+        <a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+            <i class="ace-icon fa fa-angle-double-up icon-only bigger-110"></i>
+        </a>
+        <!--</div>&lt;!&ndash; /.main-container &ndash;&gt;-->
+    </div>
+</div>
+<table id="tb_departments"></table>
+<div class="modal fade" id="queryModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="queryModalLabel">
+                    请输入查询条件
+                </h4>
+            </div>
+            <div class="modal-body" style="margin: 5px">
+                <form class="form-inline" id="queryForm">
+                    <fieldset>
+                        <div class="row" style="margin-bottom: 5px">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">流&ensp;水&ensp;号:&ensp;</label>
+                                    <input type="text" name="serialNo" class="form-control" placeholder="流水号"/>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">订&ensp;单&ensp;号:&ensp;</label>
+                                    <input type="text" name="orderNo" class="form-control" placeholder="订单号"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row" style="margin-bottom: 5px">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">开票日期:&ensp;</label>
+                                    <input type="text" name="insertdate" id="datetimeStart" class="form-control"
+                                           placeholder="开票日期"/>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">&emsp;&emsp;&emsp;至:&ensp;</label>
+                                    <input type="text" name="enddate" id="datetimeEnd" class="form-control"
+                                           placeholder="至"/>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" id="btnQuery" class="btn btn-info" data-dismiss="modal">查询</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+
+<!--手动开票的拟态窗口-->
+
+<div class="modal fade" id="manualModal" tabindex="-1" role="dialog" data-backdrop="static"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width: 1000px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <div class="row">
+                    <div class="col-md-4 col-md-offset-4">
+                        <h3 class="modal-title text-center" id="manualModalLabel">
+                            <b>深圳增值税专用发票 </b>
+                            <p class="text-center" style="border-bottom:3px double;margin-top: 3px;"></p>
+                        </h3>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 col-md-offset-4 text-center">
+                        <h7>
+                            <b>此联不作报销、扣税凭证使用</b>
+                        </h7>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <!--<button type="button" class="btn btn-default btn-xs">A</button>-->
+                            </div>
+                            <div class="col-md-3">
+                                <!--<button type="button" class="btn btn-default btn-xs">B</button>-->
+                            </div>
+                            <div class="col-md-3">
+                                <button type="button" id="btnShowDiscount" onclick="showDiscountModal()" class="btn btn-danger btn-xs">折扣
+                                </button>
+                            </div>
+                            <div class="col-md-3">
+                                <!--<button type="button" class="btn btn-default btn-xs">d</button>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <form id="manualForm">
+                <div class="modal-body">
+                    <div class="container" style="width: 980px">
+                        <div class="row text-center vertical-middle-sm" style="width: 100%;">
+                            <div class="col-md-6 panel-default">
+                                <div class="row">
+                                    <div class="col-md-1 panel panel-default" style="height: 130px">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                购
+                                            </div>
+                                        </div>
+                                        <div class="space"></div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                买
+                                            </div>
+                                        </div>
+                                        <div class="space"></div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                方
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-11">
+                                        <div class="row row-margin">
+                                            <div class="input-group input-group-sm col-xs-12">
+                                                <span class="input-group-addon" style="width: 50px">名&emsp;&emsp;&emsp;&emsp;称:&ensp;</span>
+                                                <input data-toggle="tooltip" title="默认的 Tooltip" type="text" name="buyerName" class="form-control "
+                                                       placeholder="名称"/>
+                                            </div>
+                                        </div>
+                                        <div class="row row-margin">
+                                            <div class="input-group input-group-sm col-xs-12">
+                                                <span class="input-group-addon" style="width: 50px">纳税人识别号:&ensp;</span>
+                                                <input type="text" name="buyerTaxno" class="form-control"
+                                                       placeholder="纳税人识别号"/>
+                                            </div>
+                                        </div>
+                                        <div class="row row-margin">
+                                            <div class="input-group input-group-sm col-xs-12">
+                                                <span class="input-group-addon"
+                                                      style="width: 50px">&emsp;地址丶电话:&ensp;</span>
+                                                <input type="text" name="buyerAddr" class="form-control"
+                                                       placeholder="地址" style="width: 50%"/>
+                                                <input type="text" name="buyerTel" class="form-control"
+                                                       placeholder="电话" style="width: 50%"/>
+                                            </div>
+                                        </div>
+                                        <div class="row row-margin">
+                                            <div class="input-group input-group-sm col-xs-12">
+                                                <span class="input-group-addon" style="width: 50px">开户行及账号:&ensp;</span>
+                                                <input type="text" name="buyerBankAccount" class="form-control"
+                                                       placeholder="开户行及账号"/>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-1 panel panel-default" style="height: 130px">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                密
+                                            </div>
+                                        </div>
+                                        <div class="space"></div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                码
+                                            </div>
+                                        </div>
+                                        <div class="space"></div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                区
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-11">
+                                        <textarea class="form-control" rows="5"
+                                                  style="height: 128px;width: 100%"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row text-center">
+                            <div class="col-md-12 panel panel-default" id="tableContent">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="row">
+                                            <div class="col-md-2  bottom-right-border">
+                                                <span onclick="btnAddTr()" class="glyphicon glyphicon-plus"></span>
+                                            </div>
+                                            <div class="col-md-10  bottom-right-border">
+                                                货物或应税劳务丶服务名称
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2  bottom-right-border">规格型号</div>
+                                    <div class="col-md-2">
+                                        <div class="row">
+                                            <div class="col-md-6  bottom-right-border">单位</div>
+                                            <div class="col-md-6  bottom-right-border">数量</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="row">
+                                            <div class="col-md-6  bottom-right-border">单价(不含税)</div>
+                                            <div class="col-md-6  bottom-right-border">金额(不含税)</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="row">
+                                            <!--<div class="col-md-4">金额(不含税)</div>-->
+                                            <div class="col-md-5  bottom-right-border">税率</div>
+                                            <div class="col-md-7  bottom-right-border">税额</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row " style="border: 1px;border-style: solid">
+                            <div class="col-md-3 text-center vertical-middle-sm"
+                                 style="border: 0px;border-right: 1px;border-style: solid">
+                                <code> 合&emsp;&emsp;&emsp;&emsp;计:</code>
+                            </div>
+                            <div class="col-md-9">
+                                <div class="row">
+                                    <div class="col-md-8 text-right">
+                                        <code>¥<span id="totalAmount">0.00</span></code>
+                                        <input type="text" hidden name="totalAmount"/>
+                                    </div>
+                                    <div class="col-md-4 text-right">
+                                        <code>¥<span id="totalTax">0.00</span></code>
+                                        <input type="text" hidden name="totalTax"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 text-center vertical-middle-sm"
+                                 style="border: 0px;border-right: 1px;border-top: 1px;border-style: solid">
+                                <code>价税合计(大写):</code>
+                            </div>
+                            <div class="col-md-9" style="border: 0px;border-top: 1px;border-style: solid">
+                                <div class="row">
+                                    <div class="col-md-8 text-left">
+                                        <code>¥<span id="totalAmountTaxCN"></span></code>
+                                        <input type="text" hidden name="totalAmountTaxCN"/>
+                                    </div>
+                                    <div class="col-md-4 text-left">
+                                        <code>(小写)¥<span id="totalAmountTax"></span></code>
+                                        <input type="text" hidden name="totalAmountTax"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row text-center vertical-middle-sm" style="width: 100%;margin-top: 5px">
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-1 panel panel-default" style="height: 130px">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                销
+                                            </div>
+                                        </div>
+                                        <div class="space"></div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                售
+                                            </div>
+                                        </div>
+                                        <div class="space"></div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                方
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-11">
+                                        <div class="row row-margin">
+                                            <div class="input-group input-group-sm col-xs-12">
+                                                <span class="input-group-addon" style="width: 50px">名&emsp;&emsp;&emsp;&emsp;称:&ensp;</span>
+                                                <input disabled type="text" name="sellerName" class="form-control "
+                                                       placeholder="名称"
+                                                       th:value="${cuzSessionAttr.enInfo.taxname} ? ${cuzSessionAttr.enInfo.taxname}"/>
+                                            </div>
+                                        </div>
+                                        <div class="row row-margin">
+                                            <div class="input-group input-group-sm col-xs-12">
+                                                <span class="input-group-addon" style="width: 50px">纳税人识别号:&ensp;</span>
+                                                <input disabled type="text" name="sellerTaxno" class="form-control"
+                                                       placeholder="纳税人识别号"
+                                                       th:value="${cuzSessionAttr.enInfo.taxno} ? ${cuzSessionAttr.enInfo.taxno}"/>
+                                            </div>
+                                        </div>
+                                        <div class="row row-margin">
+                                            <div class="input-group input-group-sm col-xs-12">
+                                                <span class="input-group-addon"
+                                                      style="width: 50px">&emsp;地址丶电话:&ensp;</span>
+                                                <input type="text" name="sellerAddr" class="form-control"
+                                                       placeholder="地址"
+                                                       th:value="${cuzSessionAttr.enInfo.taxaddr}? ${cuzSessionAttr.enInfo.taxaddr} " style="width: 50%"/>
+                                                <input type="text" name="sellerTel" class="form-control"
+                                                       placeholder="电话"
+                                                       th:value="${cuzSessionAttr.enInfo.taxtel}? ${cuzSessionAttr.enInfo.taxtel} " style="width: 50%"/>
+                                            </div>
+                                        </div>
+                                        <div class="row row-margin">
+                                            <div class="input-group input-group-sm col-xs-12">
+                                                <span class="input-group-addon" style="width: 50px">开户行及账号:&ensp;</span>
+                                                <input type="text" name="sellerBankAccount" class="form-control"
+                                                       placeholder="开户行及账号"
+                                                       th:value="${cuzSessionAttr.enInfo.bankaccount}? ${cuzSessionAttr.enInfo.bankaccount}"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-1 panel panel-default" style="height: 130px">
+                                        <div class="space"></div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                备
+                                            </div>
+                                        </div>
+                                        <div class="space"></div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                注
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-11">
+                                    <textarea name="remarks" class="form-control" rows="5"
+                                              style="height: 128px;width: 100%"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-inline input-group-sm col-xs-3">
+                                <label class="form-label">收款人:</label>
+                                <input type="text" name="payee" class="form-control" placeholder="收款人"
+                                       th:value="${cuzSessionAttr.enInfo.payee}?${cuzSessionAttr.enInfo.payee}"/>
+                            </div>
+                            <div class="form-inline input-group-sm col-xs-3">
+                                <label class="form-label">复核:</label>
+                                <input type="text" name="reviewer" class="form-control" placeholder="复核"
+                                       th:value="${cuzSessionAttr.enInfo.reviewer}?${cuzSessionAttr.enInfo.reviewer}"/>
+                            </div>
+                            <div class="form-inline input-group-sm col-xs-3">
+                                <label class="form-label">开票人:<span
+                                        th:text="${cuzSessionAttr.enInfo.drawer}?${cuzSessionAttr.enInfo.drawer}"></span></label>
+                                <input hidden name="drawer" type="text" th:value="${cuzSessionAttr.enInfo.drawer}?${cuzSessionAttr.enInfo.drawer}"/>
+
+                            </div>
+                            <div class="form-inline input-group-sm col-xs-3">
+                                <label class="form-label">销售方:<span>(章)</span></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            <button type="button" onclick="checkBeforeSubmit()" class="btn btn-info">开票</button>
+        </div>
+    </div>
+</div>
+<!-- /.modal-content -->
+<!--</div>&lt;!&ndash; /.modal &ndash;&gt;-->
+<!--</div>-->
+
+
+<!--商品明细模板代码-->
+<div class="row prod" hidden id="prodTemplate">
+    <input name="discountLineObjId" type="text" hidden/>
+    <div class="col-md-3">
+        <div class="row">
+            <div class="col-md-2 bottom-right-border">
+                <span onclick="btnDelTr(this);" class="glyphicon glyphicon-minus"
+                      style="height: 23px"></span>
+            </div>
+            <div class="col-md-10 bottom-right-border">
+
+                <input autocomplete="off" data-provide="typeahead" name="classifierName" onchange="checkClassifierName(this)" class="input-table" type="text"
+                       placeholder="货物或应税劳务丶服务名称"/>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2 bottom-right-border">
+        <input name="specMode" class="input-table" type="text" placeholder="规格型号"/>
+    </div>
+    <div class="col-md-2">
+        <div class="row">
+            <div class="col-md-6 bottom-right-border">
+                <input name="itemUnit" class="input-table" type="text"
+                       placeholder="单位"/>
+            </div>
+            <div class="col-md-6 bottom-right-border">
+                <input name="itemNum" onblur="calcAmountAndTax(this);"
+                       class="input-table" type="text"
+                       onkeyup="this.value=this.value.replace(/\D/g,'')"
+                       onafterpaste="this.value=this.value.replace(/\D/g,'')"
+                       placeholder="数量"/>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="row">
+            <div class="col-md-6 bottom-right-border">
+                <input name="itemPrice" onblur="calcAmountAndTax(this);"
+                       class="input-table" type="text"
+                       onkeyup="if(isNaN(value))execCommand('undo')"
+                       onafterpaste="if(isNaN(value))execCommand('undo')"
+                       placeholder="单价(不含税)"/>
+            </div>
+            <div class="col-md-6 bottom-right-border">
+                <input name="amount" onblur="calcTax(this);" class="input-table"
+                       type="text" onkeyup="if(isNaN(value))execCommand('undo')"
+                       onafterpaste="if(isNaN(value))execCommand('undo')"
+                       placeholder="金额(不含税)"/>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="row">
+            <div class="col-md-5 bottom-right-border">
+                <select disabled name="taxRate" onchange="calcTax(this);" class="input-table" th:utext="${taxRateOptions}">
+                </select>
+            </div>
+            <div class="col-md-7 bottom-right-border ">
+                <input name="tax" disabled class="input-table" type="text" placeholder="税额"/>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- 折扣（Modal） -->
+<div class="modal fade" id="discountModal" tabindex="-1" role="dialog" data-backdrop="static"
+     aria-labelledby="discountModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <input type="text" hidden id="lastFocus"/>
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="discountModalLabel">添加折扣行</h4>
+            </div>
+            <div class="modal-body">
+                <div class="input-group input-group-sm col-xs-12">
+                    <span class="input-group-addon" style="width: 50px">&emsp;折扣行数:&ensp;</span>
+                    <input type="text" id="discountLine" class="form-control" placeholder="折扣行数"/>
+                </div>
+                <div class="input-group input-group-sm col-xs-12">
+                    <span class="input-group-addon" style="width: 50px">&emsp;商品金额:&ensp;</span>
+                    <input type="text" id="discountItemAmount" disabled class="form-control"
+                           placeholder="商品金额"/>
+                </div>
+                <div class="input-group input-group-sm col-xs-12">
+                    <span class="input-group-addon" style="width: 50px">&ensp;折扣率(%):&ensp;</span>
+                    <input type="text" onblur="calcDiscountItemAmount(this)" id="discountRate" class="form-control"
+                           placeholder="折扣率"/>
+                </div>
+                <div class="input-group input-group-sm col-xs-12">
+                    <span class="input-group-addon" style="width: 50px">&emsp;折扣金额:&ensp;</span>
+                    <input type="text" onblur="calcDiscountRate(this)" id="discountAmount" class="form-control"
+                           placeholder="折扣金额"/>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" onclick="addDiscount()" class="btn btn-primary">插入</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+<!-- basic scripts -->
+
+<!--[if !IE]> -->
+<script src="/components/jquery/dist/jquery.js"></script>
+
+<!-- <![endif]-->
+
+<!--[if IE]>
+<script src="/components/jquery.1x/dist/jquery.js"></script>
+<![endif]-->
+<script type="text/javascript">
+    if ('ontouchstart' in document.documentElement) document.write("<script src='/components/_mod/jquery.mobile.custom/jquery.mobile.custom.js'>" + "<" + "/script>");
+</script>
+<script src="/components/bootstrap/dist/js/bootstrap.js"></script>
+
+<!-- page specific plugin scripts -->
+
+<!--[if lte IE 8]>
+<script src="/components/ExplorerCanvas/excanvas.js"></script>
+<![endif]-->
+
+<!-- 自定义JS -->
+<script src="/js/jquery.form.min.js"></script>
+<script src="/js/jquery.validate.min.js"></script>
+<script src="/js/jquery.validate.extend.js"></script>
+<script src="/js/jquery.serializejson.min.js"></script>
+<script src="/js/layer/layer.js"></script>
+<script src="/js/base.js"></script>
+<script src="/js/util/util.js"></script>
+<script src="/js/base/invoice/invoiceinfo/u/list_invoiceinfo.js"></script>
+<script src="/js/util/util.js"></script>
+<script src="/js/util/Calculation.js"></script>
+<script src="/js/base/invoice/invoiceinfo/u/taxclassification.js"></script>
+<script src="/js/bootstrap/bootstrap3-typeahead.js"></script>
+<script src="/js/jquery.tooltip.js"></script>
+
+<!--bootstrap-->
+<script src="/js/bootstrap/bootstrap-datetimepicker.min.js"></script>
+<script src="/js/bootstrap/bootstrap-datetimepicker.zh-CN.js"></script>
+<script src="/js/bootstrap-table.min.js"></script>
+<script src="/js/bootstrap-table-zh-CN.min.js"></script>
+<script src="/js/bootstrap-table-export.min.js"></script>
+
+
+<!-- page specific plugin scripts -->
+<script src="/components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js"></script>
+
+
+<script th:inline="javascript">
+
+    /*
+     初始化日期空间
+     */
+    $("#datetimeStart").datetimepicker({
+        format: 'yyyy-mm-dd',
+        minView: 'month',
+        language: 'zh-CN',
+        autoclose: true,
+//         startDate:new Date()
+    }).on("click", function () {
+        $("#datetimeStart").datetimepicker("setEndDate", $("#datetimeEnd").val())
+    });
+    $("#datetimeEnd").datetimepicker({
+        format: 'yyyy-mm-dd',
+        minView: 'month',
+        language: 'zh-CN',
+        autoclose: true,
+        startDate: new Date()
+    }).on("click", function () {
+        $("#datetimeEnd").datetimepicker("setStartDate", $("#datetimeStart").val())
+    });
+
+
+
+    function mouseOverBgImg(objId) {
+        $('#' + objId).removeClass("navimg");
+    }
+
+    function mouseOutBgImg(objId) {
+        $('#' + objId).addClass("navimg");
+    }
+
+
+    /**
+     *  格式化下载地址
+     */
+    function downloadPdf(cellvalue, options, rowObject) {
+        return '<a class="btn btn-success btn-xs" name="downloadPdf" href="/base/invoice/invoiceinfo/u/download?id=' + rowObject.id + '">下载</a>';
+    }
+
+    /**
+     * 下载按钮事件
+     */
+    $('#downloadBtn').click(function () {
+
+        var ids = $("#grid-table").jqGrid("getGridParam", "selarrrow");
+
+        if (ids == '' || ids == null || ids == 'undefined' || ids == undefined) {
+            layer.alert("请选择下载行!");
+            return;
+        }
+        window.open("/base/invoice/invoiceinfo/u/downloadPdfs?ids=" + ids);
+    });
+
+
+    /**
+     * 发送邮件
+     */
+    $('#sendBtn').click(function () {
+
+        var ids = $("#grid-table").jqGrid("getGridParam", "selarrrow");
+        if (ids == '' || ids == null || ids == 'undefined' || ids == undefined) {
+            layer.alert("请选择需要发送邮件的发票行!");
+            return;
+        }
+        layer.prompt({title: '请输入接收方邮箱地址', formType: 3}, function (email, index) {
+            layer.close(index);
+            $.post("/base/invoice/invoiceinfo/u/sendInvoice", 'ids=' + ids + '&email=' + email, function (data) {
+                layerAlertMsg(data.message);
+                layer.close(index);
+                $('#grid-table').trigger("reloadGrid");
+            });
+        });
+    });
+
+
+    $('#doRedBtn').click(function () {
+        var sel_id = $('#grid-table').jqGrid('getGridParam', 'selrow');
+
+
+        if (sel_id == null) {
+            layer.alert("请选择红冲行!");
+            return;
+        }
+
+        var rowData = $("#grid-table").getRowData(sel_id);
+
+        layer.confirm('发票代码:' + rowData.invoiceCode + '</br>发票号码:' + rowData.invoiceNum + '</br>开具金额:' + rowData.priceTotal + '元</br>开票日期:' + rowData.invoiceDate, {
+            title: '红冲发票信息',
+            btn: ['取消', '确定'] //按钮
+        }, function (index) {
+            layer.close(index);
+        }, function () {
+            layer.prompt({title: '请输入冲红原因,必填!', formType: 2}, function (text, index) {
+                $.post("/base/invoice/invoiceinfo/u/doRed", 'invoiceId=' + sel_id + '&reMarks=' + text, function (data) {
+                    layerAlertMsg(data.message);
+                    layer.close(index);
+                    $('#grid-table').trigger("reloadGrid");
+                });
+            });
+        });
+    });
+
+    //点击删除当前行tr
+    function btnDelTr(obj) {
+        var removeTarger = $(obj).parent("div").parent("div").parent("div").parent("div");
+        //判断是否折扣行
+        var discount = $(removeTarger).attr('discount');
+        //如果是折扣行,那么被折扣行可编辑
+        if (!isBlank(discount)) {
+            var row = $('div[objId="' + discount + '"]');
+            //设置为不可编辑
+            for (var i = 0; i < displayElement.length; i++) {
+                $(row).find('[name="' + displayElement[i] + '"]').removeAttr('disabled');
+            }
+        }
+        $(removeTarger).remove();
+        calcTotal();//重新计算总额
+    }
+
+    //    var allTaxClassification
+
+
+    function fillLocalData(typeaheadObj){
+        //自动补全,本地数据
+//        var localArrayData = ['beijing', 'shanghai', 'guangzhou', 'sz', 'hangzhou', 'ningbo'];
+        $(typeaheadObj).typeahead({
+            source: allTaxClassification,//数据源
+            items: 8,//最多显示个数
+            updater: function (item) {
+                return item;//这里一定要return，否则选中不显示，外加调用display的时候null reference错误。
+            },
+            displayText: function (item) {
+                return item;//返回字符串
+            },
+            afterSelect: function (item) {
+                //选择项之后的事件 ，item是当前选中的。
+            },
+            delay: 0//延迟时间
+        });
+    }
+
+    //添加商品行
+    function btnAddTr() {
+        //获取tbody最后一个tr
+        var lastRow = $('#tableContent').children("div.prod:last-child");
+        //获取下一个objId
+        var nextObjId = parseInt($(lastRow).attr('objId'));
+        if (isBlank(nextObjId) || isNaN(nextObjId))
+            nextObjId = new Number(0);
+        else
+            nextObjId = ++nextObjId;
+
+
+        //根据模板克隆一个元素
+        var objClone = $("#prodTemplate").clone(true).removeAttr('hidden').removeAttr("id").attr('objId', nextObjId);
+        //如果最后一个tr 没有 info样式,那么克隆体加上一个info样式
+        if (!$(lastRow).hasClass('bg-info') && !$(lastRow).hasClass('bg-warning'))
+            objClone = objClone.addClass('bg-info');
+        else if ($(lastRow).hasClass('bg-info')) {
+            objClone = objClone.addClass('bg-warning');
+        } else {
+            objClone = objClone.addClass('bg-info');
+        }
+
+        objClone.find('select[name="taxRate"]').children('option:last-child').attr("selected", true);
+
+        //添加获取光标失去光标的事件改变样式
+        objClone.focusin(function () {
+
+            if (objClone.hasClass('bg-info')) {
+                objClone.removeClass('bg-info').attr('oldbg', 'bg-info').addClass('bg-success');
+            }
+
+            if (objClone.hasClass('bg-warning')) {
+                objClone.removeClass('bg-warning').attr('oldbg', 'bg-warning').addClass('bg-success');
+            }
+
+            /**
+             * 记录最后一个获得光标焦点的行
+             */
+            $('#lastFocus').val(objClone.attr('objId'));
+
+        });
+
+        objClone.focusout(function () {
+            var classifierName = objClone.find("input[name='classifierName']").val();
+            var amount = objClone.find("input[name='amount']").val();
+            var taxRate = objClone.find("select[name='taxRate']").val();
+
+            if(isBlank(classifierName)||isBlank(amount)||isBlank(taxRate))
+                $('#btnShowDiscount').attr('disabled','disabled');
+            else
+                $('#btnShowDiscount').removeAttr('disabled');
+
+
+            objClone.removeClass('bg-success').addClass(objClone.attr('oldbg'));
+        });
+
+
+        //追加到tbody
+        objClone.appendTo("#tableContent");
+        //添加自动补全数据
+        fillLocalData(objClone.find('input[name="classifierName"]'));
+    }
+
+    //默认8行数据
+    $(document).ready(function () {
+        initRows();
+    });
+    //初始化8行
+    function initRows(){
+        $('#tableContent').find('.prod').remove();
+        for (var i = 0; i < 8; i++) {
+            btnAddTr();
+        }
+    }
+
+
+    function showDiscountModal() {
+
+        var rows = ($("div[objId]"));
+        var lastFocusObjId = $('#lastFocus').val();
+
+        $('#discountAmount').val('');
+        $('#discountRate').val('');
+
+        $.each(rows, function (k, v) {
+            if ($(v).attr('objId') == lastFocusObjId) {
+
+                var discountItemAmount = $(v).find("input[name='amount']").val();
+                if (isBlank(discountItemAmount)) {
+                    layer.alert("当前选择行金额不全!");
+                    return;
+                }
+
+                $('#discountLine').val(k + 1);
+
+                $('#discountItemAmount').val(discountItemAmount);
+                $('#discountModal').modal('show');
+            }
+        });
+    }
+
+    /**
+     * 增加折扣行
+     */
+    function addDiscount() {
+        var lastFocusObjId = $('#lastFocus').val();
+        $('[discount="' + lastFocusObjId + '"]').remove();
+        var tarDiscount = $('div[objId="' + lastFocusObjId + '"]');
+        var objClone = $("#prodTemplate").clone(true).removeAttr('hidden').removeAttr("id").attr('discount', lastFocusObjId).addClass('bg-danger');
+        objClone.find("input[name='discountLineObjId']").val(lastFocusObjId);//标记为折扣行
+        var discountAmount = $('#discountAmount').val();
+        objClone.find("input[name='amount']").val("-" + discountAmount);
+        objClone.find("input[name='itemNum']").val(tarDiscount.children().find('input[name="itemNum"]').val());
+        objClone.find("input[name='classifierName']").val(tarDiscount.children().find('input[name="classifierName"]').val());
+        objClone.find("input[name='specMode']").val(tarDiscount.children().find('input[name="specMode"]').val());
+        objClone.find("input[name='itemUnit']").val(tarDiscount.children().find('input[name="itemUnit"]').val());
+        objClone.find("select[name='taxRate']").val(tarDiscount.children().find('select[name="taxRate"]').val());
+        objClone.find("input[name='itemPrice']").val(tarDiscount.children().find('input[name="itemPrice"]').val());
+        //计算折扣行税额
+        var amount = objClone.children().find("[name='amount']").val();
+        var taxRate = objClone.children().find("[name='taxRate']").val();
+        objClone.children().find("[name='tax']").val(numMulti(amount, taxRate));
+        //设置为不可编辑
+        for (var i = 0; i < displayElement.length; i++) {
+            tarDiscount.find('[name="' + displayElement[i] + '"]').attr('disabled', 'disabled');
+            objClone.find('[name="' + displayElement[i] + '"]').attr('disabled', 'disabled');
+        }
+        tarDiscount.after(objClone);
+        calcTotal();//重新计算总额
+        $('#discountModal').modal('hide');
+    }
+
+
+
+
+    $(function () {
+
+        //1.初始化Table
+        var oTable = new TableInit();
+        oTable.Init();
+
+//        //2.初始化Button的点击事件
+//        var oButtonInit = new ButtonInit();
+//        oButtonInit.Init();
+
+    });
+
+
+    var TableInit = function () {
+        var oTableInit = new Object();
+        //初始化Table
+        oTableInit.Init = function () {
+            $('#tb_departments').bootstrapTable({
+                url: '/base/invoice/invoiceinfo/u/list',         //请求后台的URL（*）
+                method: 'get',                      //请求方式（*）
+//                toolbar: '#toolbar',                //工具按钮用哪个容器
+                striped: true,                      //是否显示行间隔色
+                cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                pagination: true,                   //是否显示分页（*）
+                sortable: false,                     //是否启用排序
+                sortOrder: "asc",                   //排序方式
+                queryParams: oTableInit.queryParams,//传递参数（*）
+                sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+                //设置为undefined可以获取pageNumber，pageSize，searchText，sortName，sortOrder
+                //设置为limit可以获取limit, offset, search, sort, order
+                queryParamsType : "undefined",
+                pageNumber:1,                       //初始化加载第一页，默认第一页
+                pageSize: 10,                       //每页的记录行数（*）
+                pageList: [10, 25, 50, 100],        //可供选择的每页的行数（*）
+                search: false,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+                strictSearch: true,
+                showColumns: true,                  //是否显示所有的列
+                showRefresh: true,                  //是否显示刷新按钮
+                minimumCountColumns: 2,             //最少允许的列数
+                clickToSelect: true,                //是否启用点击选中行
+                height: 500,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+                uniqueId: "ID",                     //每一行的唯一标识，一般为主键列
+                showToggle:true,                    //是否显示详细视图和列表视图的切换按钮
+                cardView: false,                    //是否显示详细视图
+                detailView: false,                   //是否显示父子表
+                columns: [{
+                    checkbox: true
+                }, {
+                    field: 'id',
+                    title: 'id',
+                    width: 50
+                }, {
+                    field: 'serialNo',
+                    title: '流水号'
+                }, {
+                    field: 'orderNo',
+                    title: '订单号'
+                }, {
+                    field: 'projectName',
+                    title: '商品名称'
+                },  {
+                    field: 'taxTotal',
+                    title: '税额合计'
+                },  {
+                    field: 'noTaxTotal',
+                    title: '不含税合计'
+                },  {
+                    field: 'priceTotal',
+                    title: '价税合计'
+                },  {
+                    field: 'invoiceCode',
+                    title: '发票代码'
+                },  {
+                    field: 'invoiceNum',
+                    title: '发票号码'
+                },  {
+                    field: 'invoiceDate',
+                    title: '开票日期'
+                },  {
+                    field: 'pdfUrl',
+                    title: 'PDF下载地址'
+                },  {
+                    field: 'invoiceType',
+                    title: '发票类型'
+                },  {
+                    field: 'reMarks',
+                    title: '备注'
+                },  {
+                    field: 'usrname',
+                    title: '用户昵称'
+                } ]
+            });
+        };
+        //得到查询的参数
+        oTableInit.queryParams = function (params) {
+            var temp = {   //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
+                'pageAndSort.rp': params.pageSize,   //页面大小
+                'pageAndSort.page': params.pageNumber,  //页码
+//                departmentname: $("#txt_search_departmentname").val(),
+//                statu: $("#txt_search_statu").val()
+            };
+            return temp;
+        };
+        return oTableInit;
+    };
+
+
+    //    var ButtonInit = function () {
+    //        var oInit = new Object();
+    //        var postdata = {};
+    //
+    //        oInit.Init = function () {
+    //            //初始化页面上面的按钮事件
+    //        };
+    //
+    //        return oInit;
+    //    };
+
+</script>
+</body>
+</html>

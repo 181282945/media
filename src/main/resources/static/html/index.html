@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>云开票-首页</title>
+    <link rel="stylesheet" href="/components/bootstrap/css/bootstrap.min.css"/>
+    <!--[if lt IE 9]>
+    <script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style>
+        .news-title-content {
+            margin-left: 5px;
+            margin-bottom: 14px
+        }
+    </style>
+</head>
+<body>
+<div class="container" style="padding-top: 10px;">
+    <div class="row" style="height: 100%;margin: 0px;padding: 0px">
+        <div class="col-md-2" onclick="toIndex()">
+            <img src="/img/logo.png">
+        </div>
+        <div class="col-md-2 text-center" onclick="toIndex()">
+            <div class="row">
+                <div class="col-md-2"
+                     style="border: 0px;border-right: 1px;border-style: solid;border-color: #1B6AAA;margin: 0px;">
+                    <h3>&emsp;</h3>
+                </div>
+                <div class="col-md-10">
+                    <h3>云开票系统</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2 col-md-offset-6">
+            <div class="row">
+                <div class="col-md-6">
+                    <h3 th:hidden="${currentUserInfo}?'true':'false'">
+                        <button type="button" class="btn btn-default" onclick="toLogin()">登录</button>
+                    </h3>
+                </div>
+                <div class="col-md-6 text-center">
+                    <h3 th:hidden="${currentUserInfo}?'true':'false'">
+                        <button type="button" class="btn btn-default" onclick="toReg()">注册</button>
+                    </h3>
+                    <ul class="nav nav-tabs" style="border: 0px" hidden="hidden"
+                        th:hidden="${currentUserInfo}?'false':'true'">
+                        <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#"><span
+                                th:text="${currentUserInfo}? ${currentUserInfo.usrname}">用户名</span><b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a th:href="${completeEnInfo} ? '/base/invoice/order/orderinfo/u/tolist':${ENINFO_PAGE}"
+                                       th:text="${completeEnInfo} ? '去开票' : '完善信息'"></a></li>
+                                <li><a href="/center/userinfo">个人中心</a></li>
+                                <li><a href="/logout">退出登录</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div style="padding-top: 10px;"></div>
+<img src="/img/banner.png" width="100%"/>
+<div class="container" style="padding-top: 100px;padding-bottom: 150px;">
+    <div class="row">
+        <div class="col-md-6" style="margin-bottom: 5px">
+            <div class="row">
+                <div class="col-md-11">
+                    <div class="row" style="margin-bottom: 2px">
+                        <div class="col-md-1">
+                            <img src="/img/news.png">
+                        </div>
+                        <div class="col-md-4">
+                            <h4>行业动态</h4>
+                        </div>
+                        <div class="col-md-5"></div>
+                        <div class="col-md-2 text-right">
+                            <h6>更多></h6>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-11"
+                     style="border: 0px;border-top: 1px;border-style: solid;border-color: #8c8c8c;padding: 0px;margin: 0px;">
+                    <div class="row" style="margin-top: 20px;margin-bottom: 20px">
+                        <div class="col-md-3">
+                            <img src="/img/tu1.png" style="margin-left: 10px"/>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="row news-title-content">
+                                <div class="col-md-12">
+                                    <b>深圳航信移票通产品获得外观设计专利证书</b>
+                                </div>
+                            </div>
+                            <div class="row news-title-content">
+                                <div class="col-md-12">
+                                    今日,深圳航天信息有限公司移票通产品获得颁发...
+                                </div>
+                            </div>
+                            <div class="row" style="margin-left: 5px">
+                                <div class="col-md-12">
+                                    2017-6-02
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-1">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-11"
+                     style="border: 0px;border-top: 1px;border-style: solid;border-color: #8c8c8c;padding: 0px;margin: 0px;">
+                    <div class="row" style="margin-top: 20px;margin-bottom: 20px">
+                        <div class="col-md-3">
+                            <img src="/img/tu2.png" style="margin-left: 10px"/>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="row news-title-content">
+                                <div class="col-md-12">
+                                    <b>深圳航信成功当选深圳市商用密码行业协会理事单位</b>
+                                </div>
+                            </div>
+                            <div class="row news-title-content">
+                                <div class="col-md-12">
+                                    6月6日,深圳市商用密码行业协会第一届第五次理事会召开...
+                                </div>
+                            </div>
+                            <div class="row" style="margin-left: 5px">
+                                <div class="col-md-12">
+                                    2017-6-02
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-1">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-11"
+                     style="border: 0px;border-top: 1px;border-style: solid;border-color: #8c8c8c;padding: 0px;margin: 0px;">
+                    <div class="row" style="margin-top: 20px;margin-bottom: 20px">
+                        <div class="col-md-3">
+                            <img src="/img/tu3.png" style="margin-left: 10px"/>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="row news-title-content">
+                                <div class="col-md-12">
+                                    <b>航信引领电子发票创新,助力总局升级版电子发票试点</b>
+                                </div>
+                            </div>
+                            <div class="row news-title-content">
+                                <div class="col-md-12">
+                                    5月31日,前海管理局召开党组(扩大)会议,传达学习...
+                                </div>
+                            </div>
+                            <div class="row" style="margin-left: 5px">
+                                <div class="col-md-12">
+                                    2017-6-02
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-1">
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6" style="margin-bottom: 5px">
+            <div class="row">
+                <div class="col-md-11">
+                    <div class="row" style="margin-bottom: 2px">
+                        <div class="col-md-1">
+                            <img src="/img/product.png">
+                        </div>
+                        <div class="col-md-4">
+                            <h4>产品资讯</h4>
+                        </div>
+                        <div class="col-md-5"></div>
+                        <div class="col-md-2 text-right">
+                            <h6>更多></h6>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-1">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-11"
+                     style="border: 0px;border-top: 1px;border-style: solid;border-color: #8c8c8c;padding: 0px;margin: 0px;">
+                    <div class="row" style="margin-top: 10px">
+                        <div class="col-md-12">
+                            <h5><b>云时代,当然选择云开票系统</b></h5>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 5px">
+                        <div class="col-md-12">
+                            <h5>高效共赢,转型升级,新的起点上,以更优异的业绩,不断超越,回报股东,回馈大众...</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-1">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-11"
+                     style="border: 0px;border-top: 1px;border-style: solid;border-color: #8c8c8c;padding: 0px;margin: 0px;">
+                    <div class="row" style="margin-top: 10px">
+                        <div class="col-md-12">
+                            <h5><b>航天信息成功中标河北高速公路管理局IC卡采购项目</b></h5>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 5px">
+                        <div class="col-md-12">
+                            <h5>高效共赢,转型升级,新的起点上,以更优异的业绩,不断超越,回报股东,回馈大众...</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-1">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-11"
+                     style="border: 0px;border-top: 1px;border-style: solid;border-color: #8c8c8c;padding: 0px;margin: 0px;">
+                    <div class="row" style="margin-bottom: 5px">
+                        <div class="col-md-12">
+                            <h5><b>航天金卡自助通关项目团队荣获2016年度中国航天基金将集体奖</b></h5>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 5px">
+                        <div class="col-md-12">
+                            <h5>高效共赢,转型升级,新的起点上,以更优异的业绩,不断超越,回报股东,回馈大众...</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-1">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-11"
+                     style="border: 0px;border-top: 1px;border-style: solid;border-color: #8c8c8c;padding: 0px;margin: 0px;">
+                    <div class="row" style="margin-top: 10px">
+                        <div class="col-md-12">
+                            <h5><b>航天信息亮相2017廊坊国际经贸洽谈会</b></h5>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 5px">
+                        <div class="col-md-12">
+                            <h5>高效共赢,转型升级,新的起点上,以更优异的业绩,不断超越,回报股东,回馈大众...</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-1">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div style="padding-top: 20px"></div>
+<div style="background-color: #2f3438;height: 140px">
+    <div class="col-md-12" style="margin-top: 30px">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4 text-center" style="height: 20%;color: #8c8c8c">
+                地址:深圳市福田区梅林街道下梅林北环大道7018号701航天信息
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12" style="margin-top: 30px">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4 text-center" style="height: 20%;color: #8c8c8c">
+                版权所有©2017&emsp;深圳航天信息有限公司&emsp;保留一切权利&emsp;粤ICP备14036066号
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="/js/jquery-1.9.1.min.js"></script>
+<script src="/components/bootstrap/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="/js/base.js"></script>
+<script type="text/javascript" charset="utf-8">
+    function toLogin() {
+        window.location.href = "/login"
+    }
+
+    function toReg() {
+        window.open("/reg");
+    }
+
+</script>
+</html>

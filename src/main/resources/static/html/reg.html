@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>云开票-注册</title>
+    <link href="/components/bootstrap/css/bootstrap.min.css" type="text/css" rel="stylesheet"/>
+    <link href="/components/font-awesome-4.7.0/css/font-awesome.min.css" type="text/css" rel="stylesheet">
+    <!--[if lt IE 9]>
+    <script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <style>
+
+        .div-border-top {
+            border: 0px;
+            border-bottom: 1px;
+            border-style: solid;
+            border-color: #fcf4f2;
+        }
+
+        .margin-top-10 {
+            margin-top: 15px;
+        }
+    </style>
+
+</head>
+<body>
+<div class="container" style="padding-top: 10px;">
+    <div class="row" style="height: 100%;margin: 0px;padding: 0px">
+        <div class="col-md-2" onclick="toIndex()">
+            <img src="/img/logo.png">
+        </div>
+        <div class="col-md-2 text-center" onclick="toIndex()">
+            <div class="row">
+                <div class="col-md-2"
+                     style="border: 0px;border-right: 1px;border-style: solid;border-color: #1B6AAA;margin: 0px;">
+                    <h3>&emsp;</h3>
+                </div>
+                <div class="col-md-10">
+                    <h3>云开票系统</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2 col-md-offset-6">
+            <div class="row" style="vertical-align: middle">
+                &emsp;
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    已注册账户,<a href="/login">立即登录</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div style="background-color: #F4F4F4;">
+    <div style="padding-top: 40px;"></div>
+    <div class="container" style="background-color: white;height: 550px">
+        <div class="row div-border-top margin-top-10">
+            <div class="col-md-12 text-left"><h4>用户注册</h4></div>
+        </div>
+        <form id="regForm" method="post" action="/base/invoice/userinfo/u/reg">
+
+
+            <fieldset>
+                <div class="row" style="margin-top: 50px">
+                    <div class="col-md-3 text-right"><h5>用户账号</h5></div>
+                    <div class="col-md-6">
+                        <input type="text" name="usrno" id="usrno" class=" form-control" placeholder="用户账号"/>
+                    </div>
+                    <div class="col-md-3"></div>
+                </div>
+                <div class="row margin-top-10">
+                    <div class="col-md-3 text-right"><h5>昵&emsp;&emsp;称</h5></div>
+                    <div class="col-md-6">
+                        <input type="text" name="usrname" id="usrname" class="form-control" placeholder="昵称"/>
+                    </div>
+                    <div class="col-md-3"></div>
+                </div>
+                <div class="row margin-top-10">
+                    <div class="col-md-3 text-right"><h5>密&emsp;&emsp;码</h5></div>
+                    <div class="col-md-6">
+                        <input type="password" name="password" id="password" class="form-control" placeholder="密码"/>
+                    </div>
+                    <div class="col-md-3"></div>
+                </div>
+                <div class="row margin-top-10">
+                    <div class="col-md-3 text-right"><h5>重复密码</h5></div>
+                    <div class="col-md-6">
+                        <input type="password" name="repeatPassword" id="repeatPassword" class="form-control"
+                               placeholder="再次输入密码"/>
+                    </div>
+                    <div class="col-md-3"></div>
+                </div>
+                <div class="row margin-top-10">
+                    <div class="col-md-3 text-right"><h5>手机号码</h5></div>
+                    <div class="col-md-6">
+                        <input type="text" name="mobilePhone" id="mobilePhone" class="form-control" placeholder="手机号码"/>
+                    </div>
+                    <div class="col-md-3"></div>
+                </div>
+                <div class="row margin-top-10">
+                    <div class="col-md-3 text-right"><h5>企业税号</h5></div>
+                    <div class="col-md-6">
+                        <input type="text" name="taxNo" id="taxNo" class="form-control" placeholder="企业税号"/>
+                    </div>
+                    <div class="col-md-3"></div>
+                </div>
+                <div class="row margin-top-10">
+                    <div class="col-md-3 text-right"><h5>验&ensp;证&ensp;码</h5></div>
+                    <div class="col-md-3">
+                        <input type="text" class="form-control" name="verification_code" placeholder="请输入验证码">
+                    </div>
+                    <div class="col-md-3">
+                        <img style="width:80px;height: 34px" src="/images/kaptcha.jpg" id="verification_code_img2"
+                             title="点击更换" onclick="javascript:refreshCaptcha(this.id);"/>
+                    </div>
+                    <div class="col-md-3"></div>
+                </div>
+                <div class="row margin-top-10">
+                    <div class="col-md-3 "></div>
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-1 text-right">
+                                <input type="checkbox" onclick="onClickHander(this)"/>
+                            </div>
+                            <div class="col-md-10 text-left">
+                                我已阅读并同意<a href="#">《注册协议》</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3"></div>
+                </div>
+                <div class="row margin-top-10">
+                    <div class="col-md-12">
+                        <button type="submit" disabled id="btnRegSubmit" class="btn btn-primary btn-block">提交注册信息
+                        </button>
+                    </div>
+                </div>
+                <div class="row margin-top-10">
+                    <div class="col-md-12">&emsp;&emsp;&emsp;&emsp;</div>
+                </div>
+                <div class="row margin-top-10">
+                    <div class="col-md-12">&emsp;&emsp;&emsp;&emsp;</div>
+                </div>
+                <div class="row margin-top-10">
+                    <div class="col-md-12">&emsp;&emsp;&emsp;&emsp;</div>
+                </div>
+
+            </fieldset>
+        </form>
+
+
+    </div>
+    <div style="padding-bottom: 40px;"></div>
+</div>
+
+<div style="padding-top: 20px"></div>
+<div style="background-color: #2f3438;height: 140px">
+    <div class="col-md-12" style="margin-top: 30px">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4 text-center" style="height: 20%;color: #8c8c8c">
+                地址:深圳市福田区梅林街道下梅林北环大道7018号701航天信息
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12" style="margin-top: 30px">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4 text-center" style="height: 20%;color: #8c8c8c">
+                版权所有©2017&emsp;深圳航天信息有限公司&emsp;保留一切权利&emsp;粤ICP备14036066号
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="/js/jquery-1.9.1.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="/components/bootstrap/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="/js/jquery.form.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="/js/jquery.validate.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="/js/jquery.validate.extend.js" type="text/javascript" charset="utf-8"></script>
+<script src="/components/layer/layer.js" type="text/javascript" charset="utf-8"></script>
+<script src="/js/base.js" type="text/javascript" charset="utf-8"></script>
+
+<script type="text/javascript" charset="utf-8">
+    //更换验证码
+    function refreshCaptcha(objId) {
+        $('#' + objId).attr("src", "/images/kaptcha.jpg?t=" + Math.random());
+    }
+
+
+    //勾选协议事件
+    function onClickHander(obj) {
+        if (obj.checked) {
+            $("#btnRegSubmit").removeAttr('disabled').attr("type", "submit");
+        } else {
+            disabledRegBtn();
+        }
+    }
+
+    //禁用注册按钮
+    function disabledRegBtn() {
+        $("#btnRegSubmit").attr("type", "button").attr('disabled', 'disabled');
+    }
+
+    //让当前表单调用validate方法，实现表单验证功能
+    $("#regForm").validate({
+//            debug:true, //调试模式，即使验证成功也不会跳转到目标页面
+        rules: { //配置验证规则，key就是被验证的dom对象，value就是调用验证的方法(也是json格式)
+            usrno: {
+                required: true, //必填。如果验证方法不需要参数，则配置为true
+                username: true,
+                rangelength: [6, 20],
+            },
+            usrname: {
+                required: true, //必填。如果验证方法不需要参数，则配置为true
+                rangelength: [1, 15]
+            },
+            password: {
+                required: true,
+                password: true,
+                rangelength: [8, 16],
+            },
+            repeatPassword: {
+                required: true,
+                equalTo: '#password' //表示和id="spass"的值相同
+            },
+            mobilePhone: {
+                required: true,
+                rangelength: [11, 15],
+                digits: true
+//                isMobile: true
+
+            },
+            taxNo: {
+                required: true,
+                rangelength: [15, 18]
+
+            },
+            verification_code: {
+                required: true
+//                    email:true
+            }
+//            telephone: {
+//                required: false,
+//                rangelength: [1, 15]
+//            },
+//            email: {
+//                required: false,
+//                rangelength: [1, 20],
+//                email: true
+//            }
+        },
+        messages: {
+            usrno: {
+                required: "长度6-20个字符，由数字、字母组成，可插入特殊符号（仅限“下划线”、“短划线”、“长划线”）",
+                username: "长度6-20个字符，由数字、字母组成，可插入特殊符号（仅限“下划线”、“短划线”、“长划线”）",
+                rangelength: "长度6-20个字符，由数字、字母组成，可插入特殊符号（仅限“下划线”、“短划线”、“长划线”）"
+            },
+            usrname: {
+                required: "昵称长度为1-15个字符",
+                rangelength: "昵称长度为1-15个字符"
+            },
+            password: {
+                required: "长度8-16个字符，由数字、字母、特殊符号组合而成，至少两种以上不同字符组合。",
+                password: "长度8-16个字符，由数字、字母、特殊符号组合而成，至少两种以上不同字符组合。",
+                rangelength: "长度8-16个字符，由数字、字母、特殊符号组合而成，至少两种以上不同字符组合。"
+            },
+            repeatPassword: {
+                required: "长度8-16个字符，由数字、字母、特殊符号组合而成，至少两种以上不同字符组合。",
+                equalTo: "密码输入不一致"
+            },
+            mobilePhone: {
+                required: "手机号码长度为11-15个字符",
+                rangelength: "手机号码长度为11-15个字符",
+                digits: "只能为数字"
+            },
+            taxNo: {
+                required: "必填",
+                rangelength: '税号长度15-18'
+
+            },
+            verification_code: {
+                required: "必填"
+//                    email:true
+            }
+//            telephone: {
+//                required: false,
+//                rangelength: "固定电话不超过15个字符"
+//            },
+//            email: {
+//                email: "邮箱用户名+分隔符@+邮箱注册的网站域名地址",
+//                rangelength: "长度不得超过20",
+//            }
+        },
+        errorClass: "error",
+        success: 'valid',
+        unhighlight: function (element, errorClass, validClass) { //验证通过
+            $(element).tooltip('destroy').removeClass(errorClass);
+        },
+        errorPlacement: function (error, element) {
+            if ($(element).next("div").hasClass("tooltip")) {
+                $(element).attr("data-original-title", $(error).text()).tooltip("show");
+            } else {
+                $(element).attr("title",
+                    $(error).text()).tooltip("show");
+            }
+        },
+        submitHandler: function (form) {
+
+            var taxNo = $('#taxNo').val();
+
+            $.get("/base/invoice/eninfo/u/checkTaxNoExist?taxNo="+taxNo,function(data){
+                if(data){//如果存在,那么提示是否作为子账号
+                    layer.confirm('企业税号已经存在,是否作为其子账号注册？', {
+                        btn: ['是的','取消'] //按钮
+                    }, function(index){
+                        jQuery(form).ajaxSubmit(function (data) {
+                            if (data.operateCode == "F") {
+                                layer.alert(data.message);
+                                refreshCaptcha('verification_code_img2');
+                            } else if (data.operateCode == "S") {
+                                layer.confirm('<h5 style="color: red"><b>恭喜您注册成功!</b></h5>', {
+                                    btn: ['确定'] //按钮
+                                }, function (index) {
+                                    layer.close(index);
+                                    document.getElementById("regForm").reset()
+                                    location.href = data.datas;
+                                });
+                            }
+                        });
+                    }, function(index){
+                        layer.close(index);
+                    });
+                }
+            });
+        }
+    });
+</script>
+
+</html>

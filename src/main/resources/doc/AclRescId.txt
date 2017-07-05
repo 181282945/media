@@ -1,12 +1,21 @@
 因特殊原因资源表不能使用自增ID,必须手写并且不重复.所以在此记录下每个资源的ID起始编号
 避免重复
 
-1000 = com.lzw.base.sysmgr.aclresource.controller.AclResourceController
-2000 = com.lzw.base.sysmgr.aclrescrole.controller.AclRescRoleController
-3000 = com.lzw.base.sysmgr.aclmenu.controller.AclMenuController
-4000 = com.lzw.base.sysmgr.aclauth.controller.AclAuthController
-5000 = com.lzw.base.sysmgr.aclrescuser.controller.AclRescUserController
-6000 = com.lzw.base.sysmgr.aclrole.controller.AclRoleController
-7000 = com.lzw.base.sysmgr.aclroleauth.controller.AclRoleAuthController
-8000 = com.lzw.base.sysmgr.acluserauth.controller.AclUserAuthController
-9000 = com.lzw.base.invoice.userinfo.controller.AclUserInfoController
+100 = com.aisino.base.sysmgr.aclresource.controller.AclResourceController
+200 = com.aisino.base.sysmgr.aclrescrole.controller.AclRescRoleController
+300 = com.aisino.base.sysmgr.aclmenu.controller.AclMenuController
+400 = com.aisino.base.sysmgr.aclauth.controller.AclAuthController
+500 = com.aisino.base.sysmgr.aclrescuser.controller.AclRescUserController
+600 = com.aisino.base.sysmgr.aclrole.controller.AclRoleController
+700 = com.aisino.base.sysmgr.aclroleauth.controller.AclRoleAuthController
+800 = com.aisino.e9.controller.sysmgr.expressinfo.ExpressInfoController
+900 = com.aisino.base.invoice.userinfo.controller.AclUserInfoController
+
+1000 = com.aisino.base.invoice.userinfo.controller.UserUserInfoController
+1100 = com.aisino.common.controller.CenterController
+2000 = com.aisino.base.invoice.order.orderinfo.controller.UserOrderInfoController
+3000 = com.aisino.base.invoice.invoiceinfo.controller.UserInvoiceInfoController
+4000 = com.aisino.base.invoice.eninfo.controller.EnInfoController
+5000 = com.aisino.base.invoice.order.orderdetail.controller.UserOrderDetailController
+6000 = com.aisino.base.invoice.eninfo.controller.UserEnInfoController
+7000 = com.aisino.base.invoice.authcodeinfo.controller.AclAuthCodeInfoController

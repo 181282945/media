@@ -1,0 +1,1545 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>云开票-订单管理</title>
+    <link type="text/css" rel="stylesheet" href="/components/bootstrap/css/bootstrap.min.css"/>
+    <link type="text/css" rel="stylesheet" href="/components/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link type="text/css" rel="stylesheet" href="/components/fileinput/css/fileinput.min.css"/>
+    <link type="text/css" rel="stylesheet" href="/components/jqgrid/css/ui.jqgrid.min.css"/>
+    <link type="text/css" rel="stylesheet" href="/components/jqgrid/css/ace.jqgrid.css"/>
+    <!--[if lt IE 9]>
+    <script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style>
+        th {
+            text-align: center !important;
+            vertical-align: middle !important;
+        }
+
+        td {
+            text-align: center !important;
+            vertical-align: middle !important;
+        }
+    </style>
+</head>
+<body>
+<div class="container" style="padding-top: 10px;">
+    <div class="row" style="height: 100%;margin: 0px;padding: 0px">
+        <div class="col-md-2" onclick="toIndex()">
+            <img src="/img/logo.png">
+        </div>
+        <div class="col-md-2 text-center" onclick="toIndex()">
+            <div class="row">
+                <div class="col-md-2"
+                     style="border: 0px;border-right: 1px;border-style: solid;border-color: #1B6AAA;margin: 0px;">
+                    <h3>&emsp;</h3>
+                </div>
+                <div class="col-md-10">
+                    <h3>云开票系统</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8" style="height: 100%;margin: 0px;padding: 0px">
+            <div class="row" style="height: 100%;margin: 0px;padding: 0px">
+                <div class="col-md-2"></div>
+                <a th:href="${USERORDERINFO_HOME_PAGE}">
+                    <div class="col-md-2 text-center" style="padding-top: 10px;height: 56px;background-color:#ffbc42">
+                        <h4>订单管理</h4>
+                    </div>
+                </a>
+                <a th:href="${USERINVOICEINFO_HOME_PAGE}">
+                    <div class="col-md-2 text-center center-menu" style="padding-top: 10px;height: 56px;"><h4>发票管理</h4>
+                    </div>
+                </a>
+                <a th:href="${USERCENTER_HOME_PAGE}">
+                    <div class="col-md-2 text-center center-menu" style="padding-top: 10px;height: 56px;"><h4>
+                        用户中心</h4></div>
+                </a>
+
+                <div class="col-md-1"></div>
+                <div class="col-md-3 text-center" style="padding-top: 10px;">
+                    <ul class="nav nav-tabs" style="border: 0px">
+                        <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#"><span
+                                th:text="${currentUserInfo}? ${currentUserInfo.usrname}">用户名</span><b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/logout">退出登录</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div style="background-color: #F4F4F4;">
+    <div style="padding-top: 40px;"></div>
+    <div class="container" style="background-color: white;height: 550px">
+        <div class="row" style="padding-top: 20px;padding-bottom: 20px;background-color: #F4F4F4;">
+            <div class="col-md-4 ">
+                <div class="row">
+                    <div class="col-md-4 ">
+                        <button id="ALL" class="btn btn-minier btn-white">全部订单</button>
+                    </div>
+                    <div class="col-md-4 ">
+                        <button id="ALREADY" class="btn btn-minier btn-white">已开票订单</button>
+                    </div>
+                    <div class="col-md-4 ">
+                        <button id="NOTYET" class="btn btn-minier btn-white">未开票订单</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-1 ">
+                <div class="col-md-12 ">
+                    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#qrCodeModal">
+                        <span class="fa fa-qrcode">&ensp;二维码开票</span>
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-1 ">
+
+            </div>
+            <div class="col-md-6 ">
+                <div class="row">
+                    <div class="col-md-2 ">
+                        <button type="button" class="btn btn-default" onclick="showUploadtModal()">
+                            <span class="fa fa-share-square-o">&ensp;导入</span>
+                        </button>
+                    </div>
+
+                    <div class="col-md-2 ">
+                        <button type="button" class="btn btn-default" data-toggle="modal"
+                                data-target="#queryModal" onclick="enableEdit()">
+                            <span class="fa fa-search">&ensp;查询</span>
+                        </button>
+                    </div>
+                    <div class="col-md-2 ">
+                        <button type="button" class="btn btn-default" id="editBtn" onclick="showEditModal()">
+                            <span class="fa fa-pencil-square-o">&ensp;编辑</span>
+                        </button>
+                    </div>
+                    <div class="col-md-2 ">
+                        <button type="button" class="btn btn-default" id="delBtn">
+                            <span class="fa fa-trash-o">&ensp;删除</span>
+                        </button>
+                    </div>
+                    <div class="col-md-2 ">
+                        <button type="button" class="btn btn-default" id="billingBtn">
+                            <span class="fa fa-file-text-o">&ensp;开票</span>
+                        </button>
+                    </div>
+                    <div class="col-md-2 ">
+                        <button type="button" class="btn btn-default" id="autoBillingBtn">
+                            <span class="fa fa-superpowers">&ensp;智能开票</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="jqGrid_wrapper" style="background-color: white">
+            <table class="text-center" id="grid-jqGrid"></table>
+            <div id="jqGridPager"></div>
+        </div>
+    </div>
+
+</div>
+<div class="modal fade" id="editModal" data-show="fasle" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="editModalLabel">
+                    订单编辑
+                </h4>
+            </div>
+            <div class="modal-body" style="margin: 5px">
+                <form class="form-inline" id="editForm" method="post"
+                      action="/base/invoice/order/orderinfo/u/update">
+                    <fieldset>
+                        <input type="text" id="editForm_id" name="id" hidden/>
+
+                        <div class="row" style="margin-bottom: 5px">
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">企业名称:&ensp;</label>
+                                    <input size="16" type="text" id="editForm_taxName" name="taxName" disabled
+                                           class="form-control" placeholder="企业名称"/>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">企业税号:&ensp;</label>
+                                    <input size="16" type="text" id="editForm_taxno" name="taxno" disabled
+                                           class="form-control" placeholder="企业税号"/>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="row" style="margin-bottom: 5px">
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">订&ensp;单&ensp;号:&ensp;</label>
+                                    <input size="16" type="text" id="editForm_orderNo" name="orderNo"
+                                           class="form-control"
+                                           placeholder="订单号"/>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">代开标识:&ensp;</label>
+                                    <select id="editForm_dkflags" disabled name="dkflags" class="form-control"
+                                            th:utext="${dkflagsSelectString}"></select>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                        <div class="row" style="margin-bottom: 5px">
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">票样代码:&ensp;</label>
+                                    <input size="16" type="text" id="editForm_ticketCode" name="ticketCode"
+                                           class="form-control" placeholder="票样代码"/>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">开票商品:&ensp;</label>
+                                    <input size="16" type="text" id="editForm_majorItems" name="majorItems"
+                                           class="form-control" placeholder="开票商品"/>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="row" style="margin-bottom: 5px">
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">购方名称:&ensp;</label>
+                                    <input size="16" type="text" id="editForm_buyerName" name="buyerName"
+                                           class="form-control" placeholder="购方名称"/>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">购方税号:&ensp;</label>
+                                    <input size="16" type="text" id="editForm_buyerTaxno" name="buyerTaxno"
+                                           class="form-control" placeholder="购方税号"/>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="row" style="margin-bottom: 5px">
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">购方地址:&ensp;</label>
+                                    <input size="16" type="text" id="editForm_buyerAddr" name="buyerAddr"
+                                           class="form-control" placeholder="购方地址"/>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">购方省份:&ensp;</label>
+                                    <input size="16" type="text" id="editForm_buyerProvince" name="buyerProvince"
+                                           class="form-control" placeholder="购货方省份"/>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="row" style="margin-bottom: 5px">
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">购方固话:&ensp;</label>
+                                    <input size="16" type="text" id="editForm_buyerTele" name="buyerTele"
+                                           class="form-control" placeholder="购方固话"/>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">购方手机:&ensp;</label>
+                                    <input size="16" type="text" id="editForm_buyerMobile" name="buyerMobile"
+                                           class="form-control" placeholder="购方手机"/>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="row" style="margin-bottom: 5px">
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">购方邮箱:&ensp;</label>
+                                    <input size="16" type="text" id="editForm_buyerEmail" name="buyerEmail"
+                                           class="form-control" placeholder="购方邮箱"/>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">购方类型:&ensp;</label>
+
+                                    <select id="editForm_buyerType" name="buyerType" class="form-control"
+                                            th:utext="${buyerTypeSelectString}"></select>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="row" style="margin-bottom: 5px">
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-label">备&emsp;&emsp;注:&ensp;</label>
+                                    <textarea id="editForm_remarks" name="remarks" placeholder="备注"
+                                              class="autosize-transition form-control"
+                                              style="overflow: hidden; word-wrap: break-word; resize: horizontal; height: 52px;width: 451px;"></textarea>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </fieldset>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" id="btnEdit" onclick="edit()" class="btn btn-info">修改</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+
+<div class="modal fade" id="viewDetailModal" data-show="fasle" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="viewDetailModalLabel">
+                    订单明细信息
+                </h4>
+            </div>
+            <div class="modal-body" style="margin: 5px">
+                <input type="text" id="detail_id" hidden/>
+
+                <div class="row" style="margin-bottom: 5px">
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">订单号码:&ensp;</label>
+                            <input type="text" id="detail_orderNo" disabled/>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">商品名称:&ensp;</label>
+                            <input type="text" id="detail_itemName" name="taxno" disabled/>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row" style="margin-bottom: 5px">
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">单&emsp;&emsp;位:&ensp;</label>
+                            <input type="text" id="detail_itemUnit" name="orderNo" disabled/>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">商品数量:&ensp;</label>
+                            <input type="text" id="detail_itemNum" name="itemNum" disabled/>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="row" style="margin-bottom: 5px">
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">规格型号:&ensp;</label>
+                            <input type="text" id="detail_specMode" name="specMode" disabled/>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">单价(含税):&ensp;</label>
+                            <input type="text" id="detail_itemPrice" name="itemPrice" disabled/>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row" style="margin-bottom: 5px">
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">税&emsp;&emsp;率:&ensp;</label>
+                            <input type="text" id="detail_taxRate" name="taxRate" disabled/>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">发票行性质:&ensp;</label>
+                            <select role="select" id="detail_invoiceNature" name="invoiceNature"
+                                    disabled th:utext="${invoiceNatureOptions}"></select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" style="margin-bottom: 5px">
+                    <div class="form-group">
+                        <label class="form-label col-md-3">税控分类编码:</label>
+                        <input class="col-md-7" type="text" id="detail_itemTaxCode" name="itemTaxCode"
+                               disabled/>
+                    </div>
+                    <div class="col-md-2"></div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+<div class="modal fade" id="queryModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="queryModalLabel">
+                    请输入查询条件
+                </h4>
+            </div>
+            <div class="modal-body" style="margin: 5px">
+                <form class="form-inline" id="queryForm">
+                    <fieldset>
+                        <div class="row" style="margin-bottom: 5px">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">导入日期从:&ensp;</label>
+                                    <input size="16" type="text" name="insertDate" id="datetimeStart"
+                                           data-date-format="yyyy-mm-dd" class="form-control form_datetime">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">导入日期到:&ensp;</label>
+                                    <input size="16" type="text" name="endDate" id="datetimeEnd"
+                                           data-date-format="yyyy-mm-dd" class="form-control form_datetime">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row" style="margin-bottom: 5px">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">&emsp;&emsp;订单号:&ensp;</label>
+                                    <input size="16" type="text" name="orderNo" class="form-control" placeholder="订单号"/>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">&emsp;企业税号:&ensp;</label>
+                                    <input size="16" type="text" name="taxno" class="form-control" placeholder="企业税号"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row" style="margin-bottom: 5px">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">购货方名称:&ensp;</label>
+                                    <input size="16" type="text" name="buyerName" class="form-control"
+                                           placeholder="企业名称"/>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">&emsp;订单状态:&ensp;</label>
+                                    <select role="select" id="queryForm_status" name="status" class="form-control"
+                                            th:utext="${selectString}"></select>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" id="btnQuery" class="btn btn-info" data-dismiss="modal">查询</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+
+<!-- 二维码开票 模态框（Modal） -->
+<div class="modal fade" id="qrCodeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width: 400px">
+        <div class="modal-content">
+            <form action="/base/invoice/order/orderinfo/u/addOrderByQrcode" method="post" id="qrcodeOrderForm"
+                  class="form-horizontal" role="form">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="qrCodeModalLabel">二维码开票</h4>
+                </div>
+                <div class="modal-body">
+
+                    <fieldset>
+
+                        <div class="form-group">
+                            <label for="qrcodeItemName" class="col-sm-3 control-label">消费项目</label>
+                            <div class="col-sm-9">
+                                <input th:value="${DEFAULT_QRCODEITEMNAME}?${DEFAULT_QRCODEITEMNAME}" type="text"
+                                       class="form-control" name="qrcodeItemName" id="qrcodeItemName"
+                                       placeholder="消费项目">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="qrcodeItemPrice" class="col-sm-3 control-label">消费金额</label>
+                            <div class="col-sm-9">
+                                <input type="text" onkeyup="if(isNaN(value))execCommand('undo')"
+                                       onafterpaste="if(isNaN(value))execCommand('undo')" class="form-control"
+                                       name="qrcodeItemPrice" id="qrcodeItemPrice"
+                                       placeholder="消费金额">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cod-md-12 text-center" id="qrcode"></div>
+                        </div>
+                    </fieldset>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-default" onclick="printdiv()">打印</button>
+                    <input type="submit" id="qrcodeSubmit" class="btn btn-primary" value="生成二维码"/>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="myModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    订单导入
+                </h4>
+            </div>
+            <div class="modal-body">
+                <form enctype="multipart/form-data">
+                    <a href="/base/invoice/invoiceinfo/u/downloadTemplate" class="form-control" style="border:none;">下载导入模板</a>
+                    <input type="file" name="txt_file" id="txt_file" class="file-loading"/>
+                </form>
+                <div class="row" id="errorMessageTemplate" hidden>
+                    <div class="col-md-12 text-danger" name="uploadError"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                </button>
+                <!--<button type="button" class="btn btn-primary">-->
+                <!--上传-->
+                <!--</button>-->
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+
+<div style="padding-top: 20px"></div>
+<div style="background-color: #2f3438;height: 140px">
+    <div class="col-md-12" style="margin-top: 30px">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4 text-center" style="height: 20%;color: #8c8c8c">
+                地址:深圳市福田区梅林街道下梅林北环大道7018号701航天信息
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12" style="margin-top: 30px">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4 text-center" style="height: 20%;color: #8c8c8c">
+                版权所有©2017&emsp;深圳航天信息有限公司&emsp;保留一切权利&emsp;粤ICP备14036066号
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="/js/jquery-1.9.1.min.js"></script>
+<script src="/components/fileinput/js/fileinput.min.js" type="text/javascript"></script>
+<script src="/components/fileinput/js/fileinput_locale_zh.js" type="text/javascript"></script>
+<script src="/components/bootstrap/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="/js/jquery.form.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="/js/jquery.validate.min.js" type="text/javascript"></script>
+<script src="/js/jquery.validate.extend.js" type="text/javascript"></script>
+<script src="/js/jquery.serializejson.min.js" type="text/javascript"></script>
+<script src="/js/jquery.qrcode.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="/components/layer/layer.js"></script>
+<script src="/js/base.js"></script>
+
+<!-- page specific plugin scripts -->
+<script src="/components/jqgrid/js/jquery.jqGrid.min.js"></script>
+<script src="/components/jqgrid/js/i18n/grid.locale-cn.js"></script>
+<!--bootstrap-->
+<script src="/components/datetimepicker/bootstrap-datetimepicker.min.js"></script>
+<script src="/components/datetimepicker/bootstrap-datetimepicker.zh-CN.js"></script>
+
+
+<script th:inline="javascript" type="text/javascript" charset="utf-8">
+
+    /*
+     初始化日期空间
+     */
+    $("#datetimeStart").datetimepicker({
+        format: 'yyyy-mm-dd',
+        minView: 'month',
+        language: 'zh-CN',
+        autoclose: true,
+//         startDate:new Date()
+    }).on("click", function () {
+        $("#datetimeStart").datetimepicker("setEndDate", $("#datetimeEnd").val())
+    });
+    $("#datetimeEnd").datetimepicker({
+        format: 'yyyy-mm-dd',
+        minView: 'month',
+        language: 'zh-CN',
+        autoclose: true,
+        startDate: new Date()
+    }).on("click", function () {
+        $("#datetimeEnd").datetimepicker("setStartDate", $("#datetimeStart").val())
+    });
+
+
+    jQuery(function ($) {
+        var grid_selector = "#grid-jqGrid";
+        var pager_selector = "#jqGridPager";
+
+        var parent_column = $(grid_selector).closest('[class*="col-"]');
+        //resize to fit page size
+        $(window).on('resize.jqGrid', function () {
+            $(grid_selector).jqGrid('setGridWidth', parent_column.width());
+        })
+
+        //resize on sidebar collapse/expand
+        $(document).on('settings.ace.jqGrid', function (ev, event_name, collapsed) {
+            if (event_name === 'sidebar_collapsed' || event_name === 'main_container_fixed') {
+                //setTimeout is for webkit only to give time for DOM changes and then redraw!!!
+                setTimeout(function () {
+                    $(grid_selector).jqGrid('setGridWidth', parent_column.width());
+                }, 20);
+            }
+        })
+
+        //if your grid is inside another element, for example a tab pane, you should use its parent's width:
+        /**
+         $(window).on('resize.jqGrid', function () {
+					var parent_width = $(grid_selector).closest('.tab-pane').width();
+					$(grid_selector).jqGrid( 'setGridWidth', parent_width );
+				})
+         //and also set width when tab pane becomes visible
+         $('#myTab a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+				  if($(e.target).attr('href') == '#mygrid') {
+					var parent_width = $(grid_selector).closest('.tab-pane').width();
+					$(grid_selector).jqGrid( 'setGridWidth', parent_width );
+				  }
+				})
+         */
+
+
+
+
+
+        jQuery(grid_selector).jqGrid({
+            shrinkToFit: false,
+            autoScroll: true,
+            subGrid: true,
+//            subGridModel: [{
+////                name : ['No','Item Name','Qty'], width : [55,200,80]
+//                params : ['id'],
+//            }],
+            //datatype: "xml",
+            subGridOptions: {
+                plusicon: "ace-icon fa fa-plus center bigger-110 blue",
+                minusicon: "ace-icon fa fa-minus center bigger-110 blue",
+                openicon: "ace-icon fa fa-chevron-right center orange"
+            },
+            //for this example we are using local data
+            subGridRowExpanded: function (subgridDivId, rowId) {
+                var subgridTableId = subgridDivId + "_t";
+                var pager_id = "p_" + subgridTableId;
+                $("#" + subgridDivId).html("<table id='" + subgridTableId + "'></table><div id='" + pager_id + "'></div>");
+                $("#" + subgridTableId).jqGrid({
+                    url: "/base/invoice/order/orderdetail/u/listByOrderInfoId?orderInfoId=" + rowId,
+                    editurl: '/base/invoice/order/orderdetail/u/update',
+                    datatype: 'json',
+//                    data: subgrid_data,
+                    colNames: ['id', '订单号', '发票流水号', '状态', '商品名称', '单位', '商品数量', '规格型号', '单价(含税)', '发票行性质', '税控分类编码', '税率'],
+                    colModel: [
+                        {name: 'id', index: 'id', width: 50, editable: false, hidden: true},
+                        {name: 'orderNo', index: 'orderNo', editable: false},
+                        {name: 'serialNo', index: 'serialNo', editable: false},
+                        {name: 'statusName', index: 'statusName', editable: false},
+                        {name: 'itemName', index: 'itemName', editable: true},
+                        {name: 'itemUnit', index: 'itemUnit', editable: true},
+                        {name: 'itemNum', index: 'itemNum', editable: true},
+                        {name: 'specMode', index: 'specMode', editable: true},
+                        {name: 'itemPrice', index: 'itemPrice', editable: true},
+                        {
+                            name: 'invoiceNature',
+                            index: 'invoiceNature',
+                            editable: true,
+                            edittype: "select",
+                            editoptions: {value: [[${invoiceNatureParams}]]},
+                            formatter: 'select'
+                        },
+                        {name: 'itemTaxCode', width: 200, index: 'itemTaxCode', editable: true},
+                        {name: 'taxRate', index: 'taxRate', editable: true},
+
+                    ],
+                    jsonReader: {
+                        root: "datas",
+                        page: "pageAndSort.page",
+                        total: "pageAndSort.totalPage",
+                        records: "pageAndSort.rowCount",
+                        repeatitems: false
+                    },
+                    prmNames: {
+                        page: "pageAndSort.page",    // 表示请求页码的参数名称
+                        rows: "pageAndSort.rp",    // 表示请求行数的参数名称
+                        sort: "pageAndSort.sortName", // 表示用于排序的列名的参数名称
+                        order: "pageAndSort.sortOrder", // 表示采用的排序方式的参数名称
+                        search: "_search", // 表示是否是搜索请求的参数名称
+//                nd:"nd", // 表示已经发送请求的次数的参数名称
+                        id: "id", // 表示当在编辑数据模块中发送数据时，使用的id的名称
+                        oper: "oper",    // operation参数名称（我暂时还没用到）
+                        editoper: "edit", // 当在edit模式中提交数据时，操作的名称
+                        addoper: "add", // 当在add模式中提交数据时，操作的名称
+                        deloper: "del", // 当在delete模式中提交数据时，操作的名称
+                        subgridid: "id", // 当点击以载入数据到子表时，传递的数据名称
+                        npage: null,
+//                totalrows:"rowCount" // 表示需从Server得到总共多少行数据的参数名称，参见jqGrid选项中的rowTotal
+                    },
+
+                    viewrecords: true,
+                    rowNum: 10,
+                    rowList: [10, 20, 30],
+                    pager: pager_id,
+//                    autowidth: true,
+                    height: "100%",
+                    rownumbers: true, // 显示行号
+                    rownumWidth: 35, // the width of the row numbers columns
+//                            altRows: true,
+                    loadComplete: function () {
+                        $("#gbox_" + subgridTableId).removeClass("ui-jqgrid").height(350).css("cssText", "position: relative;");
+                        var table = this;
+                        setTimeout(function () {
+                            styleCheckbox(table);
+                            updateActionIcons(table);
+                            updatePagerIcons(table);
+                            enableTooltips(table);
+                        }, 0);
+
+                    },
+                    ondblClickRow: function (rowid, iCol, cellcontent, e) {
+                        var rowData = $("#" + subgridTableId).jqGrid('getRowData', rowid);
+                        $("#detail_orderNo").val(rowData.orderNo);
+                        $("#detail_itemName").val(rowData.itemName);
+                        $("#detail_itemUnit").val(rowData.itemUnit);
+                        $("#detail_itemNum").val(rowData.itemNum);
+                        $("#detail_specMode").val(rowData.specMode);
+                        $("#detail_itemPrice").val(rowData.itemPrice);
+                        $("#detail_invoiceNature").val(rowData.invoiceNature);
+                        $("#detail_itemTaxCode").val(rowData.itemTaxCode);
+                        $("#detail_taxRate").val(rowData.taxRate);
+                        $('#viewDetailModal').modal('show');
+                    }
+                });
+            },
+            url: [[${SEARCH_URL}]],
+            datatype: "json",
+            jsonReader: {
+                root: "datas",
+                page: "pageAndSort.page",
+                total: "pageAndSort.totalPage",
+                records: "pageAndSort.rowCount",
+                repeatitems: false
+            },
+            prmNames: {
+                page: "pageAndSort.page",    // 表示请求页码的参数名称
+                rows: "pageAndSort.rp",    // 表示请求行数的参数名称
+                sort: "pageAndSort.sortName", // 表示用于排序的列名的参数名称
+                order: "pageAndSort.sortOrder", // 表示采用的排序方式的参数名称
+                search: "_search", // 表示是否是搜索请求的参数名称
+//                nd:"nd", // 表示已经发送请求的次数的参数名称
+                id: "id", // 表示当在编辑数据模块中发送数据时，使用的id的名称
+                oper: "oper",    // operation参数名称（我暂时还没用到）
+                editoper: "edit", // 当在edit模式中提交数据时，操作的名称
+                addoper: "add", // 当在add模式中提交数据时，操作的名称
+                deloper: "del", // 当在delete模式中提交数据时，操作的名称
+                subgridid: "id", // 当点击以载入数据到子表时，传递的数据名称
+                npage: null,
+//                totalrows:"rowCount" // 表示需从Server得到总共多少行数据的参数名称，参见jqGrid选项中的rowTotal
+            },
+//            '用户昵称','购方类型',
+            colNames: ['id', '订单号','订单类型', '订单状态', '用户账号', '企业税号', '企业名称', '票样代码', '商品名称', '购方类型', '购方税号', '购方名称', '购方地址', '购方省份', '购方固定电话', '购方手机',
+                '购方邮箱', '购方账号', '行业代码', '行业名称', '备注', '创建日期'],
+            colModel: [
+                {name: 'id', index: 'id', editable: false, hidden: true},
+                {name: 'orderNo', index: 'orderNo', editable: false,},
+                {name: 'type', index: 'type', editoptions: {value: [[${orderInfoTypeParams}]]},editable: false},
+                {
+                    name: 'status',
+                    index: 'status',
+                    editable: false,
+                    edittype: "select",
+                    editoptions: {value: [[${orderInfoStatusParams}]]},
+                    formatter: 'select'
+                },
+                {name: 'usrno', index: 'usrno', editable: false},
+                {name: 'taxno', index: 'taxno', editable: true},
+                {name: 'taxName', index: 'taxName', editable: false},
+                {name: 'ticketCode', index: 'ticketCode', editable: true},
+                {name: 'majorItems', index: 'majorItems', editable: true},
+                {
+                    name: 'buyerType',
+                    index: 'buyerType',
+                    editable: true,
+                    edittype: "select",
+                    editoptions: {value: [[${orderInfoBuyerTypeParams}]]},
+                    formatter: 'select'
+                },
+                {name: 'buyerTaxno', index: 'buyerTaxno', editable: true},
+                {name: 'buyerName', index: 'buyerName', editable: true},
+                {name: 'buyerAddr', index: 'buyerAddr', editable: true},
+                {name: 'buyerProvince', index: 'buyerProvince', editable: true},
+                {name: 'buyerTele', index: 'buyerTele', editable: true},
+                {name: 'buyerMobile', index: 'buyerMobile', editable: true},
+                {name: 'buyerEmail', index: 'buyerEmail', editable: true},
+                {name: 'buyerBankAcc', index: 'buyerBankAcc', editable: true},
+                {name: 'induCode', index: 'induCode', editable: true},
+                {name: 'induName', index: 'induName', editable: true},
+                {name: 'remarks', index: 'remarks', editable: true},
+                {
+                    name: 'insertDate',
+                    index: 'insertDate',
+                    editable: false,
+                    formatter: 'date',
+                    formatter: 'date',
+                    formatoptions: {srcformat: 'Y-m-d H:i:s', newformat: 'Y-m-d H:i:s'}
+                }
+            ],
+
+            viewrecords: true,
+            rowNum: 10,
+            rowList: [10, 20, 30],
+            pager: pager_selector,
+            altRows: true,
+            sortname: "insertDate",
+            sortorder: "desc",
+            //toppager: true,
+            rownumbers: true,
+            autowidth: true,
+            height: "100%",
+            rownumbers: true, // 显示行号
+            rownumWidth: 35, // the width of the row numbers columns
+            multiselect: true,
+            //multikey: "ctrlKey",
+            multiboxonly: false,
+
+            loadComplete: function () {
+                var table = this;
+                setTimeout(function () {
+                    styleCheckbox(table);
+                    updateActionIcons(table);
+                    updatePagerIcons(table);
+                    enableTooltips(table);
+                }, 0);
+            },
+
+            editurl: [[${UPDATE_URL}]],
+
+            /*<![CDATA[*/
+            caption: /*[[${MODULE_NAME}]]*/
+            /*]]>*/
+
+            //,autowidth: true,
+
+
+            /**
+             ,
+             grouping:true,
+             groupingView : {
+						 groupField : ['name'],
+						 groupDataSorted : true,
+						 plusicon : 'fa fa-chevron-down bigger-110',
+						 minusicon : 'fa fa-chevron-up bigger-110'
+					},
+             caption: "Grouping"
+             */
+
+        });
+        $(window).triggerHandler('resize.jqGrid');//trigger window resize to make the grid get the correct size
+
+
+        //enable search/filter toolbar
+        //jQuery(grid_selector).jqGrid('filterToolbar',{defaultSearch:true,stringResult:true})
+        //jQuery(grid_selector).filterToolbar({});
+
+
+        //switch element when editing inline
+        function aceSwitch(cellvalue, options, cell) {
+            setTimeout(function () {
+                $(cell).find('input[type=checkbox]')
+                    .addClass('ace ace-switch ace-switch-5')
+                    .after('<span class="lbl"></span>');
+            }, 0);
+        }
+
+        //enable datepicker
+        function pickDate(cellvalue, options, cell) {
+            setTimeout(function () {
+                $(cell).find('input[type=text]')
+                    .datepicker({format: 'yyyy-mm-dd', autoclose: true});
+            }, 0);
+        }
+
+
+        //navButtons
+        jQuery(grid_selector).jqGrid('navGrid', pager_selector,
+            { 	//navbar options
+                edit: false,
+                editicon: 'ace-icon fa fa-pencil blue',
+                add: false,
+                addicon: 'ace-icon fa fa-plus-circle purple',
+                del: false,
+                delicon: 'ace-icon fa fa-trash-o red',
+                search: false,
+                searchicon: 'ace-icon fa fa-search orange',
+                refresh: true,
+                refreshicon: 'ace-icon fa fa-refresh green',
+                view: false,
+                viewicon: 'ace-icon fa fa-search-plus grey',
+            },
+            {
+                url: [[${UPDATE_URL}]],
+                //edit record form
+                //closeAfterEdit: true,
+                //width: 700,
+                recreateForm: true,
+                beforeShowForm: function (e) {
+                    var form = $(e[0]);
+                    form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
+                    style_edit_form(form);
+                },
+//                afterComplete: afterCompleteCallback
+            },
+            //add options
+            {
+                url: [[${ADD_URL}]],
+                //new record form
+                //width: 700,
+                closeAfterAdd: true,
+                recreateForm: true,
+                viewPagerButtons: false,
+                beforeShowForm: function (e) {
+                    var form = $(e[0]);
+                    form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar')
+                        .wrapInner('<div class="widget-header" />')
+                    style_edit_form(form);
+                },
+//                afterComplete: afterCompleteCallback
+            },
+            //delete options
+            {
+                url: [[${DELETE_URL}]],
+                //delete record form
+                recreateForm: true,
+                beforeShowForm: function (e) {
+                    var form = $(e[0]);
+                    if (form.data('styled')) return false;
+
+                    form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
+                    style_delete_form(form);
+
+                    form.data('styled', true);
+                },
+//                afterComplete: afterCompleteCallback,
+                onClick: function (e) {
+//                    alert(1);
+                }
+            },
+            //search
+            {
+                url: [[${SEARCH_URL}]],
+                //search form
+                recreateForm: true,
+                afterShowSearch: function (e) {
+                    var form = $(e[0]);
+                    form.closest('.ui-jqdialog').find('.ui-jqdialog-title').wrap('<div class="widget-header" />')
+                    style_search_form(form);
+                },
+                afterRedraw: function () {
+                    style_search_filters($(this));
+                },
+//                loadError : function(xhr,st,err) {
+//                    alert(xhr);
+//                    alert(st);
+//                    alert(err);
+////                    jQuery("#rsperror").html("Type: "+st+"; Response: "+ xhr.status + " "+xhr.statusText);
+//                },
+                multipleSearch: true,
+                sopt: ['eq', 'ne']
+//                multipleGroup:true,
+//                showQuery: true
+                /**
+                 multipleGroup:true,
+                 showQuery: true
+                 */
+            }
+        )
+
+
+        function style_edit_form(form) {
+            //enable datepicker on "sdate" field and switches for "stock" field
+            form.find('input[name=sdate]').datepicker({format: 'yyyy-mm-dd', autoclose: true})
+
+            form.find('input[name=stock]').addClass('ace ace-switch ace-switch-5').after('<span class="lbl"></span>');
+            //don't wrap inside a label element, the checkbox value won't be submitted (POST'ed)
+            //.addClass('ace ace-switch ace-switch-5').wrap('<label class="inline" />').after('<span class="lbl"></span>');
+
+
+            //update buttons classes
+            var buttons = form.next().find('.EditButton .fm-button');
+            buttons.addClass('btn btn-sm').find('[class*="-icon"]').hide();//ui-icon, s-icon
+            buttons.eq(0).addClass('btn-primary').prepend('<i class="ace-icon fa fa-check"></i>');
+            buttons.eq(1).prepend('<i class="ace-icon fa fa-times"></i>')
+
+            buttons = form.next().find('.navButton a');
+            buttons.find('.ui-icon').hide();
+            buttons.eq(0).append('<i class="ace-icon fa fa-chevron-left"></i>');
+            buttons.eq(1).append('<i class="ace-icon fa fa-chevron-right"></i>');
+        }
+
+        function style_delete_form(form) {
+            var buttons = form.next().find('.EditButton .fm-button');
+            buttons.addClass('btn btn-sm btn-white btn-round').find('[class*="-icon"]').hide();//ui-icon, s-icon
+            buttons.eq(0).addClass('btn-danger').prepend('<i class="ace-icon fa fa-trash-o"></i>');
+            buttons.eq(1).addClass('btn-default').prepend('<i class="ace-icon fa fa-times"></i>')
+        }
+
+        function style_search_filters(form) {
+            form.find('.delete-rule').val('X');
+            form.find('.add-rule').addClass('btn btn-xs btn-primary');
+            form.find('.add-group').addClass('btn btn-xs btn-success');
+            form.find('.delete-group').addClass('btn btn-xs btn-danger');
+        }
+
+        function style_search_form(form) {
+            var dialog = form.closest('.ui-jqdialog');
+            var buttons = dialog.find('.EditTable')
+            buttons.find('.EditButton a[id*="_reset"]').addClass('btn btn-sm btn-info').find('.ui-icon').attr('class', 'ace-icon fa fa-retweet');
+            buttons.find('.EditButton a[id*="_query"]').addClass('btn btn-sm btn-inverse').find('.ui-icon').attr('class', 'ace-icon fa fa-comment-o');
+            buttons.find('.EditButton a[id*="_search"]').addClass('btn btn-sm btn-purple').find('.ui-icon').attr('class', 'ace-icon fa fa-search');
+        }
+
+        //it causes some flicker when reloading or navigating grid
+        //it may be possible to have some custom formatter to do this as the grid is being created to prevent this
+        //or go back to default browser checkbox styles for the grid
+        function styleCheckbox(table) {
+            /**
+             $(table).find('input:checkbox').addClass('ace')
+             .wrap('<label />')
+             .after('<span class="lbl align-top" />')
+
+
+             $('.ui-jqgrid-labels th[id*="_cb"]:first-child')
+             .find('input.cbox[type=checkbox]').addClass('ace')
+             .wrap('<label />').after('<span class="lbl align-top" />');
+             */
+        }
+
+
+        //unlike navButtons icons, action icons in rows seem to be hard-coded
+        //you can change them like this in here if you want
+        function updateActionIcons(table) {
+            /**
+             var replacement =
+             {
+                 'ui-ace-icon fa fa-pencil' : 'ace-icon fa fa-pencil blue',
+                 'ui-ace-icon fa fa-trash-o' : 'ace-icon fa fa-trash-o red',
+                 'ui-icon-disk' : 'ace-icon fa fa-check green',
+                 'ui-icon-cancel' : 'ace-icon fa fa-times red'
+             };
+             $(table).find('.ui-pg-div span.ui-icon').each(function(){
+						var icon = $(this);
+						var $class = $.trim(icon.attr('class').replace('ui-icon', ''));
+						if($class in replacement) icon.attr('class', 'ui-icon '+replacement[$class]);
+					})
+             */
+        }
+
+        //replace icons with FontAwesome icons like above
+        function updatePagerIcons(table) {
+            var replacement =
+                {
+                    'ui-icon-seek-first': 'ace-icon fa fa-angle-double-left bigger-140',
+                    'ui-icon-seek-prev': 'ace-icon fa fa-angle-left bigger-140',
+                    'ui-icon-seek-next': 'ace-icon fa fa-angle-right bigger-140',
+                    'ui-icon-seek-end': 'ace-icon fa fa-angle-double-right bigger-140'
+                };
+            $('.ui-pg-table:not(.navtable) > tbody > tr > .ui-pg-button > .ui-icon').each(function () {
+                var icon = $(this);
+                var $class = $.trim(icon.attr('class').replace('ui-icon', ''));
+
+                if ($class in replacement) icon.attr('class', 'ui-icon ' + replacement[$class]);
+            })
+        }
+
+        function enableTooltips(table) {
+            $('.navtable .ui-pg-button').tooltip({container: 'body'});
+            $(table).find('.ui-pg-div').tooltip({container: 'body'});
+        }
+
+
+//        /**
+//         * 自定义请求完成后处理事件
+//         * @param data
+//         */
+//        function afterCompleteCallback(data) {
+//            afterCompleteMsg(data)
+//        }
+
+        //var selr = jQuery(grid_selector).jqGrid('getGridParam','selrow');
+
+        $(document).one('ajaxloadstart.page', function (e) {
+            $.jgrid.gridDestroy(grid_selector);
+            $('.ui-jqdialog').remove();
+        });
+
+        $(grid_selector).closest(".ui-jqgrid-bdiv").css({'overflow-x': 'scroll'});
+    });
+    //it causes some flicker when reloading or navigating grid
+    //it may be possible to have some custom formatter to do this as the grid is being created to prevent this
+    //or go back to default browser checkbox styles for the grid
+    function styleCheckbox(table) {
+        /**
+         $(table).find('input:checkbox').addClass('ace')
+         .wrap('<label />')
+         .after('<span class="lbl align-top" />')
+
+
+         $('.ui-jqgrid-labels th[id*="_cb"]:first-child')
+         .find('input.cbox[type=checkbox]').addClass('ace')
+         .wrap('<label />').after('<span class="lbl align-top" />');
+         */
+    }
+
+
+    //        /**
+    //         * 自定义请求完成后处理事件
+    //         * @param data
+    //         */
+    //        function afterCompleteCallback(data) {
+    //            afterCompleteMsg(data)
+    //        }
+
+    //var selr = jQuery(grid_selector).jqGrid('getGridParam','selrow');
+
+    $(document).one('ajaxloadstart.page', function (e) {
+        $.jgrid.gridDestroy(grid_selector);
+        $('.ui-jqdialog').remove();
+    });
+
+
+    $().ready(function () {
+        addFocusin();
+        addFocusout();
+    });
+
+    //IE不支持dataURL函数不兼容IE，因此本打印只支持Eedge/谷歌/火狐
+    function printdiv() {
+        if ($("#qrcode").find('canvas').length == 0) {
+            layerAlertExclamation("请生成后再打印!");
+        } else {
+            var bb = $("#qrcode").find('canvas')[0];
+            var dataURL = bb.toDataURL("image/png");
+            var newWindow = window.open();
+            newWindow.document.write('<img style="width: 512px;height: 512px;position:absolute;left:10%;top:20%"src="' + dataURL + '"/>');
+            setTimeout(function () {
+                newWindow.print();
+            }, 500);
+        }
+    }
+
+
+    function enableEdit() {
+        $(".editItem").removeAttr('disabled');
+    }
+
+    function addFocusin() {
+        var menus = $('.center-menu');
+        $.each(menus, function (k, v) {
+            $(v).mouseover(function () {
+                $(v).css('background-color', '#ffbc42');
+            })
+        });
+    }
+
+    function addFocusout() {
+        var menus = $('.center-menu');
+        $.each(menus, function (k, v) {
+            $(v).mouseout(function () {
+                $(v).css('background-color', 'white');
+            })
+        });
+    }
+
+    $(function () {
+        //0.初始化fileinput
+        var oFileInput = new FileInput();
+        oFileInput.Init("txt_file", "/base/invoice/order/orderdetail/u/upload");
+        $('#edit_grid-jqGrid').hide();
+    });
+
+    //初始化fileinput
+    var FileInput = function () {
+        var oFile = new Object();
+
+        //初始化fileinput控件（第一次初始化）
+        oFile.Init = function (ctrlName, uploadUrl) {
+            var control = $('#' + ctrlName);
+
+            //初始化上传控件的样式
+            control.fileinput({
+                language: 'zh', //设置语言
+                uploadUrl: uploadUrl, //上传的地址
+                allowedFileExtensions: ['xls', 'xlsx'],//接收的文件后缀
+                showUpload: true, //是否显示上传按钮
+                showCaption: true,//是否显示标题
+                showPreview: false,
+                browseClass: "btn btn-primary", //按钮样式
+                previewFileIcon: "<i class='glyphicon glyphicon-king'></i>",
+            });
+
+            //导入文件上传完成之后的事件
+            $("#txt_file").on("fileuploaded", function (event, data, previewId, index) {
+                if (data.response.operateCode == "F") {
+                    layer.alert("导入失败,请看错误信息!", {icon: 2});
+                    var msg = data.response.datas;
+                    $.each(msg, function (k, v) {
+                        var objClone = $("#errorMessageTemplate").clone(true).removeAttr('hidden').removeAttr("id").attr('temp', 'temp');
+                        objClone.find("div[name='uploadError']").html(v);
+                        $("#errorMessageTemplate").after(objClone);
+                    })
+                } else if (data.response.operateCode == "S") {
+                    var objClone = $("#errorMessageTemplate").clone(true).removeAttr('hidden').removeAttr("id").attr('temp', 'temp');
+                    objClone.find("div[name='uploadError']").removeClass('text-danger').addClass('text-success').html(data.response.message);
+                    $("#errorMessageTemplate").after(objClone);
+                }
+                $('#grid-jqGrid').trigger("reloadGrid");
+            });
+        }
+        return oFile;
+    };
+
+
+    /**
+     * 查询全部
+     */
+    $('#ALL').click(function () {
+        $("#queryForm_status").val("");
+        var postData = $('#grid-jqGrid').jqGrid("getGridParam", "postData");
+        $.each(postData, function (k, v) {
+            delete postData[k];
+        });
+        $('#grid-jqGrid').trigger("reloadGrid");
+    });
+
+    /**
+     * 查询所有未开票
+     */
+    $('#NOTYET').click(function () {
+        $("#queryForm_status").val("0");
+        var formData = $('#queryForm').serializeJSON();
+        var postData = $("#grid-jqGrid").jqGrid("getGridParam", "postData");
+        $.extend(postData, formData);
+        $("#grid-jqGrid").jqGrid('setGridParam', {search: true}).trigger("reloadGrid");
+    });
+
+    /**
+     * 查询所有已开票
+     */
+    $('#ALREADY').click(function () {
+        $("#queryForm_status").val("1");
+        var formData = $('#queryForm').serializeJSON();
+        var postData = $("#grid-jqGrid").jqGrid("getGridParam", "postData");
+        $.extend(postData, formData);
+        $("#grid-jqGrid ").jqGrid('setGridParam', {search: true}).trigger("reloadGrid");
+    });
+
+    /**
+     * 自定义的修改按钮
+     */
+    function showEditModal() {
+        var sel_id = $('#grid-jqGrid').jqGrid('getGridParam', 'selrow');
+
+
+        if (sel_id == null) {
+            layer.alert("请选择修改行!");
+            return;
+        }
+        $('#editModal').modal('show');
+
+        var rowData = $("#grid-jqGrid").getRowData(sel_id);
+
+        $("#editForm_id").val(rowData.id);
+        $("#editForm_taxName").val(rowData.taxName);
+        $("#editForm_taxno").val(rowData.taxno);
+        $("#editForm_orderNo").val(rowData.orderNo);
+        $("#editForm_dkflags").val(rowData.dkflags);
+        $("#editForm_ticketCode").val(rowData.ticketCode);
+        $("#editForm_majorItems").val(rowData.majorItems);
+        $("#editForm_buyerName").val(rowData.buyerName);
+        $("#editForm_buyerTaxno").val(rowData.buyerTaxno);
+        $("#editForm_buyerAddr").val(rowData.buyerAddr);
+        $("#editForm_buyerProvince").val(rowData.buyerProvince);
+        $("#editForm_buyerTele").val(rowData.buyerTele);
+        $("#editForm_buyerMobile").val(rowData.buyerMobile);
+        $("#editForm_buyerEmail").val(rowData.buyerEmail);
+        $("#editForm_buyerType").val(rowData.buyerType);
+        $("#editForm_remarks").val(rowData.remarks);
+    }
+
+
+    function showUploadtModal() {
+        $("div[temp]").remove();
+        $('#myModal').modal('show');
+    }
+
+
+    //提交修改
+    function edit() {
+        $("#editForm").submit();
+    }
+
+    /**
+     * 自定义的删除按钮
+     */
+    $('#delBtn').click(function () {
+
+        layer.confirm('确定删除该订单吗？', {
+            btn: ['确定', '取消'] //按钮
+        }, function () {
+            var ids = $("#grid-jqGrid").jqGrid("getGridParam", "selarrrow");
+            if (ids == '' || ids == null || ids == 'undefined' || ids == undefined) {
+                layer.alert("请选择删除行!");
+                return;
+            }
+            $.post("/base/invoice/order/orderinfo/u/invalidBatch", 'orderIds=' + ids, function (result) {
+                layerAlertMsg(result.message);
+                $('#grid-jqGrid').trigger("reloadGrid");
+            }, "json");
+        });
+    });
+
+    /**
+     * 智能开票
+     */
+    $('#autoBillingBtn').click(function () {
+        var ids = $("#grid-jqGrid").jqGrid("getGridParam", "selarrrow");
+        if (ids == '' || ids == null || ids == 'undefined' || ids == undefined) {
+            layer.alert("请选择开票行!");
+            return;
+        }
+        $.post("/base/invoice/invoiceinfo/u/autoBilling", 'orderIds=' + ids, function (result) {
+            layerAlertMsg(result.message);
+            $('#grid-jqGrid').trigger("reloadGrid");
+        }, "json");
+    });
+
+
+    /**
+     * 普通开票
+     */
+    $('#billingBtn').click(function () {
+        var ids = $("#grid-jqGrid").jqGrid("getGridParam", "selarrrow");
+        if (ids == '' || ids == null || ids == 'undefined' || ids == undefined) {
+            layer.alert("请选择开票行!");
+            return;
+        }
+        $.post("/base/invoice/invoiceinfo/u/billing", 'orderIds=' + ids, function (result) {
+            layerAlertMsg(result.message);
+            $('#grid-jqGrid').trigger("reloadGrid");
+        }, "json");
+    });
+
+    /**
+     * 修改验证
+     */
+    $("#editForm").validate({
+//            debug:true, //调试模式，即使验证成功也不会跳转到目标页面
+        rules: { //配置验证规则，key就是被验证的dom对象，value就是调用验证的方法(也是json格式)
+            'orderNo': {
+                required: true, //必填。如果验证方法不需要参数，则配置为true
+            },
+            'majoritems': {
+                required: true,
+            },
+            'buyerName': {
+                required: true,
+            },
+            'buyerMobile': {
+                required: true,
+            },
+            'buyerType': {
+                required: true,
+            },
+        },
+        messages: {
+            'orderNo': {
+                required: "必填",
+            },
+            'majoritems': {
+                required: "必填",
+            },
+            'buyerName': {
+                required: "必填",
+            },
+            'buyerMobile': {
+                required: "必填",
+            },
+            'buyerType': {
+                required: "必填",
+            },
+        },
+        errorClass: "error",
+        success: 'valid',
+        unhighlight: function (element, errorClass, validClass) { //验证通过
+            $(element).tooltip('destroy').removeClass(errorClass);
+        },
+        errorPlacement: function (error, element) {
+            if ($(element).next("div").hasClass("tooltip")) {
+                $(element).attr("data-original-title", $(error).text()).tooltip("show");
+            } else {
+                $(element).attr("title",
+                    $(error).text()).tooltip("show");
+            }
+        },
+        submitHandler: function (form) {
+            jQuery(form).ajaxSubmit(function (data) {
+                if (data.operateCode == "F") {
+                    layerAlertMsg(data.message);
+                } else if (data.operateCode == "S") {
+                    layer.alert(data.message);
+                    $(function () {
+                        $('#editModal').modal('hide')
+                    });
+                    $('#grid-jqGrid').trigger("reloadGrid");
+                }
+            });
+        }
+    });
+
+
+    /**
+     * 二维码开票验证
+     */
+    $("#qrcodeOrderForm").validate({
+//            debug:true, //调试模式，即使验证成功也不会跳转到目标页面
+        rules: { //配置验证规则，key就是被验证的dom对象，value就是调用验证的方法(也是json格式)
+            'qrcodeItemName': {
+                required: true //必填。如果验证方法不需要参数，则配置为true
+            },
+            'qrcodeItemPrice': {
+                required: true
+            }
+        },
+        messages: {
+            'qrcodeItemName': {
+                required: "必填"
+            },
+            'qrcodeItemPrice': {
+                required: "必填"
+            }
+        },
+        errorClass: "error",
+        success: 'valid',
+        unhighlight: function (element, errorClass, validClass) { //验证通过
+            $(element).tooltip('destroy').removeClass(errorClass);
+        },
+        errorPlacement: function (error, element) {
+            if ($(element).next("div").hasClass("tooltip")) {
+                $(element).attr("data-original-title", $(error).text()).tooltip("show");
+            } else {
+                $(element).attr("title",
+                    $(error).text()).tooltip("show");
+            }
+        },
+        submitHandler: function (form) {
+            $('#qrcode').html("");
+            $(form).ajaxSubmit({
+                dataType: "json", //数据类型
+                success: function (data) {
+                    if (data.operateCode == "S") {
+                        console.log(data.datas);
+                        $('#qrcode').qrcode(data.datas);
+//                            $('#qrCodeModal').modal('hide');
+                    } else if (data.operateCode == "F") {
+                        layerAlertSad(data.message)
+                    }
+                }
+            });
+            return false; // 阻止表单自动提交事件
+        }
+    });
+
+</script>
+</html>

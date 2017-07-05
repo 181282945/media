@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aisino.base.invoice.userinfo.dao.UserInfoMapper">
+
+
+    <select id="findPageUserInfoCount" parameterType="UserInfo" resultType="Long">
+        SELECT count(0) FROM invoice_userinfo a LEFT JOIN invoice_eninfo b on a.taxno = b.taxNo
+        <trim prefix="WHERE">
+            a.delflags = 0
+            <if test="userInfo.taxNo != null and userInfo.taxNo != ''">
+                AND a.taxNo like concat('%',#{userInfo.taxNo},'%')
+            </if>
+
+            <if test="userInfo.taxname != null and userInfo.taxname != ''">
+                AND b.taxname like concat('%',#{userInfo.taxname},'%')
+            </if>
+
+        </trim>
+    </select>
+
+    <select id="findPageUserInfo" parameterType="UserInfo" resultType="UserInfo">
+        SELECT * FROM invoice_userinfo a LEFT JOIN invoice_eninfo b on a.taxno = b.taxNo
+        <trim prefix="WHERE" >
+                a.delflags = 0
+            <if test="userInfo.taxNo != null and userInfo.taxNo != ''">
+                AND a.taxNo like concat('%',#{userInfo.taxNo},'%')
+            </if>
+
+            <if test="userInfo.taxname != null and userInfo.taxname != ''">
+                AND b.taxname like concat('%',#{userInfo.taxname},'%')
+            </if>
+
+        </trim>
+        order by a.insertdate desc
+        <if test="pageAndSort != null and pageAndSort.startIndex != null and pageAndSort.rp != null">
+            LIMIT #{pageAndSort.startIndex},#{pageAndSort.rp}
+        </if>
+
+    </select>
+
+</mapper>

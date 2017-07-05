@@ -1,7 +1,29 @@
 spring:
   profiles:
-    #指定读取配置文件:dev(开发环境),prod(生产环境),test(测试环境)
+    #指定读取配置文件:dev(开发环境),prod(生产环境),qa(测试环境)
     active: dev
 
+
+#日志
 logging:
-  config: classpath:logback-dev.xml
+  config: classpath:logback-${spring.profiles.active}.xml
+
+#参数
+SystemParameter:
+#合法税率数组,如果用户导入数据,跟数组税率不匹配,那么将不会导入 0,0.015,
+  taxRate: 0.03,0.04,0.05,0.06,0.11,0.13,0.17
+  qrcodeUrl: http://localhost:8060/base/invoice/order/qrcodeorder/getQrcodeMsg
+
+
+
+#开启shutdown的安全验证
+management:
+  security:
+    enabled: true
+    roles: USER
+  port: 8060
+  address: 127.0.0.1
+#允许关闭请求
+endpoints:
+  shutdown:
+    enabled: true

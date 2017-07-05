@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aisino.e9.dao.invoice.order.orderdetail.OrderDetailMapper">
+
+
+    <select id="findOrderDetailVoPageCount" resultType="long">
+        SELECT COUNT(0) FROM invoice_orderdetail a LEFT JOIN invoice_invoiceinfo b ON a.serialNo = b.serialNo
+        WHERE a.orderNo = #{orderNo}
+
+    </select>
+
+    <select id="findOrderDetailVoPage" resultType="OrderDetailVO">
+        SELECT a.*,b.status FROM invoice_orderdetail a LEFT JOIN invoice_invoiceinfo b ON a.serialNo = b.serialNo
+        WHERE a.orderNo = #{orderNo}
+        ORDER BY insertdate DESC
+        <if test="pageAndSort != null and pageAndSort.startIndex != null and pageAndSort.rp != null">
+            LIMIT #{pageAndSort.startIndex},#{pageAndSort.rp}
+        </if>
+
+    </select>
+
+</mapper>

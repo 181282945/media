@@ -1,354 +1,203 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html lang="en">
 <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <meta charset="utf-8" />
-    <title>登录</title>
-
-    <meta name="description" content="User login page" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-
-    <!-- bootstrap & fontawesome -->
-    <link rel="stylesheet" href="/assets/css/bootstrap.css" />
-    <link rel="stylesheet" href="/components/font-awesome/css/font-awesome.min.css" />
-
-    <!-- text fonts -->
-    <link rel="stylesheet" href="/assets/css/ace-fonts.css" />
-
-    <!-- ace styles -->
-    <link rel="stylesheet" href="/assets/css/ace.css" />
-
-    <!--[if lte IE 9]>
-    <link rel="stylesheet" href="/assets/css/ace-part2.css"/>
-    <![endif]-->
-
-    <!--[if lte IE 9]>
-    <link rel="stylesheet" href="/assets/css/ace-ie.css"/>
-    <![endif]-->
-
-    <!-- HTML5shiv and Respond.js for IE8 to support HTML5 elements and media queries -->
-
-    <!--[if lte IE 8]>
-    <script src="/components/html5shiv/dist/html5shiv.min.js"></script>
-    <script src="/components/respond/dest/respond.min.js"></script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>云开票-登录</title>
+    <link href="/components/bootstrap/css/bootstrap.min.css" type="text/css" rel="stylesheet" />
+    <link href="/components/font-awesome-4.7.0/css/font-awesome.min.css" type="text/css" rel="stylesheet" >
+    <!--[if lt IE 9]>
+    <script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 </head>
+<body>
+<div class="container" style="padding-top: 10px;">
+    <div class="row" style="height: 100%;margin: 0px;padding: 0px">
+        <div class="col-md-2" onclick="toIndex()">
+            <img src="/img/logo.png">
+        </div>
+        <div class="col-md-2 text-center" onclick="toIndex()">
+            <div class="row">
+                <div class="col-md-2"
+                     style="border: 0px;border-right: 1px;border-style: solid;border-color: #1B6AAA;margin: 0px;">
+                    <h3>&emsp;</h3>
+                </div>
+                <div class="col-md-10">
+                    <h3>云开票系统</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2 col-md-offset-6">
+            <div class="row" style="vertical-align: middle">
+                &emsp;
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    没有账号?<a href="/reg">立即注册</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div style="padding-top: 10px;"></div>
+<div class="row" style="width:100%;height: 500px;background-image:url(../img/login-background.png); background-size: 100% 100%;  -moz-background-size: 100% 100%; -webkit-background-size: 100% 100%;">
+    <div class="col-md-6">
 
-<body class="login-layout">
-<div class="main-container">
-    <div class="main-content">
-        <div class="row">
-            <div class="col-sm-10 col-sm-offset-1">
-                <div class="login-container">
-                    <div class="center">
-                        <h1>
-                            <!--<i class="ace-icon fa fa-leaf green"></i>-->
-                            <span class="red"></span>
-                            <span class="white" id="id-text2"></span>
-                        </h1>
-                        <h4 class="blue" id="id-company-text">&copy; </h4>
+    </div>
+    <div class="col-md-6">
+        <div class="row" style="margin-top: 15%;margin-left: 10%;">
+            <div class="col-md-3"></div>
+            <div class="col-md-6" style="background-color: white;height: 310px;">
+                <div class="row">
+                    <div class="col-md-12 text-center"
+                         style="border: 0px;border-bottom: 1px;border-style: solid;border-color: #fcf4f2;padding: 0px;margin: 0px;">
+                        <h4 style="margin-top: 20px;margin-bottom: 20px">用户登录</h4>
                     </div>
-
-                    <div class="space-6"></div>
-
-                    <div class="position-relative">
-                        <div id="login-box" class="login-box visible widget-box no-border">
-                            <div class="widget-body">
-                                <div class="widget-main">
-                                    <h4 class="header blue lighter bigger">
-                                        <i class="ace-icon fa fa-coffee green"></i>
-                                        请输入登录信息
-                                    </h4>
-
-                                    <div class="space-6"></div>
-
-                                    <form id="form1" action="/checkLogin" method="post">
-                                        <fieldset>
-                                            <label class="block clearfix" for="name_key">
-														<span class="block input-icon input-icon-right">
-															<input id="name_key" name="name_key" type="text" class="form-control" placeholder="用户名" />
-															<i class="ace-icon fa fa-user"></i>
-														</span>
-                                            </label>
-
-                                            <label class="block clearfix"  for="pwd_key">
-														<span class="block input-icon input-icon-right">
-															<input  id="pwd_key" name="pwd_key"  type="password" class="form-control" placeholder="密码" />
-															<i class="ace-icon fa fa-lock"></i>
-														</span>
-                                            </label>
-
-                                            <div class="space"></div>
-
-                                            <div class="clearfix">
-                                                <label class="inline">
-                                                    <input type="checkbox" class="ace" />
-                                                    <span class="lbl"> 记住我</span>
-                                                </label>
-                                                <button id="btnAjaxSubmit" type="button" class="width-35 pull-right btn btn-sm btn-primary">
-                                                    <i class="ace-icon fa fa-key"></i>
-                                                    <span class="bigger-110">登录</span>
-                                                </button>
-                                            </div>
-
-                                            <div class="space-4"></div>
-                                        </fieldset>
-                                    </form>
-
-                                    <!--<div class="social-or-login center">-->
-                                    <!--<span class="bigger-110">Or Login Using</span>-->
-                                    <!--</div>-->
-
-                                    <!--<div class="space-6"></div>-->
-
-                                    <!--<div class="social-login center">-->
-                                    <!--<a class="btn btn-primary">-->
-                                    <!--<i class="ace-icon fa fa-facebook"></i>-->
-                                    <!--</a>-->
-
-                                    <!--<a class="btn btn-info">-->
-                                    <!--<i class="ace-icon fa fa-twitter"></i>-->
-                                    <!--</a>-->
-
-                                    <!--<a class="btn btn-danger">-->
-                                    <!--<i class="ace-icon fa fa-google-plus"></i>-->
-                                    <!--</a>-->
-                                    <!--</div>-->
-                                </div><!-- /.widget-main -->
-
-                                <div class="toolbar clearfix">
-                                    <div>
-                                        <!--<a href="#" data-target="#forgot-box" class="forgot-password-link">-->
-                                        <!--<i class="ace-icon fa fa-arrow-left"></i>-->
-                                        <!--I forgot my password-->
-                                        <!--</a>-->
-                                    </div>
-
-                                    <div>
-                                        <!--<a href="#" data-target="#signup-box" class="user-signup-link">-->
-                                        <!--I want to register-->
-                                        <!--<i class="ace-icon fa fa-arrow-right"></i>-->
-                                        <!--</a>-->
+                    <div class="col-md-12" style="margin-top: 10px;">
+                        <form id="loginForm" action="/checkLogin" method="post" role="form">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
+                                    <input type="text" class="form-control" name="name_key" placeholder="用户名">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-lock fa-fw"></i></span>
+                                    <input type="password" name="pwd_key" class="form-control" placeholder="密码">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-unlock-alt fa-fw"></i></span>
+                                        <input type="text" name="verification_code" class="form-control"
+                                               placeholder="验证码">
                                     </div>
                                 </div>
-                            </div><!-- /.widget-body -->
-                        </div><!-- /.login-box -->
-
-                        <div id="forgot-box" class="forgot-box widget-box no-border">
-                            <div class="widget-body">
-                                <div class="widget-main">
-                                    <h4 class="header red lighter bigger">
-                                        <i class="ace-icon fa fa-key"></i>
-                                        Retrieve Password
-                                    </h4>
-
-                                    <div class="space-6"></div>
-                                    <p>
-                                        Enter your email and to receive instructions
-                                    </p>
-
-                                    <form>
-                                        <fieldset>
-                                            <label class="block clearfix">
-														<span class="block input-icon input-icon-right">
-															<input type="email" class="form-control" placeholder="Email" />
-															<i class="ace-icon fa fa-envelope"></i>
-														</span>
-                                            </label>
-
-                                            <div class="clearfix">
-                                                <button type="button" class="width-35 pull-right btn btn-sm btn-danger">
-                                                    <i class="ace-icon fa fa-lightbulb-o"></i>
-                                                    <span class="bigger-110">Send Me!</span>
-                                                </button>
-                                            </div>
-                                        </fieldset>
-                                    </form>
-                                </div><!-- /.widget-main -->
-
-                                <div class="toolbar center">
-                                    <a href="#" data-target="#login-box" class="back-to-login-link">
-                                        Back to login
-                                        <i class="ace-icon fa fa-arrow-right"></i>
-                                    </a>
+                                <div class="col-md-4">
+                                    <img style="width:80px;height: 35px;" src="/images/kaptcha.jpg"
+                                         id="verification_code_img" title="点击更换"
+                                         onclick="javascript:refreshCaptcha(this.id);"/>
                                 </div>
-                            </div><!-- /.widget-body -->
-                        </div><!-- /.forgot-box -->
-
-                        <div id="signup-box" class="signup-box widget-box no-border">
-                            <div class="widget-body">
-                                <div class="widget-main">
-                                    <h4 class="header green lighter bigger">
-                                        <i class="ace-icon fa fa-users blue"></i>
-                                        New User Registration
-                                    </h4>
-
-                                    <div class="space-6"></div>
-                                    <p> Enter your details to begin: </p>
-
-                                    <form>
-                                        <fieldset>
-                                            <label class="block clearfix">
-														<span class="block input-icon input-icon-right">
-															<input type="email" class="form-control" placeholder="Email" />
-															<i class="ace-icon fa fa-envelope"></i>
-														</span>
-                                            </label>
-
-                                            <label class="block clearfix">
-														<span class="block input-icon input-icon-right">
-															<input type="text" class="form-control" placeholder="Username" />
-															<i class="ace-icon fa fa-user"></i>
-														</span>
-                                            </label>
-
-                                            <label class="block clearfix">
-														<span class="block input-icon input-icon-right">
-															<input type="password" class="form-control" placeholder="Password" />
-															<i class="ace-icon fa fa-lock"></i>
-														</span>
-                                            </label>
-
-                                            <label class="block clearfix">
-														<span class="block input-icon input-icon-right">
-															<input type="password" class="form-control" placeholder="Repeat password" />
-															<i class="ace-icon fa fa-retweet"></i>
-														</span>
-                                            </label>
-
-                                            <label class="block">
-                                                <input type="checkbox" class="ace" />
-                                                <span class="lbl">
-															I accept the
-															<a href="#">User Agreement</a>
-														</span>
-                                            </label>
-
-                                            <div class="space-24"></div>
-
-                                            <div class="clearfix">
-                                                <button type="reset" class="width-30 pull-left btn btn-sm">
-                                                    <i class="ace-icon fa fa-refresh"></i>
-                                                    <span class="bigger-110">Reset</span>
-                                                </button>
-
-                                                <button type="button" class="width-65 pull-right btn btn-sm btn-success">
-                                                    <span class="bigger-110">Register</span>
-
-                                                    <i class="ace-icon fa fa-arrow-right icon-on-right"></i>
-                                                </button>
-                                            </div>
-                                        </fieldset>
-                                    </form>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox">记住登录名
+                                        </label>
+                                    </div>
                                 </div>
-
-                                <div class="toolbar center">
-                                    <a href="#" data-target="#login-box" class="back-to-login-link">
-                                        <i class="ace-icon fa fa-arrow-left"></i>
-                                        Back to login
-                                    </a>
+                                <div class="col-md-6">
+                                    <div class="checkbox text-right">
+                                        忘记密码
+                                    </div>
                                 </div>
-                            </div><!-- /.widget-body -->
-                        </div><!-- /.signup-box -->
-                    </div><!-- /.position-relative -->
-
-                    <div class="navbar-fixed-top align-right">
-                        <br />
-                        &nbsp;
-                        <a id="btn-login-dark" href="#">Dark</a>
-                        &nbsp;
-                        <span class="blue">/</span>
-                        &nbsp;
-                        <a id="btn-login-blur" href="#">Blur</a>
-                        &nbsp;
-                        <span class="blue">/</span>
-                        &nbsp;
-                        <a id="btn-login-light" href="#">Light</a>
-                        &nbsp; &nbsp; &nbsp;
+                            </div>
+                            <button id="btnAjaxSubmit" name="btnAjaxSubmit" type="submit" class="btn btn-primary btn-block">登录</button>
+                        </form>
                     </div>
                 </div>
-            </div><!-- /.col -->
-        </div><!-- /.row -->
-    </div><!-- /.main-content -->
-</div><!-- /.main-container -->
+            </div>
+            <div class="col-md-3"></div>
+        </div>
+    </div>
+</div>
 
-<!-- basic scripts -->
-<!--[if !IE]> -->
-<script src="/components/jquery/dist/jquery.js"></script>
+<!--<div style="padding-top: 20px"></div>-->
+<div style="background-color: #2f3438;height: 140px">
+    <div class="col-md-12" style="margin-top: 30px">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4 text-center" style="height: 20%;color: #8c8c8c">
+                地址:深圳市福田区梅林街道下梅林北环大道7018号701航天信息
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12" style="margin-top: 30px">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4 text-center" style="height: 20%;color: #8c8c8c">
+                版权所有©2017&emsp;深圳航天信息有限公司&emsp;保留一切权利&emsp;粤ICP备14036066号
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="/js/jquery-1.9.1.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="/components/bootstrap/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="/js/jquery.form.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="/js/jquery.validate.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="/js/jquery.validate.extend.js" type="text/javascript" charset="utf-8"></script>
+<script src="/components/layer/layer.js" type="text/javascript" charset="utf-8"></script>
+<script src="/js/base.js" type="text/javascript" charset="utf-8"></script>
 
-<!-- <![endif]-->
+<script type="text/javascript" charset="utf-8">
+    //更换验证码
+    function refreshCaptcha(objId) {
+        $('#' + objId).attr("src", "/images/kaptcha.jpg?t=" + Math.random());
+    }
 
-<!--[if IE]>
-<script src="/components/jquery.1x/dist/jquery.js"></script>
-<![endif]-->
-<script src="/js/jquery.form.min.js"></script>
-<script type="text/javascript">
-    if('ontouchstart' in document.documentElement) document.write("<script src='/components/_mod/jquery.mobile.custom/jquery.mobile.custom.js'>"+"<"+"/script>");
-</script>
-
-<!-- inline scripts related to this page -->
-<script type="text/javascript">
-    jQuery(function($) {
-        $(document).on('click', '.toolbar a[data-target]', function(e) {
-            e.preventDefault();
-            var target = $(this).data('target');
-            $('.widget-box.visible').removeClass('visible');//hide others
-            $(target).addClass('visible');//show target
-        });
-    });
-
-
-
-    //you don't need this, just used for changing background
-    jQuery(function($) {
-        $('#btn-login-dark').on('click', function(e) {
-            $('body').attr('class', 'login-layout');
-            $('#id-text2').attr('class', 'white');
-            $('#id-company-text').attr('class', 'blue');
-
-            e.preventDefault();
-        });
-        $('#btn-login-light').on('click', function(e) {
-            $('body').attr('class', 'login-layout light-login');
-            $('#id-text2').attr('class', 'grey');
-            $('#id-company-text').attr('class', 'blue');
-
-            e.preventDefault();
-        });
-        $('#btn-login-blur').on('click', function(e) {
-            $('body').attr('class', 'login-layout blur-login');
-            $('#id-text2').attr('class', 'white');
-            $('#id-company-text').attr('class', 'light-blue');
-
-            e.preventDefault();
-        });
-
-    });
-
-
-    //提交登录信息
-    $(document).ready(function () {
-        var options = {
-            success: function (json) {
-                if(json.successMessage){
-                    if(json.operateCode == "F"){
-                        alert(json.message);
-                    }else if(json.operateCode == "S"){
-                        location.href = json.datas;
-                    }
+    var options = {
+        success: function (json) {
+            if (json.successMessage) {
+                if (json.operateCode == "F") {
+                    refreshCaptcha('verification_code_img');
+                    layerAlertMsg(json.message);
+                } else if (json.operateCode == "S") {
+                    location.href = json.datas;
                 }
             }
-        };
+        }
+    };
 
-        // ajaxForm
-        $("#form1").ajaxForm(options);
-
-        // ajaxSubmit
-        $("#btnAjaxSubmit").click(function () {
-            $("#form1").ajaxSubmit(options);
-        });
+    //登录JS验证
+    $("#loginForm").validate({
+//            debug:true, //调试模式，即使验证成功也不会跳转到目标页面
+        rules: { //配置验证规则，key就是被验证的dom对象，value就是调用验证的方法(也是json格式)
+            name_key: {
+                required: true, //必填。如果验证方法不需要参数，则配置为true
+                rangelength: [6, 20]
+            },
+            pwd_key: {
+                required: true,
+                rangelength: [8, 20]
+            },
+            verification_code: {
+                required: true
+            }
+        },
+        messages: {
+            name_key: {
+                required: "必填",
+                rangelength: "长度6-20"
+            },
+            pwd_key: {
+                required: "必填",
+                rangelength: "长度8-20"
+            },
+            verification_code: {
+                required: "必填"
+            }
+        },
+        errorClass: "error",
+        success: 'valid',
+        unhighlight: function (element, errorClass, validClass) { //验证通过
+            $(element).tooltip('destroy').removeClass(errorClass);
+        },
+        errorPlacement: function (error, element) {
+            if ($(element).next("div").hasClass("tooltip")) {
+                $(element).attr("data-original-title", $(error).text()).tooltip("show");
+            } else {
+                $(element).attr("title",
+                    $(error).text()).tooltip("show");
+            }
+        },
+        submitHandler: function (form) {
+            jQuery(form).ajaxSubmit(options);
+        }
     });
 </script>
-</body>
-</html>
 
+</html>

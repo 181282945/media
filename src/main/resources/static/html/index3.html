@@ -1,0 +1,813 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+<script type="text/javascript">
+    if(window.top != window.self){//不存在父页面
+        window.top.location = "/index";
+    }
+</script>
+    <meta charset="utf-8">
+    <title></title>
+
+
+    <!-- bootstrap & fontawesome -->
+    <link rel="stylesheet" href="/assets/css/bootstrap.css"/>
+    <link rel="stylesheet" href="/components/font-awesome/css/font-awesome.css"/>
+
+    <!-- text fonts -->
+    <link rel="stylesheet" href="/assets/css/ace-fonts.css"/>
+
+    <!-- ace styles -->
+    <link rel="stylesheet" href="/assets/css/ace.css" class="ace-main-stylesheet" id="main-ace-style"/>
+
+    <!--[if lte IE 9]>
+    <link rel="stylesheet" href="/assets/css/ace-part2.css" class="ace-main-stylesheet"/>
+    <![endif]-->
+
+    <!--[if lte IE 9]>
+    <link rel="stylesheet" href="/assets/css/ace-ie.css"/>
+    <![endif]-->
+
+    <!-- inline styles related to this page -->
+    <style>
+        /* some elements used in demo only */
+        .spinner-preview {
+            width: 100px;
+            height: 100px;
+            text-align: center;
+            margin-top: 60px;
+        }
+
+        .dropdown-preview {
+            margin: 0 5px;
+            display: inline-block;
+        }
+
+        .dropdown-preview > .dropdown-menu {
+            display: block;
+            position: static;
+            margin-bottom: 5px;
+        }
+
+        .u0_div {
+            /*position:absolute;*/
+            left: 0px;
+            top: 0px;
+            width: 454px;
+            height: 222px;
+            background: inherit;
+            background-color: rgba(255, 255, 255, 0);
+            box-sizing: border-box;
+            border-width: 1px;
+            border-style: solid;
+            border-color: rgba(228, 228, 228, 1);
+            border-radius: 8px;
+            -moz-box-shadow: none;
+            -webkit-box-shadow: none;
+            box-shadow: none;
+        }
+
+    </style>
+
+    <!-- ace settings handler -->
+    <script src="/assets/js/ace-extra.js"></script>
+
+    <!-- HTML5shiv and Respond.js for IE8 to support HTML5 elements and media queries -->
+
+    <!--[if lte IE 8]>
+    <script src="/components/html5shiv/dist/html5shiv.min.js"></script>
+    <script src="/components/respond/dest/respond.min.js"></script>
+    <![endif]-->
+
+
+    <link href="/css/base.css" type="text/css" rel="stylesheet"/>
+
+
+    <style>
+        label {
+            color: red
+        }
+
+        #main {
+            width: 970px;
+            height: auto;
+            margin: 0 auto;
+            color: #FFF;
+        }
+
+        #top {
+            width: 100%;
+            height: auto;
+            margin: 0 auto;
+            color: #FFF;
+        }
+
+        #content {
+            width: 100%;
+            height: 370px;
+            margin: 0 auto;
+            color: #FFF;
+        }
+
+        #logo {
+            width: 100%;
+            height: 30px;
+            color: black
+        }
+
+        #nav {
+            width: 100%;
+            height: 100px;
+        }
+
+        .news {
+            width: 454px;
+            height: 222px;
+            margin: 0 auto;
+            color: #FFF;
+        }
+
+        .navimg {
+            visibility: hidden
+        }
+    </style>
+</head>
+<body class="no-skin">
+<div id="main" style="background: white">
+    <!-- 头部导航 -->
+
+    <div id="top">
+        <div style="height: 5px"></div>
+        <div id="logo" style="text-align:right;">
+            <div th:style="${userName}!=null? '':'display: none'"><span th:text="${userName}"
+                                                                        style="position:relative;right: 3px;bottom:3px;font-size: small">XXXXX</span><img
+                    src="/images/u963.png" style="margin-bottom: 5px"><a href="/logout"><span
+                    style="position:relative;left:3px;bottom:3px;font-size: small;margin-right: 10px">退出登录</span></a>
+            </div>
+        </div>
+        <div id="nav" style="vertical-align:bottom;display:inline;">
+            <img class="inline" style="width: 167px;height: 39px;" src="/images/u73.png"><img
+                src="/images/u83.png"><span
+                class="inline" style="font-family: 微软雅黑;font-weight: bold;color: black;font-size: larger">云开票</span>
+            <a href="/center">
+                <div class="inline" style="float:right;margin-right:50px;position: relative;">
+                    <img src="/images/u75.png" class="navimg" id="memberCentre">
+                    <div style="position: absolute;left: 15px;top: 10px;color: black">
+                        <span style="font-family: 微软雅黑;font-weight: bold;font-size: medium;"
+                              onmouseout="mouseOutBgImg('memberCentre')" onmouseover="mouseOverBgImg('memberCentre')">个人中心</span>
+                    </div>
+                </div>
+            </a>
+            <a href="/base/invoice/invoiceinfo/u/tolist">
+                <div class="inline" style="float:right;margin-right:50px;position: relative;">
+                    <img src="/images/u75.png" class="navimg" id="invoiceMgr">
+                    <div style="position: absolute;left: 15px;top: 10px;color: black">
+                        <span style="font-family: 微软雅黑;font-weight: bold;font-size: medium;"
+                              onmouseout="mouseOutBgImg('invoiceMgr')"
+                              onmouseover="mouseOverBgImg('invoiceMgr')">发票管理</span>
+                    </div>
+                </div>
+            </a>
+            <a href="/base/invoice/order/orderinfo/u/tolist">
+                <div class="inline" style="float:right;margin-right:50px;position: relative;">
+                    <img src="/images/u75.png" class="navimg" id="order">
+                    <div style="position: absolute;left: 15px;top: 10px;color: black">
+                        <span style="font-family: 微软雅黑;font-weight: bold;font-size: medium;"
+                              onmouseout="mouseOutBgImg('order')" onmouseover="mouseOverBgImg('order')">订单仓库</span>
+                    </div>
+                </div>
+            </a>
+            <a href="/index">
+                <div class="inline" style="float:right;margin-right:50px;position: relative;">
+                    <img src="/images/u75.png">
+                    <div style="position: absolute;left: 30px;top: 10px;color: black">
+                        <span style="font-family: 微软雅黑;font-weight: bold;font-size: medium;">首  页</span>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <hr width="100%" style="margin-top: 0px; "/>
+
+    <!-- 头部导航 -->
+
+    <div id="content" style="margin-top: 20px;">
+        <div class="inline" style="float:left;margin-left: 8px">
+            <img src="/images/u89.png">
+        </div>
+
+        <div class="inline" style="float:left;margin-left: 10px;height: 346px;overflow:hidden">
+            <div class="tabbable" id="logindiv" th:style="${userName}!=null? 'display: none':'' ">
+                <ul class="nav nav-tabs padding-12 tab-color-blue background-blue" id="myTab4">
+                    <li class="active" style="width: 50%;text-align: center">
+                        <a data-toggle="tab" href="#home4">登录</a>
+                    </li>
+
+                    <li style="width: 50%;text-align: center">
+                        <a data-toggle="tab" href="#profile4">注册</a>
+                    </li>
+                </ul>
+
+                <div class="tab-content">
+                    <div id="home4" class="tab-pane in active" style="height: 270px;width: 271px;">
+                        <form id="loginForm" action="/checkLogin" method="post">
+                            <fieldset>
+                                <label class="block clearfix" for="name_key">
+										<span class="block input-icon input-icon-right">
+											<input id="name_key" name="name_key" type="text" class="form-control"
+                                                   placeholder="用户名"/>
+											<i class="ace-icon fa fa-user"></i>
+										</span>
+                                </label>
+
+                                <label class="block clearfix" for="pwd_key">
+										<span class="block input-icon input-icon-right">
+											<input id="pwd_key" name="pwd_key" type="password" class="form-control"
+                                                   placeholder="密码"/>
+											<i class="ace-icon fa fa-lock"></i>
+										</span>
+                                </label>
+
+
+                                <div class="form-group">
+                                            <span class="block input-icon input-icon-right">
+											<input id="verification_code" name="verification_code"
+                                                   class="form-control inline" style="width: 130px" type="text"
+                                                   placeholder="验证码">
+                                                 <img style="width:80px;height: 34px" src="/images/kaptcha.jpg"
+                                                      id="verification_code_img" title="点击更换"
+                                                      onclick="javascript:refreshCaptcha(this.id);"/>
+                                                   <i class="ace-icon fa fa-key"></i>
+										    </span>
+                                </div>
+
+
+                                <!--<div class="form-group">-->
+                                <!--<label class="form-label">验&ensp;证&ensp;码&ensp;:&ensp;</label>-->
+                                <!--<input type="text" class="form-control" style="width: 80px" name="verificationCode">-->
+
+                                <!--<label class="form-label" style="">-->
+                                <!--<img style="width:80px;height: 35px;" src="/images/kaptcha.jpg" id="verification_code_img2" title="点击更换" onclick="javascript:refreshCaptcha(this.id);"/>-->
+                                <!--</label>-->
+                                <!--</div>-->
+
+
+                                <div class="space"></div>
+
+                                <div class="clearfix">
+                                    <!--<label class="inline">-->
+                                    <!--<input type="checkbox" class="ace"/>-->
+                                    <!--<span class="lbl" style="color: black"> 记住我</span>-->
+                                    <!--</label>-->
+                                    <button id="btnAjaxSubmit" name="btnAjaxSubmit" type="submit"
+                                            class="width-35 pull-right btn btn-sm btn-primary">
+                                        <i class="ace-icon fa fa-key"></i>
+                                        <span class="bigger-110">登录</span>
+                                    </button>
+                                </div>
+
+                                <div class="space-4"></div>
+                            </fieldset>
+                        </form>
+                    </div>
+
+                    <div id="profile4" class="tab-pane " style="overflow:auto;width: 271px;height: 270px;">
+                        <form id="regForm" method="post" action="/base/invoice/userinfo/u/reg">
+                            <fieldset>
+                                <label class="block clearfix " for="usrno">
+														<span class="block input-icon input-icon-right">
+                                                            <input type="text" name="usrno" id="usrno"
+                                                                   class=" form-control" placeholder="用户账号"/>
+															<i class="ace-icon fa glyphicon-asterisk red"></i>
+														</span>
+                                </label>
+
+                                <label class="block clearfix " for="usrname">
+														<span class="block input-icon input-icon-right">
+															<input type="text" name="usrname" id="usrname"
+                                                                   class="form-control" placeholder="昵称"/>
+                                                            <i class="ace-icon fa glyphicon-asterisk red"></i>
+														</span>
+                                </label>
+
+                                <label class="block clearfix " for="password">
+														<span class="block input-icon input-icon-right">
+															<input type="password" name="password" id="password"
+                                                                   class="form-control" placeholder="密码"/>
+															<i class="ace-icon fa glyphicon-asterisk red"></i>
+														</span>
+                                </label>
+
+                                <label class="block clearfix" for="repeatPassword">
+														<span class="block input-icon input-icon-right">
+															<input type="password" name="repeatPassword"
+                                                                   id="repeatPassword" class="form-control"
+                                                                   placeholder="再次输入密码"/>
+															<i class="ace-icon fa glyphicon-asterisk red"></i>
+														</span>
+                                </label>
+
+                                <label class="block clearfix" for="mobilePhone">
+														<span class="block input-icon input-icon-right">
+															<input type="text" name="mobilePhone" id="mobilePhone"
+                                                                   class="form-control" placeholder="手机号码"/>
+                                                            <i class="ace-icon fa glyphicon-asterisk red"></i>
+														</span>
+                                </label>
+
+                                <div class="form-group">
+														<span class="block input-icon input-icon-right">
+                                                                	<input type="text" name="verification_code"
+                                                                           id="verification_code2"
+                                                                           class="form-control inline"
+                                                                           style="width: 130px" placeholder="验证码">
+                                                            <img style="width:80px;height: 34px"
+                                                                 src="/images/kaptcha.jpg" id="verification_code_img2"
+                                                                 title="点击更换"
+                                                                 onclick="javascript:refreshCaptcha(this.id);"/>
+															<i class="ace-icon fa glyphicon-asterisk red"></i>
+														</span>
+
+                                </div>
+
+
+                                <!--<div class="form-group">-->
+                                <!--<span class="block input-icon input-icon-right">-->
+                                <!--<input id="verification_code" name="verification_code" class="form-control inline" style="width: 130px" type="text" placeholder="验证码">-->
+                                <!--<img style="width:80px;height: 34px" src="/images/kaptcha.jpg" id="verification_code_img" title="点击更换" onclick="javascript:refreshCaptcha(this.id);"/>-->
+                                <!--<i class="ace-icon fa fa-key"></i>-->
+                                <!--</span>-->
+                                <!--</div>-->
+
+
+                                <label class="block clearfix" for="telephone">
+														<span class="block input-icon input-icon-right">
+															<input type="text" name="telephone" id="telephone"
+                                                                   class="form-control" placeholder="固定电话"/>
+                                                            <i class="ace-icon fa fa-phone-square"></i>
+														</span>
+                                </label>
+
+                                <label class="block clearfix" for="email">
+														<span class="block input-icon input-icon-right">
+															<input type="text" name="email" id="email"
+                                                                   class="form-control" placeholder="邮箱"/>
+                                                            <i class="ace-icon fa fa-envelope"></i>
+														</span>
+                                </label>
+
+
+                                <label class="block">
+                                    <input type="checkbox" onclick="onClickHander(this)" class="ace"/>
+                                    <span class="lbl" style="color: black">我已阅读并同意<a href="#">《注册协议》</a></span>
+                                </label>
+
+                                <!--<div class="space-24"></div>-->
+
+                                <div class="clearfix">
+                                    <button type="reset" onclick="disabledRegBtn()"
+                                            class="width-30 pull-left btn btn-sm">
+                                        <i class="ace-icon fa fa-refresh"></i>
+                                        <span class="bigger-110">重置</span>
+                                    </button>
+
+                                    <button type="button" id="BtnRegSubmit" name="BtnRegSubmit"
+                                            class="width-50 pull-right btn btn-sm btn-success btn disabled"
+                                            style="margin-right: 5px">
+                                        <span class="bigger-110">注册</span>
+
+                                        <i class="ace-icon fa fa-arrow-right icon-on-right"></i>
+                                    </button>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="tabbable" id="userdiv"
+                 th:style="${userName}!=null? 'width: 271px;height: 180px;':'display: none'">
+                <div class="col-sm-20">
+                    <div class="widget-box">
+                        <div class="widget-header">
+                            <h4 class="smaller" style="color: black">
+                                提示
+                                <!--<small>different directions and colors</small>-->
+                            </h4>
+                        </div>
+
+                        <div class="widget-body">
+                            <div class="widget-main" style="color: black;height: 300px;text-align: center">
+                                <p><h4 th:text="${userName}!=null? ${userName}:''">尊敬的XXXX</h4></p>
+                                <p><h4>欢迎使用云开票！</h4></p>
+                                <br/><br/>
+                                <p><h5>我们致力于提供电子发票的云开票服务，成为您贴心的税务管家。</h5></p>
+                                <br/><br/>
+                                <hr>
+
+                                <!-- #section:elements.tooltip -->
+                                <p>
+                                    <span class="btn btn-sm" data-rel="tooltip"><a href="/logout"> 退出登录</a></span>
+                                    <span class="btn btn-info btn-sm tooltip-info" style="right: 0px"><a
+                                            th:href="${completeEnInfo} ? '/base/invoice/order/orderinfo/u/tolist':'javascript:openAddEninfo();'"
+                                            th:text="${completeEnInfo} ? '去开票' : '完善信息'"></a></span>
+                                </p>
+                                <!-- /section:elements.tooltip -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="news inline" style="position:relative;margin-left: 8px;color: black;">
+        <div class=" u0_div inline">
+            <img style="margin-left: 10px;margin-top: 10px " src="/images/u99.png">
+            <span style="position: relative;top: 6px;left: 10px;color: black;font-family: 微软雅黑;font-weight: 600;font-size: medium">新闻动态</span>
+        </div>
+
+
+        <ul class="list-unstyled spaced" style="position:absolute;left: 30px;top: 50px">
+            <li>深圳航信成功签约深港驾校电子发票项目 new</li>
+
+            <li>深圳航信协助龙华区国家税务局开出 ---- 深圳第一张增值税卷式发票 new</li>
+
+            <li>汇聚青春力量，共建美丽梅林 new</li>
+
+            <li>人民日报┃身份证也能自助办理，航天信息科技改变生活 new</li>
+
+            <li>迎接挑战促转型 开拓创新谋发展 new</li>
+        </ul>
+    </div>
+
+
+    <div class="news inline" style="position:relative;margin-left: 45px;color: black;">
+        <div class="u0_div inline">
+            <img style="margin-left: 10px;margin-top: 10px " src="/images/u99.png">
+            <span style="position: relative;top: 6px;left: 10px;color: black;font-family: 微软雅黑;font-weight: 600;font-size: medium">政策动态</span>
+        </div>
+
+
+        <ul class="list-unstyled spaced" style="position:absolute;left: 30px;top: 50px">
+            <li>深圳航信成功签约深港驾校电子发票项目 new</li>
+
+            <li>深圳航信协助龙华区国家税务局开出 ---- 深圳第一张增值税卷式发票 new</li>
+
+            <li>汇聚青春力量，共建美丽梅林 new</li>
+
+            <li>人民日报┃身份证也能自助办理，航天信息科技改变生活 new</li>
+
+            <li>迎接挑战促转型 开拓创新谋发展 new</li>
+        </ul>
+    </div>
+
+
+    <!--&lt;!&ndash;&#45;&#45;&#45;&#45;&#45;&#45;头部&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&ndash;&gt;-->
+    <!--<div id="centre">-->
+    <!--<div id="centreLeft" style="display: inline">内容左</div>-->
+    <!--<div id="centreRight" style="display: inline">内容右</div>-->
+    <!--</div>-->
+    <!--------中间------------->
+    <div id="bottom"
+         style="position:relative;background-color: rgba(107, 107, 107, 1);  height:277px; margin-top: 50px ">
+        <div class="inline" style="float: left;height: 100%;width: 210px;">
+            <div style=" position:absolute; left:50px;  top:50px;  width:128px;  height:128px;">
+                <img style=" position:absolute; width:128px;  height:128px;" src="/images/u109.jpg">
+            </div>
+            <div style=" position:absolute; left:55px;  top:185px; font-weight: bold ">
+                <span>深圳航天信息微服务</span>
+            </div>
+
+        </div>
+
+        <div class="inline" style="float: left;height: 100%;width: 550px;">
+            <div style="margin-top: 50px;margin-left: 70px;">
+                <span style="font-family: 微软雅黑;font-size: 16px">公司名称：深圳航天信息有限公司</span>
+            </div>
+            <div style="margin-top: 10px;margin-left: 70px;">
+                <span>开户行：工行深圳分行鸿翔支行</span>
+            </div>
+            <div style="margin-top: 5px;margin-left: 70px;">
+                <span>账号：4000 0288 0920 0263 475</span>
+            </div>
+            <div style="margin-top: 5px;margin-left: 70px;">
+                <span>地址：深圳市福田区梅林街道下梅林北环大道7018号701航天信息</span>
+            </div>
+
+            <hr width="100%" style="margin-top: 50px;margin-bottom: 0px"/>
+
+            <div style="width:100%;text-align: center;margin-top: 0px">
+                <span style="font-size: x-small">701, Aisino, No. 7018, Beihuan Avenue, Xiameilin, Meilin sub-district，Futian District, Shenzhen</span>
+            </div>
+            <div style="width:100%;text-align: center;margin-top: 0px">
+                <span style="font-size: x-small">版权所有©2017 深圳航天信息有限公司  粤ICP备14036066号</span>
+            </div>
+        </div>
+
+        <div class="inline" style="float: left;height: 100%;width: 210px;">
+            <div style="margin-top: 50px;margin-left: 20px;">
+                <span style="font-size: 13px">服务热线：0755-95113</span>
+            </div>
+            <div style="margin-top: 5px;margin-left: 20px;">
+                <span style="font-size: 13px">Hotline：0755-95113</span>
+            </div>
+            <div style="margin-top: 5px;margin-left: 20px;">
+                <span style="font-size: 13px">传真：0755-32993339-8200</span>
+            </div>
+            <div style="margin-top: 5px;margin-left: 20px;">
+                <span style="font-size: 13px">Fax: 0755-32993339-8200</span>
+            </div>
+            <div style="margin-top: 10px;margin-left: 20px;">
+                <span style="font-size: 13px;font-weight: bold">法律声明</span><img
+                    style="margin-left: 5px;margin-bottom: 2px" src="/images/u123.png"><span
+                    style="margin-left: 5px;font-size: 13px;font-weight: bold">联系我们</span>
+            </div>
+
+        </div>
+
+
+    </div>
+    <!-----------底部---------------->
+</div>
+
+
+<!-- basic scripts -->
+
+<!--[if !IE]> -->
+<script src="/components/jquery/dist/jquery.js"></script>
+
+<!-- <![endif]-->
+
+<!--[if IE]>
+<script src="/components/jquery.1x/dist/jquery.js"></script>
+<![endif]-->
+<script src="/components/bootstrap/dist/js/bootstrap.js"></script>
+
+<!-- page specific plugin scripts -->
+
+<!--[if lte IE 8]>
+<script src="/components/ExplorerCanvas/excanvas.js"></script>
+<![endif]-->
+
+<!-- 自定义JS -->
+
+<script src="/js/jquery.form.min.js"></script>
+<script src="/js/jquery.validate.min.js"></script>
+<script src="/js/jquery.validate.extend.js"></script>
+<script src="/js/layer/layer.js"></script>
+<script src="/js/base.js"></script>
+
+<!-- inline scripts related to this page -->
+<script th:inline="javascript">
+
+    var options = {
+        success: function (json) {
+            if (json.successMessage) {
+                if (json.operateCode == "F") {
+                    refreshCaptcha('verification_code_img');
+                    layerAlertMsg(json.message);
+                } else if (json.operateCode == "S") {
+                    location.href = json.datas;
+                }
+            }
+        }
+    };
+
+    //勾选协议事件
+    function onClickHander(obj) {
+        if (obj.checked) {
+            $("#BtnRegSubmit").removeClass("btn disabled").attr("type", "submit");
+        } else {
+            disabledRegBtn();
+        }
+    }
+
+    //禁用注册按钮
+    function disabledRegBtn() {
+        $("#BtnRegSubmit").addClass("btn disabled").attr("type", "button");
+    }
+
+
+    //登录JS验证
+    $("#loginForm").validate({
+//            debug:true, //调试模式，即使验证成功也不会跳转到目标页面
+        rules: { //配置验证规则，key就是被验证的dom对象，value就是调用验证的方法(也是json格式)
+            name_key: {
+                required: true, //必填。如果验证方法不需要参数，则配置为true
+                rangelength: [6, 20]
+            },
+            pwd_key: {
+                required: true,
+                rangelength: [8, 20]
+            },
+            verification_code: {
+                required: true
+            }
+        },
+        messages: {
+            name_key: {
+                required: "必填",
+                rangelength: "长度6-20"
+            },
+            pwd_key: {
+                required: "必填",
+                rangelength: "长度8-20"
+            },
+            verification_code: {
+                required: "必填"
+            }
+        },
+        errorClass: "error",
+        success: 'valid',
+        unhighlight: function (element, errorClass, validClass) { //验证通过
+            $(element).tooltip('destroy').removeClass(errorClass);
+        },
+        //highlight: function (element, errorClass, validClass) { //未通过验证
+        //    // TODO
+        //}
+        //,
+        errorPlacement: function (error, element) {
+            if ($(element).next("div").hasClass("tooltip")) {
+                $(element).attr("data-original-title", $(error).text()).tooltip("show");
+            } else {
+                $(element).attr("title",
+                    $(error).text()).tooltip("show");
+            }
+        },
+        submitHandler: function (form) {
+            jQuery(form).ajaxSubmit(options);
+        }
+    });
+
+
+    //让当前表单调用validate方法，实现表单验证功能
+    $("#regForm").validate({
+//            debug:true, //调试模式，即使验证成功也不会跳转到目标页面
+        rules: { //配置验证规则，key就是被验证的dom对象，value就是调用验证的方法(也是json格式)
+            usrno: {
+                required: true, //必填。如果验证方法不需要参数，则配置为true
+                username: true,
+                rangelength: [6, 20],
+            },
+            usrname: {
+                required: true, //必填。如果验证方法不需要参数，则配置为true
+                rangelength: [1, 15]
+            },
+            password: {
+                required: true,
+                password: true,
+                rangelength: [8, 16],
+            },
+            repeatPassword: {
+                required: true,
+                equalTo: '#password' //表示和id="spass"的值相同
+            },
+            mobilePhone: {
+                required: true,
+                rangelength: [11, 15],
+                digits: true
+//                isMobile: true
+
+            },
+            verification_code: {
+                required: true
+//                    email:true
+            },
+            telephone: {
+                required: false,
+                rangelength: [1, 15]
+            },
+            email: {
+                required: false,
+                rangelength: [1, 20],
+                email: true
+            }
+        },
+        messages: {
+            usrno: {
+                required: "长度6-20个字符，由数字、字母组成，可插入特殊符号（仅限“下划线”、“短划线”、“长划线”）",
+                username: "长度6-20个字符，由数字、字母组成，可插入特殊符号（仅限“下划线”、“短划线”、“长划线”）",
+                rangelength: "长度6-20个字符，由数字、字母组成，可插入特殊符号（仅限“下划线”、“短划线”、“长划线”）"
+            },
+            usrname: {
+                required: "昵称长度为1-15个字符",
+                rangelength: "昵称长度为1-15个字符"
+            },
+            password: {
+                required: "长度8-16个字符，由数字、字母、特殊符号组合而成，至少两种以上不同字符组合。",
+                password: "长度8-16个字符，由数字、字母、特殊符号组合而成，至少两种以上不同字符组合。",
+                rangelength: "长度8-16个字符，由数字、字母、特殊符号组合而成，至少两种以上不同字符组合。"
+            },
+            repeatPassword: {
+                required: "长度8-16个字符，由数字、字母、特殊符号组合而成，至少两种以上不同字符组合。",
+                equalTo: "密码输入不一致"
+            },
+            mobilePhone: {
+                required: "手机号码长度为11-15个字符",
+                rangelength: "手机号码长度为11-15个字符",
+                digits: "只能为数字"
+            },
+            verification_code: {
+                required: "必填"
+//                    email:true
+            },
+            telephone: {
+                required: false,
+                rangelength: "固定电话不超过15个字符"
+            },
+            email: {
+                email: "邮箱用户名+分隔符@+邮箱注册的网站域名地址",
+                rangelength: "长度不得超过20",
+            }
+        },
+        submitHandler: function (form) {
+            jQuery(form).ajaxSubmit(function (data) {
+
+                console.log(JSON.stringify(data));
+                if (data.operateCode == "F") {
+                    layerAlertMsg(data.message);
+                    refreshCaptcha('verification_code_img2');
+                } else if (data.operateCode == "S") {
+
+                    layer.confirm('<h5 style="color: red"><b>恭喜您注册成功!</b></h5>', {
+                        btn: ['确定'] //按钮
+                    }, function (index) {
+                        layer.close(index);
+                        document.getElementById("regForm").reset()
+                        location.href = data.datas;
+                    });
+
+
+                }
+            });
+        }
+    });
+
+
+    //更换验证码
+    function refreshCaptcha(objId) {
+        $('#' + objId).attr("src", "/images/kaptcha.jpg?t=" + Math.random());
+    }
+
+    function mouseOverBgImg(objId) {
+        $('#' + objId).removeClass("navimg");
+    }
+
+    function mouseOutBgImg(objId) {
+        $('#' + objId).addClass("navimg");
+    }
+
+    $("ul.list-unstyled li").each(function () {
+        $(this).hover(function () {
+            $(this).addClass("newsMouseOver");
+        }, function () {
+            $(this).removeClass("newsMouseOver");
+        });
+    })
+
+
+    $(function () {
+        /*<![CDATA[*/
+        var completeEnInfo =  /*[[${completeEnInfo}]]*/;
+        /*]]>*/
+
+        if (completeEnInfo == null)
+            return;
+        if (!completeEnInfo) {
+            layer.confirm('<p>为方便您后续可以直接进行开票操作,建议立即前往完善企业信息.</p>', {
+                btn: ['取消', '完善信息'] //按钮
+            }, function (index) {
+                layer.close(index);
+            }, function () {
+                openAddEninfo();
+            });
+
+        } else {
+            /*<![CDATA[*/
+            var eninfoCheck =  /*[[${eninfoCheck}]]*/;
+            /*]]>*/
+            if (!eninfoCheck) {
+                layer.alert("您的企业信息尚在审核中,审核通过前无法进行</br>开票操作,请您耐心等候!");
+            }
+        }
+    });
+
+    function openAddEninfo() {
+        layer.open({
+            type: 2,
+            title: '完善企业信息',
+            shadeClose: true,
+            shade: false,
+            maxmin: true, //开启最大化最小化按钮
+            area: ['893px', '600px'],
+            content: '/base/invoice/eninfo/u/addEnInfoMav'
+        });
+    }
+
+
+</script>
+</body>
+</html>

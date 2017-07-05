@@ -1,43 +1,128 @@
 spring:
-    datasource:
-#      readSize: 1
-#      name: writeDataSource
-      type: com.alibaba.druid.pool.DruidDataSource
-      write:
-        url: jdbc:mysql://localhost:3306/cloud?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&useSSL=true
-        username: root
-        password: 123
-        driver-class-name: com.mysql.jdbc.Driver
+  datasource:
+#    readSize: 1
+#    name: writeDataSource
+    type: com.alibaba.druid.pool.DruidDataSource
+#    write:
+    url: jdbc:mysql://${SystemParameter.dbaddr}:${SystemParameter.dbport}/E9?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&useSSL=true
+    username: ${SystemParameter.username}
+    password: ${SystemParameter.password}
+    driver-class-name: com.mysql.jdbc.Driver
+    initialSize: 50 #初始化连接池大小
+    minIdle: 50 #最小连接池数量
+    maxActive: 500 #最大连接池数量
+    maxWait: 60000 #获取连接等待超时时间  毫秒
+    timeBetweenEvictionRunsMillis: 300000 #连接最小存活时间 毫秒
+    validationQuery: SELECT 'x' #测试连接
 
-    #thymeleaf开发环境关闭thymeleaf缓存
-    thymeleaf:
-      prefix: classpath:/static/html/
-      suffix: .html
-      cache: false
-      mode: LEGACYHTML5
-      encoding: utf-8
-      content-type: text/html
-    devtools:
-      restart:
-        enabled: true #热部署生效
-#        exclude: static
-      #
+
+    filters: stat,wall,log4j # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000 # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
+    useGlobalDataSourceStat: true # 合并多个DruidDataSource的监控数据
+
+
+  #thymeleaf开发环境关闭thymeleaf缓存
+  thymeleaf:
+#    prefix: classpath:/templates/
+    prefix: classpath:/static/html
+    suffix: .html
+    cache: false
+    mode: HTML5
+    encoding: utf-8
+    content-type: text/html
+  devtools:
+    restart:
+      enabled: true
+
+  #发送邮件SMTP 设置
+  mail:
+    host: smtp.qq.com
+    port: 25
+    username: 2521018380@qq.com
+    password: jdjmaodgotdseabc
+    defaultEncoding: UTF-8
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+
+  #redis配置
+  redis:
+    host: 192.168.55.134
+    port: 6380
+    # REDIS (RedisProperties)
+    # Redis数据库索引（默认为0）
+    database: 0
+    # Redis服务器连接密码（默认为空）
+    password:
+    # 连接池最大连接数（使用负值表示没有限制）
+    # 连接超时时间（毫秒）
+    timeout: 0
+    pool:
+      max-active: 100
+      # 连接池最大阻塞等待时间（使用负值表示没有限制）
+      max-wait: -1
+      # 连接池中的最大空闲连接
+      max-idle: 100
+      # 连接池中的最小空闲连接
+      min-idle: 0
+
+
+#服务器参数配置
 server:
   tomcat:
     access_log_enabled: true
-    basedir: target/tomcat
+    basedir: cloudinvoice/tomcat
+  port: 8060
+  max-threads: 2000
+  max-connections: 2000
+  session:
+    timeout: 10
+
+#SpringSecurity配置
 #security:
 #  ignored: /**
 
 
-# JWT
-jwt:
-  header: Authorization
-  secret: mySecret
-  expiration: 604800
-  tokenHead: "Bearer "
-#  route:
-#    authentication:
-#      path: auth
-#      refresh: refresh
-#      register: "auth/register"
+
+
+#参数
+SystemParameter:
+  #系统默认用户密码,用于重置
+  defaultUserInfoPwd: 123456bb
+  #数据库IP
+  dbaddr: 192.168.55.134
+  dbport: 8066
+  username: root
+  password: Aisino123!
+
+# http://ei.szhtxx.com:9001/front/request/4458
+# http://ei.szhtxx.com:9001/front/request/AisinoTest
+#请求报文参数配置
+Request:
+  url: http://ei.szhtxx.com:9001/front/request/4458
+  GlobalInfo:
+    terminalCode: 0 #//终端类型标识代码 0:B/S 请求来源 1:C/S 请求来源
+    appId: ZZS_PT_DZFP  #应用标识 固定为： DZFP 表示普通发票。 ZZS_PT_DZFP 表示增值税普通电子发票
+    version: 2.0    #接口版本
+    requestCode: P0000001  #数据交换请求发出方代码
+#    interfaceCode: DFXJ1009
+    responseCode: 121 #数据交换请求接受方代码
+    dataExchangeId: P0000001ECXML.FPKJ.BC.E_INV000000001  #据说没有校验,所以可以写死
+    downloadInterfaceCode: ECXML.FPXZ.CX.E_INV #下载接口代码
+    billingInterfaceCode: DFXJ1009 #测试开票 接口代码
+    stockInterfaceCode: ECXML.FPCX.KC.E_INV #库存查询接口代码
+  DataDescription:
+    zipCode: 0  #压缩标识 0：不压缩 1：压缩 (用 GZip 压缩) 企业调 用时数据包大于 10k 要求自动压缩，
+    encryptCode: 2 #加密标识 0:不加密 1: AES 加密 2:CA 加密
+    codeType: CA  #加密方式 0 、 AES 加密 、 CA 加密
+
+#快递鸟快递查询API
+Kdniao:
+  EBusinessID: 1268216
+  AppKey: 1467d43b-4ad7-4b89-a6fa-e4fc10782ff6
+  ReqURL: http://api.kdniao.cc/Ebusiness/EbusinessOrderHandle.aspx
+

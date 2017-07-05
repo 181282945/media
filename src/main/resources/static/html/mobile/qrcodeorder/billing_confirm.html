@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>云开票-开票确认</title>
+    <link rel="stylesheet" href="/components/bootstrap/css/bootstrap.min.css"/>
+    <!--[if lt IE 9]>
+    <script src="/components/bootstrap/js/html5shiv.min.js"></script>
+    <script src="/components/bootstrap/js/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<div class="container">
+    <div class="row" style="margin-bottom: 5px;margin-top: 40px">
+        <div class="col-sm-12 text-center">
+            <h4></h4>
+        </div>
+    </div>
+    <form action="/base/invoice/order/qrcodeorder/billingByQrcode" method="post" id="qrcodeOrderForm"
+          class="form-inline" role="form">
+        <fieldset>
+            <input type="text" hidden="hidden" th:value="${qrcodeOrderVo}?${qrcodeOrderVo.id}" name="id" />
+            <input type="text" hidden="hidden" th:value="${qrcodeOrderVo}?${qrcodeOrderVo.shardingId}" name="shardingId" />
+            <div class="form-group">
+                <label class="sr-only" for="buyerName">购买方</label>
+                <div class="input-group">
+                    <div class="input-group-addon">购&ensp;买&ensp;方</div>
+                    <input readonly type="text" class="form-control" name="buyerName"
+                           th:value="${qrcodeOrderVo}?${qrcodeOrderVo.buyerName}" id="buyerName" placeholder="购买方">
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label class="sr-only" for="buyerMobile">手机</label>
+                <div class="input-group">
+                    <div class="input-group-addon">手&emsp;&emsp;机</div>
+                    <input readonly type="text" class="form-control" name="buyerMobile"
+                           th:value="${qrcodeOrderVo}?${qrcodeOrderVo.buyerMobile}" id="buyerMobile" placeholder="手机">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="sr-only" for="buyerEmail">邮箱</label>
+                <div class="input-group">
+                    <div class="input-group-addon">邮&emsp;&emsp;箱</div>
+                    <input readonly type="text" class="form-control" name="buyerEmail"
+                           th:value="${qrcodeOrderVo}?${qrcodeOrderVo.buyerMobile}" id="buyerEmail" placeholder="邮箱">
+                </div>
+            </div>
+
+        <div class="row">
+            <div class="col-sm-12 text-center">
+                <h4>开票金额</h4>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <label class="sr-only" for="qrcodeItemPrice">合计</label>
+            <div class="input-group">
+                <div class="input-group-addon">合&emsp;&emsp;计</div>
+                <input readonly type="text" th:value="${qrcodeOrderVo}?${qrcodeOrderVo.qrcodeItemPrice}"
+                       class="form-control" name="qrcodeItemPrice"
+                       id="qrcodeItemPrice" placeholder="合计" />
+            </div>
+        </div>
+        <input hidden th:value="${qrcodeOrderVo}?${qrcodeOrderVo.qrcodeItemName}" name="qrcodeItemName" />
+        <div class="form-group">
+            <label class="sr-only text-right" th:text="${qrcodeOrderVo}?${qrcodeOrderVo.qrcodeItemName}"></label>
+            <div class="input-group">
+                <div class="input-group-addon text-right" th:text="${qrcodeOrderVo}?${qrcodeOrderVo.qrcodeItemName}"></div>
+                <input readonly type="text" th:value="${qrcodeOrderVo}?${qrcodeOrderVo.qrcodeItemPrice}" class="form-control" />
+            </div>
+        </div>
+
+        <div class="row" style=" margin-top: 30px">
+            <div class="col-sm-6 text-center">
+                <button class="btn btn-default " onclick="back()">修改</button>
+            </div>
+            <div class="col-sm-6 text-center">
+                <button type="submit" class="btn btn-primary ">确定</button>
+            </div>
+        </div>
+        </fieldset>
+    </form>
+</div>
+</body>
+<script src="/js/jquery-1.9.1.min.js"></script>
+<script src="/components/bootstrap/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="/js/jquery.form.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="/js/jquery.validate.min.js" type="text/javascript"></script>
+<script src="/js/jquery.validate.extend.js" type="text/javascript"></script>
+<script src="/js/jquery.serializejson.min.js" type="text/javascript"></script>
+<script src="/components/layer/layer.js"></script>
+<script src="/js/base.js"></script>
+<script th:inline="javascript" type="text/javascript" charset="utf-8">
+
+    function back() {
+        var BACK_URL =   /*<![CDATA[*/ /*[[${BACK_URL}]]*/ /*]]>*/;
+        window.location.href = BACK_URL;
+    }
+
+    $("#verificationForm").validate({
+//            debug:true, //调试模式，即使验证成功也不会跳转到目标页面
+        rules: { //配置验证规则，key就是被验证的dom对象，value就是调用验证的方法(也是json格式)
+            'buyerName': {
+                required: true //必填。如果验证方法不需要参数，则配置为true
+            },
+            'buyerMobile': {
+                required: true
+            },
+            'qrcodeItemPrice': {
+                required: true
+            }
+        },
+        messages: {
+            'buyerName': {
+                required: "必填"
+            },
+            'buyerMobile': {
+                required: "必填"
+            },
+            'qrcodeItemPrice': {
+                required: "必填"
+            }
+        },
+        errorClass: "error",
+        success: 'valid',
+        unhighlight: function (element, errorClass, validClass) { //验证通过
+            $(element).tooltip('destroy').removeClass(errorClass);
+        },
+        errorPlacement: function (error, element) {
+            if ($(element).next("div").hasClass("tooltip")) {
+                $(element).attr("data-original-title", $(error).text()).tooltip("show");
+            } else {
+                $(element).attr("title",
+                    $(error).text()).tooltip("show");
+            }
+        }
+    });
+</script>
+</html>

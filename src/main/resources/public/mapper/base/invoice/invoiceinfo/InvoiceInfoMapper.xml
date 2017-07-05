@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aisino.e9.dao.invoice.invoiceinfo.InvoiceInfoMapper">
+
+    <select id="findPageInvoiceInfoCount" resultType="Long">
+        SELECT COUNT(DISTINCT(a.id)) FROM invoice_invoiceinfo a LEFT JOIN invoice_orderdetail b ON a.serialNo =
+        b.serialNo WHERE a.shardingId = #{invoiceInfoVo.shardingId}
+
+        <if test="invoiceInfoVo.usrno != null and invoiceInfoVo.usrno != ''">
+            AND a.usrno = #{invoiceInfoVo.usrno}
+        </if>
+
+        <if test="invoiceInfoVo.taxNo != null and invoiceInfoVo.taxNo != ''">
+            AND a.taxno =#{invoiceInfoVo.taxNo}
+        </if>
+
+        <if test="invoiceInfoVo.serialNo != null and invoiceInfoVo.serialNo != ''">
+            AND a.serialNo like concat('%',#{invoiceInfoVo.serialNo},'%')
+        </if>
+
+        <if test="invoiceInfoVo.orderNo != null and invoiceInfoVo.orderNo != ''">
+            AND b.orderNo like concat('%',#{invoiceInfoVo.orderNo},'%')
+        </if>
+
+        <if test="invoiceInfoVo.invoiceNum != null and invoiceInfoVo.invoiceNum != ''">
+            AND a.invoiceNum like concat('%',#{invoiceInfoVo.invoiceNum},'%')
+        </if>
+    </select>
+
+    <select id="findPageInvoiceInfo" resultType="InvoiceInfoVo">
+        SELECT a.*,b.orderNo FROM invoice_invoiceinfo a LEFT JOIN (SELECT DISTINCT orderNo,serialNo FROM invoice_orderdetail) b ON a.serialNo =
+        b.serialNo WHERE a.shardingId = #{invoiceInfoVo.shardingId}
+        <if test="invoiceInfoVo.usrno != null and invoiceInfoVo.usrno != ''">
+            AND a.usrno = #{invoiceInfoVo.usrno}
+        </if>
+
+        <if test="invoiceInfoVo.taxNo != null and invoiceInfoVo.taxNo != ''">
+            AND a.taxno =#{invoiceInfoVo.taxNo}
+        </if>
+
+        <if test="invoiceInfoVo.serialNo != null and invoiceInfoVo.serialNo != ''">
+            AND a.serialNo like concat('%',#{invoiceInfoVo.serialNo},'%')
+        </if>
+
+        <if test="invoiceInfoVo.orderNo != null and invoiceInfoVo.orderNo != ''">
+            AND b.orderNo like concat('%',#{invoiceInfoVo.orderNo},'%')
+        </if>
+
+        <if test="invoiceInfoVo.invoiceNum != null and invoiceInfoVo.invoiceNum != ''">
+            AND a.invoiceNum like concat('%',#{invoiceInfoVo.invoiceNum},'%')
+        </if>
+        order by insertdate desc
+        <if test="pageAndSort != null and pageAndSort.startIndex != null and pageAndSort.rp != null">
+            LIMIT #{pageAndSort.startIndex},#{pageAndSort.rp}
+        </if>
+    </select>
+</mapper>

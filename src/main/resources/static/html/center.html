@@ -1,0 +1,726 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <title></title>
+
+    <!-- bootstrap & fontawesome -->
+    <link rel="stylesheet" href="/assets/css/bootstrap.css"/>
+    <link rel="stylesheet" href="/components/font-awesome/css/font-awesome.css"/>
+
+
+    <!-- text fonts -->
+    <link rel="stylesheet" href="/assets/css/ace-fonts.css"/>
+
+    <!-- ace styles -->
+    <link rel="stylesheet" href="/assets/css/ace.css" class="ace-main-stylesheet" id="main-ace-style"/>
+
+    <!--[if lte IE 9]>
+    <link rel="stylesheet" href="/assets/css/ace-part2.css" class="ace-main-stylesheet"/>
+    <![endif]-->
+
+    <!--[if lte IE 9]>
+    <link rel="stylesheet" href="/assets/css/ace-ie.css"/>
+    <![endif]-->
+
+    <!-- HTML5shiv and Respond.js for IE8 to support HTML5 elements and media queries -->
+
+    <!--[if lte IE 8]>
+    <script src="/components/html5shiv/dist/html5shiv.min.js"></script>
+    <script src="/components/respond/dest/respond.min.js"></script>
+    <![endif]-->
+
+
+    <link href="/css/base.css" type="text/css" rel="stylesheet"/>
+
+
+    <style>
+
+        #main {
+            width: 970px;
+            height: auto;
+            margin: 0 auto;
+            color: #FFF;
+        }
+
+        #top {
+            width: 100%;
+            height: auto;
+            margin: 0 auto;
+            color: #FFF;
+        }
+
+        #content {
+            width: 100%;
+            height: 500px;
+            margin: 0 auto;
+            color: #FFF;
+        }
+
+        #logo {
+            width: 100%;
+            height: 30px;
+            color: black
+        }
+
+        #nav {
+            width: 100%;
+            height: 100px;
+        }
+
+        .navimg {
+            visibility: hidden
+        }
+    </style>
+</head>
+<body class="no-skin">
+<div id="main" style="background: white">
+    <!-- 头部导航 -->
+
+    <div id="top">
+        <div style="height: 5px"></div>
+        <div id="logo" style="text-align:right;">
+            <div th:style="${userName}!=null? '':'display: none'"><span th:text="${userName}"
+                                                                        style="position:relative;right: 3px;bottom:3px;font-size: small">XXXXX</span><img
+                    src="/images/u963.png" style="margin-bottom: 5px"><a href="/logout"><span
+                    style="position:relative;left:3px;bottom:3px;font-size: small;margin-right: 10px">退出登录</span></a>
+            </div>
+        </div>
+        <div id="nav" style="vertical-align:bottom;display:inline;">
+            <img class="inline" style="width: 167px;height: 39px;" src="/images/u73.png"><img
+                src="/images/u83.png"><span class="inline"
+                                            style="font-family: 微软雅黑;font-weight: bold;color: black;font-size: larger">云开票</span>
+            <a href="/center">
+                <div class="inline" style="float:right;margin-right:50px;position: relative;">
+                    <img src="/images/u75.png" id="memberCentre">
+                    <div style="position: absolute;left: 15px;top: 10px;color: black">
+                        <span style="font-family: 微软雅黑;font-weight: bold;font-size: medium;">个人中心</span>
+                    </div>
+                </div>
+            </a>
+            <a href="/base/invoice/invoiceinfo/u/tolist">
+                <div class="inline" style="float:right;margin-right:50px;position: relative;">
+                    <img src="/images/u75.png" class="navimg" id="invoiceMgr">
+                    <div style="position: absolute;left: 15px;top: 10px;color: black">
+                    <span style="font-family: 微软雅黑;font-weight: bold;font-size: medium;"
+                          onmouseout="mouseOutBgImg('invoiceMgr')"
+                          onmouseover="mouseOverBgImg('invoiceMgr')">发票管理</span>
+                    </div>
+                </div>
+            </a>
+            <a href="/base/invoice/order/orderinfo/u/tolist">
+                <div class="inline" style="float:right;margin-right:50px;position: relative;">
+                    <img src="/images/u75.png" class="navimg" id="order">
+                    <div style="position: absolute;left: 15px;top: 10px;color: black">
+                        <span style="font-family: 微软雅黑;font-weight: bold;font-size: medium;"
+                              onmouseout="mouseOutBgImg('order')" onmouseover="mouseOverBgImg('order')">订单仓库</span>
+                    </div>
+                </div>
+            </a>
+            <a href="/index">
+                <div class="inline" style="float:right;margin-right:50px;position: relative;">
+                    <img src="/images/u75.png" class="navimg" id="index">
+                    <div style="position: absolute;left: 30px;top: 10px;color: black">
+                        <span style="font-family: 微软雅黑;font-weight: bold;font-size: medium;"
+                              onmouseout="mouseOutBgImg('index')" onmouseover="mouseOverBgImg('index')">首  页</span>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <hr width="100%" style="margin-top: 0px; "/>
+
+    <!-- 头部导航 -->
+
+    <div id="content" style="margin-top: 20px;color: black;margin-left: 2%;margin-right: 5%;">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="row">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-10">当前位置：<span th:text="${MODULE_NAME}"></span></div>
+                    </div>
+                </div>
+                <div class="col-md-9"></div>
+            </div>
+        </div>
+        <!--<div class="container">-->
+        <div class="tabbable tabs-left " style="margin-top: 5px;margin-left: 5%;margin-right: 5%;">
+            <ul class="nav nav-tabs text-center" id="myTab3">
+                <li class="active ">
+                    <a data-toggle="tab" href="#home3" aria-expanded="true">
+                        <!--<i class="pink ace-icon fa fa-tachometer bigger-110"></i>-->
+                        基本信息
+                    </a>
+                </li>
+
+                <li class="">
+                    <a data-toggle="tab" href="#profile3" aria-expanded="false">
+                        <!--<i class="blue ace-icon fa fa-user bigger-110"></i>-->
+                        企业信息
+                    </a>
+                </li>
+
+                <li class="">
+                    <a data-toggle="tab" href="#dropdown13" aria-expanded="false">
+                        <!--<i class="ace-icon fa fa-rocket"></i>-->
+                        修改密码
+                    </a>
+                </li>
+                <li class="">
+                    <a data-toggle="tab" href="#dropdown14" aria-expanded="false">
+                        <!--<i class="ace-icon fa fa-rocket"></i>-->
+                        基本设置
+                    </a>
+                </li>
+                <li class="">
+                    <a data-toggle="tab" href="#dropdown15" aria-expanded="false">
+                        <!--<i class="ace-icon fa fa-rocket"></i>-->
+                        快递信息
+                    </a>
+                </li>
+            </ul>
+
+            <div class="tab-content" style="width: 85%;height: 400px">
+                <div id="home3" class="tab-pane active">
+                    <div class="container" style="width: 100%;">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <img src="images/u99.png"><span
+                                    style="font-size: medium;margin-left: 2px;">个人基本信息</span>
+                            </div>
+                            <div class="col-md-4">
+
+                            </div>
+                            <div class="col-md-4 ">
+                                <button type="button" id="editUserInfoBtn" class="btn btn-white pull-right">修改</button>
+                            </div>
+                        </div>
+
+                        <div class="space"></div>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <!--<img src="images/u99.png"><span style="font-size: medium;margin-left: 2px;">个人基本信息</span>-->
+                            </div>
+                            <div class="col-md-4">
+                                <p><span>用户账号&ensp;:&ensp;</span><span
+                                        th:text="${currentUserInfo}? ${currentUserInfo.usrno}">XXXX</span>
+                                </p>
+                                <p><span>昵&emsp;&emsp;称&ensp;:&ensp;</span><span
+                                        th:text="${currentUserInfo}? ${currentUserInfo.usrname}">XXXX</span>
+                                </p>
+                                <p><span>手&emsp;&emsp;机&ensp;:&ensp;</span><span
+                                        th:text="${currentUserInfo}? ${currentUserInfo.mobilePhone}">XXXX</span></p>
+                                <p><span>固定电话&ensp;:&ensp;</span><span
+                                        th:text="${currentUserInfo}? ${currentUserInfo.telephone}">XXXX</span></p>
+                                <p><span>邮&emsp;&emsp;箱&ensp;:&ensp;</span><span
+                                        th:text="${currentUserInfo}? ${currentUserInfo.email}">XXXX</span></p>
+                            </div>
+                            <div class="col-md-4 ">
+                                <!--<button type="button" class="btn btn-white pull-right">修改</button>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="profile3" class="tab-pane">
+                    <div class="container" style="width: 100%;">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <img src="images/u99.png"><span style="font-size: medium;margin-left: 2px;">企业信息</span>
+                            </div>
+                            <div class="col-md-4 text-center">
+                                <h5><strong th:text="${eninfoCheck} ? '已审核通过':'等待审核'"></strong></h5>
+                            </div>
+                            <div class="col-md-4 ">
+                                <button type="button" id="editEninfo" class="btn btn-white pull-right">修改</button>
+                            </div>
+                        </div>
+
+                        <div class="space"></div>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <!--<img src="images/u99.png"><span style="font-size: medium;margin-left: 2px;">个人基本信息</span>-->
+                            </div>
+                            <div class="col-md-4">
+                                <p><span>企业税号&ensp;:&ensp;</span><span
+                                        th:text="${currentEnInfo}? ${currentEnInfo.taxno}">XXXX</span></p>
+                                <p><span>企业名称&ensp;:&ensp;</span><span
+                                        th:text="${currentEnInfo}? ${currentEnInfo.taxname}">XXXX</span>
+                                </p>
+                                <p><span>银行账号&ensp;:&ensp;</span><span
+                                        th:text="${currentEnInfo}? ${currentEnInfo.bankaccount}">XXXX</span></p>
+                                <p><span>企业地址&ensp;:&ensp;</span><span
+                                        th:text="${currentEnInfo}? ${currentEnInfo.taxaddr}">XXXX</span>
+                                </p>
+                                <p><span>收&ensp;款&ensp;人&ensp;:&ensp;</span><span
+                                        th:text="${currentEnInfo}? ${currentEnInfo.payee}">XXXX</span></p>
+                                <p><span>开&ensp;票&ensp;人&ensp;:&ensp;</span><span
+                                        th:text="${currentEnInfo}? ${currentEnInfo.drawer}">XXXX</span></p>
+                                <p><span>企业电话&ensp;:&ensp;</span><span
+                                        th:text="${currentEnInfo}? ${currentEnInfo.taxtel}">XXXX</span></p>
+                                <p><span>复&ensp;核&ensp;人&ensp;:&ensp;</span><span
+                                        th:text="${currentEnInfo}? ${currentEnInfo.reviewer}">XXXX</span>
+                                </p>
+                            </div>
+                            <div class="col-md-4 ">
+                                <!--<button type="button" class="btn btn-white pull-right">修改</button>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="dropdown13" class="tab-pane">
+                    <div class="container" style="width: 100%;">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <img src="images/u99.png"><span style="font-size: medium;margin-left: 2px;">修改密码</span>
+                            </div>
+                        </div>
+
+                        <div class="space"></div>
+
+                        <div class="row">
+                            <div class="col-md-3">
+                            </div>
+                            <div class="col-md-6">
+                                <form id="pwdFrom" method="post" class="form-inline" role="form"
+                                      action="/base/invoice/userinfo/u/editPwdByCurrentUser">
+                                    <fieldset>
+                                        <div class="form-group">
+                                            <label class="form-label">原&ensp;密&ensp;码&ensp;:&ensp;</label>
+                                            <input type="password" class="form-control" name="originalPassword">
+                                        </div>
+                                        <div class="space"></div>
+                                        <div class="form-group">
+                                            <label class="form-label">新&ensp;密&ensp;码&ensp;:&ensp;</label>
+                                            <input type="password" id="password" class="form-control" name="password">
+                                        </div>
+                                        <div class="space"></div>
+                                        <div class="form-group">
+                                            <label class="form-label">确认密码&ensp;:&ensp;</label>
+                                            <input type="password" class="form-control" name="repeatPassword">
+                                        </div>
+                                        <div class="space"></div>
+                                        <div class="form-group">
+                                            <label class="form-label">验&ensp;证&ensp;码&ensp;:&ensp;</label>
+                                            <input type="text" class="form-control" style="width: 80px"
+                                                   name="verificationCode">
+
+                                            <label class="form-label" style="">
+                                                <img style="width:80px;height: 35px;" src="/images/kaptcha.jpg"
+                                                     id="verification_code_img2" title="点击更换"
+                                                     onclick="javascript:refreshCaptcha(this.id);"/>
+                                            </label>
+
+
+                                        </div>
+                                        <div class="space"></div>
+                                        <div class="row">
+                                            <div class="col-md-2 col-md-offset-5">
+                                                <button type="submit" class="btn btn-white">保存</button>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </form>
+                            </div>
+                            <div class="col-md-3 ">
+                                <!--<button type="button" class="btn btn-white pull-right">修改</button>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="dropdown14" class="tab-pane">
+                    <div class="container" style="width: 100%;">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <img src="images/u99.png"><span style="font-size: medium;margin-left: 2px;">基本设置</span>
+                            </div>
+                        </div>
+
+                        <div class="space"></div>
+
+                        <div class="row">
+                            <div class="col-md-3">
+                                <!--<img src="images/u99.png"><span style="font-size: medium;margin-left: 2px;">个人基本信息</span>-->
+                            </div>
+                            <div class="col-md-9">
+                                <form id="baseOptionFrom" method="post" class="form-inline" role="form"
+                                      action="/base/invoice/eninfo/u/addOrUpdateByCurrentUser">
+                                    <fieldset>
+                                        <input name="id" th:value="${currentEnInfo}? ${currentEnInfo.id}" type="text"
+                                               hidden class="ace">
+                                        <div class="form-group">
+                                            <label class="form-label">开&emsp;票&emsp;选&emsp;项&ensp;:&ensp;</label>
+                                            <label class="form-label">
+                                                <input disabled name="billingOption"
+                                                       th:checked="${currentEnInfo}? ${currentEnInfo.billingOption} == '0' "
+                                                       value="0" type="radio" class="ace">
+                                                <span class="lbl">手动开票</span>
+                                            </label>
+                                            <label class="form-label">
+                                                <input disabled name="billingOption"
+                                                       th:checked="${currentEnInfo}? ${currentEnInfo.billingOption} == '1' "
+                                                       value="1" type="radio" class="ace">
+                                                <span class="lbl">自动开票</span>
+                                            </label>
+                                        </div>
+                                        <div class="space"></div>
+                                        <div class="form-group">
+                                            <label class="form-label">优&emsp;惠&emsp;政&emsp;策&ensp;:&ensp;</label>
+                                            <label class="form-label">
+                                                <input disabled name="yhzcbs"
+                                                       th:checked="${currentEnInfo}? ${currentEnInfo.yhzcbs} == '0'"
+                                                       value="0" type="radio" class="ace">
+                                                <span class="lbl">不使用</span>
+                                            </label>
+
+                                            <label class="form-label">
+                                                <input disabled name="yhzcbs"
+                                                       th:checked="${currentEnInfo}? ${currentEnInfo.yhzcbs} == '1'"
+                                                       value="1" type="radio" class="ace">
+                                                <span class="lbl">使用</span>
+                                            </label>
+                                        </div>
+
+                                        <div class="space"></div>
+                                        <div class="form-group">
+                                            <label class="form-label">零&ensp;税&ensp;率&ensp;标&ensp;识&ensp;:&ensp;</label>
+                                            <label class="form-label">
+                                                <input disabled name="lslbs"
+                                                       th:checked="${currentEnInfo}?  ${currentEnInfo.lslbs} == null "
+                                                       value="" type="radio" class="ace">
+                                                <span class="lbl">无</span>
+                                            </label>
+                                            <label class="form-label">
+                                                <input disabled name="lslbs"
+                                                       th:checked="${currentEnInfo}?  ${currentEnInfo.lslbs} == '1' "
+                                                       value="1" type="radio" class="ace">
+                                                <span class="lbl">免税</span>
+                                            </label>
+                                            <label class="form-label">
+                                                <input disabled name="lslbs"
+                                                       th:checked="${currentEnInfo}? ${currentEnInfo.lslbs} == '2' "
+                                                       value="2" type="radio" class="ace">
+                                                <span class="lbl">不征税</span>
+                                            </label>
+                                            <label class="form-label">
+                                                <input disabled name="lslbs"
+                                                       th:checked="${currentEnInfo}? ${currentEnInfo.lslbs} == '3' "
+                                                       value="3" type="radio" class="ace" />
+                                                <span class="lbl">普通零税率</span>
+                                            </label>
+                                        </div>
+                                        <div class="space"></div>
+                                        <div class="form-group">
+                                            <label class="form-label">增值税特殊管理&ensp;:&ensp;</label>
+                                            <input disabled type="text" class="form-control" name="zzstsgl">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label">发&emsp;票&emsp;面&emsp;额&ensp;:&ensp;</label>
+                                            <input type="text" class="form-control" name="maxAmount" th:value="${currentEnInfo}? ${currentEnInfo.maxAmount}" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label">&emsp;&emsp;分&emsp;机&emsp;号&ensp;:&ensp;</label>
+                                            <input type="text" class="form-control" id="fjh">
+                                            <button type="button" id="getCntBtn" class="form-control btn btn-white">查询
+                                            </button>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label">&emsp;&emsp;&emsp;&emsp;库&emsp;存&ensp;:&ensp;</label>
+                                            <input type="text" class="form-control" id="cnt" disabled>
+                                        </div>
+
+                                        <div class="space"></div>
+
+                                        <div class="row">
+                                            <div class="col-md-2 col-md-offset-5">
+                                                <button type="button" id="baseOptionBtn" class="btn btn-white">保存
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </form>
+                            </div>
+                            <div class="col-md-3 ">
+                                <!--<button type="button" class="btn btn-white pull-right">修改</button>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="dropdown15" class="tab-pane">
+                    <div class="container" style="width: 100%;">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <img src="images/u99.png"><span style="font-size: medium;margin-left: 2px;">快递信息</span>
+                            </div>
+                        </div>
+
+                        <div class="space"></div>
+
+                        <div class="row">
+                            <div class="col-md-3">
+                                <!--<img src="images/u99.png"><span style="font-size: medium;margin-left: 2px;">个人基本信息</span>-->
+                            </div>
+                            <div class="col-md-9">
+                                <form id="expressAddForm" method="post" class="form-inline" role="form"
+                                      action="/sysmgr/expressinfo/add">
+                                    <fieldset>
+
+                                        <div class="form-group">
+                                            <label class="form-label">快递单号&ensp;:&ensp;</label>
+                                            <label class="form-label">
+                                                <input id="expNo" name="expNo" type="text" placeholder="新增快递单号"/>
+                                                <span class="lbl"></span>
+                                            </label>
+                                            <label class="form-label">
+                                                <select id="selExpCode" name="expCode" class="form-control"
+                                                        th:utext="${ExCoSelectOption}"></select>
+                                            </label>
+                                            <label class="form-label">
+                                                <button type="button" id="expressAddBtn" class="btn btn-white">保存
+                                                </button>
+                                            </label>
+                                        </div>
+                                    </fieldset>
+                                </form>
+
+                                <form id="expressQueryForm" method="get" class="form-inline" role="form"
+                                      action="/sysmgr/expressinfo/getOrderTraces">
+                                    <fieldset>
+
+                                        <div class="form-group">
+                                            <label class="form-label">快递单号&ensp;:&ensp;</label>
+                                            <label class="form-label">
+                                                <input id="expNo2" name="expNo" type="text" placeholder="查询快递单号"/>
+                                                <span class="lbl"></span>
+                                            </label>
+                                            <label class="form-label">
+                                                <select id="selExpCode2" name="expCode" class="form-control"
+                                                        th:utext="${ExCoSelectOption}"></select>
+                                            </label>
+                                            <label class="form-label">
+                                                <button type="button" id="expressQueryBtn" class="btn btn-white">查询
+                                                </button>
+                                            </label>
+                                        </div>
+                                    </fieldset>
+                                </form>
+                            </div>
+                            <div class="col-md-3 ">
+                            </div>
+                        </div>
+                        <div class="space"></div>
+                        <div class="row">
+                            <div class="col-md-1">
+                                <!--<img src="images/u99.png"><span style="font-size: medium;margin-left: 2px;">个人基本信息</span>-->
+                            </div>
+                            <div class="col-md-10" id="traces">
+
+                            </div>
+                            <div class="col-md-1 ">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--</div>-->
+    </div>
+</div>
+
+
+<!-- basic scripts -->
+
+<!--[if !IE]> -->
+<script src="/components/jquery/dist/jquery.js"></script>
+
+<!-- <![endif]-->
+
+<!--[if IE]>
+<script src="/components/jquery.1x/dist/jquery.js"></script>
+<![endif]-->
+<script type="text/javascript">
+    if ('ontouchstart' in document.documentElement) document.write("<script src='/components/_mod/jquery.mobile.custom/jquery.mobile.custom.js'>" + "<" + "/script>");
+</script>
+<script src="/components/bootstrap/dist/js/bootstrap.js"></script>
+
+<!-- page specific plugin scripts -->
+
+<!--[if lte IE 8]>
+<script src="/components/ExplorerCanvas/excanvas.js"></script>
+<![endif]-->
+
+<!-- 自定义JS -->
+<script src="/js/jquery.form.min.js"></script>
+<script src="/js/jquery.validate.min.js"></script>
+<script src="/js/jquery.validate.extend.js"></script>
+<script src="/js/layer/layer.js"></script>
+<script src="/js/base.js"></script>
+
+
+<script th:inline="javascript">
+
+
+    function mouseOverBgImg(objId) {
+        $('#' + objId).removeClass("navimg");
+    }
+
+    function mouseOutBgImg(objId) {
+        $('#' + objId).addClass("navimg");
+    }
+
+
+    $("#editEninfo").click(function () {
+        layer.open({
+            type: 2,
+            title: '修改企业信息',
+            shadeClose: true,
+            shade: false,
+            maxmin: true, //开启最大化最小化按钮
+            area: ['893px', '600px'],
+            content: '/base/invoice/eninfo/u/addEnInfoMav'
+        });
+    });
+
+    $("#editUserInfoBtn").click(function () {
+        layer.open({
+            type: 2,
+            title: '用户信息修改',
+            shadeClose: true,
+            shade: false,
+            maxmin: true, //开启最大化最小化按钮
+            area: ['893px', '600px'],
+            content: '/base/invoice/userinfo/u/updateUserInfoMav'
+        });
+    });
+
+    //更换验证码
+    function refreshCaptcha(objId) {
+        $('#' + objId).attr("src", "/images/kaptcha.jpg?t=" + Math.random());
+    }
+
+
+    //让当前表单调用validate方法，实现表单验证功能
+    $("#pwdFrom").validate({
+//            debug:true, //调试模式，即使验证成功也不会跳转到目标页面
+        rules: { //配置验证规则，key就是被验证的dom对象，value就是调用验证的方法(也是json格式)
+            originalPassword: {
+                required: true,
+                password: true,
+                rangelength: [8, 16],
+            },
+            password: {
+                required: true,
+                password: true,
+                rangelength: [8, 16],
+            },
+            repeatPassword: {
+                required: true,
+                equalTo: '#password' //表示和id="spass"的值相同
+            }
+        },
+        messages: {
+            originalPassword: {
+                required: "不能为空",
+                rangelength: "长度8-16"
+            },
+            password: {
+                required: "不能为空",
+                rangelength: "长度8-16"
+            },
+            repeatPassword: {
+                required: "不能为空",
+                equalTo: "密码输入不一致"
+            }
+        },
+        submitHandler: function (form) {
+            jQuery(form).ajaxSubmit(function (data) {
+                if (data.operateCode == "F") {
+                    layerAlertMsg(data.message);
+                    refreshCaptcha('verification_code_img2');
+                } else if (data.operateCode == "S") {
+                    layer.alert(data.message, {
+                        icon: 1,
+                        skin: 'layer-ext-moon',
+                        closeBtn: 0
+                    }, function () {
+                        location.href = "/logout";
+                    });
+
+                }
+            });
+        }
+    });
+
+
+    $('#baseOptionBtn').click(function () {
+        jQuery('#baseOptionFrom').ajaxSubmit(function (data) {
+            layerAlertMsg(data.message);
+        });
+    });
+
+
+    $("#getCntBtn").click(function () {
+        var fjd = $("#fjh").val();
+        $.get("/requestfpkccx/getcnt?fjh=" + fjd, function (data) {
+            if (data.operateCode == "F") {
+                layerAlertMsg(data.message);
+            } else if (data.operateCode == "S") {
+                $("#cnt").val(data.datas);
+            }
+        });
+    });
+
+    //快递信息保存按钮
+    $('#expressAddBtn').click(function () {
+        var exCode = $('#selExpCode').val();
+        var expNo = $('#expNo').val();
+        if (exCode == '' || exCode == null || exCode == 'undefined' || exCode == undefined) {
+            layer.alert("请选择快递公司!");
+            return;
+        }
+
+        if (expNo == '' || expNo == null || expNo == 'undefined' || expNo == undefined) {
+            layer.alert("请输入快递单号!");
+            return;
+        }
+
+        $('#expressAddForm').ajaxSubmit(function (data) {
+            layer.alert(data.message);
+        });
+    });
+
+    //快递信息查询按钮
+    $('#expressQueryBtn').click(function () {
+        var exCode = $('#selExpCode2').val();
+        var expNo = $('#expNo2').val();
+        if (isBlank(exCode)) {
+            layer.alert("请选择快递公司!");
+            return;
+        }
+
+        if (isBlank(expNo)) {
+            layer.alert("请输入快递单号!");
+            return;
+        }
+
+        $('#expressQueryForm').ajaxSubmit(function (data) {
+            var result = $.parseJSON(data.datas).Traces;
+            var count = result.length;
+            for (var i = count; i > 0; i--) {
+                if (!isBlank(result[i])) {
+                    $('#traces').append('<p><span class="text-warning">' + result[i].AcceptTime + '</span>&emsp;<span class="muted">' + result[i].AcceptStation + '</span></p>');
+                }
+            }
+        });
+    });
+
+
+</script>
+</body>
+</html>

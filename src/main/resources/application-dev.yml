@@ -51,8 +51,8 @@ spring:
 
   #redis配置
   redis:
-    host: 192.168.55.134
-    port: 6380
+    host: 192.168.1.11
+    port: 6379
     # REDIS (RedisProperties)
     # Redis数据库索引（默认为0）
     database: 0
@@ -94,10 +94,10 @@ SystemParameter:
   #系统默认用户密码,用于重置
   defaultUserInfoPwd: 123456bb
   #数据库IP
-  dbaddr: 192.168.55.134
+  dbaddr: 192.168.1.11
   dbport: 8066
   username: root
-  password: Aisino123!
+  password: 123
 
 # http://ei.szhtxx.com:9001/front/request/4458
 # http://ei.szhtxx.com:9001/front/request/AisinoTest

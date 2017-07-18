@@ -1,13 +1,13 @@
 <component name="libraryTable">
   <library name="Maven: org.springframework.cloud:spring-cloud-security:1.1.5.BUILD-SNAPSHOT">
     <CLASSES>
-      <root url="jar://D:/localRepository/org/springframework/cloud/spring-cloud-security/1.1.5.BUILD-SNAPSHOT/spring-cloud-security-1.1.5.BUILD-20170705.125857-488.jar!/" />
+      <root url="jar://D:/localRepository/org/springframework/cloud/spring-cloud-security/1.1.5.BUILD-SNAPSHOT/spring-cloud-security-1.1.5.BUILD-20170711.095856-527.jar!/" />
     </CLASSES>
     <JAVADOC>
-      <root url="jar://D:/localRepository/org/springframework/cloud/spring-cloud-security/1.1.5.BUILD-SNAPSHOT/spring-cloud-security-1.1.5.BUILD-20170705.125857-488-javadoc.jar!/" />
+      <root url="jar://D:/localRepository/org/springframework/cloud/spring-cloud-security/1.1.5.BUILD-SNAPSHOT/spring-cloud-security-1.1.5.BUILD-20170711.095856-527-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
-      <root url="jar://D:/localRepository/org/springframework/cloud/spring-cloud-security/1.1.5.BUILD-SNAPSHOT/spring-cloud-security-1.1.5.BUILD-20170705.125857-488-sources.jar!/" />
+      <root url="jar://D:/localRepository/org/springframework/cloud/spring-cloud-security/1.1.5.BUILD-SNAPSHOT/spring-cloud-security-1.1.5.BUILD-20170711.095856-527-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

@@ -1,13 +1,13 @@
 <component name="libraryTable">
   <library name="Maven: org.springframework.cloud:spring-cloud-commons:1.1.10.BUILD-SNAPSHOT">
     <CLASSES>
-      <root url="jar://D:/localRepository/org/springframework/cloud/spring-cloud-commons/1.1.10.BUILD-SNAPSHOT/spring-cloud-commons-1.1.10.BUILD-20170705.120855-510.jar!/" />
+      <root url="jar://D:/localRepository/org/springframework/cloud/spring-cloud-commons/1.1.10.BUILD-SNAPSHOT/spring-cloud-commons-1.1.10.BUILD-20170711.120905-551.jar!/" />
     </CLASSES>
     <JAVADOC>
-      <root url="jar://D:/localRepository/org/springframework/cloud/spring-cloud-commons/1.1.10.BUILD-SNAPSHOT/spring-cloud-commons-1.1.10.BUILD-20170705.120855-510-javadoc.jar!/" />
+      <root url="jar://D:/localRepository/org/springframework/cloud/spring-cloud-commons/1.1.10.BUILD-SNAPSHOT/spring-cloud-commons-1.1.10.BUILD-20170711.120905-551-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
-      <root url="jar://D:/localRepository/org/springframework/cloud/spring-cloud-commons/1.1.10.BUILD-SNAPSHOT/spring-cloud-commons-1.1.10.BUILD-20170705.120855-510-sources.jar!/" />
+      <root url="jar://D:/localRepository/org/springframework/cloud/spring-cloud-commons/1.1.10.BUILD-SNAPSHOT/spring-cloud-commons-1.1.10.BUILD-20170711.120905-551-sources.jar!/" />
     </SOURCES>
   </library>
 </component>
